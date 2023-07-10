@@ -1,4 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthStack, CommentaryTab, SigonganTab } from './navigations';
 
@@ -9,11 +10,13 @@ const Main = () => {
 
   return (
     <NavigationContainer>
-      <SafeAreaView>
-        {userState === 'unLogin' && <AuthStack />}
-        {userState === 'Sigongan' && <SigonganTab />}
-        {userState === 'Commentary' && <CommentaryTab />}
-      </SafeAreaView>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
+          {userState === 'unLogin' && <AuthStack />}
+          {userState === 'Sigongan' && <SigonganTab />}
+          {userState === 'Commentary' && <CommentaryTab />}
+        </SafeAreaView>
+      </GestureHandlerRootView>
     </NavigationContainer>
   );
 };
