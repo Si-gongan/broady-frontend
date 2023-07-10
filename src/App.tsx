@@ -22,7 +22,9 @@ const Main = () => {
 };
 
 export const App = () => {
-  <UserStateProvider>
-    <Main />
-  </UserStateProvider>;
+  return (
+    <UserStateProvider>
+      <Main />
+    </UserStateProvider>
+  );
 };
