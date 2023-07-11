@@ -17,20 +17,66 @@ export const CommentTab = () => {
 };
 
 const Comment = () => {
+  const [requestList, setrequestList] = useState([
+    {
+      id: 0,
+      createdAt: '2023:07:11T03:12:13T',
+      content: '질문 내용',
+      imgSrc: require('../../../assets/sample_request.png'),
+    },
+    {
+      id: 1,
+      createdAt: '2023:07:11T03:12:13T',
+      content: '질문 내용',
+      imgSrc: require('../../../assets/sample_request.png'),
+    },
+    {
+      id: 2,
+      createdAt: '2023:07:11T03:12:13T',
+      content: '질문 내용',
+      imgSrc: require('../../../assets/sample_request.png'),
+    },
+    {
+      id: 3,
+      createdAt: '2023:07:11T03:12:13T',
+      content: '질문 내용',
+      imgSrc: require('../../../assets/sample_request.png'),
+    },
+  ]);
   return (
-    <>
-      <Text style={styles.mainTitle}>의뢰목록</Text>
-      <View>
+    <View style={styles.mainContainer}>
+      <View style={styles.header}>
+        <Text style={styles.mainTitle}>의뢰목록</Text>
+      </View>
+      <View style={styles.bodyContainer}>
         <View style={styles.cardContainer}>
-          <Text>2분 전</Text>
-          <Text>질문내용</Text>
+          {requestList.map((question, idx) => (
+            <View key={idx} style={styles.imageContainer}>
+              <Image source={question.imgSrc} alt="" style={styles.image} />
+              <Text>2분 전</Text>
+              <Text>질문내용</Text>
+            </View>
+          ))}
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  header: {
+    flex: 0.05,
+    marginLeft: 25,
+    marginTop: 10,
+    justifyContent: 'center',
+  },
+  bodyContainer: {
+    flex: 1,
+  },
   mainTitle: {
     fontSize: 24,
   },
@@ -40,6 +86,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     padding: 20,
-    gap: 20,
+    gap: 30,
+  },
+  imageContainer: {
+    width: '40%',
+    height: 200,
+    display: 'flex',
+    flexBasis: '45%',
+  },
+  image: {
+    width: '100%',
+    height: '30%',
+    display: 'flex',
+    flex: 1,
   },
 });
