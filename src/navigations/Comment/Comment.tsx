@@ -1,8 +1,9 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState } from 'react';
 import MyRequest from './MyRequest';
 import MyPage from './MyPage';
+import { Shadow } from 'react-native-shadow-2';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,46 +21,75 @@ const Comment = () => {
   const [requestList, setrequestList] = useState([
     {
       id: 0,
-      createdAt: '2023:07:11T03:12:13T',
+      createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../assets/sample_request.png'),
     },
     {
       id: 1,
-      createdAt: '2023:07:11T03:12:13T',
+      createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../assets/sample_request.png'),
     },
     {
       id: 2,
-      createdAt: '2023:07:11T03:12:13T',
+      createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../assets/sample_request.png'),
     },
     {
       id: 3,
-      createdAt: '2023:07:11T03:12:13T',
+      createdAt: '2023-07-11T03:12:13T',
+      content: '질문 내용',
+      imgSrc: require('../../../assets/sample_request.png'),
+    },
+    {
+      id: 4,
+      createdAt: '2023-07-11T03:12:13T',
+      content: '질문 내용',
+      imgSrc: require('../../../assets/sample_request.png'),
+    },
+    {
+      id: 5,
+      createdAt: '2023-07-11T03:12:13T',
+      content: '질문 내용',
+      imgSrc: require('../../../assets/sample_request.png'),
+    },
+    {
+      id: 6,
+      createdAt: '2023-07-11T03:12:13T',
+      content: '질문 내용',
+      imgSrc: require('../../../assets/sample_request.png'),
+    },
+    {
+      id: 7,
+      createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../assets/sample_request.png'),
     },
   ]);
+
   return (
-    <View style={styles.mainContainer}>
+    <ScrollView style={styles.mainContainer}>
       <View style={styles.header}>
         <Text style={styles.mainTitle}>의뢰목록</Text>
       </View>
       <View style={styles.bodyContainer}>
         <View style={styles.cardContainer}>
           {requestList.map((question, idx) => (
-            <View key={idx} style={styles.imageContainer}>
-              <Image source={question.imgSrc} alt="" style={styles.image} />
-              <Text>2분 전</Text>
-              <Text>질문내용</Text>
-            </View>
+            <Shadow key={idx} distance={3} sides={{ top: false, bottom: true, start: true, end: true }}>
+              <View style={styles.imageContainer}>
+                <Image source={question.imgSrc} alt="" style={styles.image} />
+                <View style={styles.imageTextContainer}>
+                  <Text style={styles.createdAtRequest}>{question.createdAt}</Text>
+                  <Text style={styles.requestContent}>{question.content}</Text>
+                </View>
+              </View>
+            </Shadow>
           ))}
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -89,15 +119,35 @@ const styles = StyleSheet.create({
     gap: 30,
   },
   imageContainer: {
-    width: '40%',
     height: 200,
+    width: 160,
     display: 'flex',
-    flexBasis: '45%',
+    borderRadius: 12,
+    overflow: 'hidden',
+    gap: 10,
+    paddingBottom: 10,
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   image: {
     width: '100%',
-    height: '30%',
-    display: 'flex',
-    flex: 1,
+    height: '70%',
   },
+  imageTextContainer: {
+    flex: 1,
+    gap: 10,
+    marginLeft: 10,
+  },
+  createdAtRequest: {
+    fontSize: 12,
+    color: 'gray',
+  },
+  requestContent: {},
 });
