@@ -4,15 +4,35 @@ import { useState } from 'react';
 import MyRequest from './MyRequest';
 import MyPage from './MyPage';
 import { Shadow } from 'react-native-shadow-2';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
 
 export const CommentTab = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="홈" component={Comment} />
-      <Tab.Screen name="MY의뢰" component={MyRequest} />
-      <Tab.Screen name="마이페이지" component={MyPage} />
+      <Tab.Screen
+        name="홈"
+        component={Comment}
+        options={{
+          tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
+        }}
+      />
+      <Tab.Screen
+        name="MY의뢰"
+        component={MyRequest}
+        options={{
+          tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
+        }}
+      />
+      <Tab.Screen
+        name="마이페이지"
+        component={MyPage}
+        options={{
+          tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
+        }}
+      />
     </Tab.Navigator>
   );
 };
