@@ -9,35 +9,35 @@ const MyRequest = () => {
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성중',
+      status: '작성 중',
     },
     {
       id: 1,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성중',
+      status: '작성 중',
     },
     {
       id: 2,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성중',
+      status: '작성 중',
     },
     {
       id: 3,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성중',
+      status: '작성 중',
     },
     {
       id: 4,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성중',
+      status: '작성 중',
     },
     {
       id: 5,
@@ -62,22 +62,28 @@ const MyRequest = () => {
     },
   ]);
 
+  const [topTabNavigations, setTopTabNavigations] = useState([
+    {
+      id: 0,
+      name: '작성 중',
+      clicked: true,
+    },
+    {
+      id: 1,
+      name: '완료',
+      clicked: false,
+    },
+  ]);
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
-        <View
-          style={{
-            width: '90%',
-            height: '40%',
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            borderBottomColor: 'black',
-            borderBottomWidth: 5,
-          }}
-        >
-          <Text style={{ fontSize: 18 }}>작성중</Text>
-          <Text style={{ fontSize: 18 }}>완료</Text>
+        <View style={styles.topTabContainer}>
+          {topTabNavigations.map((tab) => (
+            <View style={tabStyles(tab.clicked).topTabItem} key={tab.id}>
+              <Text style={{ fontSize: 18 }}>{tab.name}</Text>
+            </View>
+          ))}
         </View>
       </View>
       <View style={styles.bodyContainer}></View>
@@ -95,6 +101,11 @@ const styles = StyleSheet.create({
     marginTop: 30,
     alignItems: 'center',
   },
+  topTabContainer: {
+    width: '90%',
+    height: '50%',
+    flexDirection: 'row',
+  },
   bodyContainer: {
     flex: 1,
   },
@@ -102,5 +113,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
 });
+
+const tabStyles = (clicked: boolean) =>
+  StyleSheet.create({
+    topTabItem: {
+      width: '50%',
+      height: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderBottomColor: `${clicked ? 'black' : '#E2E2E2'}`,
+      borderBottomWidth: 5,
+    },
+  });
 
 export default MyRequest;
