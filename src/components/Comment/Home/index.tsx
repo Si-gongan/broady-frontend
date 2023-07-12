@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { IRequest } from '../../types/request';
+import { IRequest } from '../../../types/request';
 import RequestList from './RequestList';
 
 const Comment = () => {
@@ -9,56 +9,56 @@ const Comment = () => {
       id: 0,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../assets/sample_request.png'),
+      imgSrc: require('../../../../assets/sample_request.png'),
       status: '작성중',
     },
     {
       id: 1,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../assets/sample_request.png'),
+      imgSrc: require('../../../../assets/sample_request.png'),
       status: '작성중',
     },
     {
       id: 2,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../assets/sample_request.png'),
+      imgSrc: require('../../../../assets/sample_request.png'),
       status: '작성중',
     },
     {
       id: 3,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../assets/sample_request.png'),
+      imgSrc: require('../../../../assets/sample_request.png'),
       status: '작성중',
     },
     {
       id: 4,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../assets/sample_request.png'),
+      imgSrc: require('../../../../assets/sample_request.png'),
       status: '작성중',
     },
     {
       id: 5,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../assets/sample_request.png'),
+      imgSrc: require('../../../../assets/sample_request.png'),
       status: '완료',
     },
     {
       id: 6,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../assets/sample_request.png'),
+      imgSrc: require('../../../../assets/sample_request.png'),
       status: '완료',
     },
     {
       id: 7,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../assets/sample_request.png'),
+      imgSrc: require('../../../../assets/sample_request.png'),
       status: '완료',
     },
   ]);

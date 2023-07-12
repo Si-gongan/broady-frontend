@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MyRequest from './MyRequest';
-import MyPage from './MyPage';
+import MyRequest from '../components/Comment/MyRequest';
+import MyPage from '../components/Comment/Mypage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Comment from './Comment';
+import Comment from '../components/Comment/Home';
 
 const Tab = createBottomTabNavigator();
 
