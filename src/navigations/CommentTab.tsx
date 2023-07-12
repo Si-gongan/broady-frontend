@@ -14,6 +14,7 @@ export const CommentTab = () => {
         component={Comment}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
+          headerStyle: { shadowOpacity: 0 },
         }}
       />
       <Tab.Screen
@@ -21,6 +22,7 @@ export const CommentTab = () => {
         component={MyRequest}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
+          headerStyle: { shadowOpacity: 0 },
         }}
       />
       <Tab.Screen
@@ -28,6 +30,7 @@ export const CommentTab = () => {
         component={MyPage}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
+          headerStyle: { shadowOpacity: 0 },
         }}
       />
     </Tab.Navigator>
