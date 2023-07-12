@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import type { SigonganTabParamList } from './types';
+import type { SigonganTabParamList } from '../types/types';
 
 const Tab = createBottomTabNavigator<SigonganTabParamList>();
 
