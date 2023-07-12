@@ -1,18 +1,18 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { SigonganColor } from './styles';
 
 type CommentRequestButtonProps = {
-  onClick: () => void;
+  onPress: () => void;
 };
 
-export const CommentRequestButton = ({ onClick }: CommentRequestButtonProps) => {
+export const CommentRequestButton = ({ onPress }: CommentRequestButtonProps) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity activeOpacity={0.8} style={styles.container} onPress={onPress}>
       <MaterialIcons name="add" style={styles.icon} />
       <Text style={styles.content}>해설 의뢰하기</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

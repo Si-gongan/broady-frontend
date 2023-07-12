@@ -15,7 +15,7 @@ export const HomeScreen = () => {
     <View>
       <ScrollView>
         <View style={styles.topButton}>
-          <CommentRequestButton onClick={() => commentRequestPopupRef.current?.open()} />
+          <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
         </View>
         <View style={styles.requestList}>
           <View style={styles.requestItem}>

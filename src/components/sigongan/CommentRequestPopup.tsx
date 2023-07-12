@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, forwardRef } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { BottomSheet } from 'react-native-btr';
@@ -11,7 +11,7 @@ export type ICommentRequestPopupHandler = {
 };
 
 // eslint-disable-next-line react/display-name
-export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, object>((_, ref) => {
+export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>((_, ref) => {
   const [visible, setVisible] = useState(false);
 
   const onClose = () => setVisible(false);
@@ -33,24 +33,24 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, objec
         <View style={styles.divider} />
 
         <View style={styles.itemWrapper}>
-          <View style={styles.item}>
+          <TouchableOpacity style={styles.item}>
             <Text style={styles.itemText}>직접 촬영</Text>
             <MaterialIcons name="arrow-forward-ios" style={styles.itemIcon} />
-          </View>
+          </TouchableOpacity>
 
           <View style={styles.divider} />
 
-          <View style={styles.item}>
+          <TouchableOpacity style={styles.item}>
             <Text style={styles.itemText}>갤러리에서 선택</Text>
             <MaterialIcons name="arrow-forward-ios" style={styles.itemIcon} />
-          </View>
+          </TouchableOpacity>
 
           <View style={styles.divider} />
 
-          <View style={styles.item}>
+          <TouchableOpacity style={styles.item} onPress={() => onClose()}>
             <Text style={styles.itemText}>취소</Text>
             <MaterialIcons name="arrow-forward-ios" style={styles.itemIcon} />
-          </View>
+          </TouchableOpacity>
 
           <View style={styles.divider} />
         </View>
