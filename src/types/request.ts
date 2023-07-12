@@ -3,5 +3,5 @@ export interface IRequest {
   createdAt: string;
   content: string;
   imgSrc: object;
-  status: string;
+  status: number;
 }

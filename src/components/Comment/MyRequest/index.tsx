@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { IRequest } from '../../../types/request';
+import RequestList from '../Home/RequestList';
 
 interface ITopTab {
   id: number;
@@ -8,65 +9,68 @@ interface ITopTab {
   clicked: boolean;
 }
 
+const requestStatus = ['작성 중', '완료'];
+
 const MyRequest = () => {
-  const [requestList, setrequestList] = useState<IRequest[]>([
+  const [requestList, setRequestList] = useState<IRequest[]>([
     {
       id: 0,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성 중',
+      status: 0,
     },
     {
       id: 1,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성 중',
+      status: 0,
     },
     {
       id: 2,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성 중',
+      status: 0,
     },
     {
       id: 3,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성 중',
+      status: 0,
     },
     {
       id: 4,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '작성 중',
+      status: 0,
     },
     {
       id: 5,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '완료',
+      status: 1,
     },
     {
       id: 6,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '완료',
+      status: 1,
     },
     {
       id: 7,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
       imgSrc: require('../../../../assets/sample_request.png'),
-      status: '완료',
+      status: 1,
     },
   ]);
+  const [currestRequest, setCurrentRequest] = useState<IRequest[]>([]);
 
   const [topTabNavigations, setTopTabNavigations] = useState([
     {
@@ -88,7 +92,13 @@ const MyRequest = () => {
         tab.id === clickedId ? { ...tab, clicked: true } : { ...tab, clicked: false }
       )
     );
+    const result = requestList.filter((tab) => tab.status === clickedId);
+    setCurrentRequest(result);
   };
+
+  useEffect(() => {
+    setCurrentRequest(requestList.filter((tab) => tab.status === 0));
+  }, []);
 
   return (
     <View style={styles.mainContainer}>
@@ -103,7 +113,9 @@ const MyRequest = () => {
           ))}
         </View>
       </View>
-      <View style={styles.bodyContainer}></View>
+      <View style={styles.bodyContainer}>
+        <RequestList requestList={currestRequest} />
+      </View>
     </View>
   );
 };
