@@ -3,7 +3,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { SigonganColor } from './styles';
 
-export const CommentRequestButton = () => {
+type CommentRequestButtonProps = {
+  onClick: () => void;
+};
+
+export const CommentRequestButton = ({ onClick }: CommentRequestButtonProps) => {
   return (
     <View style={styles.container}>
       <MaterialIcons name="add" style={styles.icon} />

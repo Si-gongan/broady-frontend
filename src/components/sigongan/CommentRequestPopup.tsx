@@ -1,12 +1,32 @@
+import { useState, useImperativeHandle, forwardRef } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { BottomSheet } from 'react-native-btr';
 import { SigonganColor } from './styles';
 
-export const CommentRequestPopup = () => {
+export type ICommentRequestPopupHandler = {
+  open: () => void;
+  close: () => void;
+};
+
+// eslint-disable-next-line react/display-name
+export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, object>((_, ref) => {
+  const [visible, setVisible] = useState(false);
+
+  const onClose = () => setVisible(false);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      open: () => setVisible(true),
+      close: () => setVisible(false),
+    }),
+    []
+  );
+
   return (
-    <BottomSheet visible={true}>
+    <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
       <View style={styles.container}>
         <Text style={styles.title}>사진 선택</Text>
 
@@ -37,7 +57,7 @@ export const CommentRequestPopup = () => {
       </View>
     </BottomSheet>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

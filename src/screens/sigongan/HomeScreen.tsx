@@ -1,17 +1,21 @@
+import { useRef } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import {
   CommentRequestButton,
   CommentRequestPopup,
+  ICommentRequestPopupHandler,
   RequestImageCard,
   RequestTextCard,
 } from '../../components/sigongan';
 
 export const HomeScreen = () => {
+  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
+
   return (
     <View>
       <ScrollView>
         <View style={styles.topButton}>
-          <CommentRequestButton />
+          <CommentRequestButton onClick={() => commentRequestPopupRef.current?.open()} />
         </View>
         <View style={styles.requestList}>
           <View style={styles.requestItem}>
@@ -26,7 +30,7 @@ export const HomeScreen = () => {
         </View>
       </ScrollView>
 
-      <CommentRequestPopup />
+      <CommentRequestPopup ref={commentRequestPopupRef} />
     </View>
   );
 };
