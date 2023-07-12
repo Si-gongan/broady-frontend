@@ -1,6 +1,12 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { IRequest } from '../../../types/request';
+
+interface ITopTab {
+  id: number;
+  name: string;
+  clicked: boolean;
+}
 
 const MyRequest = () => {
   const [requestList, setrequestList] = useState<IRequest[]>([
@@ -75,14 +81,25 @@ const MyRequest = () => {
     },
   ]);
 
+  const handleClickTopTab = (e: any) => {
+    const clickedId = parseInt(e._dispatchInstances.child.memoizedProps.id);
+    setTopTabNavigations(
+      topTabNavigations.map((tab: ITopTab) =>
+        tab.id === clickedId ? { ...tab, clicked: true } : { ...tab, clicked: false }
+      )
+    );
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
         <View style={styles.topTabContainer}>
           {topTabNavigations.map((tab) => (
-            <View style={tabStyles(tab.clicked).topTabItem} key={tab.id}>
-              <Text style={{ fontSize: 18 }}>{tab.name}</Text>
-            </View>
+            <TouchableOpacity style={tabStyles(tab.clicked).topTabItem} key={tab.id} onPress={handleClickTopTab}>
+              <Text id={`${tab.id}`} style={styles.tabText}>
+                {tab.name}
+              </Text>
+            </TouchableOpacity>
           ))}
         </View>
       </View>
@@ -111,6 +128,9 @@ const styles = StyleSheet.create({
   },
   mainTitle: {
     fontSize: 24,
+  },
+  tabText: {
+    fontSize: 18,
   },
 });
 
