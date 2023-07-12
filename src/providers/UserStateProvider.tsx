@@ -9,7 +9,7 @@ import type { ReactNode } from 'react';
  *
  * 이름 고민 필요할듯
  */
-type UserState = 'unLogin' | 'Sigongan' | 'Commentary';
+type UserState = 'unLogin' | 'Sigongan' | 'Comment';
 
 const UserStateContext = createContext<{
   userState: UserState;
@@ -17,7 +17,8 @@ const UserStateContext = createContext<{
 } | null>(null);
 
 export const UserStateProvider = ({ children }: { children: ReactNode }) => {
-  const [userState, setUserState] = useState<UserState>('unLogin');
+  // const [userState, setUserState] = useState<UserState>('unLogin');
+  const [userState, setUserState] = useState<UserState>('Comment');
 
   const changeUserState = useCallback((userState: UserState) => {
     setUserState(userState);
