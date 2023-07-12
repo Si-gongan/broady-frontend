@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding: 20,
     gap: 30,
   },
 });

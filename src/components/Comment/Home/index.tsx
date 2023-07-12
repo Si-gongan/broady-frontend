@@ -81,16 +81,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    flex: 0.05,
-    marginLeft: 25,
     marginTop: 10,
+    marginBottom: 20,
     justifyContent: 'center',
-  },
-  bodyContainer: {
-    flex: 1,
+    height: 50,
+    borderBottomColor: '#E2E2E2',
+    borderBottomWidth: 3,
   },
   mainTitle: {
     fontSize: 24,
+    paddingLeft: 35,
+  },
+  bodyContainer: {
+    flex: 1,
   },
 });
 

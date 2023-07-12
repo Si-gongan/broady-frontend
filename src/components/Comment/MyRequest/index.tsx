@@ -126,13 +126,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    flex: 0.2,
+    flex: 0.1,
     marginTop: 30,
     alignItems: 'center',
   },
   topTabContainer: {
     width: '90%',
-    height: '50%',
+    height: '60%',
     flexDirection: 'row',
   },
   bodyContainer: {
