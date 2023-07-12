@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { Shadow } from 'react-native-shadow-2';
+import { IRequest } from '../types';
 import RequestList from './RequestList';
 
 const Comment = () => {
-  const [requestList, setrequestList] = useState([
+  const [requestList, setrequestList] = useState<IRequest[]>([
     {
       id: 0,
       createdAt: '2023-07-11T03:12:13T',
