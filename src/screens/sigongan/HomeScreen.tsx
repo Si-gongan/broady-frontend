@@ -12,11 +12,14 @@ export const HomeScreen = () => {
   const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
 
   return (
-    <View>
-      <ScrollView>
-        <View style={styles.topButton}>
-          <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
-        </View>
+    <View style={{ flex: 1 }}>
+      <CommentRequestPopup ref={commentRequestPopupRef} />
+
+      <View style={styles.topButton}>
+        <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
+      </View>
+
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.requestList}>
           <View style={styles.requestItem}>
             <RequestImageCard imgUrl="" />
@@ -29,8 +32,6 @@ export const HomeScreen = () => {
           </View>
         </View>
       </ScrollView>
-
-      <CommentRequestPopup ref={commentRequestPopupRef} />
     </View>
   );
 };
