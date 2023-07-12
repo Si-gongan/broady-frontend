@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { IRequest } from '../../types/request';
+import { IRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
 
 const RequestList = ({ requestList }: { requestList: IRequest[] }) => {

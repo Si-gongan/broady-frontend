@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import type { RootStackParamList } from './types';
+import type { RootStackParamList } from '../types/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
