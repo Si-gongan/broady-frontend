@@ -3,7 +3,9 @@ export type RootStackParamList = {
 };
 
 export type SigonganTabParamList = {
-  Example: undefined;
+  홈: undefined;
+  'AI 채팅': undefined;
+  마이페이지: undefined;
 };
 
 export type CommentaryTabParamList = {
