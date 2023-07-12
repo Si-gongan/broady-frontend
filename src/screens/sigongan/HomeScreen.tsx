@@ -1,9 +1,43 @@
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { CommentRequestButton, RequestImageCard, RequestTextCard } from '../../components/sigongan';
 
 export const HomeScreen = () => {
   return (
     <View>
-      <Text>홈</Text>
+      <ScrollView>
+        <View style={styles.topButton}>
+          <CommentRequestButton />
+        </View>
+        <View style={styles.requestList}>
+          <View style={styles.requestItem}>
+            <RequestImageCard imgUrl="" />
+            <RequestTextCard date="" content="" />
+          </View>
+
+          <View style={styles.requestItem}>
+            <RequestImageCard imgUrl="" />
+            <RequestTextCard date="" content="" />
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  topButton: {
+    marginTop: 27,
+    alignItems: 'center',
+  },
+  requestList: {
+    marginTop: 30,
+    alignItems: 'center',
+
+    gap: 14,
+  },
+  requestItem: {
+    flexDirection: 'row',
+
+    gap: 15,
+  },
+});

@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator<SigonganTabParamList>();
 
 export const SigonganTab = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator sceneContainerStyle={{ backgroundColor: 'white' }}>
       <Tab.Screen
         name="홈"
         component={HomeScreen}
