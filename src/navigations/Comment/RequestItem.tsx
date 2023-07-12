@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
-import { IRequest } from '../types';
+import { IRequest } from '../../types/request';
 
 const RequestItem = ({ request }: { request: IRequest }) => {
   return (

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { IRequest } from '../types';
+import { IRequest } from '../../types/request';
 import RequestList from './RequestList';
 
 const Comment = () => {
