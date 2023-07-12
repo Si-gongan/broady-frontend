@@ -1,5 +1,10 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { CommentRequestButton, RequestImageCard, RequestTextCard } from '../../components/sigongan';
+import {
+  CommentRequestButton,
+  CommentRequestPopup,
+  RequestImageCard,
+  RequestTextCard,
+} from '../../components/sigongan';
 
 export const HomeScreen = () => {
   return (
@@ -20,6 +25,8 @@ export const HomeScreen = () => {
           </View>
         </View>
       </ScrollView>
+
+      <CommentRequestPopup />
     </View>
   );
 };

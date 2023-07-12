@@ -35,5 +35,6 @@ const styles = StyleSheet.create({
   content: {
     color: SigonganColor.normalButtonText,
     fontSize: 14,
+    fontStyle: 'italic',
   },
 });
