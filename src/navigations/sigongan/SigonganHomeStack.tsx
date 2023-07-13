@@ -9,7 +9,14 @@ const Stack = createNativeStackNavigator<SigonganHomeStackParamList>();
 
 export const SigonganHomeStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShadowVisible: false,
+        contentStyle: {
+          backgroundColor: 'white',
+        },
+      }}
+    >
       <Stack.Screen name="홈" component={HomeScreen} />
 
       <Stack.Screen name="해설의뢰" component={Example} />

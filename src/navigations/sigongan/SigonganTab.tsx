@@ -6,6 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { HomeScreen, AIChatScreen, MyPageScreen } from '../../screens/sigongan';
 
 import type { SigonganTabParamList } from '../../types/types';
+import { SigonganHomeStack } from './SigonganHomeStack';
 
 const Tab = createBottomTabNavigator<SigonganTabParamList>();
 
@@ -14,10 +15,10 @@ export const SigonganTab = () => {
     <Tab.Navigator sceneContainerStyle={{ backgroundColor: 'white' }}>
       <Tab.Screen
         name="홈"
-        component={HomeScreen}
+        component={SigonganHomeStack}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
-          headerStyle: { shadowOpacity: 0 },
+          headerShown: false,
         }}
       />
       <Tab.Screen
