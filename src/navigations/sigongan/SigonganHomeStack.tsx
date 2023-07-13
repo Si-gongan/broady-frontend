@@ -1,11 +1,9 @@
-import { View, Text } from 'react-native';
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { SigonganHomeStackParamList } from '../../types/types';
-import { HomeScreen } from '../../screens/sigongan';
+import { CommentRequestScreen, HomeScreen } from '../../screens/sigongan';
 import { getFocusedRouteNameFromRoute, useNavigation, useRoute } from '@react-navigation/native';
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
 const Stack = createNativeStackNavigator<SigonganHomeStackParamList>();
 
@@ -13,7 +11,7 @@ export const SigonganHomeStack = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
 
     navigation.setOptions({
@@ -38,15 +36,7 @@ export const SigonganHomeStack = () => {
         }}
       />
 
-      <Stack.Screen name="해설의뢰" component={Example} />
+      <Stack.Screen name="해설의뢰" component={CommentRequestScreen} />
     </Stack.Navigator>
-  );
-};
-
-const Example = () => {
-  return (
-    <View>
-      <Text>해설의뢰 페이지</Text>
-    </View>
   );
 };

@@ -4,6 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { BottomSheet } from 'react-native-btr';
 import { SigonganColor, SigonganDesign, SigonganFont } from '../styles';
+import { useNavigation } from '@react-navigation/native';
 
 export type ICommentRequestPopupHandler = {
   open: () => void;
@@ -12,6 +13,8 @@ export type ICommentRequestPopupHandler = {
 
 // eslint-disable-next-line
 export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>((_, ref) => {
+  const navigation = useNavigation();
+
   const [visible, setVisible] = useState(false);
 
   const onClose = () => setVisible(false);
@@ -35,7 +38,13 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
         <View style={SigonganDesign.borderOpaque} />
 
         <View style={styles.itemWrapper}>
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => {
+              navigation.navigate('해설의뢰' as never);
+              onClose();
+            }}
+          >
             <Text style={SigonganFont.secondary}>직접 촬영</Text>
             <MaterialIcons name="arrow-forward-ios" style={[styles.itemIcon, SigonganColor.iconPrimary]} />
           </TouchableOpacity>
