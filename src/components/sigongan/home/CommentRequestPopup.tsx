@@ -5,6 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { BottomSheet } from 'react-native-btr';
 import { SigonganColor, SigonganDesign, SigonganFont } from '../styles';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type ICommentRequestPopupHandler = {
   open: () => void;
@@ -13,6 +14,8 @@ export type ICommentRequestPopupHandler = {
 
 // eslint-disable-next-line
 export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>((_, ref) => {
+  const insets = useSafeAreaInsets();
+
   const navigation = useNavigation();
 
   const [visible, setVisible] = useState(false);
@@ -37,7 +40,7 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
 
         <View style={SigonganDesign.borderOpaque} />
 
-        <View style={styles.itemWrapper}>
+        <View style={[styles.itemWrapper, { marginBottom: insets.bottom }]}>
           <TouchableOpacity
             style={styles.item}
             onPress={() => {
@@ -96,8 +99,6 @@ const styles = StyleSheet.create({
 
     paddingLeft: 25,
     paddingRight: 9,
-
-    marginBottom: 16,
   },
   item: {
     flexDirection: 'row',
