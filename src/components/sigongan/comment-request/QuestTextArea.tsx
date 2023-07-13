@@ -21,7 +21,7 @@ export const QuestTextArea = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 36,
+    marginTop: 16,
 
     width: '100%',
     paddingHorizontal: 9,

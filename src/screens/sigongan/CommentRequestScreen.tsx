@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import { ImageCard, QuestTextArea, RePickButton, SubmitRequestButton } from '../../components/sigongan/comment-request';
+import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -13,9 +13,8 @@ export const CommentRequestScreen = () => {
       keyboardVerticalOffset={44 + insets.top}
     >
       <View style={styles.container}>
-        <ImageCard imgUrl="" />
-
-        <RePickButton
+        <ImageController
+          imgUrl=""
           onPress={() => {
             1;
           }}
