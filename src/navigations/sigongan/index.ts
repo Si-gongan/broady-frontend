@@ -1,2 +1,2 @@
-export * from './SigonganTab';
-export * from './SigonganHomeStack';
+export * from './SigonganMainTab';
+export * from './SigonganStack';
