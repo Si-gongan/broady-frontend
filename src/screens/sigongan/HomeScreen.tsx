@@ -6,18 +6,14 @@ import {
   ICommentRequestPopupHandler,
   RequestImageCard,
   RequestTextCard,
-} from '../../components/sigongan';
+} from '../../components/sigongan/home';
 
 export const HomeScreen = () => {
   const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
 
   return (
-    <View style={{ flex: 1 }}>
-      <CommentRequestPopup ref={commentRequestPopupRef} />
-
-      <View style={styles.topButton}>
-        <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
-      </View>
+    <View style={styles.container}>
+      <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
 
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.requestList}>
@@ -32,17 +28,18 @@ export const HomeScreen = () => {
           </View>
         </View>
       </ScrollView>
+
+      <CommentRequestPopup ref={commentRequestPopupRef} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  topButton: {
-    marginTop: 27,
+  container: {
+    flex: 1,
     alignItems: 'center',
   },
   requestList: {
-    marginTop: 30,
     alignItems: 'center',
 
     gap: 14,

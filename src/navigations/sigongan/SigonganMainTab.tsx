@@ -1,23 +1,27 @@
-import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { HomeScreen, AIChatScreen, MyPageScreen } from '../screens/sigongan';
+import { HomeScreen, AIChatScreen, MyPageScreen } from '../../screens/sigongan';
 
-import type { SigonganTabParamList } from '../types/types';
+import type { SigonganMainTabParamList } from '../../types/types';
 
-const Tab = createBottomTabNavigator<SigonganTabParamList>();
+const Tab = createBottomTabNavigator<SigonganMainTabParamList>();
 
-export const SigonganTab = () => {
+export const SigonganMainTab = () => {
   return (
-    <Tab.Navigator sceneContainerStyle={{ backgroundColor: 'white' }}>
+    <Tab.Navigator
+      sceneContainerStyle={{ backgroundColor: 'white' }}
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Tab.Screen
         name="홈"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
-          headerStyle: { shadowOpacity: 0 },
+          headerShown: false,
         }}
       />
       <Tab.Screen

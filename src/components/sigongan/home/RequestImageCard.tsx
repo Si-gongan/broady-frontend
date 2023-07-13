@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const TESTIMGURL = require('../../../assets/sample_request.png');
+const TESTIMGURL = require('../../../../assets/sample_request.png');
 
 type RequestImageCardProps = {
   imgUrl: string; // s3 bucket url?
