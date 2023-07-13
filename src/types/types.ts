@@ -13,6 +13,6 @@ export type CommentaryTabParamList = {
 };
 
 export type SigonganHomeStackParamList = {
-  홈: undefined;
+  '홈-홈': undefined;
   해설의뢰: undefined;
 };
