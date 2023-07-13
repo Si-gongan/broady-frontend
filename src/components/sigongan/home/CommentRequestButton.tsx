@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { SigonganColor } from './styles';
+import { SigonganColor } from '../styles';
 
 type CommentRequestButtonProps = {
   onPress: () => void;

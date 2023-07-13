@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { SigonganColor } from './styles';
+import { SigonganColor } from '../styles';
 
 type RequestTextCardProps = {
   date: string;

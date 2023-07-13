@@ -6,7 +6,7 @@ import {
   ICommentRequestPopupHandler,
   RequestImageCard,
   RequestTextCard,
-} from '../../components/sigongan';
+} from '../../components/sigongan/home';
 
 export const HomeScreen = () => {
   const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
