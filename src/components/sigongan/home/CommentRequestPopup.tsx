@@ -28,7 +28,9 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
   return (
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
       <View style={[styles.container, SigonganColor.backgroundPrimary]}>
-        <Text style={[styles.title, SigonganFont.primary]}>사진 선택</Text>
+        <View style={styles.titleWrapper}>
+          <Text style={SigonganFont.primary}>사진 선택</Text>
+        </View>
 
         <View style={SigonganDesign.borderOpaque} />
 
@@ -65,8 +67,19 @@ const styles = StyleSheet.create({
 
     paddingTop: 8,
     borderRadius: 16,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: -4,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
   },
-  title: {
+  titleWrapper: {
+    width: '100%',
+    alignItems: 'center',
+
     paddingVertical: 12,
   },
   itemWrapper: {
