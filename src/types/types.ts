@@ -11,3 +11,8 @@ export type SigonganTabParamList = {
 export type CommentaryTabParamList = {
   Example: undefined;
 };
+
+export type SigonganHomeStackParamList = {
+  홈: undefined;
+  해설의뢰: undefined;
+};

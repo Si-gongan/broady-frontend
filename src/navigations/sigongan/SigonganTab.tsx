@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { HomeScreen, AIChatScreen, MyPageScreen } from '../screens/sigongan';
+import { HomeScreen, AIChatScreen, MyPageScreen } from '../../screens/sigongan';
 
-import type { SigonganTabParamList } from '../types/types';
+import type { SigonganTabParamList } from '../../types/types';
 
 const Tab = createBottomTabNavigator<SigonganTabParamList>();
 
