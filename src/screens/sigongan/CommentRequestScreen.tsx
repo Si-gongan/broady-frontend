@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-na
 import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export const CommentRequestScreen = () => {
   const insets = useSafeAreaInsets();
@@ -12,16 +13,18 @@ export const CommentRequestScreen = () => {
       style={{ flex: 1 }}
       keyboardVerticalOffset={44 + insets.top}
     >
-      <View style={styles.container}>
-        <ImageController
-          imgUrl=""
-          onPress={() => {
-            1;
-          }}
-        />
+      <ScrollView>
+        <View style={styles.container}>
+          <ImageController
+            imgUrl=""
+            onPress={() => {
+              1;
+            }}
+          />
 
-        <QuestTextArea />
-      </View>
+          <QuestTextArea />
+        </View>
+      </ScrollView>
 
       <SubmitRequestButton
         onPress={() => {
