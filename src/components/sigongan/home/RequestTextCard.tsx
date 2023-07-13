@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { SigonganColor } from '../styles';
+import { SigonganColor, SigonganFont } from '../styles';
 
 type RequestTextCardProps = {
   date: string;
@@ -8,11 +8,11 @@ type RequestTextCardProps = {
 
 export const RequestTextCard = ({ date, content }: RequestTextCardProps) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, SigonganColor.backgroundTeritary]}>
       <View style={styles.textWrapper}>
-        <Text>날짜</Text>
+        <Text style={SigonganFont.quaternary}>날짜</Text>
 
-        <Text>어떤 사진인지 궁금해요.</Text>
+        <Text style={SigonganFont.quaternary}>어떤 사진인지 궁금해요.</Text>
       </View>
     </View>
   );
@@ -23,8 +23,6 @@ const styles = StyleSheet.create({
     width: 247,
     height: 90,
 
-    backgroundColor: SigonganColor.requestTextCard,
-
     borderRadius: 13,
   },
   textWrapper: {
@@ -32,9 +30,5 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
 
     gap: 10,
-  },
-  text: {
-    fontSize: 12,
-    fontStyle: 'normal',
   },
 });
