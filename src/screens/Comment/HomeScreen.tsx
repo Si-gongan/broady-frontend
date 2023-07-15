@@ -1,64 +1,64 @@
 import { useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { IRequest } from '../../../types/request';
-import RequestList from './RequestList';
+import RequestList from '../../components/Comment/Home/RequestList';
+import { IRequest } from '../../types/request';
 
-const Comment = () => {
+const HomeScreen = () => {
   const [requestList, setrequestList] = useState<IRequest[]>([
     {
       id: 0,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../../assets/sample_request.png'),
+      imgSrc: require('../../../assets/sample_request.png'),
       status: 0,
     },
     {
       id: 1,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../../assets/sample_request.png'),
+      imgSrc: require('../../../assets/sample_request.png'),
       status: 0,
     },
     {
       id: 2,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../../assets/sample_request.png'),
+      imgSrc: require('../../../assets/sample_request.png'),
       status: 0,
     },
     {
       id: 3,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../../assets/sample_request.png'),
+      imgSrc: require('../../../assets/sample_request.png'),
       status: 0,
     },
     {
       id: 4,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../../assets/sample_request.png'),
+      imgSrc: require('../../../assets/sample_request.png'),
       status: 0,
     },
     {
       id: 5,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../../assets/sample_request.png'),
+      imgSrc: require('../../../assets/sample_request.png'),
       status: 1,
     },
     {
       id: 6,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../../assets/sample_request.png'),
+      imgSrc: require('../../../assets/sample_request.png'),
       status: 1,
     },
     {
       id: 7,
       createdAt: '2023-07-11T03:12:13T',
       content: '질문 내용',
-      imgSrc: require('../../../../assets/sample_request.png'),
+      imgSrc: require('../../../assets/sample_request.png'),
       status: 1,
     },
   ]);
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Comment;
+export default HomeScreen;
