@@ -3,7 +3,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const Header = ({ navigation }: { navigation: any }) => {
   return (
-    <View style={styles.mainContainer}>
+    <>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBackIcon} />
@@ -13,8 +13,7 @@ const Header = ({ navigation }: { navigation: any }) => {
           <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBlank} />
         </View>
       </View>
-      <Text>해설 작성 페이지</Text>
-    </View>
+    </>
   );
 };
 
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 25,
   },
   headerBackIcon: {
     fontSize: 40,

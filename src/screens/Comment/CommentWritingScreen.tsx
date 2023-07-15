@@ -1,12 +1,13 @@
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Header from '../../components/Comment/CommentWriting/Header';
 
 const CommentWritingScreen = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation} />
-      <Text>해설 작성 페이지</Text>
+      <TouchableOpacity style={styles.imageContainer}>
+        <Image source={require('../../../assets/sample_comment.png')} alt="" style={styles.requestImage} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -14,6 +15,13 @@ const CommentWritingScreen = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+  },
+  imageContainer: {
+    alignItems: 'center',
+  },
+  requestImage: {
+    width: '90%',
+    borderRadius: 30,
   },
 });
 
