@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     {
       id: 5,
       createdAt: '2023-07-11T03:12:13T',
-      content: '질문 내용',
+      content: '해설 시작한 의뢰',
       imgSrc: require('../../../assets/sample_request.png'),
       status: 1,
     },

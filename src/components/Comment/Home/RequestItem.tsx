@@ -8,6 +8,7 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
       onPress={() =>
         navigation.navigate('Writing', {
           content: request.content,
+          status: request.status,
         })
       }
     >

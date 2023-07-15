@@ -4,7 +4,8 @@ import Header from '../../components/Comment/CommentWriting/Header';
 import RequestMessage from '../../components/Comment/CommentWriting/RequestMessage';
 
 const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
-  const { content } = route.params;
+  const { content, status } = route.params;
+
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation} />
@@ -14,7 +15,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.bodyContainer}>
         <RequestMessage content={content} />
       </ScrollView>
-      <Footer />
+      <Footer status={status} />
     </View>
   );
 };
