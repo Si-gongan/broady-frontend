@@ -114,7 +114,7 @@ const MyRequest = () => {
         </View>
       </View>
       <View style={styles.bodyContainer}>
-        <RequestList requestList={requestList} navigation={navigation} />
+        <RequestList requestList={currestRequest} />
       </View>
     </View>
   );

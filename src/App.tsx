@@ -1,8 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AuthStack, CommentTab, SigonganStack } from './navigations';
-import { CommentStack } from './navigations/CommentStack';
+import { AuthStack, SigonganStack, CommentStack } from './navigations';
 
 import { UserStateProvider, useUserState } from './providers';
 

@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MyRequest from '../components/Comment/MyRequest';
-import MyPage from '../components/Comment/Mypage';
+import MyRequest from '../../components/Comment/MyRequest';
+import MyPage from '../../components/Comment/Mypage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import HomeScreen from '../screens/Comment/HomeScreen';
+import HomeScreen from '../../screens/Comment/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 
