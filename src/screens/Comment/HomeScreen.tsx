@@ -8,7 +8,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     {
       id: 0,
       createdAt: '2023-07-11T03:12:13T',
-      content: '질문 내용',
+      content: '고양이가 어떤 모습인지 자세히 설명해주세요.',
       imgSrc: require('../../../assets/sample_request.png'),
       status: 0,
     },

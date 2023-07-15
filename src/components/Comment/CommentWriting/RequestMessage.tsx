@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 
-const RequestMessage = () => {
+const RequestMessage = ({ content }: { content: string }) => {
   return (
     <View style={styles.chatContainer}>
       <View>
         <Image source={require('../../../../assets/sample_request.png')} alt="" style={styles.chatImage} />
       </View>
       <View style={styles.chatText}>
-        <Text>고양이가 어떤 모습인지 자세히 설명해주세요.</Text>
+        <Text>{content}</Text>
       </View>
       <View>
         <Text style={{ color: '#777' }}>오후 2:05</Text>

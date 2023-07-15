@@ -3,7 +3,8 @@ import Footer from '../../components/Comment/CommentWriting/Footer';
 import Header from '../../components/Comment/CommentWriting/Header';
 import RequestMessage from '../../components/Comment/CommentWriting/RequestMessage';
 
-const CommentWritingScreen = ({ navigation }: { navigation: any }) => {
+const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
+  const { content } = route.params;
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation} />
@@ -11,7 +12,7 @@ const CommentWritingScreen = ({ navigation }: { navigation: any }) => {
         <Image source={require('../../../assets/sample_comment.png')} alt="" style={styles.requestImage} />
       </TouchableOpacity>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.bodyContainer}>
-        <RequestMessage />
+        <RequestMessage content={content} />
       </ScrollView>
       <Footer />
     </View>

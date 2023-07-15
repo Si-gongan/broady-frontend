@@ -4,7 +4,13 @@ import { IRequest } from '../../../types/request';
 
 const RequestItem = ({ request, navigation }: { request: IRequest; navigation: any }) => {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Writing')}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('Writing', {
+          content: request.content,
+        })
+      }
+    >
       <Shadow distance={3} sides={{ top: false, bottom: true, start: true, end: true }}>
         <View style={styles.imageContainer}>
           <Image source={request.imgSrc} alt="" style={styles.image} />
