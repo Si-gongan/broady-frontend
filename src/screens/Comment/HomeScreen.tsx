@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import RequestList from '../../components/Comment/Home/RequestList';
 import { IRequest } from '../../types/request';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [requestList, setrequestList] = useState<IRequest[]>([
     {
       id: 0,
@@ -69,7 +69,7 @@ const HomeScreen = () => {
         <Text style={styles.mainTitle}>의뢰목록</Text>
       </View>
       <View style={styles.bodyContainer}>
-        <RequestList requestList={requestList} />
+        <RequestList requestList={requestList} navigation={navigation} />
       </View>
     </ScrollView>
   );
