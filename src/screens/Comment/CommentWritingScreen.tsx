@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageContainer: {
+    marginTop: 30,
     alignItems: 'center',
   },
   requestImage: {
