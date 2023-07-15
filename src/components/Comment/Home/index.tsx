@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    marginTop: 10,
+    marginTop: 23,
     marginBottom: 20,
     justifyContent: 'center',
     height: 50,
