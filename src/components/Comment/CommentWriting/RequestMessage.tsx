@@ -1,11 +1,19 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import ImageModal from 'react-native-image-modal';
+import { AWS_BUCKET_BASE_URL } from '@env';
 
 const RequestMessage = ({ content }: { content: string }) => {
   return (
     <>
-      <TouchableOpacity style={styles.imageContainer}>
-        <Image source={require('../../../../assets/sample_comment.png')} alt="" style={styles.requestImage} />
-      </TouchableOpacity>
+      <View style={styles.imageContainer}>
+        <ImageModal
+          resizeMode="contain"
+          style={styles.requestImage}
+          source={{
+            uri: `${AWS_BUCKET_BASE_URL}/sample_comment.png`,
+          }}
+        />
+      </View>
       <View style={styles.chatContainer}>
         <View>
           <Image source={require('../../../../assets/sample_request.png')} alt="" style={styles.chatImage} />
@@ -24,9 +32,10 @@ const RequestMessage = ({ content }: { content: string }) => {
 const styles = StyleSheet.create({
   imageContainer: {
     marginTop: 30,
-    alignItems: 'center',
   },
   requestImage: {
+    width: 400,
+    height: 220,
     borderRadius: 30,
   },
   chatContainer: {
@@ -34,7 +43,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     width: '90%',
     gap: 10,
-    height: 70,
+    height: 60,
   },
   chatImage: {
     width: 40,
