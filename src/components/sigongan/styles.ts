@@ -35,6 +35,9 @@ export const SigonganColor = StyleSheet.create({
   contentSenary: {
     color: '#6E6E6E',
   },
+  contentSeptenary: {
+    color: '#111E4F',
+  },
 
   iconPrimary: {
     color: '#AFAFAF',
@@ -74,6 +77,25 @@ export const SigonganDesign = StyleSheet.create({
   borderOpaqueInObject: {
     borderWidth: 2,
     borderColor: '#E8E8E8',
+  },
+
+  myPageGrid: {
+    borderWidth: 1,
+    borderColor: '#DFE4F5',
+
+    borderRadius: 10,
+    width: 347,
+  },
+  myPageTitle: {
+    ...SigonganFont.primary,
+    ...SigonganColor.contentSeptenary,
+    fontStyle: 'normal',
+    fontWeight: '600',
+  },
+  myPageContent: {
+    ...SigonganFont.teritary,
+    ...SigonganColor.contentSeptenary,
+    fontStyle: 'normal',
   },
 
   speechBubble1: {
