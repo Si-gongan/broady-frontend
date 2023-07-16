@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { CommonButton, CustomTextInput } from '../../components/auth';
+import { useUserState } from '../../providers';
 
-export const EmailSignInScreen = () => {
+export const EmailSignInScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { changeUserState } = useUserState();
 
   return (
     <View style={styles.container}>
@@ -14,7 +16,7 @@ export const EmailSignInScreen = () => {
       </View>
 
       <View style={{ marginTop: 36 }}>
-        <CommonButton text="로그인" />
+        <CommonButton text="로그인" onPress={() => changeUserState('Comment')} />
       </View>
     </View>
   );
