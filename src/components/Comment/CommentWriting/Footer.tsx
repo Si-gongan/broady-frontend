@@ -1,9 +1,34 @@
-import { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native';
+import { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 
 const Footer = ({ status }: { status: number }) => {
   const [value, setValue] = useState<string>();
+  const [keyboardStatus, setKeyboardStatus] = useState('');
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('Keyboard Shown');
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('Keyboard Hidden');
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   return (
     <>
@@ -20,34 +45,37 @@ const Footer = ({ status }: { status: number }) => {
             </TouchableOpacity>
           </View>
         ) : (
-          <>
-            <View style={styles.inputTextHeader}>
-              <TouchableOpacity style={styles.AIBtn}>
-                <Text style={{ color: 'white' }}>AI다듬기</Text>
-              </TouchableOpacity>
-              <View style={styles.timer}>
-                <Text style={{ color: '#CF0000' }}>3분 남음</Text>
-                <TouchableOpacity style={styles.commentQuit}>
-                  <Text style={{ color: 'white' }}>해설포기</Text>
+          <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={200}>
+            <ScrollView keyboardShouldPersistTaps="always">
+              <View style={styles.inputTextHeader}>
+                <TouchableOpacity style={styles.AIBtn}>
+                  <Text style={{ color: 'white' }}>AI다듬기</Text>
                 </TouchableOpacity>
+                <View style={styles.timer}>
+                  <Text style={{ color: '#CF0000' }}>3분 남음</Text>
+                  <TouchableOpacity style={styles.commentQuit}>
+                    <Text style={{ color: 'white' }}>해설포기</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-            <View style={styles.inputTextContainer}>
-              <View style={{ flex: 0.75 }}>
-                <TextInput
-                  placeholder="해설을 작성해주세요..."
-                  multiline
-                  onChangeText={(text) => setValue(text)}
-                  value={value}
-                  textAlignVertical="top"
-                  style={styles.inputBox}
-                />
+              <View style={styles.inputTextContainer}>
+                <View style={{ flex: 0.75 }}>
+                  <TextInput
+                    placeholder="해설을 작성해주세요..."
+                    multiline
+                    onChangeText={(text) => setValue(text)}
+                    value={value}
+                    textAlignVertical="top"
+                    style={styles.inputBox}
+                  />
+                </View>
+                <TouchableOpacity style={styles.sendBtn}>
+                  <Image source={require('../../../../assets/send.png')} alt="" />
+                </TouchableOpacity>
+                <Text>{keyboardStatus}</Text>
               </View>
-              <TouchableOpacity style={styles.sendBtn}>
-                <Image source={require('../../../../assets/send.png')} alt="" />
-              </TouchableOpacity>
-            </View>
-          </>
+            </ScrollView>
+          </KeyboardAvoidingView>
         )}
       </Shadow>
     </>
@@ -58,6 +86,18 @@ const styles = StyleSheet.create({
   footerContainer: {
     alignItems: 'center',
     justifyContent: 'flex-end',
+  },
+  commentBtn: {
+    backgroundColor: '#2C2C2C',
+    width: '90%',
+    height: '80%',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  commentText: {
+    color: 'white',
+    fontSize: 22,
   },
   AIBtn: {
     justifyContent: 'center',
@@ -101,18 +141,6 @@ const styles = StyleSheet.create({
   sendBtn: {
     flex: 0.15,
     alignItems: 'center',
-  },
-  commentBtn: {
-    backgroundColor: '#2C2C2C',
-    width: '90%',
-    height: '80%',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  commentText: {
-    color: 'white',
-    fontSize: 22,
   },
 });
 
