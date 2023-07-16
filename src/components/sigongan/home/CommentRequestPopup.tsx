@@ -6,6 +6,9 @@ import { BottomSheet } from 'react-native-btr';
 import { SigonganColor, SigonganDesign, SigonganFont } from '../styles';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { pickImage, takePhoto } from '../media';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { SigonganStackParamList } from '../../../navigations';
 
 export type ICommentRequestPopupHandler = {
   open: () => void;
@@ -16,7 +19,7 @@ export type ICommentRequestPopupHandler = {
 export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>((_, ref) => {
   const insets = useSafeAreaInsets();
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
 
   const [visible, setVisible] = useState(false);
 
@@ -31,6 +34,32 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
     []
   );
 
+  const onPressTakePhoto = async () => {
+    const result = await takePhoto();
+
+    if (result?.canceled) {
+      return;
+    }
+
+    onClose();
+
+    const url = result?.assets[0].uri;
+    navigation.navigate('해설의뢰', { url });
+  };
+
+  const onPressPickImage = async () => {
+    const result = await pickImage();
+
+    if (result?.canceled) {
+      return;
+    }
+
+    onClose();
+
+    const url = result?.assets[0].uri;
+    navigation.navigate('해설의뢰', { url });
+  };
+
   return (
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
       <View style={[styles.container, SigonganColor.backgroundPrimary]}>
@@ -41,20 +70,14 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
         <View style={SigonganDesign.borderOpaque} />
 
         <View style={[styles.itemWrapper, { paddingBottom: insets.bottom || 16 }]}>
-          <TouchableOpacity
-            style={styles.item}
-            onPress={() => {
-              navigation.navigate('해설의뢰' as never);
-              onClose();
-            }}
-          >
+          <TouchableOpacity style={styles.item} onPress={onPressTakePhoto}>
             <Text style={SigonganFont.secondary}>직접 촬영</Text>
             <MaterialIcons name="arrow-forward-ios" style={[styles.itemIcon, SigonganColor.iconPrimary]} />
           </TouchableOpacity>
 
           <View style={SigonganDesign.borderOpaque} />
 
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity style={styles.item} onPress={onPressPickImage}>
             <Text style={SigonganFont.secondary}>갤러리에서 선택</Text>
             <MaterialIcons name="arrow-forward-ios" style={[styles.itemIcon, SigonganColor.iconPrimary]} />
           </TouchableOpacity>

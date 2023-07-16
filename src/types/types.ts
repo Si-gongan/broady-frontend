@@ -11,7 +11,7 @@ export type CommentaryTabParamList = {
 
 export type SigonganStackParamList = {
   메인: undefined;
-  해설의뢰: undefined;
+  해설의뢰: { url?: string };
   '해설 진행현황': undefined;
 };
 

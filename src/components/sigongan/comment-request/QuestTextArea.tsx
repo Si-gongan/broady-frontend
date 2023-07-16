@@ -2,9 +2,12 @@ import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { SigonganColor, SigonganDesign, SigonganFont } from '../styles';
 import { useState } from 'react';
 
-export const QuestTextArea = () => {
-  const [text, setText] = useState('');
+type QuestTextAreaProps = {
+  value: string;
+  onChangeValue: (value: string) => void;
+};
 
+export const QuestTextArea = ({ value, onChangeValue }: QuestTextAreaProps) => {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, SigonganFont.teritary]}>질문을 입력해주세요</Text>
@@ -12,14 +15,14 @@ export const QuestTextArea = () => {
       <TextInput
         style={[
           styles.input,
-          text.length === 0 ? SigonganColor.backgroundQuaternary : SigonganColor.backgroundPrimary,
+          value.length === 0 ? SigonganColor.backgroundQuaternary : SigonganColor.backgroundPrimary,
           SigonganFont.secondary,
-          text.length === 0 ? SigonganColor.contentTeritary : SigonganColor.contentPrimary,
-          text.length !== 0 && SigonganDesign.borderOpaqueInObject,
+          value.length === 0 ? SigonganColor.contentTeritary : SigonganColor.contentPrimary,
+          value.length !== 0 && SigonganDesign.borderOpaqueInObject,
         ]}
         multiline={true}
-        onChangeText={setText}
-        value={text}
+        onChangeText={onChangeValue}
+        value={value}
         placeholder="여기에 질문을 입력해주세요"
       />
     </View>
