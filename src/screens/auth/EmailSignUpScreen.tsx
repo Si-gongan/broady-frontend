@@ -6,6 +6,7 @@ import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigations';
+import { AuthColor, AuthFont } from '../../components/auth/styles';
 
 export const EmailSignUpScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
@@ -25,16 +26,22 @@ export const EmailSignUpScreen = () => {
       </View>
 
       <View style={styles.signUpWrapper}>
-        <Checkbox value={isChecked} onValueChange={setChecked} color={isChecked ? '#000' : undefined} />
+        <Checkbox
+          value={isChecked}
+          onValueChange={setChecked}
+          color={isChecked ? AuthColor.secondary.backgroundColor : undefined}
+        />
 
-        <Text style={styles.text}>이용약관을 숙지했으며, 이에 동의합니다.</Text>
+        <Text style={[AuthFont.teritary, AuthColor.contentPrimary]}>이용약관을 숙지했으며, 이에 동의합니다.</Text>
       </View>
 
       <View style={{ marginTop: 14 }}>
         <CommonButton text="회원가입" />
       </View>
 
-      <Text style={[styles.text, { marginTop: 25 }]}>이미 회원이신가요?</Text>
+      <View style={{ marginTop: 25 }}>
+        <Text style={[AuthFont.teritary, AuthColor.contentPrimary]}>이미 회원이신가요?</Text>
+      </View>
 
       <View style={{ marginTop: 14 }}>
         <CommonButton text="로그인" onPress={() => navigation.push('이메일 로그인')} />
@@ -59,10 +66,5 @@ const styles = StyleSheet.create({
 
     gap: 14,
     marginTop: 36,
-  },
-  text: {
-    fontSize: 14,
-    fontStyle: 'normal',
-    fontWeight: '400',
   },
 });

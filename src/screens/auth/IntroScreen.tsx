@@ -3,6 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { AuthStackParamList } from '../../navigations';
 import { useUserState } from '../../providers';
+import { AuthColor, AuthDesign } from '../../components/auth/styles';
 
 export const IntroScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
@@ -15,12 +16,20 @@ export const IntroScreen = () => {
         <Image source={require('../../../assets/intro-icon.png')} style={styles.image} />
       </View>
 
-      <TouchableOpacity activeOpacity={0.8} style={styles.button1} onPress={() => changeUserState('Sigongan')}>
-        <Text style={styles.text}>시각지원이 필요해요</Text>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={[styles.button1, AuthDesign.buttonColor1]}
+        onPress={() => changeUserState('Sigongan')}
+      >
+        <Text style={[AuthDesign.bigFont, AuthColor.contentSecondary]}>시각지원이 필요해요</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity activeOpacity={0.8} style={styles.button2} onPress={() => navigation.push('시작하기')}>
-        <Text style={styles.text}>해설자로 활동할게요</Text>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={[styles.button2, AuthDesign.buttonColor2]}
+        onPress={() => navigation.push('시작하기')}
+      >
+        <Text style={[AuthDesign.bigFont, AuthColor.contentSecondary]}>해설자로 활동할게요</Text>
       </TouchableOpacity>
     </View>
   );
@@ -50,21 +59,10 @@ const styles = StyleSheet.create({
   },
   button1: {
     ...commonStyles.button,
-    backgroundColor: '#1634B2',
-
     marginBottom: 22,
   },
   button2: {
     ...commonStyles.button,
-    backgroundColor: '#00145E',
-
     marginBottom: 75,
-  },
-  text: {
-    color: '#fff',
-
-    fontSize: 26,
-    fontStyle: 'italic',
-    fontWeight: '400',
   },
 });
