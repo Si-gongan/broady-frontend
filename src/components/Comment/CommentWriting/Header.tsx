@@ -22,11 +22,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 0.15,
+    // flex: 0.15,
+    height: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 35,
+    marginTop: 50,
   },
   headerBackIcon: {
     fontSize: 40,

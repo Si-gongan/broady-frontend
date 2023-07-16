@@ -9,9 +9,6 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation} />
-      <TouchableOpacity style={styles.imageContainer}>
-        <Image source={require('../../../assets/sample_comment.png')} alt="" style={styles.requestImage} />
-      </TouchableOpacity>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.bodyContainer}>
         <RequestMessage content={content} />
       </ScrollView>
@@ -23,14 +20,6 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-  },
-  imageContainer: {
-    marginTop: 30,
-    alignItems: 'center',
-  },
-  requestImage: {
-    width: '90%',
-    borderRadius: 30,
   },
   bodyContainer: {
     flex: 0.7,

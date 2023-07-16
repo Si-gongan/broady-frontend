@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -9,22 +9,37 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
+  Platform,
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 
 const Footer = ({ status }: { status: number }) => {
   const [value, setValue] = useState<string>();
-  const [keyboardStatus, setKeyboardStatus] = useState('');
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
+  const keyboardRef = useRef(0);
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardStatus('Keyboard Shown');
+    const willShowSubscription = Keyboard.addListener('keyboardWillShow', (e) => {
+      keyboardRef.current = e.endCoordinates.height;
+      setKeyboardStatus(true);
     });
+    const showSubscription = Keyboard.addListener('keyboardDidShow', (e) => {
+      keyboardRef.current = e.endCoordinates.height;
+      setKeyboardStatus(true);
+    });
+    const willHideSubscription = Keyboard.addListener('keyboardWillHide', () => {
+      keyboardRef.current = 0;
+      setKeyboardStatus(false);
+    });
+
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardStatus('Keyboard Hidden');
+      keyboardRef.current = 0;
+      setKeyboardStatus(false);
     });
 
     return () => {
+      willShowSubscription.remove();
+      willHideSubscription.remove();
       showSubscription.remove();
       hideSubscription.remove();
     };
@@ -32,20 +47,27 @@ const Footer = ({ status }: { status: number }) => {
 
   return (
     <>
-      <Shadow
-        distance={10}
-        containerStyle={status === 0 ? { flex: 0.2 } : { flex: 0.4 }}
-        style={{ width: '100%', height: '100%' }}
-        sides={{ top: true, bottom: false, start: false, end: false }}
-      >
-        {status === 0 ? (
+      {status === 0 ? (
+        <Shadow
+          distance={10}
+          containerStyle={{ flex: 0.2 }}
+          style={{ width: '100%', height: '100%' }}
+          sides={{ top: true, bottom: false, start: false, end: false }}
+        >
           <View style={styles.footerContainer}>
             <TouchableOpacity style={styles.commentBtn}>
               <Text style={styles.commentText}>해설하기</Text>
             </TouchableOpacity>
           </View>
-        ) : (
-          <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={200}>
+        </Shadow>
+      ) : (
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <Shadow
+            distance={10}
+            containerStyle={{ paddingBottom: 20 }}
+            style={{ width: '100%' }}
+            sides={{ top: true, bottom: false, start: false, end: false }}
+          >
             <ScrollView keyboardShouldPersistTaps="always">
               <View style={styles.inputTextHeader}>
                 <TouchableOpacity style={styles.AIBtn}>
@@ -69,15 +91,15 @@ const Footer = ({ status }: { status: number }) => {
                     style={styles.inputBox}
                   />
                 </View>
-                <TouchableOpacity style={styles.sendBtn}>
+                <TouchableOpacity style={styles.sendBtn} onPress={() => Keyboard.dismiss()}>
                   <Image source={require('../../../../assets/send.png')} alt="" />
                 </TouchableOpacity>
                 <Text>{keyboardStatus}</Text>
               </View>
             </ScrollView>
-          </KeyboardAvoidingView>
-        )}
-      </Shadow>
+          </Shadow>
+        </KeyboardAvoidingView>
+      )}
     </>
   );
 };

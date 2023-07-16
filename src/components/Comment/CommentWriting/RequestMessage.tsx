@@ -1,28 +1,49 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import ImageModal from 'react-native-image-modal';
+import { AWS_BUCKET_BASE_URL } from '@env';
 
 const RequestMessage = ({ content }: { content: string }) => {
   return (
-    <View style={styles.chatContainer}>
-      <View>
-        <Image source={require('../../../../assets/sample_request.png')} alt="" style={styles.chatImage} />
+    <>
+      <View style={styles.imageContainer}>
+        <ImageModal
+          resizeMode="contain"
+          style={styles.requestImage}
+          source={{
+            uri: `${AWS_BUCKET_BASE_URL}/sample_comment.png`,
+          }}
+        />
       </View>
-      <View style={styles.chatText}>
-        <Text>{content}</Text>
+      <View style={styles.chatContainer}>
+        <View>
+          <Image source={require('../../../../assets/sample_request.png')} alt="" style={styles.chatImage} />
+        </View>
+        <View style={styles.chatText}>
+          <Text>{content}</Text>
+        </View>
+        <View>
+          <Text style={{ color: '#777' }}>오후 2:05</Text>
+        </View>
       </View>
-      <View>
-        <Text style={{ color: '#777' }}>오후 2:05</Text>
-      </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  imageContainer: {
+    marginTop: 30,
+  },
+  requestImage: {
+    width: 400,
+    height: 220,
+    borderRadius: 30,
+  },
   chatContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     width: '90%',
     gap: 10,
-    height: 70,
+    height: 60,
   },
   chatImage: {
     width: 40,
