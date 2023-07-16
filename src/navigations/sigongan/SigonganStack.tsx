@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { SigonganStackParamList } from '../../types/types';
-import { CommentRequestScreen } from '../../screens/sigongan';
+import { CommentRequestScreen, RequestStateScreen } from '../../screens/sigongan';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { SigonganMainTab } from './SigonganMainTab';
 
@@ -26,6 +26,8 @@ export const SigonganStack = () => {
       />
 
       <Stack.Screen name="해설의뢰" component={CommentRequestScreen} />
+
+      <Stack.Screen name="해설 진행현황" component={RequestStateScreen} />
     </Stack.Navigator>
   );
 };
