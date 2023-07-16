@@ -1,17 +1,25 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { AuthStackParamList } from '../../navigations';
+import { useUserState } from '../../providers';
 
 export const IntroScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
+  // TODO: device id 처리
+  const { changeUserState } = useUserState();
+
   return (
     <View style={styles.container}>
       <View style={styles.imageWrapper}>
         <Image source={require('../../../assets/intro-icon.png')} style={styles.image} />
       </View>
 
-      <TouchableOpacity activeOpacity={0.8} style={styles.button1}>
+      <TouchableOpacity activeOpacity={0.8} style={styles.button1} onPress={() => changeUserState('Sigongan')}>
         <Text style={styles.text}>시각지원이 필요해요</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity activeOpacity={0.8} style={styles.button2}>
+      <TouchableOpacity activeOpacity={0.8} style={styles.button2} onPress={() => navigation.push('시작하기')}>
         <Text style={styles.text}>해설자로 활동할게요</Text>
       </TouchableOpacity>
     </View>

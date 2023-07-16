@@ -1,5 +1,6 @@
 export type AuthStackParamList = {
   인트로: undefined;
+  시작하기: undefined;
 };
 
 export type CommentaryTabParamList = {
