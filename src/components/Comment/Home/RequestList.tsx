@@ -2,11 +2,11 @@ import { StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native
 import { IRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
 
-const RequestList = ({ requestList }: { requestList: IRequest[] }) => {
+const RequestList = ({ requestList, navigation }: { requestList: IRequest[]; navigation?: any }) => {
   return (
     <ScrollView contentContainerStyle={styles.cardContainer}>
       {requestList.map((request: IRequest) => (
-        <RequestItem key={request.id} request={request} />
+        <RequestItem key={request.id} request={request} navigation={navigation} />
       ))}
     </ScrollView>
     // <FlatList

@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MyRequest from '../components/Comment/MyRequest';
-import MyPage from '../components/Comment/Mypage';
+import MyRequest from '../../components/Comment/MyRequest';
+import MyPage from '../../components/Comment/Mypage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Comment from '../components/Comment/Home';
+import HomeScreen from '../../screens/Comment/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -11,7 +11,7 @@ export const CommentTab = () => {
     <Tab.Navigator>
       <Tab.Screen
         name="홈"
-        component={Comment}
+        component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
           headerStyle: { shadowOpacity: 0 },

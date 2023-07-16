@@ -1,4 +1,4 @@
 export * from './AuthStack';
 export * from './sigongan';
-export * from './CommentTab';
+export * from './Comment/CommentStack';
 export * from '../types/types';

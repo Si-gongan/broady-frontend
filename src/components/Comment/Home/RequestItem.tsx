@@ -1,10 +1,17 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { IRequest } from '../../../types/request';
 
-const RequestItem = ({ request }: { request: IRequest }) => {
+const RequestItem = ({ request, navigation }: { request: IRequest; navigation: any }) => {
   return (
-    <>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('Writing', {
+          content: request.content,
+          status: request.status,
+        })
+      }
+    >
       <Shadow distance={3} sides={{ top: false, bottom: true, start: true, end: true }}>
         <View style={styles.imageContainer}>
           <Image source={request.imgSrc} alt="" style={styles.image} />
@@ -14,7 +21,7 @@ const RequestItem = ({ request }: { request: IRequest }) => {
           </View>
         </View>
       </Shadow>
-    </>
+    </TouchableOpacity>
   );
 };
 
