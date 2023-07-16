@@ -1,13 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SigonganColor, SigonganFont } from '../styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type ActionButtonProps = {
   onPress: () => void;
 };
 
 export const ActionButton = ({ onPress }: ActionButtonProps) => {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={[styles.container, SigonganColor.backgroundPrimary]}>
+    <View style={[styles.container, SigonganColor.backgroundPrimary, { marginBottom: insets.bottom }]}>
       <TouchableOpacity
         activeOpacity={0.8}
         style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
@@ -29,9 +32,6 @@ export const ActionButton = ({ onPress }: ActionButtonProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    // hard coding
-    paddingBottom: 16,
-
     paddingTop: 16,
     gap: 8,
 

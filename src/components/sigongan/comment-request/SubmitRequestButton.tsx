@@ -1,13 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SigonganColor, SigonganFont } from '../styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type SubmitRequestButtonProps = {
   onPress: () => void;
 };
 
 export const SubmitRequestButton = ({ onPress }: SubmitRequestButtonProps) => {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={[styles.container, SigonganColor.backgroundPrimary]}>
+    <View style={[styles.container, SigonganColor.backgroundPrimary, { marginBottom: insets.bottom }]}>
       <TouchableOpacity
         activeOpacity={0.8}
         style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
@@ -21,9 +24,6 @@ export const SubmitRequestButton = ({ onPress }: SubmitRequestButtonProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    // hard coding
-    paddingBottom: 16,
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
