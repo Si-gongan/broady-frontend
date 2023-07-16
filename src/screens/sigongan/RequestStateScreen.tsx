@@ -1,41 +1,55 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import {
   AnotherSpeechBubble,
   MySpeechBubble,
   TimeViewer,
   AnotherAvatar,
   ActionButton,
+  ThanksBox,
 } from '../../components/sigongan/request-state';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const RequestStateScreen = () => {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
-      <View style={styles.speechContainer}>
-        <View style={styles.mySpeechWrapper}>
-          <MySpeechBubble />
-        </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={44 + insets.top - insets.bottom + 22}
+    >
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.speechContainer}>
+            <View style={styles.mySpeechWrapper}>
+              <MySpeechBubble />
+            </View>
 
-        <View style={styles.mySpeechEndWrapper}>
-          <TimeViewer />
+            <View style={styles.mySpeechEndWrapper}>
+              <TimeViewer />
 
-          <MySpeechBubble />
-        </View>
+              <MySpeechBubble />
+            </View>
 
-        <View style={styles.AnotherSpeechWrapper}>
-          <AnotherAvatar />
+            <View style={styles.AnotherSpeechWrapper}>
+              <AnotherAvatar />
 
-          <AnotherSpeechBubble />
+              <AnotherSpeechBubble />
 
-          <TimeViewer />
-        </View>
-      </View>
+              <TimeViewer />
+            </View>
+          </View>
+        </ScrollView>
 
-      <ActionButton
+        {/* <ActionButton
         onPress={() => {
           1;
         }}
-      />
-    </View>
+      /> */}
+
+        <ThanksBox />
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 

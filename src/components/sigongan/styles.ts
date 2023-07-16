@@ -32,6 +32,9 @@ export const SigonganColor = StyleSheet.create({
   contentQuinary: {
     color: '#777',
   },
+  contentSenary: {
+    color: '#6E6E6E',
+  },
 
   iconPrimary: {
     color: '#AFAFAF',
@@ -88,6 +91,14 @@ export const SigonganDesign = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 9,
     paddingRight: 9,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
   },
 
   speechBubble2: {
@@ -108,5 +119,13 @@ export const SigonganDesign = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 8,
     paddingRight: 13,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
   },
 });
