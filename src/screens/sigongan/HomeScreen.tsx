@@ -7,13 +7,16 @@ import {
   RequestImageCard,
   RequestTextCard,
 } from '../../components/sigongan/home';
+import { useNavigation } from '@react-navigation/native';
 
 export const HomeScreen = () => {
+  const navigation = useNavigation();
+
   const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
 
   return (
     <View style={styles.container}>
-      <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
+      <CommentRequestButton onPress={() => navigation.navigate('해설 진행현황' as never)} />
 
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.requestList}>

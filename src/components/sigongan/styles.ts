@@ -63,4 +63,40 @@ export const SigonganDesign = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#E8E8E8',
   },
+
+  speechBubble1: {
+    backgroundColor: '#3B4A89',
+
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
+    borderBottomLeftRadius: 13,
+    borderBottomRightRadius: 0,
+
+    maxWidth: 201,
+    alignSelf: 'flex-end',
+
+    paddingLeft: 12,
+    paddingTop: 10,
+    paddingBottom: 9,
+    paddingRight: 9,
+  },
+  speechBubble2: {
+    backgroundColor: '#fff',
+
+    borderWidth: 0.3,
+    borderColor: '#3B4A89',
+
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 13,
+
+    maxWidth: 201,
+    alignSelf: 'flex-start',
+
+    paddingLeft: 13,
+    paddingTop: 10,
+    paddingBottom: 8,
+    paddingRight: 13,
+  },
 });
