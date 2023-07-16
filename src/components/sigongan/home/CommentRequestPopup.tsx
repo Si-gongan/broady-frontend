@@ -40,7 +40,7 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
 
         <View style={SigonganDesign.borderOpaque} />
 
-        <View style={[styles.itemWrapper, { marginBottom: insets.bottom }]}>
+        <View style={[styles.itemWrapper, { paddingBottom: insets.bottom || 16 }]}>
           <TouchableOpacity
             style={styles.item}
             onPress={() => {
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     paddingTop: 8,
-    borderRadius: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
 
     shadowColor: '#000',
     shadowOffset: {

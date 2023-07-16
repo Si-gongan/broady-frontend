@@ -16,7 +16,7 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <CommentRequestButton onPress={() => navigation.navigate('해설 진행현황' as never)} />
+      <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
 
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.requestList}>

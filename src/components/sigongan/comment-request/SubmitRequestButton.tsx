@@ -10,7 +10,7 @@ export const SubmitRequestButton = ({ onPress }: SubmitRequestButtonProps) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, SigonganColor.backgroundPrimary, { marginBottom: insets.bottom }]}>
+    <View style={[styles.container, SigonganColor.backgroundPrimary, { paddingBottom: insets.bottom || 16 }]}>
       <TouchableOpacity
         activeOpacity={0.8}
         style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
