@@ -4,8 +4,14 @@ import { ImageController, QuestTextArea, SubmitRequestButton } from '../../compo
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useEffect, useRef, useState } from 'react';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { SigonganStackParamList } from '../../navigations';
 
 export const CommentRequestScreen = () => {
+  const {
+    params: { url },
+  } = useRoute<RouteProp<SigonganStackParamList, '해설의뢰'>>();
+
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -47,12 +53,7 @@ export const CommentRequestScreen = () => {
     >
       <ScrollView ref={scrollViewRef}>
         <View style={styles.container}>
-          <ImageController
-            imgUrl=""
-            onPress={() => {
-              1;
-            }}
-          />
+          {url && <ImageController imgUrl={url} />}
 
           <QuestTextArea />
         </View>

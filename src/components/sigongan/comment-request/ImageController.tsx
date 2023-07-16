@@ -1,18 +1,15 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { SigonganColor, SigonganFont } from '../styles';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const TESTIMGURL = require('../../../../assets/sample_request.png');
-
 type ImageControllerProps = {
-  imgUrl: string; // s3 bucket url?
-  onPress: () => void;
+  imgUrl: string;
+  onPress?: () => void;
 };
 
 export const ImageController = ({ imgUrl, onPress }: ImageControllerProps) => {
   return (
     <View style={styles.container}>
-      <Image source={TESTIMGURL} style={styles.image} />
+      <Image source={{ uri: imgUrl }} style={styles.image} />
 
       <TouchableOpacity
         activeOpacity={0.8}

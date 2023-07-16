@@ -41,6 +41,8 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
       return;
     }
 
+    onClose();
+
     const url = result?.assets[0].uri;
     navigation.navigate('해설의뢰', { url });
   };
@@ -51,6 +53,8 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
     if (result?.canceled) {
       return;
     }
+
+    onClose();
 
     const url = result?.assets[0].uri;
     navigation.navigate('해설의뢰', { url });
