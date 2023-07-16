@@ -59,4 +59,8 @@ export const SigonganDesign = StyleSheet.create({
 
     backgroundColor: '#E8E8E8',
   },
+  borderOpaqueInObject: {
+    borderWidth: 2,
+    borderColor: '#E8E8E8',
+  },
 });
