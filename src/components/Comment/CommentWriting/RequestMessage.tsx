@@ -2,21 +2,33 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'rea
 
 const RequestMessage = ({ content }: { content: string }) => {
   return (
-    <View style={styles.chatContainer}>
-      <View>
-        <Image source={require('../../../../assets/sample_request.png')} alt="" style={styles.chatImage} />
+    <>
+      <TouchableOpacity style={styles.imageContainer}>
+        <Image source={require('../../../../assets/sample_comment.png')} alt="" style={styles.requestImage} />
+      </TouchableOpacity>
+      <View style={styles.chatContainer}>
+        <View>
+          <Image source={require('../../../../assets/sample_request.png')} alt="" style={styles.chatImage} />
+        </View>
+        <View style={styles.chatText}>
+          <Text>{content}</Text>
+        </View>
+        <View>
+          <Text style={{ color: '#777' }}>오후 2:05</Text>
+        </View>
       </View>
-      <View style={styles.chatText}>
-        <Text>{content}</Text>
-      </View>
-      <View>
-        <Text style={{ color: '#777' }}>오후 2:05</Text>
-      </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  imageContainer: {
+    marginTop: 30,
+    alignItems: 'center',
+  },
+  requestImage: {
+    borderRadius: 30,
+  },
   chatContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',

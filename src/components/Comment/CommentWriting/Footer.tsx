@@ -64,8 +64,8 @@ const Footer = ({ status }: { status: number }) => {
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <Shadow
             distance={10}
-            containerStyle={{ height: 140 }}
-            style={{ width: '100%', height: '100%' }}
+            containerStyle={{ paddingBottom: 20 }}
+            style={{ width: '100%' }}
             sides={{ top: true, bottom: false, start: false, end: false }}
           >
             <ScrollView keyboardShouldPersistTaps="always">
@@ -91,7 +91,7 @@ const Footer = ({ status }: { status: number }) => {
                     style={styles.inputBox}
                   />
                 </View>
-                <TouchableOpacity style={styles.sendBtn}>
+                <TouchableOpacity style={styles.sendBtn} onPress={() => Keyboard.dismiss()}>
                   <Image source={require('../../../../assets/send.png')} alt="" />
                 </TouchableOpacity>
                 <Text>{keyboardStatus}</Text>
