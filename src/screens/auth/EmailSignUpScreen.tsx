@@ -3,8 +3,13 @@ import { View, Text, StyleSheet } from 'react-native';
 import { CommonButton, CustomTextInput } from '../../components/auth';
 
 import Checkbox from 'expo-checkbox';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthStackParamList } from '../../navigations';
 
 export const EmailSignUpScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -32,7 +37,7 @@ export const EmailSignUpScreen = () => {
       <Text style={[styles.text, { marginTop: 25 }]}>이미 회원이신가요?</Text>
 
       <View style={{ marginTop: 14 }}>
-        <CommonButton text="로그인" />
+        <CommonButton text="로그인" onPress={() => navigation.push('이메일 로그인')} />
       </View>
     </View>
   );
