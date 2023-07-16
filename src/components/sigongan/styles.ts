@@ -13,6 +13,9 @@ export const SigonganColor = StyleSheet.create({
   backgroundQuaternary: {
     backgroundColor: '#E8E8E8',
   },
+  backgroundquinary: {
+    backgroundColor: '#3B4A89',
+  },
 
   contentPrimary: {
     color: '#000',
@@ -22,6 +25,12 @@ export const SigonganColor = StyleSheet.create({
   },
   contentTeritary: {
     color: '#5E5E5E',
+  },
+  contentQuaternary: {
+    color: '#3B4A89',
+  },
+  contentQuinary: {
+    color: '#777',
   },
 
   iconPrimary: {
@@ -65,7 +74,7 @@ export const SigonganDesign = StyleSheet.create({
   },
 
   speechBubble1: {
-    backgroundColor: '#3B4A89',
+    ...SigonganColor.backgroundquinary,
 
     borderTopLeftRadius: 13,
     borderTopRightRadius: 13,
@@ -80,18 +89,19 @@ export const SigonganDesign = StyleSheet.create({
     paddingBottom: 9,
     paddingRight: 9,
   },
+
   speechBubble2: {
-    backgroundColor: '#fff',
+    ...SigonganColor.backgroundPrimary,
 
     borderWidth: 0.3,
-    borderColor: '#3B4A89',
+    borderColor: SigonganColor.contentQuaternary.color,
 
     borderTopLeftRadius: 13,
     borderTopRightRadius: 13,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 13,
 
-    maxWidth: 201,
+    maxWidth: 214,
     alignSelf: 'flex-start',
 
     paddingLeft: 13,
