@@ -7,7 +7,7 @@ export const ThanksBox = () => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, SigonganColor.backgroundPrimary, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.container, SigonganColor.backgroundPrimary, { paddingBottom: insets.bottom || 22 }]}>
       <TextInput placeholder="감사 인사를 전하세요..." style={[styles.text, SigonganFont.secondary]} />
 
       <FontAwesome name="send" style={styles.icon} />

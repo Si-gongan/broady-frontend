@@ -1,22 +1,21 @@
 import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import type { RootStackParamList } from '../types/types';
+import type { AuthStackParamList } from '../types/types';
+import { EmailSignInScreen, EmailSignUpScreen, IntroScreen, StartScreen } from '../screens/auth';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 export const AuthStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Example" component={Example} />
-    </Stack.Navigator>
-  );
-};
+      <Stack.Screen name="인트로" component={IntroScreen} />
 
-const Example = () => {
-  return (
-    <View>
-      <Text>로그인 페이지</Text>
-    </View>
+      <Stack.Screen name="시작하기" component={StartScreen} />
+
+      <Stack.Screen name="이메일 회원가입" component={EmailSignUpScreen} />
+
+      <Stack.Screen name="이메일 로그인" component={EmailSignInScreen} />
+    </Stack.Navigator>
   );
 };
