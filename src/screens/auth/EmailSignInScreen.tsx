@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { CommonButton, CustomTextInput } from '../../components/auth';
 
 export const EmailSignInScreen = () => {

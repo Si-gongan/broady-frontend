@@ -1,4 +1,5 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { AuthColor, AuthFont } from './styles';
 
 type CommonButtonProps = {
   text: string;
@@ -7,27 +8,31 @@ type CommonButtonProps = {
 
 export const CommonButton = ({ text, onPress }: CommonButtonProps) => {
   return (
-    <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>{text}</Text>
+    <TouchableOpacity activeOpacity={0.8} style={[styles.button, AuthColor.secondary]} onPress={onPress}>
+      <Text
+        style={[
+          styles.text,
+          AuthColor.contentSecondary,
+          AuthFont.primary,
+          {
+            fontStyle: 'normal',
+          },
+        ]}
+      >
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#000',
-
     width: 343,
     borderRadius: 8,
 
     alignItems: 'center',
   },
   text: {
-    color: '#fff',
     paddingVertical: 16,
-
-    fontSize: 18,
-    fontStyle: 'normal',
-    fontWeight: '400',
   },
 });
