@@ -13,6 +13,9 @@ export const SigonganColor = StyleSheet.create({
   backgroundQuaternary: {
     backgroundColor: '#E8E8E8',
   },
+  backgroundquinary: {
+    backgroundColor: '#3B4A89',
+  },
 
   contentPrimary: {
     color: '#000',
@@ -22,6 +25,18 @@ export const SigonganColor = StyleSheet.create({
   },
   contentTeritary: {
     color: '#5E5E5E',
+  },
+  contentQuaternary: {
+    color: '#3B4A89',
+  },
+  contentQuinary: {
+    color: '#777',
+  },
+  contentSenary: {
+    color: '#6E6E6E',
+  },
+  contentSeptenary: {
+    color: '#111E4F',
   },
 
   iconPrimary: {
@@ -58,5 +73,81 @@ export const SigonganDesign = StyleSheet.create({
     height: 1,
 
     backgroundColor: '#E8E8E8',
+  },
+  borderOpaqueInObject: {
+    borderWidth: 2,
+    borderColor: '#E8E8E8',
+  },
+
+  myPageGrid: {
+    borderWidth: 1,
+    borderColor: '#DFE4F5',
+
+    borderRadius: 10,
+    width: 347,
+  },
+  myPageTitle: {
+    ...SigonganFont.primary,
+    ...SigonganColor.contentSeptenary,
+    fontStyle: 'normal',
+    fontWeight: '600',
+  },
+  myPageContent: {
+    ...SigonganFont.teritary,
+    ...SigonganColor.contentSeptenary,
+    fontStyle: 'normal',
+  },
+
+  speechBubble1: {
+    ...SigonganColor.backgroundquinary,
+
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
+    borderBottomLeftRadius: 13,
+    borderBottomRightRadius: 0,
+
+    maxWidth: 201,
+    alignSelf: 'flex-end',
+
+    paddingLeft: 12,
+    paddingTop: 10,
+    paddingBottom: 9,
+    paddingRight: 9,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+  },
+
+  speechBubble2: {
+    ...SigonganColor.backgroundPrimary,
+
+    borderWidth: 0.3,
+    borderColor: SigonganColor.contentQuaternary.color,
+
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 13,
+
+    maxWidth: 214,
+    alignSelf: 'flex-start',
+
+    paddingLeft: 13,
+    paddingTop: 10,
+    paddingBottom: 8,
+    paddingRight: 13,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
   },
 });
