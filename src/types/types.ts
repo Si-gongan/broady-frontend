@@ -1,5 +1,5 @@
-export type RootStackParamList = {
-  Example: undefined;
+export type AuthStackParamList = {
+  인트로: undefined;
 };
 
 export type CommentaryTabParamList = {

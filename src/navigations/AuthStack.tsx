@@ -1,22 +1,15 @@
 import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import type { RootStackParamList } from '../types/types';
+import type { AuthStackParamList } from '../types/types';
+import { IntroScreen } from '../screens/auth/IntroScreen';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 export const AuthStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Example" component={Example} />
+      <Stack.Screen name="인트로" component={IntroScreen} />
     </Stack.Navigator>
-  );
-};
-
-const Example = () => {
-  return (
-    <View>
-      <Text>로그인 페이지</Text>
-    </View>
   );
 };

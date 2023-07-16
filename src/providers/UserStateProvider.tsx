@@ -17,8 +17,8 @@ const UserStateContext = createContext<{
 } | null>(null);
 
 export const UserStateProvider = ({ children }: { children: ReactNode }) => {
-  // const [userState, setUserState] = useState<UserState>('unLogin');
-  const [userState, setUserState] = useState<UserState>('Sigongan');
+  const [userState, setUserState] = useState<UserState>('unLogin');
+  // const [userState, setUserState] = useState<UserState>('Sigongan');
   // const [userState, setUserState] = useState<UserState>('Comment');
 
   const changeUserState = useCallback((userState: UserState) => {
