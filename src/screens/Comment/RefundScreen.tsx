@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import Header from '../../components/common/Header';
 import { commentColor, commentFont } from '../../components/Comment/styles';
+import RefundPointList from '../../components/Comment/Mypage/RefundPointList';
 
 const RefundScreen = ({ navigation }: any) => {
   const [accountNumber, setAccountNumber] = useState<string>();
-  const [refundPoint, setRefundPoint] = useState<number>();
+  const [refundPoint, setRefundPoint] = useState<string>();
 
   return (
     <View style={styles.refundContainer}>
       <Header navigation={navigation}>환급 신청</Header>
-      <View style={{ marginTop: 30, marginLeft: 20 }}>
+      <View style={{ marginTop: 30, marginLeft: 20, marginBottom: 20 }}>
         <Text style={commentFont.title}>포인트 환급</Text>
       </View>
       <View style={styles.refundBodyContainer}>
@@ -30,8 +31,8 @@ const RefundScreen = ({ navigation }: any) => {
             placeholder="신청 포인트 입력"
             placeholderTextColor="#5E5E5E"
             keyboardType="decimal-pad"
-            onChangeText={(text) => setRefundPoint(parseInt(text))}
-            value={accountNumber}
+            onChangeText={(text) => setRefundPoint(text)}
+            value={refundPoint}
             style={styles.inputBox}
           />
         </View>
@@ -39,13 +40,11 @@ const RefundScreen = ({ navigation }: any) => {
           <Text style={{ color: 'white', fontSize: 16 }}>환급 신청</Text>
         </TouchableOpacity>
       </View>
-      <Text>포인트 내역</Text>
-      <View style={styles.refundPointContainer}>
-        <View style={{ flexDirection: 'row' }}>
-          <Text>해설 작성</Text>
-          <Text>+50</Text>
+      <View style={{ flex: 0.6 }}>
+        <View style={{ marginLeft: 20, marginBottom: 20 }}>
+          <Text style={commentFont.title}>포인트 내역</Text>
         </View>
-        <Text>23.07.01 14:20</Text>
+        <RefundPointList />
       </View>
     </View>
   );
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   refundBodyContainer: {
-    flex: 0.5,
+    flex: 0.45,
     alignItems: 'center',
   },
   inputContainer: {
@@ -71,7 +70,6 @@ const styles = StyleSheet.create({
     ...commentColor.inputBackgroundColor,
     marginTop: 5,
     paddingLeft: 10,
-    // paddingTop: 15,
     height: 50,
     fontSize: 16,
     borderRadius: 10,
