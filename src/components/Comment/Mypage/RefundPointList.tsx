@@ -34,6 +34,13 @@ const RefundPointList = () => {
       isGetPoint: true,
       refundedAt: '23.07.01 14:20',
     },
+    {
+      id: 3,
+      content: '해설 작성',
+      point: 50,
+      isGetPoint: true,
+      refundedAt: '23.07.01 14:20',
+    },
   ]);
   return (
     <ScrollView style={styles.refundPointContainer}>
