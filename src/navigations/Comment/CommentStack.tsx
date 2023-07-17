@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CommentWritingScreen from '../../screens/Comment/CommentWritingScreen';
+import RefundScreen from '../../screens/Comment/RefundScreen';
 import { CommentTab } from './CommentTab';
 
 const Stack = createNativeStackNavigator();
@@ -20,6 +21,7 @@ export const CommentStack = () => {
         options={{ title: '해설 작성', headerShown: false }}
         component={CommentWritingScreen}
       />
+      <Stack.Screen name="Refund" options={{ headerShown: false }} component={RefundScreen} />
     </Stack.Navigator>
   );
 };

@@ -3,10 +3,10 @@ import Refund from '../../components/Comment/Mypage/Refund';
 import CustomerService from '../../components/common/CustomerService';
 import { SigonganDesign } from '../../components/sigongan/styles';
 
-const MyPageScreen = () => {
+const MyPageScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
-      <Refund />
+      <Refund navigation={navigation} />
       <CustomerService />
       <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
         <Text style={SigonganDesign.myPageContent}>로그아웃</Text>

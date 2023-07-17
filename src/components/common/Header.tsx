@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Header = ({ navigation, children }: { navigation: any; children: string }) => {
+const Header = ({ navigation, children }: { navigation?: any; children: string }) => {
   return (
     <>
       <View style={styles.header}>
