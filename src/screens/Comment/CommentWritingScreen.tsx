@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import Footer from '../../components/Comment/CommentWriting/Footer';
-import Header from '../../components/Comment/CommentWriting/Header';
+import Header from '../../components/common/Header';
 import RequestMessage from '../../components/Comment/CommentWriting/RequestMessage';
 
 const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
@@ -8,7 +8,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
 
   return (
     <View style={styles.mainContainer}>
-      <Header navigation={navigation} />
+      <Header navigation={navigation}>해설 작성</Header>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.bodyContainer}>
         <RequestMessage content={content} />
       </ScrollView>
