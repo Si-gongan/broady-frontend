@@ -11,7 +11,7 @@ const RefundScreen = ({ navigation }: any) => {
   return (
     <View style={styles.refundContainer}>
       <Header navigation={navigation}>환급 신청</Header>
-      <View style={{ marginTop: 30, marginLeft: 20, marginBottom: 20 }}>
+      <View style={styles.refundPointHeader}>
         <Text style={commentFont.title}>포인트 환급</Text>
       </View>
       <View style={styles.refundBodyContainer}>
@@ -41,7 +41,7 @@ const RefundScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
       <View style={{ flex: 0.6 }}>
-        <View style={{ marginLeft: 20, marginBottom: 20 }}>
+        <View style={styles.pointList}>
           <Text style={commentFont.title}>포인트 내역</Text>
         </View>
         <RefundPointList />
@@ -53,6 +53,11 @@ const RefundScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   refundContainer: {
     flex: 1,
+  },
+  refundPointHeader: {
+    marginTop: 30,
+    marginLeft: 20,
+    marginBottom: 20,
   },
   refundBodyContainer: {
     flex: 0.45,
@@ -82,6 +87,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'black',
     borderRadius: 10,
+  },
+  pointList: {
+    marginLeft: 20,
+    marginBottom: 20,
   },
 });
 

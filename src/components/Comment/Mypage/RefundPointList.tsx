@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 10,
   },
-  refundPointItem: {},
 });
 
 export default RefundPointList;

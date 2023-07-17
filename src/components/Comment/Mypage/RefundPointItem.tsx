@@ -10,20 +10,33 @@ interface IRefund {
 
 const RefundPointItem = ({ refund }: { refund: IRefund }) => {
   return (
-    <View style={{ borderTopWidth: 2, borderColor: '#E8E8E8', gap: 10, marginHorizontal: 15, paddingVertical: 20 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ fontSize: 16 }}>{refund.content}</Text>
-        <Text style={{ fontSize: 16 }}>
+    <View style={styles.refundPointItem}>
+      <View style={styles.refundPointContainer}>
+        <Text style={styles.refundText}>{refund.content}</Text>
+        <Text style={styles.refundText}>
           {refund.isGetPoint ? '+' : '-'} {refund.point}
         </Text>
       </View>
-      <Text style={{ fontSize: 16 }}>{refund.refundedAt}</Text>
+      <Text style={styles.refundText}>{refund.refundedAt}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  refundPointItem: {},
+  refundPointItem: {
+    borderTopWidth: 2,
+    borderColor: '#E8E8E8',
+    gap: 10,
+    marginHorizontal: 15,
+    paddingVertical: 20,
+  },
+  refundPointContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  refundText: {
+    fontSize: 16,
+  },
 });
 
 export default RefundPointItem;
