@@ -1,14 +1,14 @@
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Header = ({ navigation }: { navigation: any }) => {
+const Header = ({ navigation, children }: { navigation: any; children: string }) => {
   return (
     <>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBackIcon} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>해설 작성</Text>
+        <Text style={styles.headerTitle}>{children}</Text>
         <View>
           <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBlank} />
         </View>
@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    // flex: 0.15,
-    height: 30,
+    height: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

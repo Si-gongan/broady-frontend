@@ -8,7 +8,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
 
   return (
     <View style={styles.mainContainer}>
-      <Header navigation={navigation} />
+      <Header navigation={navigation}>해설 작성</Header>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.bodyContainer}>
         <RequestMessage content={content} />
       </ScrollView>
