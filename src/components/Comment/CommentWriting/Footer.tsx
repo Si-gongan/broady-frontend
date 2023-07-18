@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,6 @@ import {
   Platform,
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
-import { useRecoilState } from 'recoil';
-import { requestListState } from '../../../states/request';
 
 interface IFooterProps {
   id: number;
@@ -23,26 +21,21 @@ interface IFooterProps {
 
 const Footer = ({ id, status, startComment }: IFooterProps) => {
   const [value, setValue] = useState<string>();
-  const [keyboardStatus, setKeyboardStatus] = useState(false);
-  const keyboardRef = useRef(0);
+  //   const [keyboardStatus, setKeyboardStatus] = useState(false);
 
   useEffect(() => {
-    const willShowSubscription = Keyboard.addListener('keyboardWillShow', (e) => {
-      keyboardRef.current = e.endCoordinates.height;
-      setKeyboardStatus(true);
+    const willShowSubscription = Keyboard.addListener('keyboardWillShow', () => {
+      //   setKeyboardStatus(true);
     });
-    const showSubscription = Keyboard.addListener('keyboardDidShow', (e) => {
-      keyboardRef.current = e.endCoordinates.height;
-      setKeyboardStatus(true);
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      //   setKeyboardStatus(true);
     });
     const willHideSubscription = Keyboard.addListener('keyboardWillHide', () => {
-      keyboardRef.current = 0;
-      setKeyboardStatus(false);
+      //   setKeyboardStatus(false);
     });
 
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      keyboardRef.current = 0;
-      setKeyboardStatus(false);
+      //   setKeyboardStatus(false);
     });
 
     return () => {
@@ -102,7 +95,6 @@ const Footer = ({ id, status, startComment }: IFooterProps) => {
                 <TouchableOpacity style={styles.sendBtn} onPress={() => Keyboard.dismiss()}>
                   <Image source={require('../../../../assets/send.png')} alt="" />
                 </TouchableOpacity>
-                <Text>{keyboardStatus}</Text>
               </View>
             </ScrollView>
           </Shadow>
