@@ -2,17 +2,32 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'rea
 import Footer from '../../components/Comment/CommentWriting/Footer';
 import Header from '../../components/common/Header';
 import RequestMessage from '../../components/Comment/CommentWriting/RequestMessage';
+import { useRecoilState } from 'recoil';
+import { requestListState } from '../../states/request';
+import { useEffect, useState } from 'react';
+import { IRequest } from '../../types/request';
 
 const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
-  const { content, status } = route.params;
+  const { id } = route.params;
+  const [requestList, setRequestList] = useRecoilState(requestListState);
+  const [currentRequest, setCurrentRequest] = useState<IRequest>({} as any);
+
+  const startComment = (id: number) => {
+    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 1 } : request)));
+  };
+
+  useEffect(() => {
+    const result = requestList.filter((request) => request.id === id);
+    setCurrentRequest(result[0]);
+  }, [requestList]);
 
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation}>해설 작성</Header>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.bodyContainer}>
-        <RequestMessage content={content} />
+        <RequestMessage content={currentRequest.content} />
       </ScrollView>
-      <Footer status={status} />
+      <Footer id={id} status={currentRequest.status} startComment={startComment} />
     </View>
   );
 };

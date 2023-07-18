@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,28 +13,29 @@ import {
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 
-const Footer = ({ status }: { status: number }) => {
+interface IFooterProps {
+  id: number;
+  status: number;
+  startComment: (id: number) => void;
+}
+
+const Footer = ({ id, status, startComment }: IFooterProps) => {
   const [value, setValue] = useState<string>();
-  const [keyboardStatus, setKeyboardStatus] = useState(false);
-  const keyboardRef = useRef(0);
+  //   const [keyboardStatus, setKeyboardStatus] = useState(false);
 
   useEffect(() => {
-    const willShowSubscription = Keyboard.addListener('keyboardWillShow', (e) => {
-      keyboardRef.current = e.endCoordinates.height;
-      setKeyboardStatus(true);
+    const willShowSubscription = Keyboard.addListener('keyboardWillShow', () => {
+      //   setKeyboardStatus(true);
     });
-    const showSubscription = Keyboard.addListener('keyboardDidShow', (e) => {
-      keyboardRef.current = e.endCoordinates.height;
-      setKeyboardStatus(true);
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      //   setKeyboardStatus(true);
     });
     const willHideSubscription = Keyboard.addListener('keyboardWillHide', () => {
-      keyboardRef.current = 0;
-      setKeyboardStatus(false);
+      //   setKeyboardStatus(false);
     });
 
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      keyboardRef.current = 0;
-      setKeyboardStatus(false);
+      //   setKeyboardStatus(false);
     });
 
     return () => {
@@ -55,7 +56,7 @@ const Footer = ({ status }: { status: number }) => {
           sides={{ top: true, bottom: false, start: false, end: false }}
         >
           <View style={styles.footerContainer}>
-            <TouchableOpacity style={styles.commentBtn}>
+            <TouchableOpacity style={styles.commentBtn} onPress={() => startComment(id)}>
               <Text style={styles.commentText}>해설하기</Text>
             </TouchableOpacity>
           </View>
@@ -94,7 +95,6 @@ const Footer = ({ status }: { status: number }) => {
                 <TouchableOpacity style={styles.sendBtn} onPress={() => Keyboard.dismiss()}>
                   <Image source={require('../../../../assets/send.png')} alt="" />
                 </TouchableOpacity>
-                <Text>{keyboardStatus}</Text>
               </View>
             </ScrollView>
           </Shadow>
