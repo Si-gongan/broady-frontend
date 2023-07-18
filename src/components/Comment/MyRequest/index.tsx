@@ -13,7 +13,7 @@ interface ITopTab {
 
 const requestStatus = ['작성 중', '완료'];
 
-const MyRequest = () => {
+const MyRequest = ({ navigation }: any) => {
   const [requestList, setRequestList] = useRecoilState(requestListState);
   const [currestRequest, setCurrentRequest] = useState<IRequest[]>([]);
 
@@ -43,7 +43,7 @@ const MyRequest = () => {
 
   useEffect(() => {
     setCurrentRequest(requestList.filter((tab) => tab.status === 0));
-  }, []);
+  }, [requestList]);
 
   return (
     <View style={styles.mainContainer}>
@@ -59,7 +59,7 @@ const MyRequest = () => {
         </View>
       </View>
       <View style={styles.bodyContainer}>
-        <RequestList requestList={currestRequest} />
+        <RequestList requestList={currestRequest} navigation={navigation} />
       </View>
     </View>
   );
