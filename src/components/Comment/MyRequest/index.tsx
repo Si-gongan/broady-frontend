@@ -14,7 +14,7 @@ interface ITopTab {
 const requestStatus = ['작성 중', '완료'];
 
 const MyRequest = () => {
-  const [requestList, setrequestList] = useRecoilState(requestListState);
+  const [requestList, setRequestList] = useRecoilState(requestListState);
   const [currestRequest, setCurrentRequest] = useState<IRequest[]>([]);
 
   const [topTabNavigations, setTopTabNavigations] = useState([

@@ -12,8 +12,16 @@ import {
   Platform,
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
+import { useRecoilState } from 'recoil';
+import { requestListState } from '../../../states/request';
 
-const Footer = ({ status }: { status: number }) => {
+interface IFooterProps {
+  id: number;
+  status: number;
+  startComment: (id: number) => void;
+}
+
+const Footer = ({ id, status, startComment }: IFooterProps) => {
   const [value, setValue] = useState<string>();
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const keyboardRef = useRef(0);
@@ -55,7 +63,7 @@ const Footer = ({ status }: { status: number }) => {
           sides={{ top: true, bottom: false, start: false, end: false }}
         >
           <View style={styles.footerContainer}>
-            <TouchableOpacity style={styles.commentBtn}>
+            <TouchableOpacity style={styles.commentBtn} onPress={() => startComment(id)}>
               <Text style={styles.commentText}>해설하기</Text>
             </TouchableOpacity>
           </View>

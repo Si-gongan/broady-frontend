@@ -7,6 +7,7 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
     <TouchableOpacity
       onPress={() =>
         navigation.navigate('Writing', {
+          id: request.id,
           content: request.content,
           status: request.status,
         })
