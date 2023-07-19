@@ -22,6 +22,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   const sendComment = (text: string) => {
     const newComment = { id: ++commentList.length, content: text };
     setCommentList(commentList.concat(newComment));
+    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 1 } : request)));
     Keyboard.dismiss();
   };
 
