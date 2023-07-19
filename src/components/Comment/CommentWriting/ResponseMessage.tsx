@@ -6,7 +6,6 @@ interface IComment {
 }
 
 const ResponseMessage = ({ comment }: { comment: IComment }) => {
-  console.log('comment:', comment);
   return (
     <>
       <View style={styles.imageContainer}></View>

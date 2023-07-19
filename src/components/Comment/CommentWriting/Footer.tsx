@@ -17,7 +17,7 @@ interface IFooterProps {
   id: number;
   status: number;
   startComment: (id: number) => void;
-  sendComment: (message: string) => void;
+  sendComment: (text: string) => void;
 }
 
 const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
@@ -91,9 +91,16 @@ const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
                     value={text}
                     textAlignVertical="top"
                     style={styles.inputBox}
+                    autoComplete="off"
                   />
                 </View>
-                <TouchableOpacity style={styles.sendBtn} onPress={() => sendComment(text)}>
+                <TouchableOpacity
+                  style={styles.sendBtn}
+                  onPress={() => {
+                    sendComment(text);
+                    setText('');
+                  }}
+                >
                   <Image source={require('../../../../assets/send.png')} alt="" />
                 </TouchableOpacity>
               </View>

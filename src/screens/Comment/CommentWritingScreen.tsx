@@ -20,12 +20,9 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   const [commentList, setCommentList] = useState<IComment[]>([]);
 
   const sendComment = (text: string) => {
-    const newComment = { id: 3, content: text };
+    const newComment = { id: ++commentList.length, content: text };
     setCommentList(commentList.concat(newComment));
     Keyboard.dismiss();
-    console.log(text);
-    console.log(commentList);
-    // setText('');
   };
 
   const startComment = (id: number) => {
