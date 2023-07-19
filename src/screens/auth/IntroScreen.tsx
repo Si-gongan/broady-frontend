@@ -20,6 +20,8 @@ export const IntroScreen = () => {
         activeOpacity={0.8}
         style={[styles.button1, AuthDesign.buttonColor1]}
         onPress={() => changeUserState('Sigongan')}
+        accessible
+        accessibilityLabel="시각 지원받기 버튼"
       >
         <Text style={[AuthDesign.bigFont, AuthColor.contentSecondary]}>시각지원이 필요해요</Text>
       </TouchableOpacity>
@@ -28,6 +30,8 @@ export const IntroScreen = () => {
         activeOpacity={0.8}
         style={[styles.button2, AuthDesign.buttonColor2]}
         onPress={() => navigation.push('시작하기')}
+        accessible
+        accessibilityLabel="해설자 활동 버튼"
       >
         <Text style={[AuthDesign.bigFont, AuthColor.contentSecondary]}>해설자로 활동할게요</Text>
       </TouchableOpacity>

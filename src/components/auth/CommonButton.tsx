@@ -8,7 +8,13 @@ type CommonButtonProps = {
 
 export const CommonButton = ({ text, onPress }: CommonButtonProps) => {
   return (
-    <TouchableOpacity activeOpacity={0.8} style={[styles.button, AuthColor.secondary]} onPress={onPress}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={[styles.button, AuthColor.secondary]}
+      onPress={onPress}
+      accessible
+      accessibilityLabel={`${text} 버튼`}
+    >
       <Text
         style={[
           styles.text,

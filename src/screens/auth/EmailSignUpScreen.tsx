@@ -30,9 +30,15 @@ export const EmailSignUpScreen = () => {
           value={isChecked}
           onValueChange={setChecked}
           color={isChecked ? AuthColor.secondary.backgroundColor : undefined}
+          accessible
+          accessibilityLabel="이용약관 숙지 체크박스"
+          accessibilityLabelledBy="checkBox"
+          accessibilityState={{ checked: isChecked }}
         />
 
-        <Text style={[AuthFont.teritary, AuthColor.contentPrimary]}>이용약관을 숙지했으며, 이에 동의합니다.</Text>
+        <Text nativeID="checkBox" style={[AuthFont.teritary, AuthColor.contentPrimary]}>
+          이용약관을 숙지했으며, 이에 동의합니다.
+        </Text>
       </View>
 
       <View style={{ marginTop: 14 }}>
