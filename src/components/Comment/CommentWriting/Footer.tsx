@@ -47,9 +47,9 @@ const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
     };
   }, []);
 
-  return (
-    <>
-      {status === 0 ? (
+  if (status === -1) {
+    return (
+      <>
         <Shadow
           distance={10}
           containerStyle={{ flex: 0.2 }}
@@ -62,54 +62,141 @@ const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
             </TouchableOpacity>
           </View>
         </Shadow>
-      ) : (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <Shadow
-            distance={10}
-            containerStyle={{ paddingBottom: 20 }}
-            style={{ width: '100%' }}
-            sides={{ top: true, bottom: false, start: false, end: false }}
-          >
-            <ScrollView keyboardShouldPersistTaps="always">
-              <View style={styles.inputTextHeader}>
-                <TouchableOpacity style={styles.AIBtn}>
-                  <Text style={{ color: 'white' }}>AI다듬기</Text>
-                </TouchableOpacity>
-                <View style={styles.timer}>
-                  <Text style={{ color: '#CF0000' }}>3분 남음</Text>
-                  <TouchableOpacity style={styles.commentQuit}>
-                    <Text style={{ color: 'white' }}>해설포기</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={styles.inputTextContainer}>
-                <View style={{ flex: 0.75 }}>
-                  <TextInput
-                    placeholder="해설을 작성해주세요..."
-                    multiline
-                    onChangeText={(text) => setText(text)}
-                    value={text}
-                    textAlignVertical="top"
-                    style={styles.inputBox}
-                    autoComplete="off"
-                  />
-                </View>
-                <TouchableOpacity
-                  style={styles.sendBtn}
-                  onPress={() => {
-                    sendComment(text);
-                    setText('');
-                  }}
-                >
-                  <Image source={require('../../../../assets/send.png')} alt="" />
+      </>
+    );
+  }
+
+  if (status === 0) {
+    return (
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <Shadow
+          distance={10}
+          containerStyle={{ paddingBottom: 20 }}
+          style={{ width: '100%' }}
+          sides={{ top: true, bottom: false, start: false, end: false }}
+        >
+          <ScrollView keyboardShouldPersistTaps="always">
+            <View style={styles.inputTextHeader}>
+              <TouchableOpacity style={styles.AIBtn}>
+                <Text style={{ color: 'white' }}>AI다듬기</Text>
+              </TouchableOpacity>
+              <View style={styles.timer}>
+                <Text style={{ color: '#CF0000' }}>3분 남음</Text>
+                <TouchableOpacity style={styles.commentQuit}>
+                  <Text style={{ color: 'white' }}>해설포기</Text>
                 </TouchableOpacity>
               </View>
-            </ScrollView>
-          </Shadow>
-        </KeyboardAvoidingView>
-      )}
-    </>
-  );
+            </View>
+            <View style={styles.inputTextContainer}>
+              <View style={{ flex: 0.75 }}>
+                <TextInput
+                  placeholder="해설을 작성해주세요..."
+                  multiline
+                  onChangeText={(text) => setText(text)}
+                  value={text}
+                  textAlignVertical="top"
+                  style={styles.inputBox}
+                  autoComplete="off"
+                />
+              </View>
+              <TouchableOpacity
+                style={styles.sendBtn}
+                onPress={() => {
+                  sendComment(text);
+                  setText('');
+                }}
+              >
+                <Image source={require('../../../../assets/send.png')} alt="" />
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </Shadow>
+      </KeyboardAvoidingView>
+    );
+  }
+
+  if (status === 1) {
+    return (
+      <>
+        <Shadow
+          distance={10}
+          containerStyle={{ flex: 0.2 }}
+          style={{ width: '100%', height: '100%' }}
+          sides={{ top: true, bottom: false, start: false, end: false }}
+        >
+          <View style={styles.footerContainer}>
+            <View style={styles.commentEndBtn}>
+              <Text style={styles.commentText}>해설하기</Text>
+            </View>
+          </View>
+        </Shadow>
+      </>
+    );
+  }
+
+  //   return (
+  //     <>
+  //       {status === 0 ? (
+  //         <Shadow
+  //           distance={10}
+  //           containerStyle={{ flex: 0.2 }}
+  //           style={{ width: '100%', height: '100%' }}
+  //           sides={{ top: true, bottom: false, start: false, end: false }}
+  //         >
+  //           <View style={styles.footerContainer}>
+  //             <TouchableOpacity style={styles.commentBtn} onPress={() => startComment(id)}>
+  //               <Text style={styles.commentText}>해설하기</Text>
+  //             </TouchableOpacity>
+  //           </View>
+  //         </Shadow>
+  //       ) : (
+  //         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+  //           <Shadow
+  //             distance={10}
+  //             containerStyle={{ paddingBottom: 20 }}
+  //             style={{ width: '100%' }}
+  //             sides={{ top: true, bottom: false, start: false, end: false }}
+  //           >
+  //             <ScrollView keyboardShouldPersistTaps="always">
+  //               <View style={styles.inputTextHeader}>
+  //                 <TouchableOpacity style={styles.AIBtn}>
+  //                   <Text style={{ color: 'white' }}>AI다듬기</Text>
+  //                 </TouchableOpacity>
+  //                 <View style={styles.timer}>
+  //                   <Text style={{ color: '#CF0000' }}>3분 남음</Text>
+  //                   <TouchableOpacity style={styles.commentQuit}>
+  //                     <Text style={{ color: 'white' }}>해설포기</Text>
+  //                   </TouchableOpacity>
+  //                 </View>
+  //               </View>
+  //               <View style={styles.inputTextContainer}>
+  //                 <View style={{ flex: 0.75 }}>
+  //                   <TextInput
+  //                     placeholder="해설을 작성해주세요..."
+  //                     multiline
+  //                     onChangeText={(text) => setText(text)}
+  //                     value={text}
+  //                     textAlignVertical="top"
+  //                     style={styles.inputBox}
+  //                     autoComplete="off"
+  //                   />
+  //                 </View>
+  //                 <TouchableOpacity
+  //                   style={styles.sendBtn}
+  //                   onPress={() => {
+  //                     sendComment(text);
+  //                     setText('');
+  //                   }}
+  //                 >
+  //                   <Image source={require('../../../../assets/send.png')} alt="" />
+  //                 </TouchableOpacity>
+  //               </View>
+  //             </ScrollView>
+  //           </Shadow>
+  //         </KeyboardAvoidingView>
+  //       )}
+  //     </>
+  //   );
 };
 
 const styles = StyleSheet.create({
@@ -119,6 +206,14 @@ const styles = StyleSheet.create({
   },
   commentBtn: {
     backgroundColor: '#2C2C2C',
+    width: '90%',
+    height: '80%',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  commentEndBtn: {
+    backgroundColor: 'rgba(44, 44, 44, 0.52)',
     width: '90%',
     height: '80%',
     borderRadius: 10,
