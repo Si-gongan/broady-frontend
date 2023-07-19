@@ -19,6 +19,19 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   const [currentRequest, setCurrentRequest] = useState<IRequest>({} as any);
   const [commentList, setCommentList] = useState<IComment[]>([]);
 
+  const [commentTimer, setCommentTimer] = useState<number>(10);
+
+  let timerId: string | number | NodeJS.Timer | undefined;
+  const startTimer = () => {
+    timerId = setInterval(() => {
+      setCommentTimer((prev) => prev - 1);
+    }, 60000);
+  };
+
+  const endTimer = () => {
+    clearInterval(timerId);
+  };
+
   const sendComment = (text: string) => {
     const newComment = { id: ++commentList.length, content: text };
     setCommentList(commentList.concat(newComment));
@@ -28,6 +41,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
 
   const startComment = (id: number) => {
     setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 0 } : request)));
+    startTimer();
   };
 
   useEffect(() => {
@@ -37,14 +51,20 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
 
   return (
     <View style={styles.mainContainer}>
-      <Header navigation={navigation}>해설 작성</Header>
+      <Header navigation={navigation}>해설 작성 {commentTimer}</Header>
       <ScrollView style={styles.bodyContainer}>
         <RequestMessage content={currentRequest.content} />
         {commentList.map((comment, idx) => (
           <ResponseMessage key={idx} comment={comment} />
         ))}
       </ScrollView>
-      <Footer id={id} status={currentRequest.status} startComment={startComment} sendComment={sendComment} />
+      <Footer
+        id={id}
+        status={currentRequest.status}
+        startComment={startComment}
+        sendComment={sendComment}
+        commentTimer={commentTimer}
+      />
     </View>
   );
 };

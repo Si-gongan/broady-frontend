@@ -16,11 +16,12 @@ import { Shadow } from 'react-native-shadow-2';
 interface IFooterProps {
   id: number;
   status: number;
+  commentTimer: number;
   startComment: (id: number) => void;
   sendComment: (text: string) => void;
 }
 
-const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
+const Footer = ({ id, status, commentTimer, startComment, sendComment }: IFooterProps) => {
   const [text, setText] = useState<string>('');
   //   const [keyboardStatus, setKeyboardStatus] = useState(false);
 
@@ -83,7 +84,7 @@ const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
                 <Text style={{ color: 'white' }}>AI다듬기</Text>
               </TouchableOpacity>
               <View style={styles.timer}>
-                <Text style={{ color: '#CF0000' }}>3분 남음</Text>
+                <Text style={{ color: '#CF0000' }}>{commentTimer}분 남음</Text>
                 <TouchableOpacity style={styles.commentQuit}>
                   <Text style={{ color: 'white' }}>해설포기</Text>
                 </TouchableOpacity>
