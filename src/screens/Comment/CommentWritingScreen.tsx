@@ -18,17 +18,41 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   const [requestList, setRequestList] = useRecoilState(requestListState);
   const [currentRequest, setCurrentRequest] = useState<IRequest>({} as any);
   const [commentList, setCommentList] = useState<IComment[]>([]);
+  const [commentTimer, setCommentTimer] = useState<number>(1);
+
+  let timerId: string | number | NodeJS.Timer | undefined;
+  const startTimer = () => {
+    timerId = setInterval(() => {
+      setCommentTimer((prev) => prev - 1);
+    }, 60000);
+  };
 
   const sendComment = (text: string) => {
     const newComment = { id: ++commentList.length, content: text };
     setCommentList(commentList.concat(newComment));
-    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 1 } : request)));
+    endComment();
     Keyboard.dismiss();
   };
 
   const startComment = (id: number) => {
     setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 0 } : request)));
+    startTimer();
   };
+
+  const endComment = () => {
+    clearInterval(timerId);
+    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 1 } : request)));
+  };
+
+  const resetComment = () => {
+    clearInterval(timerId);
+    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: -1 } : request)));
+    setCommentTimer(1);
+  };
+
+  useEffect(() => {
+    if (commentTimer === 0) resetComment();
+  }, [commentTimer]);
 
   useEffect(() => {
     const result = requestList.filter((request) => request.id === id);
@@ -44,7 +68,14 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
           <ResponseMessage key={idx} comment={comment} />
         ))}
       </ScrollView>
-      <Footer id={id} status={currentRequest.status} startComment={startComment} sendComment={sendComment} />
+      <Footer
+        id={id}
+        status={currentRequest.status}
+        startComment={startComment}
+        sendComment={sendComment}
+        resetComment={resetComment}
+        commentTimer={commentTimer}
+      />
     </View>
   );
 };
