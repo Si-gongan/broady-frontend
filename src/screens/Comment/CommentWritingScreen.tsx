@@ -26,7 +26,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   };
 
   const startComment = (id: number) => {
-    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 1 } : request)));
+    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 0 } : request)));
   };
 
   useEffect(() => {
