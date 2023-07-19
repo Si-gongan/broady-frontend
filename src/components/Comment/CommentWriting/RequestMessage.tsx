@@ -34,9 +34,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   requestImage: {
-    width: 400,
-    height: 220,
+    width: 415,
+    height: 250,
     borderRadius: 30,
+    marginBottom: 10,
   },
   chatContainer: {
     flexDirection: 'row',
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
     width: '90%',
     gap: 10,
     height: 60,
+    marginLeft: 20,
   },
   chatImage: {
     width: 40,
