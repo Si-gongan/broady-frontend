@@ -1,6 +1,12 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 
-const ResponseMessage = ({ content }: { content: string }) => {
+interface IComment {
+  id: number;
+  content: string;
+}
+
+const ResponseMessage = ({ comment }: { comment: IComment }) => {
+  console.log('comment:', comment);
   return (
     <>
       <View style={styles.imageContainer}></View>
@@ -9,7 +15,7 @@ const ResponseMessage = ({ content }: { content: string }) => {
           <Text style={{ color: '#777' }}>오후 2:20</Text>
         </View>
         <View style={styles.chatText}>
-          <Text style={{ color: 'white' }}>{content}</Text>
+          <Text style={{ color: 'white' }}>{comment.content}</Text>
         </View>
       </View>
     </>

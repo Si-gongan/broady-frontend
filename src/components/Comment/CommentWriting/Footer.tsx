@@ -17,10 +17,11 @@ interface IFooterProps {
   id: number;
   status: number;
   startComment: (id: number) => void;
+  sendComment: (message: string) => void;
 }
 
-const Footer = ({ id, status, startComment }: IFooterProps) => {
-  const [value, setValue] = useState<string>();
+const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
+  const [text, setText] = useState<string>('');
   //   const [keyboardStatus, setKeyboardStatus] = useState(false);
 
   useEffect(() => {
@@ -86,13 +87,13 @@ const Footer = ({ id, status, startComment }: IFooterProps) => {
                   <TextInput
                     placeholder="해설을 작성해주세요..."
                     multiline
-                    onChangeText={(text) => setValue(text)}
-                    value={value}
+                    onChangeText={(text) => setText(text)}
+                    value={text}
                     textAlignVertical="top"
                     style={styles.inputBox}
                   />
                 </View>
-                <TouchableOpacity style={styles.sendBtn} onPress={() => Keyboard.dismiss()}>
+                <TouchableOpacity style={styles.sendBtn} onPress={() => sendComment(text)}>
                   <Image source={require('../../../../assets/send.png')} alt="" />
                 </TouchableOpacity>
               </View>
