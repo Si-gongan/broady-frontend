@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { requestListState } from '../../states/request';
 import { useEffect, useState } from 'react';
 import { IRequest } from '../../types/request';
+import ResponseMessage from '../../components/Comment/CommentWriting/ResponseMessage';
 
 const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const { id } = route.params;
@@ -24,8 +25,9 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation}>해설 작성</Header>
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={styles.bodyContainer}>
+      <ScrollView style={styles.bodyContainer}>
         <RequestMessage content={currentRequest.content} />
+        <ResponseMessage content={currentRequest.content} />
       </ScrollView>
       <Footer id={id} status={currentRequest.status} startComment={startComment} />
     </View>
