@@ -70,14 +70,24 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
         <View style={SigonganDesign.borderOpaque} />
 
         <View style={[styles.itemWrapper, { paddingBottom: insets.bottom || 16 }]}>
-          <TouchableOpacity style={styles.item} onPress={onPressTakePhoto}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={onPressTakePhoto}
+            accessible
+            accessibilityLabel="직접 촬영 버튼"
+          >
             <Text style={SigonganFont.secondary}>직접 촬영</Text>
             <MaterialIcons name="arrow-forward-ios" style={[styles.itemIcon, SigonganColor.iconPrimary]} />
           </TouchableOpacity>
 
           <View style={SigonganDesign.borderOpaque} />
 
-          <TouchableOpacity style={styles.item} onPress={onPressPickImage}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={onPressPickImage}
+            accessible
+            accessibilityLabel="갤러리에서 선택 버튼"
+          >
             <Text style={SigonganFont.secondary}>갤러리에서 선택</Text>
             <MaterialIcons name="arrow-forward-ios" style={[styles.itemIcon, SigonganColor.iconPrimary]} />
           </TouchableOpacity>
@@ -85,7 +95,9 @@ export const CommentRequestPopup = forwardRef<ICommentRequestPopupHandler, any>(
           <View style={SigonganDesign.borderOpaque} />
 
           <TouchableOpacity style={styles.item} onPress={() => onClose()}>
-            <Text style={SigonganFont.secondary}>취소</Text>
+            <Text style={SigonganFont.secondary} accessible accessibilityLabel="취소 버튼">
+              취소
+            </Text>
             <MaterialIcons name="arrow-forward-ios" style={[styles.itemIcon, SigonganColor.iconPrimary]} />
           </TouchableOpacity>
 
