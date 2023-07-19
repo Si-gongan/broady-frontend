@@ -47,12 +47,13 @@ const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
     };
   }, []);
 
+  // 의뢰목록(해설 전)
   if (status === -1) {
     return (
       <>
         <Shadow
           distance={10}
-          containerStyle={{ flex: 0.2 }}
+          containerStyle={{ flex: 0.15 }}
           style={{ width: '100%', height: '100%' }}
           sides={{ top: true, bottom: false, start: false, end: false }}
         >
@@ -66,6 +67,7 @@ const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
     );
   }
 
+  // 해설 작성 중
   if (status === 0) {
     return (
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -115,24 +117,23 @@ const Footer = ({ id, status, startComment, sendComment }: IFooterProps) => {
     );
   }
 
-  if (status === 1) {
-    return (
-      <>
-        <Shadow
-          distance={10}
-          containerStyle={{ flex: 0.2 }}
-          style={{ width: '100%', height: '100%' }}
-          sides={{ top: true, bottom: false, start: false, end: false }}
-        >
-          <View style={styles.footerContainer}>
-            <View style={styles.commentEndBtn}>
-              <Text style={styles.commentText}>해설하기</Text>
-            </View>
+  // 해설 완료
+  return (
+    <>
+      <Shadow
+        distance={10}
+        containerStyle={{ flex: 0.15 }}
+        style={{ width: '100%', height: '100%' }}
+        sides={{ top: true, bottom: false, start: false, end: false }}
+      >
+        <View style={styles.footerContainer}>
+          <View style={styles.commentEndBtn}>
+            <Text style={styles.commentText}>해설하기</Text>
           </View>
-        </Shadow>
-      </>
-    );
-  }
+        </View>
+      </Shadow>
+    </>
+  );
 
   //   return (
   //     <>
