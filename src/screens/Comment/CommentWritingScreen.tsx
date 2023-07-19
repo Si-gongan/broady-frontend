@@ -73,6 +73,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
         status={currentRequest.status}
         startComment={startComment}
         sendComment={sendComment}
+        resetComment={resetComment}
         commentTimer={commentTimer}
       />
     </View>

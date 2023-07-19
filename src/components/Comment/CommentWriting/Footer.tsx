@@ -19,9 +19,10 @@ interface IFooterProps {
   commentTimer: number;
   startComment: (id: number) => void;
   sendComment: (text: string) => void;
+  resetComment: () => void;
 }
 
-const Footer = ({ id, status, commentTimer, startComment, sendComment }: IFooterProps) => {
+const Footer = ({ id, status, commentTimer, startComment, sendComment, resetComment }: IFooterProps) => {
   const [text, setText] = useState<string>('');
   //   const [keyboardStatus, setKeyboardStatus] = useState(false);
 
@@ -85,7 +86,7 @@ const Footer = ({ id, status, commentTimer, startComment, sendComment }: IFooter
               </TouchableOpacity>
               <View style={styles.timer}>
                 <Text style={{ color: '#CF0000' }}>{commentTimer}분 남음</Text>
-                <TouchableOpacity style={styles.commentQuit}>
+                <TouchableOpacity style={styles.commentQuit} onPress={resetComment}>
                   <Text style={{ color: 'white' }}>해설포기</Text>
                 </TouchableOpacity>
               </View>
