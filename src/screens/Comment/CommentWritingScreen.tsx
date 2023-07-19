@@ -18,8 +18,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   const [requestList, setRequestList] = useRecoilState(requestListState);
   const [currentRequest, setCurrentRequest] = useState<IRequest>({} as any);
   const [commentList, setCommentList] = useState<IComment[]>([]);
-
-  const [commentTimer, setCommentTimer] = useState<number>(10);
+  const [commentTimer, setCommentTimer] = useState<number>(1);
 
   let timerId: string | number | NodeJS.Timer | undefined;
   const startTimer = () => {
@@ -28,14 +27,10 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
     }, 60000);
   };
 
-  const endTimer = () => {
-    clearInterval(timerId);
-  };
-
   const sendComment = (text: string) => {
     const newComment = { id: ++commentList.length, content: text };
     setCommentList(commentList.concat(newComment));
-    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 1 } : request)));
+    endComment();
     Keyboard.dismiss();
   };
 
@@ -44,6 +39,21 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
     startTimer();
   };
 
+  const endComment = () => {
+    clearInterval(timerId);
+    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 1 } : request)));
+  };
+
+  const resetComment = () => {
+    clearInterval(timerId);
+    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: -1 } : request)));
+    setCommentTimer(1);
+  };
+
+  useEffect(() => {
+    if (commentTimer === 0) resetComment();
+  }, [commentTimer]);
+
   useEffect(() => {
     const result = requestList.filter((request) => request.id === id);
     setCurrentRequest(result[0]);
@@ -51,7 +61,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
 
   return (
     <View style={styles.mainContainer}>
-      <Header navigation={navigation}>해설 작성 {commentTimer}</Header>
+      <Header navigation={navigation}>해설 작성</Header>
       <ScrollView style={styles.bodyContainer}>
         <RequestMessage content={currentRequest.content} />
         {commentList.map((comment, idx) => (
