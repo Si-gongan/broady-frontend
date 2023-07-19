@@ -26,6 +26,8 @@ export const CustomTextInput = ({ text, value, onChangeValue }: CustomTextInputP
           },
         ]}
         placeholder={text}
+        accessible
+        accessibilityLabel={`${text} 입력창`}
       />
     </View>
   );

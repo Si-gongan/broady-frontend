@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   CommentRequestButton,
   CommentRequestPopup,
@@ -20,10 +20,12 @@ export const HomeScreen = () => {
 
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.requestList}>
-          <View style={styles.requestItem}>
-            <RequestImageCard imgUrl="" />
-            <RequestTextCard date="" content="" />
-          </View>
+          <TouchableOpacity activeOpacity={0.8} accessible accessibilityLabel="~~라고 작성한 의뢰 상세보기">
+            <View style={styles.requestItem}>
+              <RequestImageCard imgUrl="" />
+              <RequestTextCard date="" content="" />
+            </View>
+          </TouchableOpacity>
 
           <View style={styles.requestItem}>
             <RequestImageCard imgUrl="" />

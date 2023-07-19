@@ -13,6 +13,8 @@ export const CommentRequestButton = ({ onPress }: CommentRequestButtonProps) => 
       activeOpacity={0.8}
       style={[styles.container, SigonganColor.backgroundSecondary]}
       onPress={onPress}
+      accessible
+      accessibilityLabel="해설 의뢰하기 버튼"
     >
       <MaterialIcons name="add" style={[styles.icon, SigonganColor.contentSecondary]} />
       <Text style={[SigonganFont.teritary, SigonganColor.contentSecondary]}>해설 의뢰하기</Text>

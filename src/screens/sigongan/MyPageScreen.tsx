@@ -7,7 +7,9 @@ export const MyPageScreen = () => {
   return (
     <View style={styles.container}>
       <AppSetting />
+
       <CustomerService />
+
       <View style={[SigonganDesign.myPageGrid, styles.goBack]}>
         <Text style={SigonganDesign.myPageContent}>첫 화면으로 나가기</Text>
       </View>
