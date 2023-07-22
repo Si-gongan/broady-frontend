@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRecoilState } from 'recoil';
 import RequestList from '../../components/Comment/Home/RequestList';
 import { requestListState } from '../../states/request';

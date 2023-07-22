@@ -9,6 +9,7 @@ const initialState: IRequest[] = [
     content: '고양이가 어떤 모습인지 자세히 설명해주세요.',
     imgSrc: require('../../assets/sample_request.png'),
     status: -1,
+    commentTimer: 10,
   },
   {
     id: 1,
@@ -16,6 +17,7 @@ const initialState: IRequest[] = [
     content: '질문 내용1',
     imgSrc: require('../../assets/sample_request.png'),
     status: -1,
+    commentTimer: 10,
   },
   {
     id: 2,
@@ -23,6 +25,7 @@ const initialState: IRequest[] = [
     content: '질문 내용2',
     imgSrc: require('../../assets/sample_request.png'),
     status: -1,
+    commentTimer: 10,
   },
   {
     id: 3,
@@ -30,6 +33,7 @@ const initialState: IRequest[] = [
     content: '질문 내용3',
     imgSrc: require('../../assets/sample_request.png'),
     status: -1,
+    commentTimer: 10,
   },
   {
     id: 4,
@@ -37,6 +41,7 @@ const initialState: IRequest[] = [
     content: '질문 내용4',
     imgSrc: require('../../assets/sample_request.png'),
     status: -1,
+    commentTimer: 10,
   },
   {
     id: 5,
@@ -44,6 +49,7 @@ const initialState: IRequest[] = [
     content: '질문 내용ㅇ5',
     imgSrc: require('../../assets/sample_request.png'),
     status: -1,
+    commentTimer: 10,
   },
   {
     id: 6,
@@ -51,6 +57,7 @@ const initialState: IRequest[] = [
     content: '질문 내용6',
     imgSrc: require('../../assets/sample_request.png'),
     status: -1,
+    commentTimer: 10,
   },
   {
     id: 7,
@@ -58,6 +65,7 @@ const initialState: IRequest[] = [
     content: '질문 내용7',
     imgSrc: require('../../assets/sample_request.png'),
     status: -1,
+    commentTimer: 10,
   },
 ];
 

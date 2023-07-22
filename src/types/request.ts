@@ -4,4 +4,5 @@ export interface IRequest {
   content: string;
   imgSrc: object;
   status: number;
+  commentTimer: number;
 }

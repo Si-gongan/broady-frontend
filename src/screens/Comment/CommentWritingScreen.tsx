@@ -18,12 +18,16 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   const [requestList, setRequestList] = useRecoilState(requestListState);
   const [currentRequest, setCurrentRequest] = useState<IRequest>({} as any);
   const [commentList, setCommentList] = useState<IComment[]>([]);
-  const [commentTimer, setCommentTimer] = useState<number>(1);
+  // const [commentTimer, setCommentTimer] = useState<number>(1);
 
   let timerId: string | number | NodeJS.Timer | undefined;
   const startTimer = () => {
     timerId = setInterval(() => {
-      setCommentTimer((prev) => prev - 1);
+      setRequestList(
+        requestList.map((request) =>
+          request.id === id ? { ...request, commentTimer: --request.commentTimer } : request
+        )
+      );
     }, 60000);
   };
 
@@ -35,24 +39,30 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   };
 
   const startComment = (id: number) => {
-    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 0 } : request)));
+    setRequestList(
+      requestList.map((request) => (request.id === id ? { ...request, status: 0, commentTimer: 10 } : request))
+    );
     startTimer();
   };
 
   const endComment = () => {
     clearInterval(timerId);
-    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 1 } : request)));
+    setRequestList(
+      requestList.map((request) => (request.id === id ? { ...request, status: 1, commentTimer: 10 } : request))
+    );
   };
 
   const resetComment = () => {
     clearInterval(timerId);
-    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: -1 } : request)));
-    setCommentTimer(1);
+    setRequestList(
+      requestList.map((request) => (request.id === id ? { ...request, status: -1, commentTimer: 10 } : request))
+    );
   };
 
   useEffect(() => {
-    if (commentTimer === 0) resetComment();
-  }, [commentTimer]);
+    // const current = requestList.filter((request) => request.id === id);
+    if (currentRequest.commentTimer === 0) resetComment();
+  }, [requestList]);
 
   useEffect(() => {
     const result = requestList.filter((request) => request.id === id);
@@ -74,7 +84,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
         startComment={startComment}
         sendComment={sendComment}
         resetComment={resetComment}
-        commentTimer={commentTimer}
+        commentTimer={currentRequest.commentTimer}
       />
     </View>
   );
