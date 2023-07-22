@@ -15,18 +15,7 @@ export const CommonButton = ({ text, onPress }: CommonButtonProps) => {
       accessible
       accessibilityLabel={`${text} 버튼`}
     >
-      <Text
-        style={[
-          styles.text,
-          AuthColor.contentSecondary,
-          AuthFont.primary,
-          {
-            fontStyle: 'normal',
-          },
-        ]}
-      >
-        {text}
-      </Text>
+      <Text style={[styles.text, AuthColor.contentSecondary, AuthFont.primary]}>{text}</Text>
     </TouchableOpacity>
   );
 };
