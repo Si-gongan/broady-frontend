@@ -1,8 +1,11 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { IRequest } from '../../../types/request';
+import { getConvertDate } from '../../../utils/time';
 
 const RequestItem = ({ request, navigation }: { request: IRequest; navigation: any }) => {
+  const gapTime = getConvertDate(request.createdAt);
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -18,7 +21,7 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
           <Image source={request.imgSrc} alt="" style={styles.image} />
           <View style={styles.imageTextContainer}>
             <View>
-              <Text style={styles.createdAtRequest}>{request.createdAt}</Text>
+              <Text style={styles.createdAtRequest}>{gapTime}</Text>
               {request.status === 0 ? (
                 <Text style={{ color: '#CF0000' }}>{request.commentTimer}분 남음</Text>
               ) : (
