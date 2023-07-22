@@ -2,11 +2,18 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RecoilRoot } from 'recoil';
+import { useFonts } from 'expo-font';
 import { AuthStack, SigonganStack, CommentStack } from './navigations';
 
 import { UserStateProvider, useUserState } from './providers';
 
 const Main = () => {
+  const [fontsLoaded] = useFonts({
+    ABeeZee: require('../assets/font/ABeeZee-Regular.ttf'),
+    Inter: require('../assets/font/Inter-Regular.ttf'),
+    'Inter-Bold': require('../assets/font/Inter-SemiBold.ttf'),
+  });
+
   const { userState } = useUserState();
 
   const navTheme = {
@@ -16,6 +23,10 @@ const Main = () => {
       background: 'white',
     },
   };
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <RecoilRoot>

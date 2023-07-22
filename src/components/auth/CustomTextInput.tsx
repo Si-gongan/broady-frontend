@@ -16,15 +16,7 @@ export const CustomTextInput = ({ text, value, onChangeValue }: CustomTextInputP
       <TextInput
         value={value}
         onChangeText={onChangeValue}
-        style={[
-          styles.input,
-          AuthColor.teritary,
-          AuthColor.contentTeritary,
-          AuthFont.teritary,
-          {
-            fontStyle: 'normal',
-          },
-        ]}
+        style={[styles.input, AuthColor.teritary, AuthColor.contentTeritary, AuthFont.teritary]}
         placeholder={text}
         accessible
         accessibilityLabel={`${text} 입력창`}

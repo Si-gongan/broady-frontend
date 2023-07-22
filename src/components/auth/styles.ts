@@ -24,23 +24,23 @@ export const AuthColor = StyleSheet.create({
 
 export const AuthFont = StyleSheet.create({
   primary: {
+    fontFamily: 'ABeeZee',
     fontSize: 18,
-    fontStyle: 'italic',
     fontWeight: '400',
   },
   secondary: {
+    fontFamily: 'ABeeZee',
     fontSize: 16,
-    fontStyle: 'italic',
     fontWeight: '400',
   },
   teritary: {
+    fontFamily: 'ABeeZee',
     fontSize: 14,
-    fontStyle: 'italic',
     fontWeight: '400',
   },
   quaternary: {
+    fontFamily: 'ABeeZee',
     fontSize: 12,
-    fontStyle: 'normal',
     fontWeight: '400',
   },
 });
@@ -49,8 +49,8 @@ export const AuthDesign = StyleSheet.create({
   buttonColor1: { backgroundColor: '#1634B2' },
   buttonColor2: { backgroundColor: '#00145E' },
   bigFont: {
+    fontFamily: 'ABeeZee',
     fontSize: 26,
-    fontStyle: 'italic',
     fontWeight: '400',
   },
 });
