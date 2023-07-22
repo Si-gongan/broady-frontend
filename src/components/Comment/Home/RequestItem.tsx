@@ -17,7 +17,14 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
         <View style={styles.imageContainer}>
           <Image source={request.imgSrc} alt="" style={styles.image} />
           <View style={styles.imageTextContainer}>
-            <Text style={styles.createdAtRequest}>{request.createdAt}</Text>
+            <View>
+              <Text style={styles.createdAtRequest}>{request.createdAt}</Text>
+              {request.status === 0 ? (
+                <Text style={{ color: '#CF0000' }}>{request.commentTimer}분 남음</Text>
+              ) : (
+                <Text></Text>
+              )}
+            </View>
             <Text style={styles.requestContent}>{request.content}</Text>
           </View>
         </View>
