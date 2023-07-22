@@ -20,10 +20,10 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
         <View style={styles.imageContainer}>
           <Image source={request.imgSrc} alt="" style={styles.image} />
           <View style={styles.imageTextContainer}>
-            <View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.createdAtRequest}>{gapTime}</Text>
               {request.status === 0 ? (
-                <Text style={{ color: '#CF0000' }}>{request.commentTimer}분 남음</Text>
+                <Text style={{ fontSize: 12, color: '#CF0000' }}>{request.commentTimer}분 남음</Text>
               ) : (
                 <Text></Text>
               )}
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     gap: 10,
-    paddingBottom: 10,
+    paddingBottom: 30,
     backgroundColor: '#ffffff',
     shadowColor: '#000',
     shadowOffset: {
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
   },
   imageTextContainer: {
     flex: 1,
+    marginHorizontal: 10,
     gap: 10,
-    marginLeft: 10,
   },
   createdAtRequest: {
     fontSize: 12,
