@@ -1,6 +1,6 @@
 import { createContext, useState, useMemo, useCallback, useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { AUTH_TOKEN, USER_STATE, getData, removeData } from '../components/common/async-storage';
+import { AUTH_TOKEN, USER_STATE, getData, storeData, removeData } from '../components/common/async-storage';
 import { useRecoilState } from 'recoil';
 import { authTokenState } from '../states';
 
@@ -17,6 +17,8 @@ type UserState = 'unLogin' | 'Sigongan' | 'Comment';
 const UserStateContext = createContext<{
   userState: UserState;
   changeUserState: (userState: UserState) => void;
+  loginToComment: (token: string) => void;
+  loginToSigongan: () => void;
   logout: () => void;
 } | null>(null);
 
@@ -45,6 +47,19 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
     setUserState(userState);
   }, []);
 
+  const loginToComment = useCallback((token: string) => {
+    storeData(AUTH_TOKEN, token);
+    setAuthToken(token);
+
+    storeData(USER_STATE, 'Comment');
+    setUserState('Comment');
+  }, []);
+
+  const loginToSigongan = useCallback(() => {
+    storeData(USER_STATE, 'Sigongan');
+    setUserState('Sigongan');
+  }, []);
+
   const logout = useCallback(() => {
     removeData(USER_STATE);
     removeData(AUTH_TOKEN);
@@ -52,7 +67,10 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
     setUserState('unLogin');
   }, []);
 
-  const context = useMemo(() => ({ userState, changeUserState, logout }), [userState, changeUserState, logout]);
+  const context = useMemo(
+    () => ({ userState, changeUserState, loginToComment, loginToSigongan, logout }),
+    [userState, changeUserState, loginToComment, loginToSigongan, logout]
+  );
 
   return <UserStateContext.Provider value={context}>{children}</UserStateContext.Provider>;
 };

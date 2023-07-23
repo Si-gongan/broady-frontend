@@ -18,7 +18,7 @@ type ILoginForm = {
 export const EmailSignInScreen = ({ navigation }: any) => {
   const [fcmToken] = useRecoilValue(fcmTokenState);
 
-  const { changeUserState } = useUserState();
+  const { loginToComment } = useUserState();
 
   const {
     control,
@@ -33,10 +33,7 @@ export const EmailSignInScreen = ({ navigation }: any) => {
       const res = await Login(email, password, fcmToken);
       const authToken = res.data.result.token;
 
-      storeData(USER_STATE, 'Comment');
-      storeData(AUTH_TOKEN, authToken);
-
-      changeUserState('Comment');
+      loginToComment(authToken);
     } catch (e: any) {
       console.log('로그인 실패');
       // console.log('error', e.response.data);

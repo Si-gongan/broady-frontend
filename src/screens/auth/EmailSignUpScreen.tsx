@@ -33,7 +33,7 @@ export const EmailSignUpScreen = () => {
     formState: { errors },
   } = useForm<IRegisterForm>();
 
-  const { changeUserState } = useUserState();
+  const { loginToComment } = useUserState();
 
   const onSubmit = async (data: IRegisterForm) => {
     const { email, password } = data;
@@ -44,10 +44,7 @@ export const EmailSignUpScreen = () => {
 
       const authToken = resLogin.data.result.token;
 
-      storeData(USER_STATE, 'Comment');
-      storeData(AUTH_TOKEN, authToken);
-
-      changeUserState('Comment');
+      loginToComment(authToken);
     } catch (e: any) {
       // 회원가입 실패 (이미 있는 아이디일 때..? )
       // console.log('error', e.response.data);
