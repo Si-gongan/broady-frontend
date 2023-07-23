@@ -10,9 +10,9 @@ export const StartScreen = () => {
   return (
     <View style={styles.container}>
       <CommonButton text="이메일로 계속하기" onPress={() => navigation.push('이메일 회원가입')} />
-      <CommonButton text="카카오톡으로 계속하기" />
-      <CommonButton text="애플로 계속하기" />
-      <CommonButton text="구글로 계속하기" />
+      <CommonButton text="카카오톡으로 계속하기" disabled />
+      <CommonButton text="애플로 계속하기" disabled />
+      <CommonButton text="구글로 계속하기" disabled />
     </View>
   );
 };

@@ -1,11 +1,15 @@
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RecoilRoot } from 'recoil';
 import { useFonts } from 'expo-font';
-import { AuthStack, SigonganStack, CommentStack } from './navigations';
 
+import { AuthStack, SigonganStack, CommentStack } from './navigations';
 import { UserStateProvider, useUserState } from './providers';
+
+import { initializeNotifications, useNotifications } from './components/common/notifications';
+
+initializeNotifications();
 
 const Main = () => {
   const [fontsLoaded] = useFonts({
@@ -13,8 +17,14 @@ const Main = () => {
     Inter: require('../assets/font/Inter-Regular.ttf'),
     'Inter-Bold': require('../assets/font/Inter-SemiBold.ttf'),
   });
-
   const { userState } = useUserState();
+
+  useNotifications();
+
+  // TODO: splash screen
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const navTheme = {
     ...DefaultTheme,
@@ -24,29 +34,25 @@ const Main = () => {
     },
   };
 
-  if (!fontsLoaded) {
-    return null;
-  }
-
   return (
-    <RecoilRoot>
-      <NavigationContainer theme={navTheme}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <SafeAreaView style={{ flex: 1 }}>
-            {userState === 'unLogin' && <AuthStack />}
-            {userState === 'Sigongan' && <SigonganStack />}
-            {userState === 'Comment' && <CommentStack />}
-          </SafeAreaView>
-        </GestureHandlerRootView>
-      </NavigationContainer>
-    </RecoilRoot>
+    <NavigationContainer theme={navTheme}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
+          {userState === 'unLogin' && <AuthStack />}
+          {userState === 'Sigongan' && <SigonganStack />}
+          {userState === 'Comment' && <CommentStack />}
+        </SafeAreaView>
+      </GestureHandlerRootView>
+    </NavigationContainer>
   );
 };
 
 export const App = () => {
   return (
-    <UserStateProvider>
-      <Main />
-    </UserStateProvider>
+    <RecoilRoot>
+      <UserStateProvider>
+        <Main />
+      </UserStateProvider>
+    </RecoilRoot>
   );
 };

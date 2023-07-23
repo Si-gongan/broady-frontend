@@ -1,10 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Switch } from 'react-native';
 import { SigonganColor, SigonganDesign, SigonganFont } from '../styles';
+import { getNotificationPermissions } from '../../common/notifications';
 
 export const AppSetting = () => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  // const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSwitch = () => {
+    console.log('설정에서 알림을 바꿔주세요.');
+  };
+
+  useEffect(() => {
+    (async () => {
+      const state = await getNotificationPermissions();
+      setIsEnabled(state === 'granted');
+    })();
+  }, []);
 
   return (
     <View style={[SigonganDesign.myPageGrid, styles.appSetting]}>

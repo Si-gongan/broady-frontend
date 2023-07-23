@@ -10,6 +10,9 @@ export const AuthColor = StyleSheet.create({
   teritary: {
     backgroundColor: '#E8E8E8',
   },
+  quaternary: {
+    backgroundColor: '#A9A9A9',
+  },
 
   contentPrimary: {
     color: '#000',
