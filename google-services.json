@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "195143907391",
+    "project_id": "bomjaguk",
+    "storage_bucket": "bomjaguk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195143907391:android:08486f875249254984e08a",
+        "android_client_info": {
+          "package_name": "com.sigongan.bomjaguk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195143907391-md596g5jl20rrkn17m87kb8047pm31sq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYGFzA1Affq5sCKuL5gtflHM3bfkj9KBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195143907391-md596g5jl20rrkn17m87kb8047pm31sq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
