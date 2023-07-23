@@ -1,6 +1,8 @@
 import { createContext, useState, useMemo, useCallback, useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { USER_STATE, getData } from '../components/common/async-storage';
+import { AUTH_TOKEN, USER_STATE, getData, removeData } from '../components/common/async-storage';
+import { useRecoilState } from 'recoil';
+import { authTokenState } from '../states';
 
 /**
  * @description
@@ -15,21 +17,42 @@ type UserState = 'unLogin' | 'Sigongan' | 'Comment';
 const UserStateContext = createContext<{
   userState: UserState;
   changeUserState: (userState: UserState) => void;
+  logout: () => void;
 } | null>(null);
 
 export const UserStateProvider = ({ children }: { children: ReactNode }) => {
+  const [, setAuthToken] = useRecoilState(authTokenState);
   const [userState, setUserState] = useState<UserState>('unLogin');
 
   useEffect(() => {
-    const prevUserState = getData(USER_STATE);
-    // TODO: 이미 저장되어 있으면 리다이렉트
+    (async () => {
+      const prevUserState = await getData(USER_STATE);
+
+      if (prevUserState === 'Comment') {
+        const authToken = await getData(AUTH_TOKEN);
+
+        setAuthToken(authToken ?? '');
+        setUserState('Comment');
+      }
+
+      if (prevUserState === 'Sigongan') {
+        setUserState('Sigongan');
+      }
+    })();
   }, []);
 
   const changeUserState = useCallback((userState: UserState) => {
     setUserState(userState);
   }, []);
 
-  const context = useMemo(() => ({ userState, changeUserState }), [userState, changeUserState]);
+  const logout = useCallback(() => {
+    removeData(USER_STATE);
+    removeData(AUTH_TOKEN);
+
+    setUserState('unLogin');
+  }, []);
+
+  const context = useMemo(() => ({ userState, changeUserState, logout }), [userState, changeUserState, logout]);
 
   return <UserStateContext.Provider value={context}>{children}</UserStateContext.Provider>;
 };

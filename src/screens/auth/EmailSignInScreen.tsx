@@ -8,6 +8,7 @@ import { Login } from '../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 import { AuthFont } from '../../components/auth/styles';
+import { AUTH_TOKEN, USER_STATE, storeData } from '../../components/common/async-storage';
 
 type ILoginForm = {
   email: string;
@@ -28,15 +29,16 @@ export const EmailSignInScreen = ({ navigation }: any) => {
   const onSubmit = async (data: ILoginForm) => {
     const { email, password } = data;
 
-    // 일단은 임시로 처리
-    changeUserState('Comment');
-
     try {
       const res = await Login(email, password, fcmToken);
+      const authToken = res.data.result.token;
 
-      // 로그인 성공
+      storeData(USER_STATE, 'Comment');
+      storeData(AUTH_TOKEN, authToken);
+
+      changeUserState('Comment');
     } catch (e: any) {
-      // 로그인 실패
+      console.log('로그인 실패');
       // console.log('error', e.response.data);
     }
   };

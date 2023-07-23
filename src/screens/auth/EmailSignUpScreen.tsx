@@ -11,7 +11,9 @@ import { AuthStackParamList } from '../../navigations';
 import { AuthColor, AuthFont } from '../../components/auth/styles';
 import { fcmTokenState } from '../../states';
 import { useRecoilValue } from 'recoil';
-import { Register } from '../../api/axios';
+import { Login, Register } from '../../api/axios';
+import { AUTH_TOKEN, USER_STATE, storeData } from '../../components/common/async-storage';
+import { useUserState } from '../../providers';
 
 type IRegisterForm = {
   email: string;
@@ -31,13 +33,21 @@ export const EmailSignUpScreen = () => {
     formState: { errors },
   } = useForm<IRegisterForm>();
 
+  const { changeUserState } = useUserState();
+
   const onSubmit = async (data: IRegisterForm) => {
     const { email, password } = data;
 
     try {
-      const res = await Register(email, password, fcmToken);
+      const resRegister = await Register(email, password, fcmToken);
+      const resLogin = await Login(email, password, fcmToken);
 
-      // 회원가입 성공
+      const authToken = resLogin.data.result.token;
+
+      storeData(USER_STATE, 'Comment');
+      storeData(AUTH_TOKEN, authToken);
+
+      changeUserState('Comment');
     } catch (e: any) {
       // 회원가입 실패 (이미 있는 아이디일 때..? )
       // console.log('error', e.response.data);

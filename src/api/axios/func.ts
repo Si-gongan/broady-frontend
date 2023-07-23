@@ -1,9 +1,8 @@
-import { useRecoilValue } from 'recoil';
 import { Server } from './setting';
-import { fcmTokenState } from '../../states';
+import { LoginReturnType } from './types';
 
 export const Login = async (id: string, password: string, fcmToken: string) => {
-  return await Server.post(
+  return await Server.post<LoginReturnType>(
     '/user/login',
     { id, password },
     {
