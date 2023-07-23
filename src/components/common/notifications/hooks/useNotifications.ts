@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
 
-import { storeData, FCM_TOKEN } from '../../async-storage';
+import { storeData } from '../../async-storage';
 import { registerForPushNotificationsAsync } from '../lib';
 
 export const useNotifications = () => {
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
-      storeData(FCM_TOKEN, token);
+      // TODO: recoil atom에 저장
     });
   }, []);
 };
