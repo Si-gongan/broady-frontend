@@ -5,11 +5,11 @@ import { registerForPushNotificationsAsync } from '../lib';
 import { fcmTokenState } from '../../../../states';
 
 export const useNotifications = () => {
-  const [, setRequestList] = useRecoilState(fcmTokenState);
+  const [, setFcmToken] = useRecoilState(fcmTokenState);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
-      setRequestList(token);
+      setFcmToken(token);
     });
   }, []);
 };

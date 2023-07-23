@@ -9,6 +9,9 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigations';
 import { AuthColor, AuthFont } from '../../components/auth/styles';
+import { fcmTokenState } from '../../states';
+import { useRecoilValue } from 'recoil';
+import { Register } from '../../api/axios';
 
 type IRegisterForm = {
   email: string;
@@ -17,6 +20,8 @@ type IRegisterForm = {
 };
 
 export const EmailSignUpScreen = () => {
+  const fcmToken = useRecoilValue(fcmTokenState);
+
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
 
   const {
@@ -25,7 +30,19 @@ export const EmailSignUpScreen = () => {
     watch,
     formState: { errors },
   } = useForm<IRegisterForm>();
-  const onSubmit = (data: any) => console.log(data);
+
+  const onSubmit = async (data: IRegisterForm) => {
+    const { email, password } = data;
+
+    try {
+      const res = await Register(email, password, fcmToken);
+
+      // 회원가입 성공
+    } catch (e: any) {
+      // 회원가입 실패 (이미 있는 아이디일 때..? )
+      // console.log('error', e.response.data);
+    }
+  };
 
   const [isChecked, setChecked] = useState(false);
 
