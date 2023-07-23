@@ -23,6 +23,7 @@
     "expo-notifications": "~0.18.1",
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
+    "react-hook-form": "^7.45.2",
     "react-native": "0.71.8",
     "react-native-btr": "^2.2.0",
     "react-native-gesture-handler": "~2.9.0",
