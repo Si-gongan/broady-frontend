@@ -1,10 +1,10 @@
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RecoilRoot } from 'recoil';
 import { useFonts } from 'expo-font';
-import { AuthStack, SigonganStack, CommentStack } from './navigations';
 
+import { AuthStack, SigonganStack, CommentStack } from './navigations';
 import { UserStateProvider, useUserState } from './providers';
 
 const Main = () => {
@@ -13,8 +13,12 @@ const Main = () => {
     Inter: require('../assets/font/Inter-Regular.ttf'),
     'Inter-Bold': require('../assets/font/Inter-SemiBold.ttf'),
   });
-
   const { userState } = useUserState();
+
+  // TODO: splash screen
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const navTheme = {
     ...DefaultTheme,
@@ -23,10 +27,6 @@ const Main = () => {
       background: 'white',
     },
   };
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <RecoilRoot>
