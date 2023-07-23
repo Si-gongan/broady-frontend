@@ -7,6 +7,10 @@ import { useFonts } from 'expo-font';
 import { AuthStack, SigonganStack, CommentStack } from './navigations';
 import { UserStateProvider, useUserState } from './providers';
 
+import { initializeNotifications, useNotifications } from './components/common/notifications';
+
+initializeNotifications();
+
 const Main = () => {
   const [fontsLoaded] = useFonts({
     ABeeZee: require('../assets/font/ABeeZee-Regular.ttf'),
@@ -14,6 +18,8 @@ const Main = () => {
     'Inter-Bold': require('../assets/font/Inter-SemiBold.ttf'),
   });
   const { userState } = useUserState();
+
+  useNotifications();
 
   // TODO: splash screen
   if (!fontsLoaded) {

@@ -31,9 +31,14 @@ export async function registerForPushNotificationsAsync() {
     alert('Failed to get push token for push notification!');
     return;
   }
-  const token = (await Notifications.getExpoPushTokenAsync()).data;
+  const token = (await Notifications.getDevicePushTokenAsync()).data;
 
   return token;
+}
+
+export async function getNotificationPermissions() {
+  const { status } = await Notifications.getPermissionsAsync();
+  return status;
 }
 
 // test function
