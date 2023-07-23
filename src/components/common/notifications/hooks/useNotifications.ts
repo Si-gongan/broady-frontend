@@ -1,13 +1,15 @@
-import { useState, useRef, useEffect } from 'react';
-import * as Notifications from 'expo-notifications';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 
-import { storeData } from '../../async-storage';
 import { registerForPushNotificationsAsync } from '../lib';
+import { fcmTokenState } from '../../../../states';
 
 export const useNotifications = () => {
+  const [, setRequestList] = useRecoilState(fcmTokenState);
+
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
-      // TODO: recoil atom에 저장
+      setRequestList(token);
     });
   }, []);
 };

@@ -35,24 +35,24 @@ const Main = () => {
   };
 
   return (
-    <RecoilRoot>
-      <NavigationContainer theme={navTheme}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <SafeAreaView style={{ flex: 1 }}>
-            {userState === 'unLogin' && <AuthStack />}
-            {userState === 'Sigongan' && <SigonganStack />}
-            {userState === 'Comment' && <CommentStack />}
-          </SafeAreaView>
-        </GestureHandlerRootView>
-      </NavigationContainer>
-    </RecoilRoot>
+    <NavigationContainer theme={navTheme}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
+          {userState === 'unLogin' && <AuthStack />}
+          {userState === 'Sigongan' && <SigonganStack />}
+          {userState === 'Comment' && <CommentStack />}
+        </SafeAreaView>
+      </GestureHandlerRootView>
+    </NavigationContainer>
   );
 };
 
 export const App = () => {
   return (
-    <UserStateProvider>
-      <Main />
-    </UserStateProvider>
+    <RecoilRoot>
+      <UserStateProvider>
+        <Main />
+      </UserStateProvider>
+    </RecoilRoot>
   );
 };
