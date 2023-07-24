@@ -2,14 +2,20 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Refund from '../../components/Comment/Mypage/Refund';
 import CustomerService from '../../components/common/CustomerService';
 import { SigonganDesign } from '../../components/sigongan/styles';
+import { useUserState } from '../../providers';
 
 const MyPageScreen = ({ navigation }: any) => {
+  const { logout } = useUserState();
+
   return (
     <View style={styles.container}>
       <Refund navigation={navigation} />
       <CustomerService />
       <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
-        <Text style={SigonganDesign.myPageContent}>로그아웃</Text>
+        <TouchableOpacity onPress={logout}>
+          <Text style={SigonganDesign.myPageContent}>로그아웃</Text>
+        </TouchableOpacity>
+
         <Text style={styles.deleteUser}>회원 탈퇴</Text>
       </View>
     </View>

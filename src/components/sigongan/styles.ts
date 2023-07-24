@@ -46,23 +46,23 @@ export const SigonganColor = StyleSheet.create({
 
 export const SigonganFont = StyleSheet.create({
   primary: {
+    fontFamily: 'Inter',
     fontSize: 18,
-    fontStyle: 'italic',
     fontWeight: '400',
   },
   secondary: {
+    fontFamily: 'Inter',
     fontSize: 16,
-    fontStyle: 'italic',
     fontWeight: '400',
   },
   teritary: {
+    fontFamily: 'Inter',
     fontSize: 14,
-    fontStyle: 'italic',
     fontWeight: '400',
   },
   quaternary: {
+    fontFamily: 'Inter',
     fontSize: 12,
-    fontStyle: 'normal',
     fontWeight: '400',
   },
 });
@@ -89,13 +89,11 @@ export const SigonganDesign = StyleSheet.create({
   myPageTitle: {
     ...SigonganFont.primary,
     ...SigonganColor.contentSeptenary,
-    fontStyle: 'normal',
-    fontWeight: '600',
+    fontFamily: 'Inter-Bold',
   },
   myPageContent: {
     ...SigonganFont.teritary,
     ...SigonganColor.contentSeptenary,
-    fontStyle: 'normal',
   },
 
   speechBubble1: {

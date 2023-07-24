@@ -4,11 +4,12 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { AuthStackParamList } from '../../navigations';
 import { useUserState } from '../../providers';
 import { AuthColor, AuthDesign } from '../../components/auth/styles';
+import { USER_STATE, storeData } from '../../components/common/async-storage';
 
 export const IntroScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
   // TODO: device id 처리
-  const { changeUserState } = useUserState();
+  const { loginToSigongan } = useUserState();
 
   return (
     <View style={styles.container}>
@@ -19,7 +20,7 @@ export const IntroScreen = () => {
       <TouchableOpacity
         activeOpacity={0.8}
         style={[styles.button1, AuthDesign.buttonColor1]}
-        onPress={() => changeUserState('Sigongan')}
+        onPress={loginToSigongan}
         accessible
         accessibilityLabel="시각 지원받기 버튼"
       >
