@@ -3,7 +3,7 @@ import Footer from '../../components/Comment/CommentWriting/Footer';
 import Header from '../../components/common/Header';
 import RequestMessage from '../../components/Comment/CommentWriting/RequestMessage';
 import { useRecoilState } from 'recoil';
-import { requestListState } from '../../states/request';
+import { commentTimerListState, requestListState } from '../../states/request';
 import { useEffect, useState } from 'react';
 import { IRequest } from '../../types/request';
 import ResponseMessage from '../../components/Comment/CommentWriting/ResponseMessage';
@@ -13,22 +13,30 @@ interface IComment {
   content: string;
 }
 
+interface ITimer {
+  id: number;
+  timerId: string | number | NodeJS.Timer | undefined;
+}
+
 const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const { id } = route.params;
   const [requestList, setRequestList] = useRecoilState(requestListState);
   const [currentRequest, setCurrentRequest] = useState<IRequest>({} as any);
-  const [commentList, setCommentList] = useState<IComment[]>([]);
-  // const [commentTimer, setCommentTimer] = useState<number>(1);
 
-  let timerId: string | number | NodeJS.Timer | undefined;
-  const startTimer = () => {
-    timerId = setInterval(() => {
+  const [commentList, setCommentList] = useState<IComment[]>([]);
+  const [commentTimerList, setCommentTimerList] = useRecoilState(commentTimerListState);
+
+  // let timerId: string | number | NodeJS.Timer | undefined;
+  const startTimer = async () => {
+    const timerId: ITimer['timerId'] = setInterval(() => {
       setRequestList(
         requestList.map((request) =>
-          request.id === id ? { ...request, commentTimer: --request.commentTimer } : request
+          request.id === id ? { ...request, status: 0, commentTimer: --request.commentTimer } : request
         )
       );
-    }, 60000);
+    }, 10000);
+    const newTimer = { id, timerId };
+    setCommentTimerList(commentTimerList.concat(newTimer));
   };
 
   const sendComment = (text: string) => {
@@ -39,28 +47,27 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   };
 
   const startComment = (id: number) => {
-    setRequestList(
-      requestList.map((request) => (request.id === id ? { ...request, status: 0, commentTimer: 10 } : request))
-    );
+    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 0 } : request)));
     startTimer();
   };
 
   const endComment = () => {
-    clearInterval(timerId);
+    const clear = commentTimerList.filter((timer) => timer.id === id);
+    clearInterval(clear[0].timerId);
     setRequestList(
       requestList.map((request) => (request.id === id ? { ...request, status: 1, commentTimer: 10 } : request))
     );
   };
 
   const resetComment = () => {
-    clearInterval(timerId);
+    const clear = commentTimerList.filter((timer) => timer.id === id);
+    clearInterval(clear[0].timerId);
     setRequestList(
       requestList.map((request) => (request.id === id ? { ...request, status: -1, commentTimer: 10 } : request))
     );
   };
 
   useEffect(() => {
-    // const current = requestList.filter((request) => request.id === id);
     if (currentRequest.commentTimer === 0) resetComment();
   }, [requestList]);
 

@@ -10,6 +10,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [currentRequest, setCurrentRequest] = useState<IRequest[]>([]);
 
   useEffect(() => {
+    console.log('HomeScreen 렌더링 : ', currentRequest);
     setCurrentRequest(requestList.filter((request) => request.status === -1));
   }, [requestList]);
 

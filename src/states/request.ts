@@ -1,6 +1,11 @@
 import { atom } from 'recoil';
 import { IRequest } from '../types/request';
 
+interface ITimer {
+  id: number;
+  timerId: string | number | NodeJS.Timer | undefined;
+}
+
 // status : 0 해설 의뢰 / 1 : 작성 중 / 2 : 완료
 const initialState: IRequest[] = [
   {
@@ -69,8 +74,15 @@ const initialState: IRequest[] = [
   },
 ];
 
+const commentTimerInit: ITimer[] = [];
+
 const randomInt = Math.floor(Math.random() * 100);
 export const requestListState = atom({
   key: `requestListState${randomInt}`,
   default: initialState,
+});
+
+export const commentTimerListState = atom({
+  key: `commentTimerState${randomInt}`,
+  default: commentTimerInit,
 });
