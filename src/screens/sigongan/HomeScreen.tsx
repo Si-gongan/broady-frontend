@@ -14,12 +14,14 @@ import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 
 import { GetRequestList, IReqeustListItem } from '../../api/axios';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { SigonganStackParamList } from '../../navigations';
 
 export const HomeScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const [requestList, setRequestList] = useState<IReqeustListItem[]>([]);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
   const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
 
   useEffect(() => {
@@ -53,6 +55,7 @@ export const HomeScreen = () => {
                 activeOpacity={0.8}
                 accessible
                 accessibilityLabel={`${item.requestedUser[0].text} 의뢰 상세보기`}
+                onPress={() => navigation.navigate('해설 진행현황', { item })}
               >
                 <View style={styles.requestItem}>
                   <RequestImageCard imgUrl={AWS_BUCKET_BASE_URL + '/' + item.photo} />

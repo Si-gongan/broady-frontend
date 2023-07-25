@@ -1,3 +1,5 @@
+import { IReqeustListItem } from '../api/axios';
+
 export type AuthStackParamList = {
   인트로: undefined;
   시작하기: undefined;
@@ -12,7 +14,7 @@ export type CommentaryTabParamList = {
 export type SigonganStackParamList = {
   메인: undefined;
   해설의뢰: { url?: string };
-  '해설 진행현황': undefined;
+  '해설 진행현황': { item: IReqeustListItem };
 };
 
 export type SigonganMainTabParamList = {
