@@ -1,4 +1,4 @@
-import { Server } from './setting';
+import { Server } from '../setting';
 import { LoginReturnType } from './types';
 
 export const Login = async (id: string, password: string, fcmToken: string) => {
