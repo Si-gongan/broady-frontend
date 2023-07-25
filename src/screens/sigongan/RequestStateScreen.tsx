@@ -8,8 +8,14 @@ import {
   ThanksBox,
 } from '../../components/sigongan/request-state';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { SigonganStackParamList } from '../../navigations';
 
 export const RequestStateScreen = () => {
+  const {
+    params: { item },
+  } = useRoute<RouteProp<SigonganStackParamList, '해설 진행현황'>>();
+
   const insets = useSafeAreaInsets();
 
   return (

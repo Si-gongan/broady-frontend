@@ -4,20 +4,27 @@ import { ImageController, QuestTextArea, SubmitRequestButton } from '../../compo
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useEffect, useRef, useState } from 'react';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { SigonganStackParamList } from '../../navigations';
 import { CommentRequestPopup, ICommentRequestPopupHandler } from '../../components/sigongan/home';
+import { RegisterRequest } from '../../api/axios';
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../states';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export const CommentRequestScreen = () => {
   const {
     params: { url },
   } = useRoute<RouteProp<SigonganStackParamList, '해설의뢰'>>();
   const [value, setValue] = useState('');
+  const fcmToken = useRecoilValue(fcmTokenState);
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
+
+  const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
 
   const insets = useSafeAreaInsets();
 
@@ -64,9 +71,15 @@ export const CommentRequestScreen = () => {
       </ScrollView>
 
       <SubmitRequestButton
-        onPress={() => {
-          console.log('url', url);
-          console.log('value', value);
+        onPress={async () => {
+          try {
+            const res = await RegisterRequest(value, url ?? '', fcmToken);
+
+            // TODO: 팝업 처리 등록 완료
+            navigation.goBack();
+          } catch (e) {
+            console.log('error', e);
+          }
 
           // TODO: 페이지 이동 처리
         }}

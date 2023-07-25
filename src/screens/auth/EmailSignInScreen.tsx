@@ -16,7 +16,7 @@ type ILoginForm = {
 };
 
 export const EmailSignInScreen = ({ navigation }: any) => {
-  const [fcmToken] = useRecoilValue(fcmTokenState);
+  const fcmToken = useRecoilValue(fcmTokenState);
 
   const { loginToComment } = useUserState();
 

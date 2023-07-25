@@ -1,14 +1,11 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const TESTIMGURL = require('../../../../assets/sample_request.png');
+import { Image, StyleSheet } from 'react-native';
 
 type RequestImageCardProps = {
-  imgUrl: string; // s3 bucket url?
+  imgUrl: string; // s3 bucket url
 };
 
 export const RequestImageCard = ({ imgUrl }: RequestImageCardProps) => {
-  return <Image source={TESTIMGURL} style={styles.container} />;
+  return <Image source={{ uri: imgUrl }} style={styles.container} />;
 };
 
 const styles = StyleSheet.create({

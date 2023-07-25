@@ -1,8 +1,8 @@
-import { Server } from './setting';
-import { LoginReturnType } from './types';
+import { Server } from '../setting';
+import { ILoginReturnType } from './types';
 
 export const Login = async (id: string, password: string, fcmToken: string) => {
-  return await Server.post<LoginReturnType>(
+  return await Server.post<ILoginReturnType>(
     '/user/login',
     { id, password },
     {
