@@ -1,5 +1,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
+import { imagePath } from '../../../../assets/imagePath';
 import { IRequest } from '../../../types/request';
 import { getConvertDate } from '../../../utils/time';
 
@@ -16,7 +17,7 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
     >
       <Shadow distance={3} sides={{ top: false, bottom: true, start: true, end: true }}>
         <View style={styles.imageContainer}>
-          <Image source={request.imgSrc} alt="" style={styles.image} />
+          <Image source={imagePath.REQUEST} alt="" style={styles.image} />
           <View style={styles.imageTextContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.createdAtRequest}>{gapTime}</Text>
@@ -26,7 +27,7 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
                 <Text></Text>
               )}
             </View>
-            <Text style={styles.requestContent}>{request.content}</Text>
+            <Text style={styles.requestContent}>{request.text}</Text>
           </View>
         </View>
       </Shadow>

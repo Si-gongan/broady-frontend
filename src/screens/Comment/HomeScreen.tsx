@@ -19,7 +19,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     // 모든 의뢰목록 가져오기
-    getRequestAll(fcmToken, authToken).then((res) => setRequestList(res));
+    // getRequestAll(fcmToken, authToken).then((res) => setRequestList(res));
   }, [requestList]);
 
   return (
