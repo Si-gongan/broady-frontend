@@ -14,10 +14,11 @@ export const getRequestAll = async (fcmToken: string, token: string) => {
 };
 
 export const getRequest = async (id: string, fcmToken: string, token: string) => {
-  return await Server.get<RequestReturnType>(`/post/${id}`, {
+  const result = await Server.get<RequestReturnType>(`/post/${id}`, {
     params: { id },
     headers: { fcmToken, Authorization: token },
   });
+  return result.data.result.post;
 };
 
 export const getProceedRequest = async (fcmToken: string, token: string) => {
