@@ -136,3 +136,14 @@ export type endCommentReturnType = {
     };
   };
 };
+
+export type ReturnPointListType = {
+  code: number;
+  result: {
+    pointHistories: {
+      date: Date;
+      description: string;
+      point: number;
+    }[];
+  };
+};
