@@ -22,13 +22,17 @@ export const getRequest = async (id: string, fcmToken: string, token: string) =>
 };
 
 export const getProceedRequest = async (fcmToken: string, token: string) => {
-  return await Server.get<ProceedRequestReturnType>(`/post/proceed`, { headers: { fcmToken, Authorization: token } });
+  const result = await Server.get<ProceedRequestReturnType>(`/post/proceed`, {
+    headers: { fcmToken, Authorization: token },
+  });
+  return result.data.result.proceedingPosts;
 };
 
 export const getCompletedRequest = async (fcmToken: string, token: string) => {
-  return await Server.get<CompletedRequestReturnType>(`/post/completed`, {
+  const result = await Server.get<CompletedRequestReturnType>(`/post/completed`, {
     headers: { fcmToken, Authorization: token },
   });
+  return result.data.result.completedPosts;
 };
 
 export const startComment = async (postId: string, fcmToken: string, token: string) => {
