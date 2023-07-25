@@ -2,96 +2,89 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Keyboard }
 import Footer from '../../components/Comment/CommentWriting/Footer';
 import Header from '../../components/common/Header';
 import RequestMessage from '../../components/Comment/CommentWriting/RequestMessage';
-import { useRecoilState } from 'recoil';
-import { commentTimerListState, requestListState } from '../../states/request';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { requestListState } from '../../states/request';
 import { useEffect, useState } from 'react';
-import { IRequest } from '../../types/request';
-import ResponseMessage from '../../components/Comment/CommentWriting/ResponseMessage';
+import { ICurrentRequest, IRequest } from '../../types/request';
+import { getRequest } from '../../api/axios';
+import { authTokenState, fcmTokenState } from '../../states';
+import MessageList from '../../components/Comment/CommentWriting/MessageList';
 
 interface IComment {
   id: number;
   content: string;
 }
 
-interface ITimer {
-  id: number;
-  timerId: string | number | NodeJS.Timer | undefined;
-}
-
 const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const { id } = route.params;
-  const [requestList, setRequestList] = useRecoilState(requestListState);
-  const [currentRequest, setCurrentRequest] = useState<IRequest>({} as any);
+  // const [requestList, setRequestList] = useRecoilState(requestListState);
+  const [currentRequest, setCurrentRequest] = useState<ICurrentRequest>({} as any);
+  // const [commentList, setCommentList] = useState<IComment[]>([]);
+  // const [commentTimer, setCommentTimer] = useState<number>(1);
 
-  const [commentList, setCommentList] = useState<IComment[]>([]);
-  const [commentTimerList, setCommentTimerList] = useRecoilState(commentTimerListState);
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const authToken = useRecoilValue(authTokenState);
 
   // let timerId: string | number | NodeJS.Timer | undefined;
-  const startTimer = async () => {
-    const timerId: ITimer['timerId'] = setInterval(() => {
-      setRequestList(
-        requestList.map((request) =>
-          request.id === id ? { ...request, status: 0, commentTimer: --request.commentTimer } : request
-        )
-      );
-    }, 10000);
-    const newTimer = { id, timerId };
-    setCommentTimerList(commentTimerList.concat(newTimer));
-  };
+  // const startTimer = () => {
+  //   timerId = setInterval(() => {
+  //     setCommentTimer((prev) => prev - 1);
+  //   }, 60000);
+  // };
 
-  const sendComment = (text: string) => {
-    const newComment = { id: ++commentList.length, content: text };
-    setCommentList(commentList.concat(newComment));
-    endComment();
-    Keyboard.dismiss();
-  };
+  // const sendComment = (text: string) => {
+  //   const newComment = { id: ++commentList.length, content: text };
+  //   setCommentList(commentList.concat(newComment));
+  //   endComment();
+  //   Keyboard.dismiss();
+  // };
 
-  const startComment = (id: number) => {
-    setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 0 } : request)));
-    startTimer();
-  };
+  // const startComment = (id: number) => {
+  //   setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 0 } : request)));
+  //   startTimer();
+  // };
 
-  const endComment = () => {
-    const clear = commentTimerList.filter((timer) => timer.id === id);
-    clearInterval(clear[0].timerId);
-    setRequestList(
-      requestList.map((request) => (request.id === id ? { ...request, status: 1, commentTimer: 10 } : request))
-    );
-  };
+  // const endComment = () => {
+  //   clearInterval(timerId);
+  //   setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: 1 } : request)));
+  // };
 
-  const resetComment = () => {
-    const clear = commentTimerList.filter((timer) => timer.id === id);
-    clearInterval(clear[0].timerId);
-    setRequestList(
-      requestList.map((request) => (request.id === id ? { ...request, status: -1, commentTimer: 10 } : request))
-    );
-  };
+  // const resetComment = () => {
+  //   clearInterval(timerId);
+  //   setRequestList(requestList.map((request) => (request.id === id ? { ...request, status: -1 } : request)));
+  //   setCommentTimer(1);
+  // };
+
+  // useEffect(() => {
+  //   if (commentTimer === 0) resetComment();
+  // }, [commentTimer]);
+
+  // useEffect(() => {
+  //   const result = requestList.filter((request) => request.id === id);
+  //   setCurrentRequest(result[0]);
+  // }, [requestList]);
 
   useEffect(() => {
-    if (currentRequest.commentTimer === 0) resetComment();
-  }, [requestList]);
-
-  useEffect(() => {
-    const result = requestList.filter((request) => request.id === id);
-    setCurrentRequest(result[0]);
-  }, [requestList]);
-
+    // TODO: postId 넘어오는 건 테스트 완료. 해설의뢰가 들어온 뒤에 테스트 가능
+    getRequest(id, fcmToken, authToken).then((res) => setCurrentRequest(res));
+  }, []);
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation}>해설 작성</Header>
       <ScrollView style={styles.bodyContainer}>
-        <RequestMessage content={currentRequest.content} />
+        <MessageList request={currentRequest} />
+        {/* <RequestMessage content={currentRequest.text} />
         {commentList.map((comment, idx) => (
           <ResponseMessage key={idx} comment={comment} />
-        ))}
+        ))} */}
       </ScrollView>
       <Footer
         id={id}
-        status={currentRequest.status}
-        startComment={startComment}
-        sendComment={sendComment}
-        resetComment={resetComment}
-        commentTimer={currentRequest.commentTimer}
+        // status={currentRequest.status}
+        // startComment={startComment}
+        // sendComment={sendComment}
+        // resetComment={resetComment}
+        // commentTimer={commentTimer}
       />
     </View>
   );

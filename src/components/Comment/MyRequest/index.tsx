@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
+import { authTokenState, fcmTokenState } from '../../../states';
 import { requestListState } from '../../../states/request';
-import { IRequest } from '../../../types/request';
-import RequestList from '../Home/RequestList';
+import { ICurrentRequest } from '../../../types/request';
+import RequestList from './RequestList';
 
 interface ITopTab {
   id: number;
@@ -15,7 +17,10 @@ const requestStatus = ['작성 중', '완료'];
 
 const MyRequest = ({ navigation }: any) => {
   const [requestList, setRequestList] = useRecoilState(requestListState);
-  const [currestRequest, setCurrentRequest] = useState<IRequest[]>([]);
+  const [currestRequest, setCurrentRequest] = useState<ICurrentRequest[]>([]);
+
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const authToken = useRecoilValue(authTokenState);
 
   const [topTabNavigations, setTopTabNavigations] = useState([
     {
@@ -40,13 +45,17 @@ const MyRequest = ({ navigation }: any) => {
         tab.id === clickedId ? { ...tab, clicked: true } : { ...tab, clicked: false }
       )
     );
-    const result = requestList.filter((request) => request.status === clickedId);
-    setCurrentRequest(result);
   };
 
+  // useEffect(() => {
+  //   setCurrentRequest(requestList.filter((request) => request.status === lastClicked.current));
+  // }, [requestList]);
+
   useEffect(() => {
-    setCurrentRequest(requestList.filter((request) => request.status === lastClicked.current));
-  }, [requestList]);
+    // TODO: 두개로 나눌지? 하나로 둘 지? 느리면 저장해뒀다가 상태변경됐을 때 리렌더링하도록 수정
+    if (lastClicked.current === 0) getProceedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+    if (lastClicked.current === 1) getCompletedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+  }, [topTabNavigations]);
 
   return (
     <View style={styles.mainContainer}>

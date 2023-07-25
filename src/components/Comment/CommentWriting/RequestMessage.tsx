@@ -1,8 +1,14 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import ImageModal from 'react-native-image-modal';
 import { AWS_BUCKET_BASE_URL } from '@env';
 
-const RequestMessage = ({ content }: { content: string }) => {
+interface IRequestMessageProps {
+  id: string;
+  text: string;
+  createdAt: Date;
+}
+
+const RequestMessage = ({ content }: { content: IRequestMessageProps }) => {
   return (
     <>
       <View style={styles.imageContainer}>
@@ -19,7 +25,7 @@ const RequestMessage = ({ content }: { content: string }) => {
           <Image source={require('../../../../assets/sample_request.png')} alt="" style={styles.chatImage} />
         </View>
         <View style={styles.chatText}>
-          <Text>{content}</Text>
+          <Text>{content.text}</Text>
         </View>
         <View>
           <Text style={{ color: '#777' }}>오후 2:05</Text>

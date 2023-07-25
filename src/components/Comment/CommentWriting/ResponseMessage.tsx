@@ -5,7 +5,15 @@ interface IComment {
   content: string;
 }
 
-const ResponseMessage = ({ comment }: { comment: IComment }) => {
+interface IResponseMessageProps {
+  id: string;
+  text: string;
+  userId: string;
+  createdAt: string;
+  appreciated: boolean;
+}
+
+const ResponseMessage = ({ comment }: { comment: IResponseMessageProps }) => {
   return (
     <>
       <View style={styles.imageContainer}></View>
@@ -14,7 +22,7 @@ const ResponseMessage = ({ comment }: { comment: IComment }) => {
           <Text style={{ color: '#777' }}>오후 2:20</Text>
         </View>
         <View style={styles.chatText}>
-          <Text style={{ color: 'white' }}>{comment.content}</Text>
+          <Text style={{ color: 'white' }}>{comment.text}</Text>
         </View>
       </View>
     </>

@@ -1,15 +1,34 @@
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { getPointList } from '../../api/axios/user';
 import Refund from '../../components/Comment/Mypage/Refund';
 import CustomerService from '../../components/common/CustomerService';
 import { SigonganDesign } from '../../components/sigongan/styles';
 import { useUserState } from '../../providers';
+import { authTokenState, fcmTokenState } from '../../states';
+import { IPoint } from '../../types/user';
 
+const getMyPoint = (pointList: IPoint[]) => {
+  const points = pointList.map((data) => data.point);
+  const total = points.reduce((sum, value) => sum + value, 0);
+  return total;
+};
 const MyPageScreen = ({ navigation }: any) => {
   const { logout } = useUserState();
+  const [pointList, setPointList] = useState<IPoint[]>([]);
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const authToken = useRecoilValue(authTokenState);
+  const [myPoint, setMyPoint] = useState(0);
+
+  useEffect(() => {
+    getPointList(fcmToken, authToken).then((data) => setPointList(data));
+    setMyPoint(getMyPoint(pointList));
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Refund navigation={navigation} />
+      <Refund myPoint={myPoint} navigation={navigation} />
       <CustomerService />
       <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
         <TouchableOpacity onPress={logout}>

@@ -1,17 +1,24 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { imagePath } from '../../../../assets/imagePath';
-import { IRequest } from '../../../types/request';
 import { getConvertDate } from '../../../utils/time';
 
-const RequestItem = ({ request, navigation }: { request: IRequest; navigation: any }) => {
-  const gapTime = getConvertDate(request.createdAt);
+interface IRequestItem {
+  id: string;
+  text: string;
+  createdAt: Date;
+}
+
+const RequestItem = ({ request, navigation }: { request: IRequestItem[]; navigation: any }) => {
+  const lastIndex: number = request.length - 1;
+  /* 가장 최근 의뢰 질문을 기준으로 시간 계산 */
+  const gapTime = getConvertDate(request[lastIndex].createdAt);
 
   return (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate('Writing', {
-          id: request.id,
+          id: request[lastIndex].id,
         })
       }
     >
@@ -21,8 +28,13 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
           <View style={styles.imageTextContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.createdAtRequest}>{gapTime}</Text>
+              {request.status === 0 ? (
+                <Text style={{ fontSize: 12, color: '#CF0000' }}>{request.commentTimer}분 남음</Text>
+              ) : (
+                <Text></Text>
+              )}
             </View>
-            <Text style={styles.requestContent}>{request.text}</Text>
+            <Text style={styles.requestContent}>{request[lastIndex].text}</Text>
           </View>
         </View>
       </Shadow>

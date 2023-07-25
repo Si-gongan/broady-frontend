@@ -5,10 +5,9 @@ export const getKoreanTime = () => {
   return koreanTime;
 };
 
-export const getConvertDate = (target: string) => {
+export const getConvertDate = (target: Date) => {
   const currentTime = getKoreanTime();
-  const date = new Date(target);
-  const gapMiliseconds = currentTime.getTime() - date.getTime();
+  const gapMiliseconds = currentTime.getTime() - target.getTime();
   const gapMinute = Math.floor(gapMiliseconds / (1000 * 60));
   const gapHour = Math.floor(gapMiliseconds / (1000 * 60 * 60));
   const gapDay = Math.floor(gapMiliseconds / (1000 * 60 * 60 * 24));
