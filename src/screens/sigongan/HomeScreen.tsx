@@ -13,7 +13,7 @@ import { AWS_BUCKET_BASE_URL } from '@env';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 
-import { GetRequestList, IReqeustListItem } from '../../api/axios';
+import { GetRequestList, IReqeustListItem } from '../../api/axios/sigongan';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SigonganStackParamList } from '../../navigations';
 
