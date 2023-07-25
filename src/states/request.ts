@@ -1,63 +1,55 @@
 import { atom } from 'recoil';
 import { IRequest } from '../types/request';
 
-// status : 0 해설 의뢰 / 1 : 작성 중 / 2 : 완료
+// TODO: 더미 데이터. 데이터 생기면 빈 배열로 두기.
 const initialState: IRequest[] = [
   {
     id: 0,
-    createdAt: '2023-07-11T03:12:13T',
-    content: '고양이가 어떤 모습인지 자세히 설명해주세요.',
-    imgSrc: require('../../assets/sample_request.png'),
-    status: -1,
+    createdAt: '2023-07-22T13:40:13Z',
+    text: '고양이가 어떤 모습인지 자세히 설명해주세요.',
+    photo: '../../assets/sample_request.png',
   },
   {
     id: 1,
-    createdAt: '2023-07-11T03:12:13T',
-    content: '질문 내용1',
-    imgSrc: require('../../assets/sample_request.png'),
-    status: -1,
+    createdAt: '2023-07-22T13:22:13Z',
+    text: '질문 내용1',
+    photo: '../../assets/sample_request.png',
   },
   {
     id: 2,
-    createdAt: '2023-07-11T03:12:13T',
-    content: '질문 내용2',
-    imgSrc: require('../../assets/sample_request.png'),
-    status: -1,
+    createdAt: '2023-07-22T12:12:13Z',
+    text: '질문 내용2',
+    photo: '../../assets/sample_request.png',
   },
   {
     id: 3,
-    createdAt: '2023-07-11T03:12:13T',
-    content: '질문 내용3',
-    imgSrc: require('../../assets/sample_request.png'),
-    status: -1,
+    createdAt: '2023-07-21T03:12:13Z',
+    text: '질문 내용3',
+    photo: '../../assets/sample_request.png',
   },
   {
     id: 4,
-    createdAt: '2023-07-11T03:12:13T',
-    content: '질문 내용4',
-    imgSrc: require('../../assets/sample_request.png'),
-    status: -1,
+    createdAt: '2023-07-20T03:12:13Z',
+    text: '질문 내용4',
+    photo: '../../assets/sample_request.png',
   },
   {
     id: 5,
-    createdAt: '2023-07-11T03:12:13T',
-    content: '질문 내용ㅇ5',
-    imgSrc: require('../../assets/sample_request.png'),
-    status: -1,
+    createdAt: '2023-07-19T03:12:13Z',
+    text: '질문 내용5',
+    photo: '../../assets/sample_request.png',
   },
   {
     id: 6,
-    createdAt: '2023-07-11T03:12:13T',
-    content: '질문 내용6',
-    imgSrc: require('../../assets/sample_request.png'),
-    status: -1,
+    createdAt: '2023-07-18T03:12:13Z',
+    text: '질문 내용6',
+    photo: '../../assets/sample_request.png',
   },
   {
     id: 7,
-    createdAt: '2023-07-11T03:12:13T',
-    content: '질문 내용7',
-    imgSrc: require('../../assets/sample_request.png'),
-    status: -1,
+    createdAt: '2023-07-18T03:12:13Z',
+    text: '질문 내용7',
+    photo: '../../assets/sample_request.png',
   },
 ];
 

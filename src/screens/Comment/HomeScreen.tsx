@@ -1,16 +1,25 @@
 import { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { getRequestAll } from '../../api/axios';
 import RequestList from '../../components/Comment/Home/RequestList';
+import { authTokenState, fcmTokenState } from '../../states';
 import { requestListState } from '../../states/request';
 import { IRequest } from '../../types/request';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
-  const [requestList, setRequestList] = useRecoilState(requestListState);
+  const [requestList, setRequestList] = useRecoilState<IRequest[]>(requestListState);
   const [currentRequest, setCurrentRequest] = useState<IRequest[]>([]);
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const authToken = useRecoilValue(authTokenState);
+
+  // useEffect(() => {
+  // setCurrentRequest(requestList.filter((request) => request.status === -1));
+  // }, [requestList]);
 
   useEffect(() => {
-    setCurrentRequest(requestList.filter((request) => request.status === -1));
+    // 모든 의뢰목록 가져오기
+    getRequestAll(fcmToken, authToken).then((res) => setRequestList(res));
   }, [requestList]);
 
   return (
@@ -20,7 +29,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       </View>
       <ScrollView style={styles.mainContainer}>
         <View style={styles.bodyContainer}>
-          <RequestList requestList={currentRequest} navigation={navigation} />
+          <RequestList requestList={requestList} navigation={navigation} />
         </View>
       </ScrollView>
     </>

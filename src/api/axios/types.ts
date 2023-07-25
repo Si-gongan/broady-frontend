@@ -14,8 +14,8 @@ export type RequestAllReturnType = {
   code: number;
   result: {
     posts: {
-      id: string;
-      createdAt: Date;
+      id: number;
+      createdAt: string;
       photo: string;
       text: string;
     }[];

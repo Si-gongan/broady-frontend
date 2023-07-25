@@ -9,7 +9,8 @@ import {
 import { Server } from './setting';
 
 export const getRequestAll = async (fcmToken: string, token: string) => {
-  return await Server.get<RequestAllReturnType>('/post', { headers: { fcmToken, Authorization: token } });
+  const result = await Server.get<RequestAllReturnType>('/post', { headers: { fcmToken, Authorization: token } });
+  return result.data.result.posts;
 };
 
 export const getRequest = async (id: string, fcmToken: string, token: string) => {
