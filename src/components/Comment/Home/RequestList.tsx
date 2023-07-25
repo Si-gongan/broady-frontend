@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 30,
+    marginBottom: 30,
   },
 });
 

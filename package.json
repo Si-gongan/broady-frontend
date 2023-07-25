@@ -16,6 +16,7 @@
     "@types/react-native-dotenv": "^0.2.0",
     "axios": "^1.4.0",
     "expo": "~48.0.18",
+    "expo-background-fetch": "~11.1.1",
     "expo-camera": "~13.2.1",
     "expo-checkbox": "~2.3.1",
     "expo-font": "~11.1.1",
