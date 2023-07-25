@@ -12,19 +12,29 @@ import {
   Platform,
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
+import { useRecoilValue } from 'recoil';
+import { startComment } from '../../../api/axios';
+import { authTokenState, fcmTokenState } from '../../../states';
 
 interface IFooterProps {
-  id: number;
-  status: number;
-  commentTimer: number;
-  startComment: (id: number) => void;
-  sendComment: (text: string) => void;
-  resetComment: () => void;
+  id: string;
+  status?: number;
+  commentTimer?: number;
+  sendComment?: (text: string) => void;
+  resetComment?: () => void;
 }
 
-const Footer = ({ id, status, commentTimer, startComment, sendComment, resetComment }: IFooterProps) => {
+const Footer = ({ id, status, commentTimer, sendComment, resetComment }: IFooterProps) => {
   const [text, setText] = useState<string>('');
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const authToken = useRecoilValue(authTokenState);
   //   const [keyboardStatus, setKeyboardStatus] = useState(false);
+
+  const handleStartComment = async (id: string) => {
+    // TODO: code === 0 : 해설 시작 -> 상태 어떻게 갱신?
+    const result = await startComment(id, fcmToken, authToken);
+    console.log('startComment: ', result);
+  };
 
   useEffect(() => {
     const willShowSubscription = Keyboard.addListener('keyboardWillShow', () => {
@@ -49,7 +59,7 @@ const Footer = ({ id, status, commentTimer, startComment, sendComment, resetComm
     };
   }, []);
 
-  // 의뢰목록(해설 전)
+  // 해설 완료
   if (status === -1) {
     return (
       <>
@@ -60,9 +70,9 @@ const Footer = ({ id, status, commentTimer, startComment, sendComment, resetComm
           sides={{ top: true, bottom: false, start: false, end: false }}
         >
           <View style={styles.footerContainer}>
-            <TouchableOpacity style={styles.commentBtn} onPress={() => startComment(id)}>
+            <View style={styles.commentEndBtn}>
               <Text style={styles.commentText}>해설하기</Text>
-            </TouchableOpacity>
+            </View>
           </View>
         </Shadow>
       </>
@@ -119,7 +129,7 @@ const Footer = ({ id, status, commentTimer, startComment, sendComment, resetComm
     );
   }
 
-  // 해설 완료
+  // 의뢰목록(해설 전)
   return (
     <>
       <Shadow
@@ -129,9 +139,9 @@ const Footer = ({ id, status, commentTimer, startComment, sendComment, resetComm
         sides={{ top: true, bottom: false, start: false, end: false }}
       >
         <View style={styles.footerContainer}>
-          <View style={styles.commentEndBtn}>
+          <TouchableOpacity style={styles.commentBtn} onPress={() => handleStartComment(id)}>
             <Text style={styles.commentText}>해설하기</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </Shadow>
     </>

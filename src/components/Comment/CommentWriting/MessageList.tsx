@@ -1,36 +1,18 @@
+import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import ImageModal from 'react-native-image-modal';
 import { AWS_BUCKET_BASE_URL } from '@env';
+import { ICurrentRequest } from '../../../types/request';
+import RequestMessage from './RequestMessage';
+import ResponseMessage from './ResponseMessage';
 
-interface IRequestMessageProps {
-  id: string;
-  text: string;
-  createdAt: Date;
-}
-
-const RequestMessage = ({ content }: { content: IRequestMessageProps }) => {
+const MessageList = ({ request }: { request: ICurrentRequest }) => {
+  const allMessageList = [...request.requestedUser, request.responseUser];
   return (
     <>
-      <View style={styles.imageContainer}>
-        <ImageModal
-          resizeMode="contain"
-          style={styles.requestImage}
-          source={{
-            uri: `${AWS_BUCKET_BASE_URL}/sample_comment.png`,
-          }}
-        />
-      </View>
-      <View style={styles.chatContainer}>
-        <View>
-          <Image source={require('../../../../assets/sample_request.png')} alt="" style={styles.chatImage} />
-        </View>
-        <View style={styles.chatText}>
-          <Text>{content.text}</Text>
-        </View>
-        <View>
-          <Text style={{ color: '#777' }}>오후 2:05</Text>
-        </View>
-      </View>
+      {/* TODO: 번갈아서 보낼 방법 or flag를 달아서 구분해야 할듯? */}
+      <RequestMessage content={request.requestedUser[0]} />
+      <ResponseMessage comment={request.responseUser[0]} />
     </>
   );
 };
@@ -70,4 +52,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RequestMessage;
+export default MessageList;
