@@ -3,6 +3,7 @@ import { ICurrentRequest, IRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
 
 const RequestList = ({ requestList, navigation }: { requestList: IRequest[]; navigation?: any }) => {
+  console.log('Home RequestList:', requestList);
   return (
     <ScrollView contentContainerStyle={styles.cardContainer}>
       {requestList.map((request: IRequest) => (

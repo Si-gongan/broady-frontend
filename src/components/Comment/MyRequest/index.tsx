@@ -40,14 +40,11 @@ const MyRequest = ({ navigation }: any) => {
   const handleClickTopTab = (e: any) => {
     const clickedId = parseInt(e._dispatchInstances.child.memoizedProps.id);
     lastClicked.current = clickedId;
-    console.log('event: ', lastClicked.current);
     setTopTabNavigations(
       topTabNavigations.map((tab: ITopTab) =>
         tab.id === clickedId ? { ...tab, clicked: true } : { ...tab, clicked: false }
       )
     );
-    // const result = requestList.filter((request) => request.status === clickedId);
-    // setCurrentRequest(result);
   };
 
   // useEffect(() => {

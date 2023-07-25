@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import ImageModal from 'react-native-image-modal';
 import { AWS_BUCKET_BASE_URL } from '@env';
 

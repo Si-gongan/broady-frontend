@@ -1,12 +1,6 @@
 import { StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
-import { ICurrentRequest, IRequest } from '../../../types/request';
+import { ICurrentRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
-
-interface IRequestItem {
-  id: string;
-  createdAt: Date;
-  text: string;
-}
 
 const RequestList = ({ requestList, navigation }: { requestList: ICurrentRequest[]; navigation?: any }) => {
   return (

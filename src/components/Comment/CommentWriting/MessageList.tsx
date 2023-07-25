@@ -1,18 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-import ImageModal from 'react-native-image-modal';
-import { AWS_BUCKET_BASE_URL } from '@env';
 import { ICurrentRequest } from '../../../types/request';
 import RequestMessage from './RequestMessage';
 import ResponseMessage from './ResponseMessage';
 
 const MessageList = ({ request }: { request: ICurrentRequest }) => {
-  const allMessageList = [...request.requestedUser, request.responseUser];
+  // const allMessageList = [...request.requestedUser, ...request.responseUser];
   return (
     <>
       {/* TODO: 번갈아서 보낼 방법 or flag를 달아서 구분해야 할듯? */}
-      <RequestMessage content={request.requestedUser[0]} />
-      <ResponseMessage comment={request.responseUser[0]} />
+      {/* <RequestMessage content={request.requestedUser[0]} />
+      <ResponseMessage comment={request.responseUser[0]} /> */}
     </>
   );
 };
