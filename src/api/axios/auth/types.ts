@@ -1,4 +1,4 @@
-export type LoginReturnType = {
+export type ILoginReturnType = {
   code: number;
   result: {
     user: {

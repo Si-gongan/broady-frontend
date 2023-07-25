@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { SigonganColor, SigonganFont } from '../styles';
+import { getConvertDate } from '../../../utils/time';
 
 type RequestTextCardProps = {
   date: string;
@@ -10,9 +11,9 @@ export const RequestTextCard = ({ date, content }: RequestTextCardProps) => {
   return (
     <View style={[styles.container, SigonganColor.backgroundTeritary]}>
       <View style={styles.textWrapper}>
-        <Text style={SigonganFont.quaternary}>날짜</Text>
+        <Text style={SigonganFont.quaternary}>{getConvertDate(date)}</Text>
 
-        <Text style={SigonganFont.quaternary}>어떤 사진인지 궁금해요.</Text>
+        <Text style={SigonganFont.quaternary}>{content}</Text>
       </View>
     </View>
   );
