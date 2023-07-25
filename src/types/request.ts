@@ -1,6 +1,6 @@
 export interface IRequest {
   id: number;
-  createdAt: string;
+  createdAt: Date;
   photo: string;
   text: string;
 }

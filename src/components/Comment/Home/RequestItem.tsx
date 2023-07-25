@@ -1,15 +1,16 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { IRequest } from '../../../types/request';
+import { getConvertDate } from '../../../utils/time';
 
 const RequestItem = ({ request, navigation }: { request: IRequest; navigation: any }) => {
+  const gapTime = getConvertDate(request.createdAt);
+
   return (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate('Writing', {
           id: request.id,
-          content: request.content,
-          status: request.status,
         })
       }
     >
@@ -17,7 +18,14 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
         <View style={styles.imageContainer}>
           <Image source={request.imgSrc} alt="" style={styles.image} />
           <View style={styles.imageTextContainer}>
-            <Text style={styles.createdAtRequest}>{request.createdAt}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={styles.createdAtRequest}>{gapTime}</Text>
+              {request.status === 0 ? (
+                <Text style={{ fontSize: 12, color: '#CF0000' }}>{request.commentTimer}분 남음</Text>
+              ) : (
+                <Text></Text>
+              )}
+            </View>
             <Text style={styles.requestContent}>{request.content}</Text>
           </View>
         </View>
@@ -34,7 +42,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     gap: 10,
-    paddingBottom: 10,
+    paddingBottom: 30,
     backgroundColor: '#ffffff',
     shadowColor: '#000',
     shadowOffset: {
@@ -51,8 +59,8 @@ const styles = StyleSheet.create({
   },
   imageTextContainer: {
     flex: 1,
+    marginHorizontal: 10,
     gap: 10,
-    marginLeft: 10,
   },
   createdAtRequest: {
     fontSize: 12,
