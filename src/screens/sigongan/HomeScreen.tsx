@@ -45,19 +45,21 @@ export const HomeScreen = () => {
 
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.requestList}>
-          {requestList.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              activeOpacity={0.8}
-              accessible
-              accessibilityLabel={`${item.requestedUser[0].text} 의뢰 상세보기`}
-            >
-              <View style={styles.requestItem}>
-                <RequestImageCard imgUrl={AWS_BUCKET_BASE_URL + '/' + item.photo} />
-                <RequestTextCard date={item.createdAt} content={item.requestedUser[0].text} />
-              </View>
-            </TouchableOpacity>
-          ))}
+          {requestList
+            .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1))
+            .map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                activeOpacity={0.8}
+                accessible
+                accessibilityLabel={`${item.requestedUser[0].text} 의뢰 상세보기`}
+              >
+                <View style={styles.requestItem}>
+                  <RequestImageCard imgUrl={AWS_BUCKET_BASE_URL + '/' + item.photo} />
+                  <RequestTextCard date={item.createdAt} content={item.requestedUser[0].text} />
+                </View>
+              </TouchableOpacity>
+            ))}
         </View>
       </ScrollView>
 
