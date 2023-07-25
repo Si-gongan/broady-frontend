@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SigonganDesign } from '../../../components/sigongan/styles';
 
-const Refund = ({ navigation }: any) => {
+const Refund = ({ navigation, myPoint }: { navigation: any; myPoint: number }) => {
   return (
     <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
-      <Text style={SigonganDesign.myPageTitle}>내 포인트 3200P</Text>
+      <Text style={SigonganDesign.myPageTitle}>내 포인트 {myPoint ? myPoint : '0'}P</Text>
       <TouchableOpacity onPress={() => navigation.navigate('Refund')}>
         <Text style={SigonganDesign.myPageContent}>환급 신청</Text>
       </TouchableOpacity>
