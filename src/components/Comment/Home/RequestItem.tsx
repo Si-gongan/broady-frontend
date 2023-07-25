@@ -6,7 +6,6 @@ import { getConvertDate } from '../../../utils/time';
 
 const RequestItem = ({ request, navigation }: { request: IRequest; navigation: any }) => {
   const gapTime = getConvertDate(request.createdAt);
-  console.log('Home RequestItem:', request);
 
   return (
     <TouchableOpacity

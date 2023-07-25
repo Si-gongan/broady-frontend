@@ -1,13 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import Header from '../../components/common/Header';
 import { commentColor, commentFont } from '../../components/Comment/styles';
 import RefundPointList from '../../components/Comment/Mypage/RefundPointList';
+import { useRecoilValue } from 'recoil';
+import { authTokenState, fcmTokenState } from '../../states';
+import { getPointList, requestRefundPoint } from '../../api/axios';
+import { IPoint } from '../../types/user';
+
+const getMyPoint = (pointList: IPoint[]) => {
+  const points = pointList.map((data) => data.point);
+  const total = points.reduce((sum, value) => sum + value, 0);
+  return total;
+};
 
 const RefundScreen = ({ navigation }: any) => {
   const [accountNumber, setAccountNumber] = useState<string>();
-  const [refundPoint, setRefundPoint] = useState<string>();
+  const [refundPoint, setRefundPoint] = useState<number>(0);
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const authToken = useRecoilValue(authTokenState);
+  const [pointList, setPointList] = useState<IPoint[]>([]);
 
+  const [myPoint, setMyPoint] = useState(0);
+  const onClickRefundButton = () => {
+    requestRefundPoint(refundPoint, fcmToken, authToken).then((data) => console.log(data));
+  };
+
+  useEffect(() => {
+    getPointList(fcmToken, authToken).then((data) => setPointList(data));
+    setMyPoint(getMyPoint(pointList));
+  }, []);
   return (
     <View style={styles.refundContainer}>
       <Header navigation={navigation}>환급 신청</Header>
@@ -31,12 +53,12 @@ const RefundScreen = ({ navigation }: any) => {
             placeholder="신청 포인트 입력"
             placeholderTextColor="#5E5E5E"
             keyboardType="decimal-pad"
-            onChangeText={(text) => setRefundPoint(text)}
-            value={refundPoint}
+            onChangeText={(text) => setRefundPoint(parseInt(text))}
+            value={refundPoint.toString()}
             style={styles.inputBox}
           />
         </View>
-        <TouchableOpacity style={styles.refundBtn}>
+        <TouchableOpacity style={styles.refundBtn} onPress={onClickRefundButton}>
           <Text style={{ color: 'white', fontSize: 16 }}>환급 신청</Text>
         </TouchableOpacity>
       </View>
