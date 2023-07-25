@@ -21,11 +21,6 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
           <View style={styles.imageTextContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.createdAtRequest}>{gapTime}</Text>
-              {request.status === 0 ? (
-                <Text style={{ fontSize: 12, color: '#CF0000' }}>{request.commentTimer}분 남음</Text>
-              ) : (
-                <Text></Text>
-              )}
             </View>
             <Text style={styles.requestContent}>{request.text}</Text>
           </View>

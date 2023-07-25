@@ -1,5 +1,5 @@
 import { StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
-import { IRequest } from '../../../types/request';
+import { ICurrentRequest, IRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
 
 const RequestList = ({ requestList, navigation }: { requestList: IRequest[]; navigation?: any }) => {
@@ -9,29 +9,15 @@ const RequestList = ({ requestList, navigation }: { requestList: IRequest[]; nav
         <RequestItem key={request.id} request={request} navigation={navigation} />
       ))}
     </ScrollView>
-    // <FlatList
-    //   keyExtractor={(item, index) => index.toString()}
-    //   data={requestList}
-    //   contentContainerStyle={{ width: '90%', marginLeft: 35 }}
-    //   renderItem={({ item }) => (
-    //     <TouchableOpacity>
-    //       <RequestItem key={item.id} request={item} />
-    //     </TouchableOpacity>
-    //   )}
-    //   columnWrapperStyle={{ gap: 20 }}
-    //   ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-    //   numColumns={2}
-    // ></FlatList>
   );
 };
 
 const styles = StyleSheet.create({
   cardContainer: {
-    marginLeft: 35,
+    width: '90%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 30,
-    marginBottom: 30,
   },
 });
 

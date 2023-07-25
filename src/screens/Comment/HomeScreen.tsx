@@ -27,11 +27,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.header}>
         <Text style={styles.mainTitle}>의뢰목록</Text>
       </View>
-      <ScrollView style={styles.mainContainer}>
-        <View style={styles.bodyContainer}>
-          <RequestList requestList={requestList} navigation={navigation} />
-        </View>
-      </ScrollView>
+      <View style={styles.bodyContainer}>
+        <RequestList requestList={requestList} navigation={navigation} />
+      </View>
     </>
   );
 };
@@ -55,6 +53,8 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 1,
+    alignItems: 'center',
+    marginBottom: 30,
   },
 });
 
