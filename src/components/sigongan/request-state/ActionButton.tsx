@@ -3,10 +3,12 @@ import { SigonganColor, SigonganFont, SigonganShadow } from '../styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type ActionButtonProps = {
-  onPress: () => void;
+  isComplete: boolean;
+  onThanksPress: () => void;
+  onQuestPress: () => void;
 };
 
-export const ActionButton = ({ onPress }: ActionButtonProps) => {
+export const ActionButton = ({ isComplete, onThanksPress, onQuestPress }: ActionButtonProps) => {
   const insets = useSafeAreaInsets();
 
   return (
@@ -14,18 +16,20 @@ export const ActionButton = ({ onPress }: ActionButtonProps) => {
       <TouchableOpacity
         activeOpacity={0.8}
         style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
-        onPress={onPress}
+        onPress={onQuestPress}
       >
         <Text style={[SigonganFont.primary, SigonganColor.contentSecondary]}>질문 추가하기</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
-        onPress={onPress}
-      >
-        <Text style={[SigonganFont.primary, SigonganColor.contentSecondary]}>감사 인사하기</Text>
-      </TouchableOpacity>
+      {isComplete && (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
+          onPress={onThanksPress}
+        >
+          <Text style={[SigonganFont.primary, SigonganColor.contentSecondary]}>감사 인사하기</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

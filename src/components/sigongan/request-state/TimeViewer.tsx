@@ -1,10 +1,15 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { SigonganColor, SigonganFont } from '../styles';
+import { getFormattedTime } from '../../../utils/time';
 
-export const TimeViewer = () => {
+type TimeViewerProps = {
+  date: string;
+};
+
+export const TimeViewer = ({ date }: TimeViewerProps) => {
   return (
     <View style={styles.container}>
-      <Text style={[SigonganFont.quaternary, SigonganColor.contentQuinary]}>오후 2:05</Text>
+      <Text style={[SigonganFont.quaternary, SigonganColor.contentQuinary]}>{getFormattedTime(new Date(date))}</Text>
     </View>
   );
 };

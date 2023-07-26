@@ -19,9 +19,9 @@ export const AIChatScreen = () => {
       <View style={styles.container}>
         <ScrollView>
           <View style={styles.chatWrapper}>
-            <MySpeechBubble />
+            {/* <MySpeechBubble />
 
-            <AnotherSpeechBubble />
+            <AnotherSpeechBubble /> */}
           </View>
         </ScrollView>
 
