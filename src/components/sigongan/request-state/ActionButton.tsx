@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { SigonganColor, SigonganFont } from '../styles';
+import { SigonganColor, SigonganFont, SigonganShadow } from '../styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type ActionButtonProps = {
@@ -35,13 +35,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     gap: 8,
 
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
+    ...SigonganShadow.shadowTopHigh,
   },
   textWrapper: {
     alignItems: 'center',

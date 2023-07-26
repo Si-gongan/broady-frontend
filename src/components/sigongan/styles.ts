@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const SigonganColor = StyleSheet.create({
   backgroundPrimary: {
@@ -67,6 +67,73 @@ export const SigonganFont = StyleSheet.create({
   },
 });
 
+export const SigonganShadow = {
+  shadowBottomLow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
+  shadowBottomHigh: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.12,
+        shadowRadius: 16,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+  },
+  shadowTopLow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: -4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
+  shadowTopHigh: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: -4,
+        },
+        shadowOpacity: 0.12,
+        shadowRadius: 16,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+  },
+};
+
 export const SigonganDesign = StyleSheet.create({
   borderOpaque: {
     width: '100%',
@@ -112,13 +179,7 @@ export const SigonganDesign = StyleSheet.create({
     paddingBottom: 9,
     paddingRight: 9,
 
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3,
+    ...SigonganShadow.shadowBottomLow,
   },
 
   speechBubble2: {
@@ -140,12 +201,11 @@ export const SigonganDesign = StyleSheet.create({
     paddingBottom: 8,
     paddingRight: 13,
 
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3,
+    ...SigonganShadow.shadowBottomLow,
   },
 });
+
+export const SigonganResponsive = {
+  textCardWidth: () => (Platform.OS === 'ios' ? 247 : 224),
+  imageWidth: () => (Platform.OS === 'ios' ? 338 : 315),
+};

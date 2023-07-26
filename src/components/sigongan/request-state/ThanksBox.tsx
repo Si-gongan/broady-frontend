@@ -1,6 +1,6 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SigonganColor, SigonganFont } from '../styles';
+import { SigonganColor, SigonganFont, SigonganShadow } from '../styles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export const ThanksBox = () => {
@@ -17,13 +17,7 @@ export const ThanksBox = () => {
 
 const styles = StyleSheet.create({
   container: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
+    ...SigonganShadow.shadowTopHigh,
 
     paddingLeft: 17,
     paddingTop: 22,

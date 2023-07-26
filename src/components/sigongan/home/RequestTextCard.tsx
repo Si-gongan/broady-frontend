@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Platform } from 'react-native';
-import { SigonganColor, SigonganFont } from '../styles';
+import { View, Text, StyleSheet } from 'react-native';
+import { SigonganColor, SigonganFont, SigonganResponsive } from '../styles';
 import { getConvertDate } from '../../../utils/time';
 
 type RequestTextCardProps = {
@@ -19,11 +19,9 @@ export const RequestTextCard = ({ date, content }: RequestTextCardProps) => {
   );
 };
 
-const textCardWidth = () => (Platform.OS === 'ios' ? 247 : 224);
-
 const styles = StyleSheet.create({
   container: {
-    width: textCardWidth(),
+    width: SigonganResponsive.textCardWidth(),
     height: 90,
 
     borderRadius: 13,
