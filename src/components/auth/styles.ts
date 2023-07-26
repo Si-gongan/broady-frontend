@@ -56,4 +56,9 @@ export const AuthDesign = StyleSheet.create({
     fontSize: 26,
     fontWeight: '400',
   },
+  headerFont: {
+    fontFamily: 'ABeeZee',
+    fontSize: 30,
+    fontWeight: '400',
+  },
 });
