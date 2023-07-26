@@ -16,7 +16,7 @@ const getMyPoint = (pointList: IPoint[]) => {
 };
 
 const RefundScreen = ({ navigation }: any) => {
-  const [accountNumber, setAccountNumber] = useState<string>();
+  const [accountNumber, setAccountNumber] = useState<string>('');
   const [refundPoint, setRefundPoint] = useState<string>('');
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
@@ -26,6 +26,8 @@ const RefundScreen = ({ navigation }: any) => {
   const onClickRefundButton = () => {
     Keyboard.dismiss();
     requestRefundPoint(parseInt(refundPoint), fcmToken, authToken).then((data) => console.log(data));
+    setAccountNumber('');
+    setRefundPoint('');
   };
 
   const handleChangeInput = (text: string) => {
