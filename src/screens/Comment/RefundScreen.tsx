@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { authTokenState, fcmTokenState } from '../../states';
 import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
+import { Keyboard } from 'react-native';
 
 const getMyPoint = (pointList: IPoint[]) => {
   const points = pointList.map((data) => data.point);
@@ -16,20 +17,37 @@ const getMyPoint = (pointList: IPoint[]) => {
 
 const RefundScreen = ({ navigation }: any) => {
   const [accountNumber, setAccountNumber] = useState<string>();
-  const [refundPoint, setRefundPoint] = useState<number>(0);
+  const [refundPoint, setRefundPoint] = useState<string>('');
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
   const [pointList, setPointList] = useState<IPoint[]>([]);
 
   const [myPoint, setMyPoint] = useState(0);
   const onClickRefundButton = () => {
-    requestRefundPoint(refundPoint, fcmToken, authToken).then((data) => console.log(data));
+    Keyboard.dismiss();
+    requestRefundPoint(parseInt(refundPoint), fcmToken, authToken).then((data) => console.log(data));
+  };
+
+  const handleChangeInput = (text: string) => {
+    const numberReg = text.replace(/[^0-9]/g, '');
+    setRefundPoint(numberReg);
   };
 
   useEffect(() => {
-    getPointList(fcmToken, authToken).then((data) => setPointList(data));
-    setMyPoint(getMyPoint(pointList));
+    // API 수정 필요.
+    // getPointList(fcmToken, authToken).then((data) => setPointList(data));
   }, []);
+
+  useEffect(() => {
+    const total = getMyPoint(pointList);
+    setMyPoint(total);
+    console.log('total point: ', total);
+  }, [pointList]);
+
+  useEffect(() => {
+    console.log(refundPoint);
+  }, [refundPoint]);
+
   return (
     <View style={styles.refundContainer}>
       <Header navigation={navigation}>환급 신청</Header>
@@ -48,14 +66,15 @@ const RefundScreen = ({ navigation }: any) => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={{ fontSize: 16 }}>신청 포인트 입력 (최대 3200P)</Text>
+          <Text style={{ fontSize: 16 }}>신청 포인트 입력 (최대 {myPoint}P)</Text>
           <TextInput
             placeholder="신청 포인트 입력"
             placeholderTextColor="#5E5E5E"
             keyboardType="decimal-pad"
-            onChangeText={(text) => setRefundPoint(parseInt(text))}
-            value={refundPoint.toString()}
+            onChangeText={(text) => handleChangeInput(text)}
+            value={refundPoint}
             style={styles.inputBox}
+            inputMode="decimal"
           />
         </View>
         <TouchableOpacity style={styles.refundBtn} onPress={onClickRefundButton}>
