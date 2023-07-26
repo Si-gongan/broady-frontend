@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-nativ
 import Header from '../../components/common/Header';
 import { commentColor, commentFont } from '../../components/Comment/styles';
 import RefundPointList from '../../components/Comment/Mypage/RefundPointList';
-import { useRecoilValue } from 'recoil';
-import { authTokenState, fcmTokenState } from '../../states';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { accountState, authTokenState, fcmTokenState } from '../../states';
 import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
@@ -16,17 +16,21 @@ const getMyPoint = (pointList: IPoint[]) => {
 };
 
 const RefundScreen = ({ navigation }: any) => {
-  const [accountNumber, setAccountNumber] = useState<string>('');
-  const [refundPoint, setRefundPoint] = useState<string>('');
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
+  const [account, setAccount] = useRecoilState(accountState);
+  const [accountNumberInput, setAccountNumberInput] = useState<string>(account);
+  const [refundPoint, setRefundPoint] = useState<string>('');
   const [pointList, setPointList] = useState<IPoint[]>([]);
-
   const [myPoint, setMyPoint] = useState(0);
+
   const onClickRefundButton = () => {
     Keyboard.dismiss();
-    requestRefundPoint(parseInt(refundPoint), fcmToken, authToken).then((data) => console.log(data));
-    setAccountNumber('');
+    requestRefundPoint(parseInt(refundPoint), accountNumberInput, fcmToken, authToken).then((data) =>
+      console.log(data)
+    );
+    setAccount(accountNumberInput);
+    setAccountNumberInput('');
     setRefundPoint('');
   };
 
@@ -46,10 +50,6 @@ const RefundScreen = ({ navigation }: any) => {
     console.log('total point: ', total);
   }, [pointList]);
 
-  useEffect(() => {
-    console.log(refundPoint);
-  }, [refundPoint]);
-
   return (
     <View style={styles.refundContainer}>
       <Header navigation={navigation}>환급 신청</Header>
@@ -62,8 +62,8 @@ const RefundScreen = ({ navigation }: any) => {
           <TextInput
             placeholder="계좌번호 (-)없이 입력"
             placeholderTextColor="#5E5E5E"
-            onChangeText={(text) => setAccountNumber(text)}
-            value={accountNumber}
+            onChangeText={(text) => setAccountNumberInput(text)}
+            value={accountNumberInput}
             style={styles.inputBox}
           />
         </View>
