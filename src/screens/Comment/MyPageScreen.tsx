@@ -16,15 +16,21 @@ const getMyPoint = (pointList: IPoint[]) => {
 };
 const MyPageScreen = ({ navigation }: any) => {
   const { logout } = useUserState();
-  const [pointList, setPointList] = useState<IPoint[]>([]);
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
-  const [myPoint, setMyPoint] = useState(0);
+  const [pointList, setPointList] = useState<IPoint[]>([]);
+  const [myPoint, setMyPoint] = useState<number>(0);
 
   useEffect(() => {
-    getPointList(fcmToken, authToken).then((data) => setPointList(data));
-    setMyPoint(getMyPoint(pointList));
+    // 유저 포인트 내역 API 수정 필요.
+    // getPointList(fcmToken, authToken).then((data) => setPointList(data));
   }, []);
+
+  useEffect(() => {
+    const total = getMyPoint(pointList);
+    setMyPoint(total);
+    console.log('total point: ', total);
+  }, [pointList]);
 
   return (
     <View style={styles.container}>
