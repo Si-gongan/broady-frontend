@@ -6902,6 +6902,11 @@ react-native-image-modal@^1.0.16:
   resolved "https://registry.npmjs.org/react-native-image-modal/-/react-native-image-modal-1.0.16.tgz"
   integrity sha512-wDA3CVFQMfKaKM5VbkAzE/3OGUnP8zspshlPVA3gEUyqXFln+ix9f8QF4v+JMLwYpXb8SghK9ACTVsBC+ay1ew==
 
+react-native-loading-spinner-overlay@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-3.0.1.tgz#092481b8cce157d3af5ef942f845ad981f96bd36"
+  integrity sha512-4GdR54HQnKg2HPSSisVizfTLuyhSh4splY9eb8mKiYF1Ihjn/5EmdNo5bN3S7uKPFRC3WLzIZIouX6G6fXfnjw==
+
 react-native-mmkv@^2.10.1:
   version "2.10.1"
   resolved "https://registry.npmjs.org/react-native-mmkv/-/react-native-mmkv-2.10.1.tgz"
@@ -6909,7 +6914,7 @@ react-native-mmkv@^2.10.1:
 
 react-native-modal@^13.0.1:
   version "13.0.1"
-  resolved "https://registry.npmjs.org/react-native-modal/-/react-native-modal-13.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-13.0.1.tgz#691f1e646abb96fa82c1788bf18a16d585da37cd"
   integrity sha512-UB+mjmUtf+miaG/sDhOikRfBOv0gJdBU2ZE1HtFWp6UixW9jCk/bhGdHUgmZljbPpp0RaO/6YiMmQSSK3kkMaw==
   dependencies:
     prop-types "^15.6.2"
@@ -6955,10 +6960,10 @@ react-native-shadow-2@^7.0.8:
   dependencies:
     colord "2.9.2"
 
-react-native-svg@^13.10.0:
-  version "13.10.0"
-  resolved "https://registry.npmjs.org/react-native-svg/-/react-native-svg-13.10.0.tgz"
-  integrity sha512-D/oYTmUi5nsA/2Nw4WYlF1UUi3vZqhpESpiEhpYCIFB/EMd6vz4A/uq3tIzZFcfa5z2oAdGSxRU1TaYr8IcPlQ==
+react-native-svg@13.4.0:
+  version "13.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-13.4.0.tgz#82399ba0956c454144618aa581e2d748dd3f010a"
+  integrity sha512-B3TwK+H0+JuRhYPzF21AgqMt4fjhCwDZ9QUtwNstT5XcslJBXC0FoTkdZo8IEb1Sv4suSqhZwlAY6lwOv3tHag==
   dependencies:
     css-select "^5.1.0"
     css-tree "^1.1.3"

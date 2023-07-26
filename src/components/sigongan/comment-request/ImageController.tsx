@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { SigonganColor, SigonganFont } from '../styles';
+import { SigonganColor, SigonganFont, SigonganResponsive } from '../styles';
 
 type ImageControllerProps = {
   imgUrl: string;
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 338,
+    width: SigonganResponsive.imageWidth(),
     height: 241,
 
     borderRadius: 13,

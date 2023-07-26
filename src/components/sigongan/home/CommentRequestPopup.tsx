@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { BottomSheet } from 'react-native-btr';
-import { SigonganColor, SigonganDesign, SigonganFont } from '../styles';
+import { SigonganColor, SigonganDesign, SigonganFont, SigonganShadow } from '../styles';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { pickImage, takePhoto } from '../media';
@@ -116,13 +116,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
 
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
+    ...SigonganShadow.shadowTopHigh,
   },
   titleWrapper: {
     width: '100%',

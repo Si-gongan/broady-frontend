@@ -15,3 +15,14 @@ export const getConvertDate = (target: Date) => {
   else if (gapHour < 24) return `${gapHour}시간 전`;
   else return `${gapDay}일 전`;
 };
+
+export const getFormattedTime = (target: Date) => {
+  const hour = target.getHours();
+  const min = target.getMinutes();
+
+  if (hour < 13) {
+    return `오전 ${hour}:${min < 10 ? '0' + min : min}`;
+  } else {
+    return `오후 ${hour - 12}:${min < 10 ? '0' + min : min}`;
+  }
+};

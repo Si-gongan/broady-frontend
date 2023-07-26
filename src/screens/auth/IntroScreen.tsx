@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { AuthStackParamList } from '../../navigations';
 import { useUserState } from '../../providers';
-import { AuthColor, AuthDesign } from '../../components/auth/styles';
+import { AuthColor, AuthDesign, AuthResponsive } from '../../components/auth/styles';
 import { USER_STATE, storeData } from '../../components/common/async-storage';
 
 export const IntroScreen = () => {
@@ -42,7 +42,7 @@ export const IntroScreen = () => {
 
 const commonStyles = StyleSheet.create({
   button: {
-    width: 343,
+    width: AuthResponsive.dynamicWidth(),
     borderRadius: 10,
     paddingVertical: 38,
 

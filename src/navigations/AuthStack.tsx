@@ -8,8 +8,12 @@ const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 export const AuthStack = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="인트로" component={IntroScreen} options={{ headerShown: false }} />
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="인트로" component={IntroScreen} />
 
       <Stack.Screen name="시작하기" component={StartScreen} />
 

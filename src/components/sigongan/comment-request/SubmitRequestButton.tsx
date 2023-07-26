@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { SigonganColor, SigonganFont } from '../styles';
+import { SigonganColor, SigonganFont, SigonganShadow } from '../styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type SubmitRequestButtonProps = {
   onPress: () => void;
+  disabled?: boolean;
 };
 
-export const SubmitRequestButton = ({ onPress }: SubmitRequestButtonProps) => {
+export const SubmitRequestButton = ({ onPress, disabled }: SubmitRequestButtonProps) => {
   const insets = useSafeAreaInsets();
 
   return (
@@ -15,6 +16,7 @@ export const SubmitRequestButton = ({ onPress }: SubmitRequestButtonProps) => {
         activeOpacity={0.8}
         style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
         onPress={onPress}
+        disabled={disabled}
       >
         <Text style={[SigonganFont.primary, SigonganColor.contentSecondary]}>의뢰 전송하기</Text>
       </TouchableOpacity>
@@ -24,13 +26,7 @@ export const SubmitRequestButton = ({ onPress }: SubmitRequestButtonProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
+    ...SigonganShadow.shadowTopHigh,
   },
   textWrapper: {
     alignItems: 'center',

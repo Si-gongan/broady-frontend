@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
 import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,6 +11,7 @@ import { RegisterRequest } from '../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export const CommentRequestScreen = () => {
   const {
@@ -27,6 +28,8 @@ export const CommentRequestScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
 
   const insets = useSafeAreaInsets();
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', () => {
@@ -56,12 +59,43 @@ export const CommentRequestScreen = () => {
     }
   }, [isKeyboardVisible]);
 
+  const onSubmit = async () => {
+    if (value.length === 0) {
+      Alert.alert('알림', '질문을 입력해주세요.', [
+        {
+          text: '확인',
+          style: 'default',
+        },
+      ]);
+
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const _ = await RegisterRequest(value, url ?? '', fcmToken);
+      navigation.goBack();
+    } catch {
+      Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
+        {
+          text: '확인',
+          style: 'default',
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={44 + insets.top}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 44 + insets.top : 80}
     >
+      <Spinner visible={loading} />
+
       <ScrollView ref={scrollViewRef}>
         <View style={styles.container}>
           {url && <ImageController imgUrl={url} onPress={() => commentRequestPopupRef.current?.open()} />}
@@ -70,20 +104,7 @@ export const CommentRequestScreen = () => {
         </View>
       </ScrollView>
 
-      <SubmitRequestButton
-        onPress={async () => {
-          try {
-            const res = await RegisterRequest(value, url ?? '', fcmToken);
-
-            // TODO: 팝업 처리 등록 완료
-            navigation.goBack();
-          } catch (e) {
-            console.log('error', e);
-          }
-
-          // TODO: 페이지 이동 처리
-        }}
-      />
+      <SubmitRequestButton onPress={onSubmit} disabled={loading} />
 
       <CommentRequestPopup ref={commentRequestPopupRef} />
     </KeyboardAvoidingView>

@@ -30,3 +30,35 @@ export const RegisterRequest = async (text: string, fileUri: string, fcmToken: s
     },
   });
 };
+
+export const AddQuestion = async (postId: string, text: string, fcmToken: string) => {
+  return await Server.put(
+    '/post/user',
+    {
+      postId,
+      text,
+    },
+    {
+      headers: {
+        fcmToken,
+        authorization: 0,
+      },
+    }
+  );
+};
+
+export const AddThanks = async (postId: string, answerId: string, fcmToken: string) => {
+  return await Server.post(
+    '/post/appreciate',
+    {
+      postId,
+      answerId,
+    },
+    {
+      headers: {
+        fcmToken,
+        authorization: 0,
+      },
+    }
+  );
+};

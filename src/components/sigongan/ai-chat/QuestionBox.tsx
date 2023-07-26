@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { SigonganColor, SigonganFont } from '../styles';
+import { SigonganColor, SigonganFont, SigonganResponsive, SigonganShadow } from '../styles';
 
 type QuestionBoxProps = {
   value: string;
@@ -34,16 +34,10 @@ const styles = StyleSheet.create({
 
     paddingVertical: 16,
 
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 3,
+    ...SigonganShadow.shadowTopHigh,
   },
   input: {
-    width: 281,
+    width: SigonganResponsive.aiChatInputWidth(),
 
     marginLeft: 4,
     marginRight: 8,
@@ -58,6 +52,7 @@ const styles = StyleSheet.create({
   },
   icon1: {
     fontSize: 35,
+    marginRight: 5,
   },
   icon2: {
     fontSize: 28,
