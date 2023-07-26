@@ -15,6 +15,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigations';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { KeyboardAvoidingView } from 'react-native';
+import { Platform } from 'react-native';
 
 type ILoginForm = {
   email: string;
@@ -60,58 +62,66 @@ export const EmailSignInScreen = () => {
 
       <Spinner visible={loading} />
 
-      <View style={styles.container}>
-        <View style={styles.formWrapper}>
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: '이메일을 입력해주세요.',
-                pattern: {
-                  value: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
-                  message: '이메일 형식을 지켜주세요.',
-                },
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <CustomTextInput
-                  text="이메일"
-                  value={value}
-                  onBlur={onBlur}
-                  onChangeValue={onChange}
-                  onSubmitEditing={() => passwordRef.current?.focus()}
-                />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={80}
+      >
+        <View style={styles.container}>
+          <View style={styles.formWrapper}>
+            <View style={styles.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: '이메일을 입력해주세요.',
+                  pattern: {
+                    value: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+                    message: '이메일 형식을 지켜주세요.',
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <CustomTextInput
+                    text="이메일"
+                    value={value}
+                    onBlur={onBlur}
+                    onChangeValue={onChange}
+                    onSubmitEditing={() => passwordRef.current?.focus()}
+                  />
+                )}
+                name="email"
+              />
+              {errors.email && <Text style={[AuthFont.quaternary, { color: 'red' }]}>{errors.email?.message}</Text>}
+            </View>
+
+            <View style={styles.inputWrapper}>
+              <Controller
+                control={control}
+                rules={{
+                  required: '비밀번호를 입력해주세요.',
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <CustomTextInput
+                    text="비밀번호"
+                    inputRef={passwordRef}
+                    value={value}
+                    onBlur={onBlur}
+                    onChangeValue={onChange}
+                    secureTextEntry
+                  />
+                )}
+                name="password"
+              />
+              {errors.password && (
+                <Text style={[AuthFont.quaternary, { color: 'red' }]}>{errors.password?.message}</Text>
               )}
-              name="email"
-            />
-            {errors.email && <Text style={[AuthFont.quaternary, { color: 'red' }]}>{errors.email?.message}</Text>}
+            </View>
           </View>
 
-          <View style={styles.inputWrapper}>
-            <Controller
-              control={control}
-              rules={{
-                required: '비밀번호를 입력해주세요.',
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <CustomTextInput
-                  text="비밀번호"
-                  inputRef={passwordRef}
-                  value={value}
-                  onBlur={onBlur}
-                  onChangeValue={onChange}
-                  secureTextEntry
-                />
-              )}
-              name="password"
-            />
-            {errors.password && <Text style={[AuthFont.quaternary, { color: 'red' }]}>{errors.password?.message}</Text>}
+          <View style={{ marginTop: 36 }}>
+            <CommonButton text="로그인" onPress={handleSubmit(onSubmit)} />
           </View>
         </View>
-
-        <View style={{ marginTop: 36 }}>
-          <CommonButton text="로그인" onPress={handleSubmit(onSubmit)} />
-        </View>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

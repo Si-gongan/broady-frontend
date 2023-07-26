@@ -14,7 +14,7 @@ export const AIChatScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={44 + insets.top}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 44 + insets.top : 80}
     >
       <View style={styles.container}>
         <ScrollView>

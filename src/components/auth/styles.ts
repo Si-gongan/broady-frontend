@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const AuthColor = StyleSheet.create({
   primary: {
@@ -62,3 +62,7 @@ export const AuthDesign = StyleSheet.create({
     fontWeight: '400',
   },
 });
+
+export const AuthResponsive = {
+  dynamicWidth: () => (Platform.OS === 'ios' ? 343 : 320),
+};

@@ -60,7 +60,7 @@ export const CommentRequestScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={44 + insets.top}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 44 + insets.top : 80}
     >
       <ScrollView ref={scrollViewRef}>
         <View style={styles.container}>

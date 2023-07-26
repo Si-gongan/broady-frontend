@@ -22,7 +22,7 @@ export const RequestStateScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={44 + insets.top - insets.bottom + 22}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 44 + insets.top - insets.bottom + 22 : 80}
     >
       <View style={styles.container}>
         <ScrollView>

@@ -8,7 +8,7 @@ import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigations';
-import { AuthColor, AuthFont } from '../../components/auth/styles';
+import { AuthColor, AuthFont, AuthResponsive } from '../../components/auth/styles';
 import { fcmTokenState } from '../../states';
 import { useRecoilValue } from 'recoil';
 import { Login, Register } from '../../api/axios';
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   signUpWrapper: {
-    width: 343,
+    width: AuthResponsive.dynamicWidth(),
     flexDirection: 'row',
 
     gap: 14,

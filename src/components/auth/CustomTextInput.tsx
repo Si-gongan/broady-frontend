@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from 'react-native';
-import { AuthColor, AuthFont } from './styles';
+import { AuthColor, AuthFont, AuthResponsive } from './styles';
 import { Noop } from 'react-hook-form';
 
 type CustomTextInputProps = {
@@ -45,7 +45,7 @@ export const CustomTextInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: 343,
+    width: AuthResponsive.dynamicWidth(),
     gap: 8,
   },
   input: {
