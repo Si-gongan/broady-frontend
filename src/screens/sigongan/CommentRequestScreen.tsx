@@ -12,6 +12,7 @@ import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 
 export const CommentRequestScreen = () => {
   const {
@@ -92,8 +93,10 @@ export const CommentRequestScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 44 + insets.top : 80}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? -15 : 0}
     >
+      <SigonganHeader text="해설의뢰" onBackButtonPress={() => navigation.goBack()} />
+
       <Spinner visible={loading} />
 
       <ScrollView ref={scrollViewRef}>
