@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     gap: 8,
 
     marginTop: 27,
-    marginBottom: 30,
 
     paddingHorizontal: 10,
     paddingVertical: 12,

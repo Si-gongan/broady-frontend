@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import {
   CommentRequestButton,
   CommentRequestPopup,
@@ -24,6 +24,8 @@ export const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
   const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (fcmToken) {
       LoadRequestList();
@@ -32,12 +34,15 @@ export const HomeScreen = () => {
 
   const LoadRequestList = async () => {
     try {
+      setLoading(true);
       const res = await GetRequestList(fcmToken);
 
       const tempList = res.data.result.posts;
       setRequestList(tempList);
-    } catch (e) {
-      console.log(e);
+    } catch {
+      // what to do?
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,26 +50,28 @@ export const HomeScreen = () => {
     <View style={styles.container}>
       <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
 
-      <ScrollView style={{ flex: 1 }}>
-        <View style={styles.requestList}>
-          {requestList
-            .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1))
-            .map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                activeOpacity={0.8}
-                accessible
-                accessibilityLabel={`${item.requestedUser[0].text} 의뢰 상세보기`}
-                onPress={() => navigation.navigate('해설 진행현황', { item })}
-              >
-                <View style={styles.requestItem}>
-                  <RequestImageCard imgUrl={AWS_BUCKET_BASE_URL + '/' + item.photo} />
-                  <RequestTextCard date={item.createdAt} content={item.requestedUser[0].text} />
-                </View>
-              </TouchableOpacity>
-            ))}
-        </View>
-      </ScrollView>
+      <View style={styles.requestList}>
+        <FlatList
+          data={requestList.sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1))}
+          keyExtractor={(item) => item.id}
+          ItemSeparatorComponent={() => <View style={{ height: 17 }} />}
+          onRefresh={() => LoadRequestList()}
+          refreshing={loading}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              accessible
+              accessibilityLabel={`${item.requestedUser[0].text} 의뢰 상세보기`}
+              onPress={() => navigation.navigate('해설 진행현황', { item })}
+            >
+              <View style={styles.requestItem}>
+                <RequestImageCard imgUrl={AWS_BUCKET_BASE_URL + '/' + item.photo} />
+                <RequestTextCard date={item.createdAt} content={item.requestedUser[0].text} />
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
 
       <CommentRequestPopup ref={commentRequestPopupRef} />
     </View>
@@ -77,9 +84,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   requestList: {
-    alignItems: 'center',
+    flex: 1,
 
-    gap: 14,
+    marginTop: 25,
+    marginBottom: 15,
   },
   requestItem: {
     flexDirection: 'row',
