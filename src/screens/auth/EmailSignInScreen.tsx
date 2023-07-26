@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
 import { CommonButton, CommonHeader, CustomTextInput } from '../../components/auth';
@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigations';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 type ILoginForm = {
   email: string;
@@ -29,6 +30,8 @@ export const EmailSignInScreen = () => {
 
   const passwordRef = useRef<TextInput>(null);
 
+  const [loading, setLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -39,19 +42,23 @@ export const EmailSignInScreen = () => {
     const { email, password } = data;
 
     try {
+      setLoading(true);
       const res = await Login(email, password, fcmToken);
       const authToken = res.data.result.token;
 
       loginToComment(authToken);
-    } catch (e: any) {
-      console.log('로그인 실패');
-      // console.log('error', e.response.data);
+    } catch {
+      Alert.alert('알림', '존재하지 않는 정보입니다.', [{ text: '확인', style: 'default' }]);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CommonHeader text="이메일로 로그인" onBackButtonPress={() => navigation.goBack()} />
+
+      <Spinner visible={loading} />
 
       <ScrollView>
         <View style={styles.container}>

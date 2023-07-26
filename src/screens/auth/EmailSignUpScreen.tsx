@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
 import { CommonButton, CommonHeader, CustomTextInput } from '../../components/auth';
@@ -12,10 +12,11 @@ import { AuthColor, AuthFont } from '../../components/auth/styles';
 import { fcmTokenState } from '../../states';
 import { useRecoilValue } from 'recoil';
 import { Login, Register } from '../../api/axios';
-import { AUTH_TOKEN, USER_STATE, storeData } from '../../components/common/async-storage';
 import { useUserState } from '../../providers';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
+
+import Spinner from 'react-native-loading-spinner-overlay';
 
 type IRegisterForm = {
   email: string;
@@ -31,11 +32,13 @@ export const EmailSignUpScreen = () => {
   const passwordRef = useRef<TextInput>(null);
   const password2Ref = useRef<TextInput>(null);
 
+  const [loading, setLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<IRegisterForm>();
 
   const { loginToComment } = useUserState();
@@ -44,15 +47,18 @@ export const EmailSignUpScreen = () => {
     const { email, password } = data;
 
     try {
-      const resRegister = await Register(email, password, fcmToken);
+      setLoading(true);
+
+      await Register(email, password, fcmToken);
+
       const resLogin = await Login(email, password, fcmToken);
 
       const authToken = resLogin.data.result.token;
-
       loginToComment(authToken);
-    } catch (e: any) {
-      // 회원가입 실패 (이미 있는 아이디일 때..? )
-      // console.log('error', e.response.data);
+    } catch {
+      Alert.alert('알림', '이미 존재하는 이메일입니다.', [{ text: '확인', style: 'default' }]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,6 +67,8 @@ export const EmailSignUpScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CommonHeader text="이메일로 계속하기" onBackButtonPress={() => navigation.goBack()} />
+
+      <Spinner visible={loading} />
 
       <ScrollView>
         <View style={styles.container}>
@@ -156,7 +164,7 @@ export const EmailSignUpScreen = () => {
           </TouchableOpacity>
 
           <View style={{ marginTop: 14 }}>
-            <CommonButton text="회원가입" onPress={handleSubmit(onSubmit)} disabled={!isChecked} />
+            <CommonButton text="회원가입" onPress={handleSubmit(onSubmit)} disabled={!isChecked || isSubmitting} />
           </View>
 
           <View style={{ marginTop: 25 }}>
