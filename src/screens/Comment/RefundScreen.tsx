@@ -8,6 +8,7 @@ import { accountState, authTokenState, fcmTokenState } from '../../states';
 import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
+import { AuthColor } from '../../components/auth/styles';
 
 const getMyPoint = (pointList: IPoint[]) => {
   const points = pointList.map((data) => data.point);
@@ -24,6 +25,8 @@ const RefundScreen = ({ navigation }: any) => {
   const [pointList, setPointList] = useState<IPoint[]>([]);
   const [myPoint, setMyPoint] = useState(0);
 
+  const [isRefunded, setIsRefunded] = useState(false);
+
   const onClickRefundButton = () => {
     Keyboard.dismiss();
     requestRefundPoint(parseInt(refundPoint), accountNumberInput, fcmToken, authToken).then((data) =>
@@ -35,6 +38,9 @@ const RefundScreen = ({ navigation }: any) => {
   };
 
   const handleChangeInput = (text: string) => {
+    if (parseInt(text) >= 500) setIsRefunded(true);
+    else setIsRefunded(false);
+
     const numberReg = text.replace(/[^0-9]/g, '');
     setRefundPoint(numberReg);
   };
@@ -79,7 +85,12 @@ const RefundScreen = ({ navigation }: any) => {
             inputMode="decimal"
           />
         </View>
-        <TouchableOpacity style={styles.refundBtn} onPress={onClickRefundButton}>
+        <TouchableOpacity
+          style={[styles.refundBtn, isRefunded ? AuthColor.secondary : AuthColor.quaternary]}
+          activeOpacity={0.6}
+          onPress={onClickRefundButton}
+          disabled={!isRefunded}
+        >
           <Text style={{ color: 'white', fontSize: 16 }}>환급 신청</Text>
         </TouchableOpacity>
       </View>
