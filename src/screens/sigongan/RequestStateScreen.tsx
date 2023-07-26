@@ -31,7 +31,6 @@ export const RequestStateScreen = () => {
       setChatList([...item.requestedUser, ...item.responseUser]);
     }
   }, [item]);
-  console.log('item: ', item);
 
   const insets = useSafeAreaInsets();
 
@@ -71,15 +70,35 @@ export const RequestStateScreen = () => {
 
         {isNotButtonClicked && (
           <ActionButton
-            isComplete={item.isComplete}
+            isComplete={item?.isComplete}
             onThanksPress={() => setShowThanks(true)}
             onQuestPress={() => setShowQuest(true)}
           />
         )}
 
-        {isShowThanks && <ThanksBox />}
+        {isShowThanks && (
+          <ThanksBox
+            item={item}
+            refresh={() => {
+              setShowQuest(false);
+              setShowThanks(false);
 
-        {isShowQuest && <QuestionBox />}
+              // TODO: API CAll
+            }}
+          />
+        )}
+
+        {isShowQuest && (
+          <QuestionBox
+            item={item}
+            refresh={() => {
+              setShowQuest(false);
+              setShowThanks(false);
+
+              // TODO: API CAll
+            }}
+          />
+        )}
       </View>
     </KeyboardAvoidingView>
   );

@@ -21,8 +21,8 @@ export const getFormattedTime = (target: Date) => {
   const min = target.getMinutes();
 
   if (hour < 13) {
-    return `오전 ${hour}:${min}`;
+    return `오전 ${hour}:${min < 10 ? '0' + min : min}`;
   } else {
-    return `오후 ${hour - 12}:${min}`;
+    return `오후 ${hour - 12}:${min < 10 ? '0' + min : min}`;
   }
 };
