@@ -201,11 +201,19 @@ export const SigonganDesign = StyleSheet.create({
     paddingBottom: 8,
     paddingRight: 13,
 
-    ...SigonganShadow.shadowBottomLow,
+    // TODO: android border radius error
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
   },
 });
 
 export const SigonganResponsive = {
   textCardWidth: () => (Platform.OS === 'ios' ? 247 : 224),
   imageWidth: () => (Platform.OS === 'ios' ? 338 : 315),
+  aiChatInputWidth: () => (Platform.OS === 'ios' ? 281 : 258),
 };
