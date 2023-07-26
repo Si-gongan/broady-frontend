@@ -4,9 +4,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type SubmitRequestButtonProps = {
   onPress: () => void;
+  disabled?: boolean;
 };
 
-export const SubmitRequestButton = ({ onPress }: SubmitRequestButtonProps) => {
+export const SubmitRequestButton = ({ onPress, disabled }: SubmitRequestButtonProps) => {
   const insets = useSafeAreaInsets();
 
   return (
@@ -15,6 +16,7 @@ export const SubmitRequestButton = ({ onPress }: SubmitRequestButtonProps) => {
         activeOpacity={0.8}
         style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
         onPress={onPress}
+        disabled={disabled}
       >
         <Text style={[SigonganFont.primary, SigonganColor.contentSecondary]}>의뢰 전송하기</Text>
       </TouchableOpacity>

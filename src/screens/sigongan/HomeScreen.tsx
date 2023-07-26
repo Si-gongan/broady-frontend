@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, FlatList, Alert } from 'react-native';
 import {
   CommentRequestButton,
   CommentRequestPopup,
@@ -7,7 +7,7 @@ import {
   RequestImageCard,
   RequestTextCard,
 } from '../../components/sigongan/home';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AWS_BUCKET_BASE_URL } from '@env';
 
 import { useRecoilValue } from 'recoil';
@@ -26,11 +26,13 @@ export const HomeScreen = () => {
 
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (fcmToken) {
-      LoadRequestList();
-    }
-  }, [fcmToken]);
+  useFocusEffect(
+    useCallback(() => {
+      if (fcmToken) {
+        LoadRequestList();
+      }
+    }, [fcmToken])
+  );
 
   const LoadRequestList = async () => {
     try {
@@ -40,7 +42,12 @@ export const HomeScreen = () => {
       const tempList = res.data.result.posts;
       setRequestList(tempList);
     } catch {
-      // what to do?
+      Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
+        {
+          text: '확인',
+          style: 'default',
+        },
+      ]);
     } finally {
       setLoading(false);
     }
