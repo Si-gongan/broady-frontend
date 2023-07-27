@@ -1,12 +1,12 @@
-export const getKoreanTime = () => {
-  const curr = new Date();
+export const getKoreanTime = (targetDate: Date) => {
+  const curr = new Date(targetDate);
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const koreanTime = new Date(curr.getTime() + KR_TIME_DIFF);
   return koreanTime;
 };
 
 export const getConvertDate = (target: Date) => {
-  const currentTime = getKoreanTime();
+  const currentTime = getKoreanTime(new Date());
   const gapMiliseconds = currentTime.getTime() - target.getTime();
   const gapMinute = Math.floor(gapMiliseconds / (1000 * 60));
   const gapHour = Math.floor(gapMiliseconds / (1000 * 60 * 60));
@@ -14,4 +14,15 @@ export const getConvertDate = (target: Date) => {
   if (gapMinute < 60) return `${gapMinute}분 전`;
   else if (gapHour < 24) return `${gapHour}시간 전`;
   else return `${gapDay}일 전`;
+};
+
+export const getRefundDate = (targetDate: Date) => {
+  const date = new Date(targetDate);
+  const year = date.getFullYear().toString().substring(2, 4);
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const hour = date.getUTCHours().toString().padStart(2, '0');
+  const minute = date.getUTCMinutes().toString().padStart(2, '0');
+  const result = `${year}.${month}.${day} ${hour}:${minute}`;
+  return result;
 };
