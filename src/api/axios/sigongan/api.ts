@@ -47,12 +47,13 @@ export const AddQuestion = async (postId: string, text: string, fcmToken: string
   );
 };
 
-export const AddThanks = async (postId: string, answerId: string, fcmToken: string) => {
+export const AddThanks = async (postId: string, answerId: string, text: string, fcmToken: string) => {
   return await Server.post(
     '/post/appreciate',
     {
       postId,
       answerId,
+      text,
     },
     {
       headers: {

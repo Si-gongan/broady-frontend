@@ -30,10 +30,7 @@ export const getRefundDate = (targetDate: Date) => {
 
 export const getFormattedTime = (target: Date) => {
   // api 시간 값 보정.
-  // TODO: 수정 필요.
-  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
-  const targetDate = new Date(target);
-  const realTime = new Date(targetDate.getTime() - KR_TIME_DIFF);
+  const realTime = new Date(target);
 
   const hour = realTime.getUTCHours();
   const min = realTime.getUTCMinutes();
@@ -41,6 +38,6 @@ export const getFormattedTime = (target: Date) => {
   if (hour < 12) {
     return `오전 ${hour === 0 ? 12 : hour}:${min < 10 ? '0' + min : min}`;
   } else {
-    return `오후 ${hour === 12 ? hour : hour - 1}:${min < 10 ? '0' + min : min}`;
+    return `오후 ${hour === 12 ? hour : hour - 12}:${min < 10 ? '0' + min : min}`;
   }
 };
