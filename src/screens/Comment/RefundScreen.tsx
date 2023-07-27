@@ -21,23 +21,21 @@ const getMyPoint = (pointList: IPoint[]) => {
 const RefundScreen = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
-  const [account, setAccount] = useState<string>('');
+
   const [accountNumberInput, setAccountNumberInput] = useState<string>('');
   const [refundPoint, setRefundPoint] = useState<string>('');
   const [pointList, setPointList] = useState<IPoint[]>([]);
-  const [myPoint, setMyPoint] = useState(0);
+  const [myPoint, setMyPoint] = useState<number>(0);
 
   const [isRefunded, setIsRefunded] = useState(false);
 
   const onClickRefundButton = async () => {
     Keyboard.dismiss();
     requestRefundPoint(parseInt(refundPoint), accountNumberInput, fcmToken, authToken).then((data) => {
-      /* 환급성공했을 때 pointList에 추가 */
-      if (data.code === 0) console.log(data);
+      if (data.code === 0) getPointList(fcmToken, authToken).then((data) => setPointList(data));
     });
     storeData(ACCOUNT_NUMBER, accountNumberInput);
 
-    setAccountNumberInput('');
     setRefundPoint('');
     setIsRefunded(false);
   };
@@ -51,15 +49,11 @@ const RefundScreen = ({ navigation }: any) => {
   };
 
   useEffect(() => {
-    // API 수정 필요.
-    getPointList(fcmToken, authToken).then((data) => setPointList(data));
-  }, []);
-
-  useEffect(() => {
     getData(ACCOUNT_NUMBER).then((data) => {
       if (typeof data === 'string') setAccountNumberInput(data);
     });
-  }, [account]);
+    getPointList(fcmToken, authToken).then((data) => setPointList(data));
+  }, []);
 
   useEffect(() => {
     const total = getMyPoint(pointList);

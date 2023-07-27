@@ -10,7 +10,7 @@ const RefundPointItem = ({ refund }: { refund: IPoint }) => {
         <Text style={styles.refundText}>{refund.description}</Text>
         <Text style={styles.refundText}>{refund.point}</Text>
       </View>
-      <Text style={styles.refundText}>{date}</Text>
+      <Text style={styles.refundDate}>{date}</Text>
     </View>
   );
 };
@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
   },
   refundText: {
     fontSize: 16,
+  },
+  refundDate: {
+    fontSize: 14,
   },
 });
 
