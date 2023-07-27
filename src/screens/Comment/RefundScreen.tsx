@@ -52,7 +52,7 @@ const RefundScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     // API 수정 필요.
-    // getPointList(fcmToken, authToken).then((data) => setPointList(data));
+    getPointList(fcmToken, authToken).then((data) => setPointList(data));
   }, []);
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const RefundScreen = ({ navigation }: any) => {
         <View style={styles.pointList}>
           <Text style={commentFont.title}>포인트 내역</Text>
         </View>
-        <RefundPointList />
+        <RefundPointList pointList={pointList} />
       </View>
     </View>
   );

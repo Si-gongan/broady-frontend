@@ -129,6 +129,7 @@ export type ReturnPointListType = {
   code: number;
   result: {
     pointHistories: {
+      _id: string;
       date: Date;
       description: string;
       point: number;
