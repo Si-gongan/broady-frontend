@@ -12,5 +12,5 @@ export const requestRefundPoint = async (point: number, accountNumber: string, f
     { point, accountNumber },
     { headers: { fcmToken, Authorization: token } }
   );
-  return result;
+  return result.data;
 };

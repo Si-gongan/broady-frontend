@@ -9,6 +9,8 @@ import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
 import { AuthColor } from '../../components/auth/styles';
+import { ACCOUNT_NUMBER, getData, storeData } from '../../components/common/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const getMyPoint = (pointList: IPoint[]) => {
   const points = pointList.map((data) => data.point);
@@ -19,22 +21,25 @@ const getMyPoint = (pointList: IPoint[]) => {
 const RefundScreen = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
-  const [account, setAccount] = useRecoilState(accountState);
-  const [accountNumberInput, setAccountNumberInput] = useState<string>(account);
+  const [account, setAccount] = useState<string>('');
+  const [accountNumberInput, setAccountNumberInput] = useState<string>('');
   const [refundPoint, setRefundPoint] = useState<string>('');
   const [pointList, setPointList] = useState<IPoint[]>([]);
   const [myPoint, setMyPoint] = useState(0);
 
   const [isRefunded, setIsRefunded] = useState(false);
 
-  const onClickRefundButton = () => {
+  const onClickRefundButton = async () => {
     Keyboard.dismiss();
-    requestRefundPoint(parseInt(refundPoint), accountNumberInput, fcmToken, authToken).then((data) =>
-      console.log(data)
-    );
-    setAccount(accountNumberInput);
+    requestRefundPoint(parseInt(refundPoint), accountNumberInput, fcmToken, authToken).then((data) => {
+      /* 환급성공했을 때 pointList에 추가 */
+      if (data.code === 0) console.log(data);
+    });
+    storeData(ACCOUNT_NUMBER, accountNumberInput);
+
     setAccountNumberInput('');
     setRefundPoint('');
+    setIsRefunded(false);
   };
 
   const handleChangeInput = (text: string) => {
@@ -49,6 +54,12 @@ const RefundScreen = ({ navigation }: any) => {
     // API 수정 필요.
     // getPointList(fcmToken, authToken).then((data) => setPointList(data));
   }, []);
+
+  useEffect(() => {
+    getData(ACCOUNT_NUMBER).then((data) => {
+      if (typeof data === 'string') setAccountNumberInput(data);
+    });
+  }, [account]);
 
   useEffect(() => {
     const total = getMyPoint(pointList);
