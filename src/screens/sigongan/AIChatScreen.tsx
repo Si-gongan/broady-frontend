@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Alert, Keyboard } from 'react-native';
 import { QuestionBox, ImageSelectPopup, ImageSelectPopupHandler } from '../../components/sigongan/ai-chat';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -19,7 +19,38 @@ export const AIChatScreen = () => {
 
   const insets = useSafeAreaInsets();
 
+  const scrollViewRef = useRef<ScrollView>(null);
   const imageSelectPopupRef = useRef<ImageSelectPopupHandler>(null);
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', () => {
+      setKeyboardVisible(false);
+    });
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardWillShowListener?.remove();
+      keyboardWillHideListener?.remove();
+      keyboardDidHideListener?.remove();
+      keyboardDidShowListener?.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isKeyboardVisible) {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }
+  }, [isKeyboardVisible]);
 
   const onSendTextPress = async () => {
     const newMessage: IMessageType = { type: 'text', content: text, role: 'user' };
@@ -59,7 +90,7 @@ export const AIChatScreen = () => {
       <Spinner visible={loading} />
 
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView ref={scrollViewRef}>
           <View style={styles.chatWrapper}>
             {chatList.map((item, i) =>
               item.role === 'user' ? (
@@ -104,6 +135,7 @@ const styles = StyleSheet.create({
     gap: 12,
 
     marginTop: 16,
+    marginBottom: 20,
   },
   mySpeechEndWrapper: {
     flexDirection: 'row',
