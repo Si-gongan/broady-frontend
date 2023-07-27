@@ -1,23 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { IPoint } from '../../../types/user';
+import { getRefundDate } from '../../../utils/time';
 
-interface IRefund {
-  id: number;
-  content: string;
-  point: number;
-  isGetPoint: boolean;
-  refundedAt: string;
-}
-
-const RefundPointItem = ({ refund }: { refund: IRefund }) => {
+const RefundPointItem = ({ refund }: { refund: IPoint }) => {
+  const date = getRefundDate(refund.date);
   return (
     <View style={styles.refundPointItem}>
       <View style={styles.refundPointContainer}>
-        <Text style={styles.refundText}>{refund.content}</Text>
-        <Text style={styles.refundText}>
-          {refund.isGetPoint ? '+' : '-'} {refund.point}
-        </Text>
+        <Text style={styles.refundText}>{refund.description}</Text>
+        <Text style={styles.refundText}>{refund.point}</Text>
       </View>
-      <Text style={styles.refundText}>{refund.refundedAt}</Text>
+      <Text style={styles.refundDate}>{date}</Text>
     </View>
   );
 };
@@ -36,6 +29,9 @@ const styles = StyleSheet.create({
   },
   refundText: {
     fontSize: 16,
+  },
+  refundDate: {
+    fontSize: 14,
   },
 });
 

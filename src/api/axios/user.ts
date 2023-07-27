@@ -6,11 +6,11 @@ export const getPointList = async (fcmToken: string, token: string) => {
   return result.data.result.pointHistories;
 };
 
-export const requestRefundPoint = async (point: number, fcmToken: string, token: string) => {
-  const result = await Server.post<ReturnPointListType>(
+export const requestRefundPoint = async (point: number, accountNumber: string, fcmToken: string, token: string) => {
+  const result = await Server.post(
     '/user/point',
-    { point },
+    { point, accountNumber },
     { headers: { fcmToken, Authorization: token } }
   );
-  return result;
+  return result.data;
 };
