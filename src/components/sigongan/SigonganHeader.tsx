@@ -4,18 +4,20 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SigonganDesign, SigonganFont } from './styles';
 
 type SigonganHeaderProps = {
-  onBackButtonPress: () => void;
+  onBackButtonPress?: () => void;
   text: string;
   isBottomBorder?: boolean;
+
+  hideBackButton?: boolean;
 };
 
-export const SigonganHeader = ({ text, isBottomBorder, onBackButtonPress }: SigonganHeaderProps) => {
+export const SigonganHeader = ({ hideBackButton, text, isBottomBorder, onBackButtonPress }: SigonganHeaderProps) => {
   const insets = useSafeAreaInsets();
 
   return (
     <View>
       <View style={[styles.container, { marginTop: insets.top }]}>
-        <TouchableOpacity activeOpacity={0.8} onPress={onBackButtonPress}>
+        <TouchableOpacity activeOpacity={0.8} onPress={onBackButtonPress} style={{ opacity: hideBackButton ? 0 : 1 }}>
           <Ionicons name="arrow-back" style={styles.icon} />
         </TouchableOpacity>
 
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
 
     paddingTop: 10,
-    paddingBottom: 30,
+    paddingBottom: 25,
   },
   icon: {
     marginLeft: 31,

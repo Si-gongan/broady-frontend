@@ -16,6 +16,7 @@ import { fcmTokenState } from '../../states';
 import { GetRequestList, IReqeustListItem } from '../../api/axios/sigongan';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SigonganStackParamList } from '../../navigations';
+import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 
 export const HomeScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -55,6 +56,8 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      <SigonganHeader text="홈" hideBackButton />
+
       <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
 
       <View style={styles.requestList}>

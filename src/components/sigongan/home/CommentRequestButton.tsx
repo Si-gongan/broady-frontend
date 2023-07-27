@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
 
-    marginTop: 27,
+    marginTop: 23,
 
     paddingHorizontal: 10,
     paddingVertical: 12,
