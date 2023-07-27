@@ -14,7 +14,7 @@ const RequestList = ({
   return (
     <ScrollView contentContainerStyle={styles.cardContainer}>
       {requestList.map((request: ICurrentRequest) => (
-        <RequestItem key={request.id} request={request.requestedUser} status={status} navigation={navigation} />
+        <RequestItem key={request.id} request={request} status={status} navigation={navigation} />
       ))}
     </ScrollView>
   );
