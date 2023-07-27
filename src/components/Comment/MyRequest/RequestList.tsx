@@ -2,11 +2,19 @@ import { StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native
 import { ICurrentRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
 
-const RequestList = ({ requestList, navigation }: { requestList: ICurrentRequest[]; navigation?: any }) => {
+const RequestList = ({
+  navigation,
+  requestList,
+  status,
+}: {
+  navigation: any;
+  requestList: ICurrentRequest[];
+  status: number;
+}) => {
   return (
     <ScrollView contentContainerStyle={styles.cardContainer}>
       {requestList.map((request: ICurrentRequest) => (
-        <RequestItem key={request.id} request={request.requestedUser} navigation={navigation} />
+        <RequestItem key={request.id} request={request.requestedUser} status={status} navigation={navigation} />
       ))}
     </ScrollView>
   );

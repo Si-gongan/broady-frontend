@@ -9,7 +9,7 @@ interface IRequestItem {
   createdAt: Date;
 }
 
-const RequestItem = ({ request, navigation }: { request: IRequestItem[]; navigation: any }) => {
+const RequestItem = ({ request, status, navigation }: { request: IRequestItem[]; status: number; navigation: any }) => {
   const lastIndex: number = request.length - 1;
   /* 가장 최근 의뢰 질문을 기준으로 시간 계산 */
   const gapTime = getConvertDate(request[lastIndex].createdAt);
@@ -28,11 +28,7 @@ const RequestItem = ({ request, navigation }: { request: IRequestItem[]; navigat
           <View style={styles.imageTextContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.createdAtRequest}>{gapTime}</Text>
-              {request.status === 0 ? (
-                <Text style={{ fontSize: 12, color: '#CF0000' }}>{request.commentTimer}분 남음</Text>
-              ) : (
-                <Text></Text>
-              )}
+              {status === 0 ? <Text style={{ fontSize: 12, color: '#CF0000' }}>10분 남음</Text> : <Text></Text>}
             </View>
             <Text style={styles.requestContent}>{request[lastIndex].text}</Text>
           </View>

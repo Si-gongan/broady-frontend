@@ -78,7 +78,7 @@ const MyRequest = ({ navigation }: any) => {
         </View>
       </View>
       <View style={styles.bodyContainer}>
-        <RequestList requestList={currestRequest} navigation={navigation} />
+        <RequestList requestList={currestRequest} navigation={navigation} status={lastClicked.current} />
       </View>
     </View>
   );

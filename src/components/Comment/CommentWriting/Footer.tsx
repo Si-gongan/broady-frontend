@@ -16,7 +16,6 @@ import { useRecoilValue } from 'recoil';
 import { startComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
-import { AuthColor } from '../../auth/styles';
 
 interface IFooterProps {
   id: string;
