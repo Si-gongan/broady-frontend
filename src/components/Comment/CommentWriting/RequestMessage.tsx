@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import ImageModal from 'react-native-image-modal';
 import { AWS_BUCKET_BASE_URL } from '@env';
+import { getFormattedTime } from '../../../utils/time';
+import { useEffect } from 'react';
 
 interface IRequestMessageProps {
   id: string;
@@ -9,6 +11,7 @@ interface IRequestMessageProps {
 }
 
 const RequestMessage = ({ content }: { content: IRequestMessageProps }) => {
+  const messageTime = getFormattedTime(content.createdAt);
   return (
     <>
       <View style={styles.imageContainer}>
@@ -28,7 +31,7 @@ const RequestMessage = ({ content }: { content: IRequestMessageProps }) => {
           <Text>{content.text}</Text>
         </View>
         <View>
-          <Text style={{ color: '#777' }}>오후 2:05</Text>
+          <Text style={{ color: '#777' }}>{messageTime}</Text>
         </View>
       </View>
     </>

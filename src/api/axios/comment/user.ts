@@ -1,4 +1,4 @@
-import { Server } from './setting';
+import { Server } from '../setting';
 import { ReturnPointListType } from './types';
 
 export const getPointList = async (fcmToken: string, token: string) => {
