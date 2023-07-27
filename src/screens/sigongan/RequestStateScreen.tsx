@@ -9,11 +9,11 @@ import {
   QuestionBox,
 } from '../../components/sigongan/request-state';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { SigonganStackParamList } from '../../navigations';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { GetRequestList, IReqeustListItem } from '../../api/axios';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
@@ -70,6 +70,12 @@ export const RequestStateScreen = () => {
       setChatList([...item.requestedUser, ...item.responseUser]);
     }
   }, [item]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 500);
+    }, [])
+  );
 
   const refresh = async () => {
     setShowQuest(false);
