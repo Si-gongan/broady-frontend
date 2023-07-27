@@ -15,25 +15,34 @@ import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
 import { startComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
+import { ICurrentRequest } from '../../../types/request';
 
 interface IFooterProps {
   id: string;
-  status?: number;
+  request: ICurrentRequest;
   commentTimer?: number;
   sendComment?: (text: string) => void;
   resetComment?: () => void;
 }
 
-const Footer = ({ id, status, commentTimer, sendComment, resetComment }: IFooterProps) => {
+const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFooterProps) => {
   const [text, setText] = useState<string>('');
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
   //   const [keyboardStatus, setKeyboardStatus] = useState(false);
+  const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
+
+  useEffect(() => {
+    const { isAvailable, isComplete } = request;
+    if (isAvailable && isComplete === false) setStatus(-1);
+    if (isAvailable === false && isComplete === false) setStatus(0);
+    if (isAvailable && isComplete) setStatus(1);
+  }, []);
 
   const handleStartComment = async (id: string) => {
-    // TODO: code === 0 : 해설 시작 -> 상태 어떻게 갱신?
-    const result = await startComment(id, fcmToken, authToken);
-    console.log('startComment: ', result);
+    await startComment(id, fcmToken, authToken).then((data) => {
+      if (data.code === 0) setStatus(0);
+    });
   };
 
   useEffect(() => {
@@ -60,7 +69,7 @@ const Footer = ({ id, status, commentTimer, sendComment, resetComment }: IFooter
   }, []);
 
   // 해설 완료
-  if (status === -1) {
+  if (status === 1) {
     return (
       <>
         <Shadow

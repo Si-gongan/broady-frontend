@@ -36,11 +36,12 @@ export const getCompletedRequest = async (fcmToken: string, token: string) => {
 };
 
 export const startComment = async (postId: string, fcmToken: string, token: string) => {
-  return await Server.put<startCommentReturnType>(
+  const result = await Server.put<startCommentReturnType>(
     `/post/start`,
     { postId },
     { headers: { fcmToken, Authorization: token } }
   );
+  return result.data;
 };
 
 export const endComment = async (postId: string, text: string, fcmToken: string, token: string) => {

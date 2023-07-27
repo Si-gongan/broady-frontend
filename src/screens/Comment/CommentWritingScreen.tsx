@@ -80,6 +80,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
       </ScrollView>
       <Footer
         id={id}
+        request={currentRequest}
         // status={currentRequest.status}
         // startComment={startComment}
         // sendComment={sendComment}
