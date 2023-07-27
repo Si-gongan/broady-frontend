@@ -3,12 +3,15 @@ import CustomerService from '../../components/common/CustomerService';
 import { AppSetting } from '../../components/sigongan/mypage';
 import { SigonganDesign } from '../../components/sigongan/styles';
 import { useUserState } from '../../providers';
+import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 
 export const MyPageScreen = () => {
   const { logout } = useUserState();
 
   return (
     <View style={styles.container}>
+      <SigonganHeader text="마이페이지" hideBackButton />
+
       <AppSetting />
 
       <CustomerService />

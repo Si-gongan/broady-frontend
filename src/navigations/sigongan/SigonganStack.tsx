@@ -17,13 +17,7 @@ export const SigonganStack = () => {
         },
       }}
     >
-      <Stack.Screen
-        name="메인"
-        component={SigonganMainTab}
-        options={({ route }) => ({
-          title: getFocusedRouteNameFromRoute(route) ?? '홈',
-        })}
-      />
+      <Stack.Screen name="메인" component={SigonganMainTab} options={{ headerShown: false }} />
 
       <Stack.Screen name="해설의뢰" component={CommentRequestScreen} options={{ headerShown: false }} />
 

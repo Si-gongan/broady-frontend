@@ -43,7 +43,7 @@ export const AppSetting = () => {
 
 const styles = StyleSheet.create({
   appSetting: {
-    marginTop: 40,
+    marginTop: 10,
 
     paddingVertical: 13,
     paddingHorizontal: 14,
