@@ -10,7 +10,7 @@ interface IRequestMessageProps {
   createdAt: Date;
 }
 
-const RequestMessage = ({ content }: { content: IRequestMessageProps }) => {
+const RequestMessage = ({ content, photo }: { content: IRequestMessageProps; photo: string }) => {
   const messageTime = getFormattedTime(content.createdAt);
   return (
     <>
@@ -19,7 +19,7 @@ const RequestMessage = ({ content }: { content: IRequestMessageProps }) => {
           resizeMode="contain"
           style={styles.requestImage}
           source={{
-            uri: `${AWS_BUCKET_BASE_URL}/sample_comment.png`,
+            uri: `${AWS_BUCKET_BASE_URL}/${photo}`,
           }}
         />
       </View>
