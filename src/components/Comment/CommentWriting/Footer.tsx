@@ -16,6 +16,7 @@ import { useRecoilValue } from 'recoil';
 import { startComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
+import { AuthColor } from '../../auth/styles';
 
 interface IFooterProps {
   id: string;
@@ -31,18 +32,32 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
   const authToken = useRecoilValue(authTokenState);
   //   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
+  const [isSent, setIsSent] = useState(false);
+  const { isAvailable, isComplete } = request;
 
   useEffect(() => {
-    const { isAvailable, isComplete } = request;
     if (isAvailable && isComplete === false) setStatus(-1);
     if (isAvailable === false && isComplete === false) setStatus(0);
     if (isAvailable && isComplete) setStatus(1);
-  }, []);
+  }, [isAvailable, isComplete]);
 
   const handleStartComment = async (id: string) => {
     await startComment(id, fcmToken, authToken).then((data) => {
       if (data.code === 0) setStatus(0);
     });
+  };
+
+  const handleCommentInput = (inputText: string) => {
+    if (inputText.length > 50) setIsSent(true);
+    else setIsSent(false);
+    setText(inputText);
+    // console.log('공백포함:', inputText.length);
+    // console.log('공백제외:', inputText.replaceAll(' ', '').length);
+  };
+
+  const handleClickSendBtn = () => {
+    setIsSent(false);
+    setText('');
   };
 
   useEffect(() => {
@@ -115,7 +130,7 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
                 <TextInput
                   placeholder="해설을 작성해주세요..."
                   multiline
-                  onChangeText={(text) => setText(text)}
+                  onChangeText={(text) => handleCommentInput(text)}
                   value={text}
                   textAlignVertical="top"
                   style={styles.inputBox}
@@ -124,12 +139,15 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
               </View>
               <TouchableOpacity
                 style={styles.sendBtn}
-                onPress={() => {
-                  sendComment(text);
-                  setText('');
-                }}
+                onPress={handleClickSendBtn}
+                activeOpacity={0.6}
+                disabled={!isSent}
               >
-                <Image source={require('../../../../assets/send.png')} alt="" />
+                <Image
+                  style={isSent ? { opacity: 1 } : { opacity: 0.5 }}
+                  source={require('../../../../assets/send.png')}
+                  alt=""
+                />
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -155,70 +173,6 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
       </Shadow>
     </>
   );
-
-  //   return (
-  //     <>
-  //       {status === 0 ? (
-  //         <Shadow
-  //           distance={10}
-  //           containerStyle={{ flex: 0.2 }}
-  //           style={{ width: '100%', height: '100%' }}
-  //           sides={{ top: true, bottom: false, start: false, end: false }}
-  //         >
-  //           <View style={styles.footerContainer}>
-  //             <TouchableOpacity style={styles.commentBtn} onPress={() => startComment(id)}>
-  //               <Text style={styles.commentText}>해설하기</Text>
-  //             </TouchableOpacity>
-  //           </View>
-  //         </Shadow>
-  //       ) : (
-  //         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-  //           <Shadow
-  //             distance={10}
-  //             containerStyle={{ paddingBottom: 20 }}
-  //             style={{ width: '100%' }}
-  //             sides={{ top: true, bottom: false, start: false, end: false }}
-  //           >
-  //             <ScrollView keyboardShouldPersistTaps="always">
-  //               <View style={styles.inputTextHeader}>
-  //                 <TouchableOpacity style={styles.AIBtn}>
-  //                   <Text style={{ color: 'white' }}>AI다듬기</Text>
-  //                 </TouchableOpacity>
-  //                 <View style={styles.timer}>
-  //                   <Text style={{ color: '#CF0000' }}>3분 남음</Text>
-  //                   <TouchableOpacity style={styles.commentQuit}>
-  //                     <Text style={{ color: 'white' }}>해설포기</Text>
-  //                   </TouchableOpacity>
-  //                 </View>
-  //               </View>
-  //               <View style={styles.inputTextContainer}>
-  //                 <View style={{ flex: 0.75 }}>
-  //                   <TextInput
-  //                     placeholder="해설을 작성해주세요..."
-  //                     multiline
-  //                     onChangeText={(text) => setText(text)}
-  //                     value={text}
-  //                     textAlignVertical="top"
-  //                     style={styles.inputBox}
-  //                     autoComplete="off"
-  //                   />
-  //                 </View>
-  //                 <TouchableOpacity
-  //                   style={styles.sendBtn}
-  //                   onPress={() => {
-  //                     sendComment(text);
-  //                     setText('');
-  //                   }}
-  //                 >
-  //                   <Image source={require('../../../../assets/send.png')} alt="" />
-  //                 </TouchableOpacity>
-  //               </View>
-  //             </ScrollView>
-  //           </Shadow>
-  //         </KeyboardAvoidingView>
-  //       )}
-  //     </>
-  //   );
 };
 
 const styles = StyleSheet.create({
