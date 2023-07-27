@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { AuthColor, AuthFont } from './styles';
+import { AuthColor, AuthFont, AuthResponsive } from './styles';
 
 type CommonButtonProps = {
   text: string;
@@ -24,7 +24,7 @@ export const CommonButton = ({ text, onPress, disabled }: CommonButtonProps) => 
 
 const styles = StyleSheet.create({
   button: {
-    width: 343,
+    width: AuthResponsive.dynamicWidth(),
     borderRadius: 8,
 
     alignItems: 'center',

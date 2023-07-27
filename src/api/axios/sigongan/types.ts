@@ -10,8 +10,8 @@ export type IReqeustListItem = {
   createdAt: string;
   photo: string;
   fcmToken: string;
-  requestedUser: { id: string; text: string; createAt: string }[];
-  responseUser: { id: string; text: string; createAt: string }[];
+  requestedUser: { id: string; text: string; createdAt: string; appreciated?: boolean; userId?: string }[];
+  responseUser: { id: string; text: string; createdAt: string; appreciated: boolean; userId: string }[];
   isComplete: boolean;
   expiredAt: string | null;
   isAvailable: boolean;

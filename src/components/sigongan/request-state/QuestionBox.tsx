@@ -1,29 +1,75 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SigonganColor, SigonganFont } from '../styles';
+import { SigonganColor, SigonganFont, SigonganShadow } from '../styles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { AddQuestion, IReqeustListItem } from '../../../api/axios';
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../../states';
+import { useState } from 'react';
 
-export const QuestionBox = () => {
+type QuestionBoxProps = {
+  item: IReqeustListItem;
+  refresh: () => void;
+};
+
+export const QuestionBox = ({ item, refresh }: QuestionBoxProps) => {
+  const fcmToken = useRecoilValue(fcmTokenState);
   const insets = useSafeAreaInsets();
+
+  const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState('');
+
+  const addQuestion = async () => {
+    if (value.length === 0) {
+      Alert.alert('알림', '질문을 입력해주세요.', [
+        {
+          text: '확인',
+          style: 'default',
+        },
+      ]);
+
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const _ = await AddQuestion(item.id, value, fcmToken);
+      refresh();
+    } catch (e) {
+      Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
+        {
+          text: '확인',
+          style: 'default',
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={[styles.container, SigonganColor.backgroundPrimary, { paddingBottom: insets.bottom || 22 }]}>
-      <TextInput placeholder="질문을 입력하세요..." style={[styles.text, SigonganFont.secondary]} />
+      <Spinner visible={loading} />
 
-      <FontAwesome name="send" style={styles.icon} />
+      <TextInput
+        placeholder="질문을 입력해주세요..."
+        style={[styles.text, SigonganFont.secondary]}
+        value={value}
+        onChangeText={setValue}
+      />
+
+      <TouchableOpacity activeOpacity={0.8} onPress={addQuestion}>
+        <FontAwesome name="send" style={styles.icon} />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
+    ...SigonganShadow.shadowTopHigh,
 
     paddingLeft: 17,
     paddingTop: 22,

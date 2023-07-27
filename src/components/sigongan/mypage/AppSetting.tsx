@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Switch } from 'react-native';
+import { Text, View, StyleSheet, Switch, Alert } from 'react-native';
 import { SigonganColor, SigonganDesign, SigonganFont } from '../styles';
 import { getNotificationPermissions } from '../../common/notifications';
 
@@ -7,7 +7,12 @@ export const AppSetting = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   // const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const toggleSwitch = () => {
-    console.log('설정에서 알림을 바꿔주세요.');
+    Alert.alert('알림', '알림은 설정에서 바꿔주세요.', [
+      {
+        text: '확인',
+        style: 'default',
+      },
+    ]);
   };
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from 'react-native';
-import { AuthColor, AuthFont } from './styles';
+import { AuthColor, AuthFont, AuthResponsive } from './styles';
 import { Noop } from 'react-hook-form';
 
 type CustomTextInputProps = {
@@ -10,17 +10,30 @@ type CustomTextInputProps = {
 
   onBlur?: Noop;
   secureTextEntry?: boolean;
+  onSubmitEditing?: () => void;
+
+  inputRef?: React.RefObject<TextInput>;
 };
 
-export const CustomTextInput = ({ text, value, secureTextEntry, onBlur, onChangeValue }: CustomTextInputProps) => {
+export const CustomTextInput = ({
+  text,
+  value,
+  secureTextEntry,
+  onBlur,
+  onChangeValue,
+  onSubmitEditing,
+  inputRef,
+}: CustomTextInputProps) => {
   return (
     <View style={styles.container}>
       <Text style={[AuthFont.teritary, AuthColor.contentPrimary]}>{text}</Text>
 
       <TextInput
+        ref={inputRef}
         value={value}
         onBlur={onBlur}
         onChangeText={onChangeValue}
+        onSubmitEditing={onSubmitEditing}
         style={[styles.input, AuthColor.teritary, AuthColor.contentTeritary, AuthFont.teritary]}
         accessible
         accessibilityLabel={`${text} 입력창`}
@@ -32,7 +45,7 @@ export const CustomTextInput = ({ text, value, secureTextEntry, onBlur, onChange
 
 const styles = StyleSheet.create({
   container: {
-    width: 343,
+    width: AuthResponsive.dynamicWidth(),
     gap: 8,
   },
   input: {

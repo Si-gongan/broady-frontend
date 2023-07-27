@@ -26,3 +26,18 @@ export const getRefundDate = (targetDate: Date) => {
   const result = `${year}.${month}.${day} ${hour}:${minute}`;
   return result;
 };
+
+export const getFormattedTime = (target: Date) => {
+  // api 시간 값 보정
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+  const realTime = new Date(target.getTime() - KR_TIME_DIFF);
+
+  const hour = realTime.getHours();
+  const min = realTime.getMinutes();
+
+  if (hour < 12) {
+    return `오전 ${hour === 0 ? 12 : hour}:${min < 10 ? '0' + min : min}`;
+  } else {
+    return `오후 ${hour === 12 ? hour : hour - 1}:${min < 10 ? '0' + min : min}`;
+  }
+};

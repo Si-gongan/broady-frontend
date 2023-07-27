@@ -37,11 +37,9 @@ const Main = () => {
   return (
     <NavigationContainer theme={navTheme}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaView style={{ flex: 1 }}>
-          {userState === 'unLogin' && <AuthStack />}
-          {userState === 'Sigongan' && <SigonganStack />}
-          {userState === 'Comment' && <CommentStack />}
-        </SafeAreaView>
+        {userState === 'unLogin' && <AuthStack />}
+        {userState === 'Sigongan' && <SigonganStack />}
+        {userState === 'Comment' && <CommentStack />}
       </GestureHandlerRootView>
     </NavigationContainer>
   );

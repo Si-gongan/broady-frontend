@@ -25,9 +25,9 @@ export const SigonganStack = () => {
         })}
       />
 
-      <Stack.Screen name="해설의뢰" component={CommentRequestScreen} />
+      <Stack.Screen name="해설의뢰" component={CommentRequestScreen} options={{ headerShown: false }} />
 
-      <Stack.Screen name="해설 진행현황" component={RequestStateScreen} />
+      <Stack.Screen name="해설 진행현황" component={RequestStateScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

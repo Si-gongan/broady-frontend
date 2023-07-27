@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Platform } from 'react-native';
 import { SigonganColor, SigonganDesign, SigonganFont } from '../styles';
-import { useState } from 'react';
 
 type QuestTextAreaProps = {
   value: string;
@@ -47,7 +46,7 @@ const styles = StyleSheet.create({
 
     marginHorizontal: 16,
     paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingTop: Platform.OS === 'ios' ? 16 : 0,
     paddingBottom: 16,
 
     borderRadius: 8,
