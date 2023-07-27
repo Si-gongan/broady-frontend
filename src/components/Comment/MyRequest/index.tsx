@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
@@ -46,13 +47,19 @@ const MyRequest = ({ navigation }: any) => {
       )
     );
   };
+  const isFocused = useIsFocused();
 
-  // useEffect(() => {
-  //   setCurrentRequest(requestList.filter((request) => request.status === lastClicked.current));
-  // }, [requestList]);
+  useEffect(() => {
+    if (isFocused) {
+      console.log('하단탭으로 진입할 때');
+      if (lastClicked.current === 0) getProceedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+      if (lastClicked.current === 1) getCompletedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     // TODO: 두개로 나눌지? 하나로 둘 지? 느리면 저장해뒀다가 상태변경됐을 때 리렌더링하도록 수정
+    console.log('상단 탭을 클릭할 때');
     if (lastClicked.current === 0) getProceedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
     if (lastClicked.current === 1) getCompletedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
   }, [topTabNavigations]);

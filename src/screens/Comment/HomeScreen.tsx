@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -13,14 +14,14 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
-  // useEffect(() => {
-  // setCurrentRequest(requestList.filter((request) => request.status === -1));
-  // }, [requestList]);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    // 모든 의뢰목록 가져오기
-    getRequestAll(fcmToken, authToken).then((data) => setCurrentRequest(data));
-  }, [requestList]);
+    if (isFocused) {
+      // 모든 의뢰목록 가져오기
+      getRequestAll(fcmToken, authToken).then((data) => setCurrentRequest(data));
+    }
+  }, [isFocused]);
 
   return (
     <>

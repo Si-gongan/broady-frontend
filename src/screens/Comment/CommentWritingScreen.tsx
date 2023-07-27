@@ -9,6 +9,7 @@ import { ICurrentRequest, IRequest } from '../../types/request';
 import { getRequest } from '../../api/axios';
 import { authTokenState, fcmTokenState } from '../../states';
 import MessageList from '../../components/Comment/CommentWriting/MessageList';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 interface IComment {
   id: number;
@@ -64,10 +65,13 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   //   setCurrentRequest(result[0]);
   // }, [requestList]);
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     // TODO: postId 넘어오는 건 테스트 완료. 해설의뢰가 들어온 뒤에 테스트 가능
+    console.log('2');
     getRequest(id, fcmToken, authToken).then((data) => setCurrentRequest(data));
-  }, []);
+  }, [isFocused]);
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation}>해설 작성</Header>
