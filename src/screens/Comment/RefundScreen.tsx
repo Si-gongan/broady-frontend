@@ -85,7 +85,7 @@ const RefundScreen = ({ navigation }: any) => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={{ fontSize: 16 }}>신청 포인트 입력 (최대 {myPoint}P)</Text>
+          <Text style={{ fontSize: 16 }}>신청 포인트 입력 (최소 500P, 최대 {myPoint}P)</Text>
           <TextInput
             placeholder="신청 포인트 입력"
             placeholderTextColor="#5E5E5E"
