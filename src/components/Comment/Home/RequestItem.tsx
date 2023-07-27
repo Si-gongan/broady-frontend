@@ -1,12 +1,11 @@
+import { AWS_BUCKET_BASE_URL } from '@env';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
-import { imagePath } from '../../../../assets/imagePath';
 import { IRequest } from '../../../types/request';
 import { getConvertDate } from '../../../utils/time';
 
 const RequestItem = ({ request, navigation }: { request: IRequest; navigation: any }) => {
   const gapTime = getConvertDate(request.createdAt);
-
   return (
     <TouchableOpacity
       onPress={() =>
@@ -17,7 +16,7 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
     >
       <Shadow distance={3} sides={{ top: false, bottom: true, start: true, end: true }}>
         <View style={styles.imageContainer}>
-          <Image source={imagePath.REQUEST} alt="" style={styles.image} />
+          <Image source={{ uri: `${AWS_BUCKET_BASE_URL}/${request.photo}` }} style={styles.image} />
           <View style={styles.imageTextContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.createdAtRequest}>{gapTime}</Text>
