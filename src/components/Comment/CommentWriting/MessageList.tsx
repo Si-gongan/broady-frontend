@@ -9,8 +9,8 @@ const MessageList = ({ request }: { request: ICurrentRequest }) => {
   return (
     <>
       {/* TODO: 번갈아서 보낼 방법 or flag를 달아서 구분해야 할듯? */}
-      {/* <RequestMessage content={request.requestedUser[0]} />
-      <ResponseMessage comment={request.responseUser[0]} /> */}
+      <RequestMessage content={request.requestedUser[0]} />
+      {/* <ResponseMessage comment={request.responseUser[0]} /> */}
     </>
   );
 };

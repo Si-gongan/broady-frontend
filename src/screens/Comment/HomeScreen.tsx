@@ -19,7 +19,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     // 모든 의뢰목록 가져오기
-    getRequestAll(fcmToken, authToken).then((data) => setRequestList(data));
+    getRequestAll(fcmToken, authToken).then((data) => setCurrentRequest(data));
   }, [requestList]);
 
   return (
@@ -28,7 +28,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         <Text style={styles.mainTitle}>의뢰목록</Text>
       </View>
       <View style={styles.bodyContainer}>
-        <RequestList requestList={requestList} navigation={navigation} />
+        <RequestList requestList={currentRequest} navigation={navigation} />
       </View>
     </>
   );
