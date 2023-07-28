@@ -36,7 +36,7 @@ export const ThanksBox = ({ item, refresh }: ThanksBoxProps) => {
       setLoading(true);
 
       // test 필요
-      const _ = AddThanks(item.id, item.responseUser[0].userId, fcmToken);
+      const _ = await AddThanks(item.id, item.responseUser[item.responseUser.length - 1].id, value, fcmToken);
       refresh();
     } catch (e) {
       Alert.alert('알림', '일시적인 오류가 발생했습니다.', [

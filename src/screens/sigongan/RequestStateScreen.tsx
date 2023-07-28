@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert, Keyboard } from 'react-native';
 import {
   AnotherSpeechBubble,
   MySpeechBubble,
@@ -9,11 +9,11 @@ import {
   QuestionBox,
 } from '../../components/sigongan/request-state';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { SigonganStackParamList } from '../../navigations';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { GetRequestList, IReqeustListItem } from '../../api/axios';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
@@ -33,11 +33,49 @@ export const RequestStateScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const insets = useSafeAreaInsets();
 
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    const keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', () => {
+      setKeyboardVisible(false);
+    });
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardWillShowListener?.remove();
+      keyboardWillHideListener?.remove();
+      keyboardDidHideListener?.remove();
+      keyboardDidShowListener?.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isKeyboardVisible) {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }
+  }, [isKeyboardVisible]);
+
   useEffect(() => {
     if (item) {
       setChatList([...item.requestedUser, ...item.responseUser]);
     }
   }, [item]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 500);
+    }, [])
+  );
 
   const refresh = async () => {
     setShowQuest(false);
@@ -62,6 +100,7 @@ export const RequestStateScreen = () => {
 
   const isMe = (item: IReqeustListItem['requestedUser'][0]) => item.userId === undefined;
   const isNextMe = (list: IReqeustListItem['requestedUser'], i: number) => list.length !== i + 1 && isMe(list[i + 1]);
+  const isAppreciated = (item: IReqeustListItem['requestedUser'][0]) => item.appreciated;
 
   const isNotButtonClicked = !(isShowThanks || isShowQuest);
 
@@ -74,7 +113,7 @@ export const RequestStateScreen = () => {
       <View style={styles.container}>
         <SigonganHeader text="해설 진행현황" onBackButtonPress={() => navigation.goBack()} isBottomBorder />
 
-        <ScrollView>
+        <ScrollView ref={scrollViewRef}>
           <View style={styles.speechContainer}>
             {chatList
               .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1))
@@ -91,6 +130,21 @@ export const RequestStateScreen = () => {
                       <MySpeechBubble text={item.text} />
                     </View>
                   )
+                ) : isAppreciated(item) ? (
+                  <View key={item.createdAt}>
+                    <View style={styles.AnotherSpeechWrapper}>
+                      <AnotherAvatar />
+
+                      <AnotherSpeechBubble text={item.text} />
+
+                      <TimeViewer date={item.createdAt} />
+                    </View>
+                    <View style={[styles.mySpeechEndWrapper, { marginTop: 12 }]}>
+                      <TimeViewer date={item.createdAt} />
+
+                      <MySpeechBubble text={item.appreciatedText ?? ''} />
+                    </View>
+                  </View>
                 ) : (
                   <View key={item.createdAt} style={styles.AnotherSpeechWrapper}>
                     <AnotherAvatar />
@@ -129,6 +183,7 @@ const styles = StyleSheet.create({
     gap: 12,
 
     marginTop: 18,
+    marginBottom: 20,
   },
   mySpeechWrapper: {
     marginRight: 18,

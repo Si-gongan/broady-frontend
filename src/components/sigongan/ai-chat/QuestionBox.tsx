@@ -3,16 +3,30 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SigonganColor, SigonganFont, SigonganResponsive, SigonganShadow } from '../styles';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type QuestionBoxProps = {
   value: string;
   onChangeValue: (value: string) => void;
+
+  onImagePopupPress: () => void;
+  onSendTextPress: () => void;
+
+  disabled: boolean;
 };
 
-export const QuestionBox = ({ value, onChangeValue }: QuestionBoxProps) => {
+export const QuestionBox = ({
+  value,
+  onChangeValue,
+  onImagePopupPress,
+  onSendTextPress,
+  disabled,
+}: QuestionBoxProps) => {
   return (
     <View style={[styles.container, SigonganColor.backgroundPrimary]}>
-      <MaterialCommunityIcons name="image" style={styles.icon1} />
+      <TouchableOpacity activeOpacity={0.8} onPress={onImagePopupPress} disabled={disabled}>
+        <MaterialCommunityIcons name="image" style={styles.icon1} />
+      </TouchableOpacity>
 
       <TextInput
         value={value}
@@ -21,7 +35,9 @@ export const QuestionBox = ({ value, onChangeValue }: QuestionBoxProps) => {
         style={[styles.input, SigonganColor.backgroundPrimary, SigonganFont.secondary]}
       />
 
-      <FontAwesome name="send" style={styles.icon2} />
+      <TouchableOpacity activeOpacity={0.8} onPress={onSendTextPress} disabled={disabled}>
+        <FontAwesome name="send" style={styles.icon2} />
+      </TouchableOpacity>
     </View>
   );
 };
