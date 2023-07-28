@@ -7,22 +7,13 @@ import { useEffect } from 'react';
 interface IRequestMessageProps {
   id: string;
   text: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
-const RequestMessage = ({ content, photo }: { content: IRequestMessageProps; photo: string }) => {
+const RequestMessage = ({ content }: { content: IRequestMessageProps }) => {
   const messageTime = getFormattedTime(content.createdAt);
   return (
     <>
-      <View style={styles.imageContainer}>
-        <ImageModal
-          resizeMode="contain"
-          style={styles.requestImage}
-          source={{
-            uri: `${AWS_BUCKET_BASE_URL}/${photo}`,
-          }}
-        />
-      </View>
       <View style={styles.chatContainer}>
         <View>
           <Image source={require('../../../../assets/sample_request.png')} alt="" style={styles.chatImage} />

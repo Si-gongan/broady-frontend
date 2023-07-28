@@ -1,16 +1,42 @@
+import { AWS_BUCKET_BASE_URL } from '@env';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import ImageModal from 'react-native-image-modal';
 import { ICurrentRequest } from '../../../types/request';
+import { getFormattedTime } from '../../../utils/time';
 import RequestMessage from './RequestMessage';
 import ResponseMessage from './ResponseMessage';
 
+interface IChat {
+  id: string;
+  text: string;
+  userId?: string;
+  createdAt: string;
+  appreciated?: boolean;
+  appreciatedText?: string;
+}
+
 const MessageList = ({ request }: { request: ICurrentRequest }) => {
-  // const allMessageList = [...request.requestedUser, ...request.responseUser];
+  const allMessageList = [...request.requestedUser, ...request.responseUser];
+  const sortedMessageList = [...allMessageList].sort((a, b) =>
+    new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1
+  );
+
   return (
     <>
-      {/* TODO: 번갈아서 보낼 방법 or flag를 달아서 구분해야 할듯? */}
-      <RequestMessage content={request.requestedUser[0]} photo={request.photo} />
-      {/* <ResponseMessage comment={request.responseUser[0]} /> */}
+      <View style={styles.imageContainer}>
+        <ImageModal
+          resizeMode="contain"
+          style={styles.requestImage}
+          source={{
+            uri: `${AWS_BUCKET_BASE_URL}/${request.photo}`,
+          }}
+        />
+      </View>
+      {sortedMessageList.map((message: IChat, idx: number) => {
+        if (message.userId) return <ResponseMessage key={idx} comment={message} />;
+        else return <RequestMessage key={idx} content={message} />;
+      })}
     </>
   );
 };
