@@ -6,6 +6,7 @@ import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { requestListState } from '../../../states/request';
 import { ICurrentRequest } from '../../../types/request';
+import { getKoreanTime } from '../../../utils/time';
 import RequestList from './RequestList';
 
 interface ITopTab {
@@ -18,7 +19,7 @@ const requestStatus = ['작성 중', '완료'];
 
 const MyRequest = ({ navigation }: any) => {
   const [requestList, setRequestList] = useRecoilState(requestListState);
-  const [currestRequest, setCurrentRequest] = useState<ICurrentRequest[]>([]);
+  const [currentRequest, setCurrentRequest] = useState<ICurrentRequest[]>([]);
 
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
@@ -78,7 +79,7 @@ const MyRequest = ({ navigation }: any) => {
         </View>
       </View>
       <View style={styles.bodyContainer}>
-        <RequestList requestList={currestRequest} navigation={navigation} status={lastClicked.current} />
+        <RequestList requestList={currentRequest} navigation={navigation} status={lastClicked.current} />
       </View>
     </View>
   );

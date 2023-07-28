@@ -4,12 +4,13 @@ import Header from '../../components/common/Header';
 import RequestMessage from '../../components/Comment/CommentWriting/RequestMessage';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { requestListState } from '../../states/request';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ICurrentRequest, IRequest } from '../../types/request';
 import { getRequest } from '../../api/axios';
 import { authTokenState, fcmTokenState } from '../../states';
 import MessageList from '../../components/Comment/CommentWriting/MessageList';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import useInterval from '../../hooks/useInterval';
 
 interface IComment {
   id: number;
