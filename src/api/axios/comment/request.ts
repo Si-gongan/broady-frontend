@@ -47,9 +47,10 @@ export const startComment = async (postId: string, fcmToken: string, token: stri
 };
 
 export const endComment = async (postId: string, text: string, fcmToken: string, token: string) => {
-  return await Server.post<endCommentReturnType>(
-    `/post/start`,
+  const result = await Server.post<RequestReturnType>(
+    `/post/answer`,
     { postId, text },
     { headers: { fcmToken, Authorization: token } }
   );
+  return result.data.result.post;
 };

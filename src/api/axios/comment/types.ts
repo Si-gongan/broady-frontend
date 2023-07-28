@@ -106,13 +106,13 @@ export type endCommentReturnType = {
   result: {
     post: {
       id: string;
-      createdAt: Date;
+      createdAt: string;
       photo: string;
       fcmToken: string;
       requestedUser: {
         id: string;
         text: string;
-        createdAt: Date;
+        createdAt: string;
       }[];
       responseUser: {
         id: string;

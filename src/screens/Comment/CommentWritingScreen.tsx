@@ -19,7 +19,7 @@ interface IComment {
 const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const { id } = route.params;
   // const [requestList, setRequestList] = useRecoilState(requestListState);
-  const [currentRequest, setCurrentRequest] = useState<ICurrentRequest>({} as any);
+  const [currentRequest, setCurrentRequest] = useState<ICurrentRequest>({} as ICurrentRequest);
   // const [commentList, setCommentList] = useState<IComment[]>([]);
   // const [commentTimer, setCommentTimer] = useState<number>(1);
 
@@ -86,6 +86,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
       <Footer
         id={id}
         request={currentRequest}
+        setRequest={setCurrentRequest}
         // status={currentRequest.status}
         // startComment={startComment}
         // sendComment={sendComment}

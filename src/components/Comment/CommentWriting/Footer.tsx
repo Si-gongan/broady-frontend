@@ -13,19 +13,20 @@ import {
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
-import { getCorrectText, startComment } from '../../../api/axios';
+import { endComment, getCorrectText, startComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 
 interface IFooterProps {
   id: string;
   request: ICurrentRequest;
+  setRequest: (value: React.SetStateAction<ICurrentRequest>) => void;
   commentTimer?: number;
   sendComment?: (text: string) => void;
   resetComment?: () => void;
 }
 
-const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFooterProps) => {
+const Footer = ({ id, request, setRequest, commentTimer, sendComment, resetComment }: IFooterProps) => {
   const [text, setText] = useState<string>('');
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
@@ -42,7 +43,7 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
   useEffect(() => {
     if (isAvailable && isComplete === false) setStatus(-1);
     if (isAvailable === false && isComplete === false) setStatus(0);
-    if (isAvailable && isComplete) setStatus(1);
+    if (isAvailable === false && isComplete) setStatus(1);
   }, [isAvailable, isComplete]);
 
   const handleStartComment = async (id: string) => {
@@ -59,7 +60,10 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
     // console.log('공백제외:', inputText.replaceAll(' ', '').length);
   };
 
-  const handleClickSendBtn = () => {
+  const handleClickSendBtn = async (id: string) => {
+    // 해설 내용이 추가된 post를 내보냄.
+    const result = await endComment(id, text, fcmToken, authToken);
+    setRequest(result);
     setIsSent(false);
     setText('');
   };
@@ -143,7 +147,7 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
               </View>
               <TouchableOpacity
                 style={styles.sendBtn}
-                onPress={handleClickSendBtn}
+                onPress={() => handleClickSendBtn(id)}
                 activeOpacity={0.6}
                 disabled={!isSent}
               >

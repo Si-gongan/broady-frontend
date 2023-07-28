@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
-import { getPointList } from '../../api/axios/user';
+import { getPointList } from '../../api/axios/comment/user';
 import Refund from '../../components/Comment/Mypage/Refund';
 import CustomerService from '../../components/common/CustomerService';
 import { SigonganDesign } from '../../components/sigongan/styles';
