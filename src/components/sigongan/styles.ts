@@ -67,7 +67,7 @@ export const SigonganFont = StyleSheet.create({
   },
 });
 
-export const SigonganShadow = {
+export const SigonganShadow = StyleSheet.create({
   shadowBottomLow: {
     ...Platform.select({
       ios: {
@@ -132,7 +132,7 @@ export const SigonganShadow = {
       },
     }),
   },
-};
+});
 
 export const SigonganDesign = StyleSheet.create({
   borderOpaque: {
