@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
-import { startComment } from '../../../api/axios';
+import { getCorrectText, startComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 
@@ -33,6 +33,11 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
   const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
   const [isSent, setIsSent] = useState(false);
   const { isAvailable, isComplete } = request;
+
+  const handleClickAICorrectionBtn = async (inputText: string) => {
+    const result = await getCorrectText(inputText);
+    setText(result);
+  };
 
   useEffect(() => {
     if (isAvailable && isComplete === false) setStatus(-1);
@@ -114,7 +119,7 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
         >
           <ScrollView keyboardShouldPersistTaps="always">
             <View style={styles.inputTextHeader}>
-              <TouchableOpacity style={styles.AIBtn}>
+              <TouchableOpacity style={styles.AIBtn} onPress={() => handleClickAICorrectionBtn(text)}>
                 <Text style={{ color: 'white' }}>AI다듬기</Text>
               </TouchableOpacity>
               <View style={styles.timer}>
