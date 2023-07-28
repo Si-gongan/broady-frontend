@@ -5,7 +5,7 @@ export const getKoreanTime = (targetDate: Date) => {
   return koreanTime;
 };
 
-export const getConvertDate = (target: Date) => {
+export const getConvertDate = (target: string) => {
   const currentTime = getKoreanTime(new Date());
   const targetDate = new Date(target);
   const gapMiliseconds = currentTime.getTime() - targetDate.getTime();
@@ -28,7 +28,7 @@ export const getRefundDate = (targetDate: Date) => {
   return result;
 };
 
-export const getFormattedTime = (target: Date) => {
+export const getFormattedTime = (target: string) => {
   // api 시간 값 보정.
   // TODO: 수정 필요.
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;

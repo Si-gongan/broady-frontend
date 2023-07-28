@@ -3,7 +3,7 @@ export type RequestAllReturnType = {
   result: {
     posts: {
       id: string;
-      createdAt: Date;
+      createdAt: string;
       photo: string;
       text: string;
     }[];
@@ -15,13 +15,13 @@ export type RequestReturnType = {
   result: {
     post: {
       id: string;
-      createdAt: Date;
+      createdAt: string;
       photo: string;
       fcmToken: string;
       requestedUser: {
         id: string;
         text: string;
-        createdAt: Date;
+        createdAt: string;
       }[];
       responseUser: {
         id: string;
@@ -29,6 +29,7 @@ export type RequestReturnType = {
         userId: string;
         createdAt: string;
         appreciated: boolean;
+        appreciatedText: string;
       }[];
       isComplete: boolean;
       expiredAt: Date | null;
@@ -42,13 +43,13 @@ export type ProceedRequestReturnType = {
   result: {
     proceedingPosts: {
       id: string;
-      createdAt: Date;
+      createdAt: string;
       photo: string;
       fcmToken: string;
       requestedUser: {
         id: string;
         text: string;
-        createdAt: Date;
+        createdAt: string;
       }[];
       responseUser: {
         id: string;
@@ -56,6 +57,7 @@ export type ProceedRequestReturnType = {
         userId: string;
         createdAt: string;
         appreciated: boolean;
+        appreciatedText: string;
       }[];
       isComplete: boolean;
       expiredAt: Date | null;
@@ -69,13 +71,13 @@ export type CompletedRequestReturnType = {
   result: {
     completedPosts: {
       id: string;
-      createdAt: Date;
+      createdAt: string;
       photo: string;
       fcmToken: string;
       requestedUser: {
         id: string;
         text: string;
-        createdAt: Date;
+        createdAt: string;
       }[];
       responseUser: {
         id: string;
@@ -83,6 +85,7 @@ export type CompletedRequestReturnType = {
         userId: string;
         createdAt: string;
         appreciated: boolean;
+        appreciatedText: string;
       }[];
       isComplete: boolean;
       expiredAt: Date | null;
@@ -117,6 +120,7 @@ export type endCommentReturnType = {
         userId: string;
         createdAt: string;
         appreciated: boolean;
+        appreciatedText: string;
       }[];
       isComplete: boolean;
       expiredAt: Date | null;
