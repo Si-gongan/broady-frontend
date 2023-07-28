@@ -41,3 +41,9 @@ export const getFormattedTime = (target: string) => {
     return `오후 ${hour === 12 ? hour : hour - 12}:${min < 10 ? '0' + min : min}`;
   }
 };
+
+export const getExpiredMinute = (target: string) => {
+  const gap = new Date(target).getTime() - getKoreanTime(new Date()).getTime();
+  const gapMinute = Math.floor(gap / (1000 * 60));
+  return gapMinute;
+};
