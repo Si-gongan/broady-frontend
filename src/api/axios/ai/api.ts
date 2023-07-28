@@ -7,3 +7,10 @@ export const PostQuestion = async (messages: IMessageType[], data: object | null
     data,
   });
 };
+
+export const getCorrectText = async (text: string) => {
+  const result = await AIServer.post('/correction', {
+    text,
+  });
+  return result.data.correction;
+};
