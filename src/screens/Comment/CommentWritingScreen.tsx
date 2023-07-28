@@ -11,6 +11,7 @@ import { authTokenState, fcmTokenState } from '../../states';
 import MessageList from '../../components/Comment/CommentWriting/MessageList';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import useInterval from '../../hooks/useInterval';
+import { getExpiredMinute, getKoreanTime } from '../../utils/time';
 
 interface IComment {
   id: number;
@@ -74,6 +75,17 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
       getRequest(id, fcmToken, authToken).then((data) => setCurrentRequest(data));
     }
   }, [isFocused]);
+
+  const [commentTimer, setCommentTimer] = useState<number>(10);
+
+  useInterval(() => {
+    if (currentRequest.expiredAt !== null && getKoreanTime(new Date()) < new Date(currentRequest.expiredAt)) {
+      const result = getExpiredMinute(currentRequest.expiredAt);
+      setCommentTimer(result);
+      console.log('해설작성 id: ', result);
+    }
+  }, 1000);
+
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation}>해설 작성</Header>
@@ -92,7 +104,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
         // startComment={startComment}
         // sendComment={sendComment}
         // resetComment={resetComment}
-        // commentTimer={commentTimer}
+        commentTimer={commentTimer}
       />
     </View>
   );
