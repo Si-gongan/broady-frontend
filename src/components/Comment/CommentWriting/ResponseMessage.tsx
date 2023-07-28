@@ -1,25 +1,23 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-
-interface IComment {
-  id: number;
-  content: string;
-}
+import { View, Text, StyleSheet } from 'react-native';
+import { getFormattedTime } from '../../../utils/time';
 
 interface IResponseMessageProps {
   id: string;
   text: string;
-  userId: string;
+  userId?: string;
   createdAt: string;
-  appreciated: boolean;
+  appreciated?: boolean;
+  appreciatedText?: string;
 }
 
 const ResponseMessage = ({ comment }: { comment: IResponseMessageProps }) => {
+  const messageTime = getFormattedTime(comment.createdAt);
+
   return (
     <>
-      <View style={styles.imageContainer}></View>
       <View style={styles.chatContainer}>
         <View>
-          <Text style={{ color: '#777' }}>오후 2:20</Text>
+          <Text style={{ color: '#777' }}>{messageTime}</Text>
         </View>
         <View style={styles.chatText}>
           <Text style={{ color: 'white' }}>{comment.text}</Text>
@@ -30,9 +28,6 @@ const ResponseMessage = ({ comment }: { comment: IResponseMessageProps }) => {
 };
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    marginTop: 30,
-  },
   chatContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',

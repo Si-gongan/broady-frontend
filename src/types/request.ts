@@ -1,19 +1,19 @@
 export interface IRequest {
   id: string;
-  createdAt: Date;
+  createdAt: string;
   photo: string;
   text: string;
 }
 
 export interface ICurrentRequest {
   id: string;
-  createdAt: Date;
+  createdAt: string;
   photo: string;
   fcmToken: string;
   requestedUser: {
     id: string;
     text: string;
-    createdAt: Date;
+    createdAt: string;
   }[];
   responseUser: {
     id: string;
@@ -21,6 +21,7 @@ export interface ICurrentRequest {
     userId: string;
     createdAt: string;
     appreciated: boolean;
+    appreciatedText: string;
   }[];
   isComplete: boolean;
   expiredAt: Date | null;

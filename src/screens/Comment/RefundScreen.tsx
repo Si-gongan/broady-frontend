@@ -52,7 +52,9 @@ const RefundScreen = ({ navigation }: any) => {
     getData(ACCOUNT_NUMBER).then((data) => {
       if (typeof data === 'string') setAccountNumberInput(data);
     });
-    getPointList(fcmToken, authToken).then((data) => setPointList(data));
+    getPointList(fcmToken, authToken)
+      .then((data) => setPointList(data))
+      .catch((error) => console.log('POINT ERROR ', error));
   }, []);
 
   useEffect(() => {
