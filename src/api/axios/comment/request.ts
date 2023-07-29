@@ -54,3 +54,8 @@ export const endComment = async (postId: string, text: string, fcmToken: string,
   );
   return result.data.result.post;
 };
+
+export const stopComment = async (postId: string, fcmToken: string, token: string) => {
+  const result = await Server.put(`/post/stop`, { postId }, { headers: { fcmToken, Authorization: token } });
+  return result.data;
+};

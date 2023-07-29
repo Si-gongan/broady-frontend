@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
-import { endComment, getCorrectText, getRequest, startComment } from '../../../api/axios';
+import { endComment, getCorrectText, getRequest, startComment, stopComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 
@@ -69,6 +69,11 @@ const Footer = ({ id, request, setRequest, commentTimer, handleStartTimer, reset
     setRequest(result);
     setIsSent(false);
     setText('');
+  };
+
+  const handleClickStopComment = async (id: string) => {
+    await stopComment(id, fcmToken, authToken);
+    setStatus(-1);
   };
 
   useEffect(() => {
@@ -131,7 +136,7 @@ const Footer = ({ id, request, setRequest, commentTimer, handleStartTimer, reset
               </TouchableOpacity>
               <View style={styles.timer}>
                 <Text style={{ color: '#CF0000' }}>{commentTimer}분 남음</Text>
-                <TouchableOpacity style={styles.commentQuit} onPress={resetComment}>
+                <TouchableOpacity style={styles.commentQuit} onPress={() => handleClickStopComment(id)}>
                   <Text style={{ color: 'white' }}>해설포기</Text>
                 </TouchableOpacity>
               </View>
