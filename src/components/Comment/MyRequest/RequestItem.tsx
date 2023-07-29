@@ -2,20 +2,28 @@ import { AWS_BUCKET_BASE_URL } from '@env';
 import { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
+import { useRecoilValue } from 'recoil';
 import { imagePath } from '../../../../assets/imagePath';
+import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
 import useInterval from '../../../hooks/useInterval';
+import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import { getConvertDate, getExpiredMinute, getKoreanTime } from '../../../utils/time';
 
 const RequestItem = ({
   request,
+  setCurrentRequest,
   status,
   navigation,
 }: {
   request: ICurrentRequest;
+  setCurrentRequest: any;
   status: number;
   navigation: any;
 }) => {
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const authToken = useRecoilValue(authTokenState);
+
   const lastIndex: number = request.requestedUser.length - 1;
   /* 가장 최근 의뢰 질문을 기준으로 시간 계산 */
   const gapTime = getConvertDate(request.createdAt);
@@ -23,10 +31,15 @@ const RequestItem = ({
   const [commentTimer, setCommentTimer] = useState<number>(10);
 
   useInterval(() => {
-    if (request.expiredAt !== null && getKoreanTime(new Date()) < new Date(request.expiredAt)) {
-      const result = getExpiredMinute(request.expiredAt);
-      setCommentTimer(result);
-      console.log('MY의뢰 남은시간: ', result);
+    if (request.expiredAt !== null) {
+      if (getKoreanTime(new Date()) < new Date(request.expiredAt)) {
+        const result = getExpiredMinute(request.expiredAt);
+        setCommentTimer(result);
+        console.log('MY의뢰 남은시간: ', result);
+      } else {
+        if (status === 0) getProceedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+        if (status === 1) getCompletedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+      }
     }
   }, 1000);
 
