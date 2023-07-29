@@ -21,12 +21,12 @@ interface IFooterProps {
   id: string;
   request: ICurrentRequest;
   setRequest: (value: React.SetStateAction<ICurrentRequest>) => void;
-  commentTimer?: number;
-  sendComment?: (text: string) => void;
+  commentTimer: number;
+  setCommentTimer: (value: React.SetStateAction<number>) => void;
   resetComment?: () => void;
 }
 
-const Footer = ({ id, request, setRequest, commentTimer, sendComment, resetComment }: IFooterProps) => {
+const Footer = ({ id, request, setRequest, commentTimer, setCommentTimer, resetComment }: IFooterProps) => {
   const [text, setText] = useState<string>('');
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
@@ -48,7 +48,10 @@ const Footer = ({ id, request, setRequest, commentTimer, sendComment, resetComme
 
   const handleStartComment = async (id: string) => {
     await startComment(id, fcmToken, authToken).then((data) => {
-      if (data.code === 0) setStatus(0);
+      if (data.code === 0) {
+        setCommentTimer(10);
+        setStatus(0);
+      }
     });
   };
 

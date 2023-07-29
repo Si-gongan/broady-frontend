@@ -105,6 +105,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
         // sendComment={sendComment}
         // resetComment={resetComment}
         commentTimer={commentTimer}
+        setCommentTimer={setCommentTimer}
       />
     </View>
   );
