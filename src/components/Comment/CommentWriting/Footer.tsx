@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
-import { endComment, getCorrectText, startComment } from '../../../api/axios';
+import { endComment, getCorrectText, getRequest, startComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 
@@ -22,11 +22,11 @@ interface IFooterProps {
   request: ICurrentRequest;
   setRequest: (value: React.SetStateAction<ICurrentRequest>) => void;
   commentTimer: number;
-  setCommentTimer: (value: React.SetStateAction<number>) => void;
+  handleStartTimer?: () => void;
   resetComment?: () => void;
 }
 
-const Footer = ({ id, request, setRequest, commentTimer, setCommentTimer, resetComment }: IFooterProps) => {
+const Footer = ({ id, request, setRequest, commentTimer, handleStartTimer, resetComment }: IFooterProps) => {
   const [text, setText] = useState<string>('');
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
@@ -49,7 +49,7 @@ const Footer = ({ id, request, setRequest, commentTimer, setCommentTimer, resetC
   const handleStartComment = async (id: string) => {
     await startComment(id, fcmToken, authToken).then((data) => {
       if (data.code === 0) {
-        setCommentTimer(10);
+        getRequest(id, fcmToken, authToken).then((data) => setRequest(data));
         setStatus(0);
       }
     });

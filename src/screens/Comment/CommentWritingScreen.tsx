@@ -83,6 +83,9 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
       const result = getExpiredMinute(currentRequest.expiredAt);
       setCommentTimer(result);
       console.log('해설작성 id: ', result);
+    } else {
+      console.log('해설작성화면 괄호밖: ', currentRequest.expiredAt);
+      console.log('해설작성화면 괄호밖: ', getKoreanTime(new Date()));
     }
   }, 1000);
 
@@ -105,7 +108,6 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
         // sendComment={sendComment}
         // resetComment={resetComment}
         commentTimer={commentTimer}
-        setCommentTimer={setCommentTimer}
       />
     </View>
   );

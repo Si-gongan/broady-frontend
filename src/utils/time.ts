@@ -45,5 +45,5 @@ export const getFormattedTime = (target: string) => {
 export const getExpiredMinute = (target: string) => {
   const gap = new Date(target).getTime() - getKoreanTime(new Date()).getTime();
   const gapMinute = Math.floor(gap / (1000 * 60));
-  return gapMinute + 1;
+  return gapMinute;
 };
