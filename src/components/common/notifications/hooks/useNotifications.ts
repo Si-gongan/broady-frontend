@@ -9,7 +9,7 @@ export const useNotifications = () => {
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
-      setFcmToken(token);
+      setFcmToken(token?.data ?? 'development');
     });
   }, []);
 };
