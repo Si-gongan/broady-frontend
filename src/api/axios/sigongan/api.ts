@@ -1,5 +1,5 @@
 import { Server } from '../setting';
-import { IRequestListReturnType } from './types';
+import { IAlarmStatusReturnType, IRequestListReturnType } from './types';
 
 import FormData from 'form-data';
 
@@ -54,6 +54,30 @@ export const AddThanks = async (postId: string, answerId: string, text: string, 
       postId,
       answerId,
       text,
+    },
+    {
+      headers: {
+        fcmToken,
+        authorization: 0,
+      },
+    }
+  );
+};
+
+export const GetAlarmStatus = async (fcmToken: string) => {
+  return await Server.get<IAlarmStatusReturnType>('/user/status', {
+    headers: {
+      fcmToken,
+      authorization: 0,
+    },
+  });
+};
+
+export const ChangeAlarmStatus = async (isAccepted: boolean, fcmToken: string) => {
+  return await Server.put(
+    '/user/status',
+    {
+      isAccepted,
     },
     {
       headers: {
