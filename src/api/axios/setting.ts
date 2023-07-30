@@ -3,7 +3,7 @@ import { API_SERVER_URL, AI_API_SERVER_URL } from '@env';
 
 export const Server = axios.create({
   baseURL: API_SERVER_URL,
-  timeout: 5000,
+  timeout: 25000,
   headers: {
     'Content-Type': 'application/json',
   },
