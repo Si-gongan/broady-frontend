@@ -17,6 +17,8 @@ export const ActionButton = ({ isComplete, onThanksPress, onQuestPress }: Action
         activeOpacity={0.8}
         style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
         onPress={onQuestPress}
+        accessible
+        accessibilityLabel="질문 추가하기 버튼"
       >
         <Text style={[SigonganFont.primary, SigonganColor.contentSecondary]}>질문 추가하기</Text>
       </TouchableOpacity>
@@ -26,6 +28,8 @@ export const ActionButton = ({ isComplete, onThanksPress, onQuestPress }: Action
           activeOpacity={0.8}
           style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
           onPress={onThanksPress}
+          accessible
+          accessibilityLabel="감사 인사하기 버튼"
         >
           <Text style={[SigonganFont.primary, SigonganColor.contentSecondary]}>감사 인사하기</Text>
         </TouchableOpacity>

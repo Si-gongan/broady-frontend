@@ -24,7 +24,13 @@ export const QuestionBox = ({
 }: QuestionBoxProps) => {
   return (
     <View style={[styles.container, SigonganColor.backgroundPrimary]}>
-      <TouchableOpacity activeOpacity={0.8} onPress={onImagePopupPress} disabled={disabled}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={onImagePopupPress}
+        disabled={disabled}
+        accessible
+        accessibilityLabel="전송할 이미지 선택 팝업 열기 버튼"
+      >
         <MaterialCommunityIcons name="image" style={styles.icon1} />
       </TouchableOpacity>
 
@@ -33,9 +39,17 @@ export const QuestionBox = ({
         onChangeText={onChangeValue}
         placeholder="질문을 입력하세요..."
         style={[styles.input, SigonganColor.backgroundPrimary, SigonganFont.secondary]}
+        accessible
+        accessibilityLabel="질문 입력 창"
       />
 
-      <TouchableOpacity activeOpacity={0.8} onPress={onSendTextPress} disabled={disabled}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={onSendTextPress}
+        disabled={disabled}
+        accessible
+        accessibilityLabel="질문 전송 버튼"
+      >
         <FontAwesome name="send" style={styles.icon2} />
       </TouchableOpacity>
     </View>

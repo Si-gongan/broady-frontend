@@ -120,11 +120,21 @@ export const RequestStateScreen = () => {
               .map((item, i) =>
                 isMe(item) ? (
                   isNextMe(chatList, i) ? (
-                    <View key={item.createdAt} style={styles.mySpeechWrapper}>
+                    <View
+                      key={item.createdAt}
+                      style={styles.mySpeechWrapper}
+                      accessible
+                      accessibilityLabel={`나의 대화: ${item.text}`}
+                    >
                       <MySpeechBubble text={item.text} />
                     </View>
                   ) : (
-                    <View key={item.createdAt} style={styles.mySpeechEndWrapper}>
+                    <View
+                      key={item.createdAt}
+                      style={styles.mySpeechEndWrapper}
+                      accessible
+                      accessibilityLabel={`나의 대화: ${item.text}`}
+                    >
                       <TimeViewer date={item.createdAt} />
 
                       <MySpeechBubble text={item.text} />
@@ -132,21 +142,34 @@ export const RequestStateScreen = () => {
                   )
                 ) : isAppreciated(item) ? (
                   <View key={item.createdAt}>
-                    <View style={styles.AnotherSpeechWrapper}>
+                    <View
+                      style={styles.AnotherSpeechWrapper}
+                      accessible
+                      accessibilityLabel={`해설자의 대화: ${item.text}`}
+                    >
                       <AnotherAvatar />
 
                       <AnotherSpeechBubble text={item.text} />
 
                       <TimeViewer date={item.createdAt} />
                     </View>
-                    <View style={[styles.mySpeechEndWrapper, { marginTop: 12 }]}>
+                    <View
+                      style={[styles.mySpeechEndWrapper, { marginTop: 12 }]}
+                      accessible
+                      accessibilityLabel={`나의 대화: ${item.text}`}
+                    >
                       <TimeViewer date={item.createdAt} />
 
                       <MySpeechBubble text={item.appreciatedText ?? ''} />
                     </View>
                   </View>
                 ) : (
-                  <View key={item.createdAt} style={styles.AnotherSpeechWrapper}>
+                  <View
+                    key={item.createdAt}
+                    style={styles.AnotherSpeechWrapper}
+                    accessible
+                    accessibilityLabel={`해설자의 대화: ${item.text}`}
+                  >
                     <AnotherAvatar />
 
                     <AnotherSpeechBubble text={item.text} />

@@ -1,23 +1,33 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Alert, Keyboard } from 'react-native';
 import { QuestionBox, ImageSelectPopup, ImageSelectPopupHandler } from '../../components/sigongan/ai-chat';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
-import { MySpeechBubble, AnotherSpeechBubble, AnotherAvatar } from '../../components/sigongan/request-state';
-import { IMessageType, PostQuestion } from '../../api/axios';
+import {
+  MySpeechBubble,
+  AnotherSpeechBubble,
+  AnotherAvatar,
+  TimeViewer,
+} from '../../components/sigongan/request-state';
+import { GetChatList, IGetChatListReturnType, PostImageQuestion, PostTextQuestion } from '../../api/axios';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SigonganColor, SigonganDesign } from '../../components/sigongan/styles';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
+import { useFocusEffect } from '@react-navigation/native';
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../states';
+import { ImageViewer } from '../../components/sigongan/ai-chat/ImageViewer';
 
 export const AIChatScreen = () => {
+  const fcmToken = useRecoilValue(fcmTokenState);
+
   const [text, setText] = useState('');
 
   const [loading, setLoading] = useState(false);
 
-  const [chatList, setChatList] = useState<IMessageType[]>([]);
-  const APIdata = useRef<object | null>({});
-
-  const insets = useSafeAreaInsets();
+  type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
+  const [chatList, setChatList] = useState<ChatListType>([]);
+  const chatId = useRef<string | null>(null);
 
   const scrollViewRef = useRef<ScrollView>(null);
   const imageSelectPopupRef = useRef<ImageSelectPopupHandler>(null);
@@ -52,22 +62,56 @@ export const AIChatScreen = () => {
     }
   }, [isKeyboardVisible]);
 
-  const onSendTextPress = async () => {
-    const newMessage: IMessageType = { type: 'text', content: text, role: 'user' };
-    const newChatList = [...chatList, newMessage];
+  useEffect(() => {
+    (async () => {
+      try {
+        const temp = await GetChatList(fcmToken);
 
+        const prevData = temp.data.result.chat;
+        if (prevData === null) {
+          return;
+        }
+
+        setChatList(prevData.chat);
+        chatId.current = prevData._id;
+      } catch {
+        Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
+          {
+            text: '확인',
+            style: 'default',
+          },
+        ]);
+      }
+    })();
+  }, []);
+
+  const onSendTextPress = async () => {
     try {
       setLoading(true);
 
-      const res = await PostQuestion(newChatList.slice(-7), APIdata.current);
+      const _ = await PostTextQuestion(chatId.current, text, fcmToken);
 
-      const newResponse: IMessageType = { type: 'text', content: res.data.message[0], role: 'assistant' };
-      APIdata.current = res.data.data;
-
-      const finalChatList = [...newChatList, newResponse];
-      setChatList(finalChatList);
-
+      await refresh();
+    } catch {
+      Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
+        {
+          text: '확인',
+          style: 'default',
+        },
+      ]);
+    } finally {
+      setLoading(false);
       setText('');
+    }
+  };
+
+  const onSendImagePress = async (url: string) => {
+    try {
+      setLoading(true);
+
+      const _ = await PostImageQuestion(chatId.current, url, fcmToken);
+
+      await refresh();
     } catch (e) {
       Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
         {
@@ -80,6 +124,17 @@ export const AIChatScreen = () => {
     }
   };
 
+  const refresh = async () => {
+    const temp = await GetChatList(fcmToken);
+    const newChatData = temp.data.result.chat;
+    if (newChatData === null) {
+      return;
+    }
+
+    setChatList(newChatData.chat);
+    chatId.current = newChatData._id;
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -87,25 +142,36 @@ export const AIChatScreen = () => {
       keyboardVerticalOffset={0}
     >
       <SigonganHeader text="AI 채팅" hideBackButton isBottomBorder />
-      <Spinner visible={loading} />
 
       <View style={styles.container}>
         <ScrollView ref={scrollViewRef}>
           <View style={styles.chatWrapper}>
             {chatList.map((item, i) =>
               item.role === 'user' ? (
-                <View key={i} style={styles.mySpeechEndWrapper}>
-                  {/* <TimeViewer date={item.createdAt} /> */}
+                <View
+                  key={i}
+                  style={styles.mySpeechEndWrapper}
+                  accessible
+                  accessibilityLabel={`내가 전송한 ${item.isPhoto ? '사진' : '채팅'} ${
+                    !item.isPhoto ? item.content : ''
+                  }`}
+                >
+                  <TimeViewer date={item.createdAt} />
 
-                  <MySpeechBubble text={item.content} />
+                  {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
                 </View>
               ) : (
-                <View key={i} style={styles.AnotherSpeechWrapper}>
+                <View
+                  key={i}
+                  style={styles.AnotherSpeechWrapper}
+                  accessible
+                  accessibilityLabel={`AI의 답변 ${item.content}`}
+                >
                   <AnotherAvatar />
 
                   <AnotherSpeechBubble text={item.content} />
 
-                  {/* <TimeViewer date={item.createdAt} /> */}
+                  <TimeViewer date={item.createdAt} />
                 </View>
               )
             )}
@@ -121,7 +187,9 @@ export const AIChatScreen = () => {
         />
       </View>
 
-      <ImageSelectPopup ref={imageSelectPopupRef} onSendImagePress={() => 2} />
+      <ImageSelectPopup ref={imageSelectPopupRef} onSendImagePress={onSendImagePress} />
+
+      <Spinner visible={loading} />
     </KeyboardAvoidingView>
   );
 };

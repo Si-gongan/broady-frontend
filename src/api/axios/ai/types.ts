@@ -1,10 +1,17 @@
-export type IMessageType = {
-  type: 'text' | 'image';
-  content: string;
-  role: 'user' | 'assistant';
-};
-
-export type ImageChatReturnType = {
-  message: [string, number];
-  data: object | null;
+export type IGetChatListReturnType = {
+  code: number;
+  result: {
+    chat: {
+      _id: string;
+      fcmToken: string;
+      chat: {
+        _id: string;
+        role: 'user' | 'assistant';
+        content: string;
+        isPhoto: boolean;
+        createdAt: string;
+      }[];
+      data: object | null;
+    } | null;
+  };
 };
