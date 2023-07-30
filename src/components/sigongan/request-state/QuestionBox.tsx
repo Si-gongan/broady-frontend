@@ -58,9 +58,11 @@ export const QuestionBox = ({ item, refresh }: QuestionBoxProps) => {
         style={[styles.text, SigonganFont.secondary]}
         value={value}
         onChangeText={setValue}
+        accessible
+        accessibilityLabel="질문 입력창"
       />
 
-      <TouchableOpacity activeOpacity={0.8} onPress={addQuestion}>
+      <TouchableOpacity activeOpacity={0.8} onPress={addQuestion} accessible accessibilityLabel="질문 전송 버튼">
         <FontAwesome name="send" style={styles.icon} />
       </TouchableOpacity>
     </View>

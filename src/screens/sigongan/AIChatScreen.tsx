@@ -148,13 +148,25 @@ export const AIChatScreen = () => {
           <View style={styles.chatWrapper}>
             {chatList.map((item, i) =>
               item.role === 'user' ? (
-                <View key={i} style={styles.mySpeechEndWrapper}>
+                <View
+                  key={i}
+                  style={styles.mySpeechEndWrapper}
+                  accessible
+                  accessibilityLabel={`내가 전송한 ${item.isPhoto ? '사진' : '채팅'} ${
+                    !item.isPhoto ? item.content : ''
+                  }`}
+                >
                   <TimeViewer date={item.createdAt} />
 
                   {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
                 </View>
               ) : (
-                <View key={i} style={styles.AnotherSpeechWrapper}>
+                <View
+                  key={i}
+                  style={styles.AnotherSpeechWrapper}
+                  accessible
+                  accessibilityLabel={`AI의 답변 ${item.content}`}
+                >
                   <AnotherAvatar />
 
                   <AnotherSpeechBubble text={item.content} />

@@ -9,7 +9,7 @@ type TimeViewerProps = {
 export const TimeViewer = ({ date }: TimeViewerProps) => {
   return (
     <View style={styles.container}>
-      <Text style={[SigonganFont.quaternary, SigonganColor.contentQuinary]}>{getFormattedTime(new Date(date))}</Text>
+      <Text style={[SigonganFont.quaternary, SigonganColor.contentQuinary]}>{getFormattedTime(date)}</Text>
     </View>
   );
 };

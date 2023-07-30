@@ -17,13 +17,19 @@ export const SigonganHeader = ({ hideBackButton, text, isBottomBorder, onBackBut
   return (
     <View>
       <View style={[styles.container, { marginTop: insets.top }]}>
-        <TouchableOpacity activeOpacity={0.8} onPress={onBackButtonPress} style={{ opacity: hideBackButton ? 0 : 1 }}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onBackButtonPress}
+          style={{ opacity: hideBackButton ? 0 : 1 }}
+          accessible
+          accessibilityLabel="뒤로가기 버튼"
+        >
           <Ionicons name="arrow-back" style={styles.icon} />
         </TouchableOpacity>
 
         <Text style={SigonganFont.primary}>{text}</Text>
 
-        <Ionicons name="arrow-back" style={styles.icon2} />
+        <Ionicons name="arrow-back" style={styles.icon2} accessible={false} />
       </View>
 
       {isBottomBorder && <View style={SigonganDesign.borderOpaque} />}
