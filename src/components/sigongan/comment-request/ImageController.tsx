@@ -9,12 +9,14 @@ type ImageControllerProps = {
 export const ImageController = ({ imgUrl, onPress }: ImageControllerProps) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: imgUrl }} style={styles.image} />
+      <Image source={{ uri: imgUrl }} style={styles.image} accessible accessibilityLabel="방금 업로드한 이미지" />
 
       <TouchableOpacity
         activeOpacity={0.8}
         style={[styles.button, SigonganColor.backgroundSecondary]}
         onPress={onPress}
+        accessible
+        accessibilityLabel="사진 다시 선택하기 버튼"
       >
         <Text style={[SigonganFont.teritary, SigonganColor.contentSecondary]}>사진 다시 선택하기</Text>
       </TouchableOpacity>

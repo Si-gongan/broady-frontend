@@ -75,7 +75,9 @@ export const AppSetting = () => {
       <Text style={SigonganDesign.myPageTitle}>앱 설정</Text>
 
       <View style={styles.rowWrap}>
-        <Text style={SigonganDesign.myPageContent}>알림 설정</Text>
+        <Text nativeID="Switch" style={SigonganDesign.myPageContent}>
+          알림 설정
+        </Text>
 
         <Switch
           trackColor={{ false: '#E8E8E8', true: '#000' }}
@@ -83,6 +85,10 @@ export const AppSetting = () => {
           ios_backgroundColor="#E8E8E8"
           onValueChange={toggleSwitch}
           value={isEnabled}
+          accessible
+          accessibilityLabel="알림 설정 스위치 버튼"
+          accessibilityLabelledBy="Switch"
+          accessibilityState={{ checked: isEnabled }}
         />
       </View>
     </View>

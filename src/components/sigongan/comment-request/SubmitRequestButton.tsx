@@ -17,6 +17,8 @@ export const SubmitRequestButton = ({ onPress, disabled }: SubmitRequestButtonPr
         style={[styles.textWrapper, SigonganColor.backgroundSecondary]}
         onPress={onPress}
         disabled={disabled}
+        accessible
+        accessibilityLabel="의뢰 전송하기 버튼"
       >
         <Text style={[SigonganFont.primary, SigonganColor.contentSecondary]}>의뢰 전송하기</Text>
       </TouchableOpacity>

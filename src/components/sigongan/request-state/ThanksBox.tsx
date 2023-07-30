@@ -59,9 +59,11 @@ export const ThanksBox = ({ item, refresh }: ThanksBoxProps) => {
         style={[styles.text, SigonganFont.secondary]}
         value={value}
         onChangeText={setValue}
+        accessible
+        accessibilityLabel="감사 인사 입력창"
       />
 
-      <TouchableOpacity activeOpacity={0.8} onPress={addThanks}>
+      <TouchableOpacity activeOpacity={0.8} onPress={addThanks} accessible accessibilityLabel="감사 인사 전송 버튼">
         <FontAwesome name="send" style={styles.icon} />
       </TouchableOpacity>
     </View>

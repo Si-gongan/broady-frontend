@@ -23,6 +23,8 @@ export const QuestTextArea = ({ value, onChangeValue }: QuestTextAreaProps) => {
         onChangeText={onChangeValue}
         value={value}
         placeholder="여기에 질문을 입력해주세요"
+        accessible
+        accessibilityLabel="질문 입력창"
       />
     </View>
   );
