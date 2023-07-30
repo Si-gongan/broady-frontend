@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     width: '90%',
     gap: 10,
-    height: 60,
     marginLeft: 20,
+    marginTop: 20,
   },
   chatImage: {
     width: 40,

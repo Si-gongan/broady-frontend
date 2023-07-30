@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 0.7,
+    marginBottom: 10,
   },
 });
 
