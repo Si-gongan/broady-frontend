@@ -13,19 +13,20 @@ import {
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
-import { getCorrectText, startComment } from '../../../api/axios';
+import { endComment, getCorrectText, getRequest, startComment, stopComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 
 interface IFooterProps {
   id: string;
   request: ICurrentRequest;
-  commentTimer?: number;
-  sendComment?: (text: string) => void;
+  setRequest: (value: React.SetStateAction<ICurrentRequest>) => void;
+  commentTimer: number;
+  handleStartTimer?: () => void;
   resetComment?: () => void;
 }
 
-const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFooterProps) => {
+const Footer = ({ id, request, setRequest, commentTimer, handleStartTimer, resetComment }: IFooterProps) => {
   const [text, setText] = useState<string>('');
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
@@ -42,12 +43,15 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
   useEffect(() => {
     if (isAvailable && isComplete === false) setStatus(-1);
     if (isAvailable === false && isComplete === false) setStatus(0);
-    if (isAvailable && isComplete) setStatus(1);
+    if (isAvailable === false && isComplete) setStatus(1);
   }, [isAvailable, isComplete]);
 
   const handleStartComment = async (id: string) => {
     await startComment(id, fcmToken, authToken).then((data) => {
-      if (data.code === 0) setStatus(0);
+      if (data.code === 0) {
+        getRequest(id, fcmToken, authToken).then((data) => setRequest(data));
+        setStatus(0);
+      }
     });
   };
 
@@ -59,9 +63,17 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
     // console.log('공백제외:', inputText.replaceAll(' ', '').length);
   };
 
-  const handleClickSendBtn = () => {
+  const handleClickSendBtn = async (id: string) => {
+    // 해설 내용이 추가된 post를 내보냄.
+    const result = await endComment(id, text, fcmToken, authToken);
+    setRequest(result);
     setIsSent(false);
     setText('');
+  };
+
+  const handleClickStopComment = async (id: string) => {
+    await stopComment(id, fcmToken, authToken);
+    setStatus(-1);
   };
 
   useEffect(() => {
@@ -124,7 +136,7 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
               </TouchableOpacity>
               <View style={styles.timer}>
                 <Text style={{ color: '#CF0000' }}>{commentTimer}분 남음</Text>
-                <TouchableOpacity style={styles.commentQuit} onPress={resetComment}>
+                <TouchableOpacity style={styles.commentQuit} onPress={() => handleClickStopComment(id)}>
                   <Text style={{ color: 'white' }}>해설포기</Text>
                 </TouchableOpacity>
               </View>
@@ -143,7 +155,7 @@ const Footer = ({ id, request, commentTimer, sendComment, resetComment }: IFoote
               </View>
               <TouchableOpacity
                 style={styles.sendBtn}
-                onPress={handleClickSendBtn}
+                onPress={() => handleClickSendBtn(id)}
                 activeOpacity={0.6}
                 disabled={!isSent}
               >

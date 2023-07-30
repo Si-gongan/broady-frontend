@@ -32,7 +32,7 @@ export type RequestReturnType = {
         appreciatedText: string;
       }[];
       isComplete: boolean;
-      expiredAt: Date | null;
+      expiredAt: string | null;
       isAvailable: boolean;
     };
   };
@@ -60,7 +60,7 @@ export type ProceedRequestReturnType = {
         appreciatedText: string;
       }[];
       isComplete: boolean;
-      expiredAt: Date | null;
+      expiredAt: string | null;
       isAvailable: boolean;
     }[];
   };
@@ -88,7 +88,7 @@ export type CompletedRequestReturnType = {
         appreciatedText: string;
       }[];
       isComplete: boolean;
-      expiredAt: Date | null;
+      expiredAt: string | null;
       isAvailable: boolean;
     }[];
   };
@@ -106,13 +106,13 @@ export type endCommentReturnType = {
   result: {
     post: {
       id: string;
-      createdAt: Date;
+      createdAt: string;
       photo: string;
       fcmToken: string;
       requestedUser: {
         id: string;
         text: string;
-        createdAt: Date;
+        createdAt: string;
       }[];
       responseUser: {
         id: string;
@@ -123,7 +123,7 @@ export type endCommentReturnType = {
         appreciatedText: string;
       }[];
       isComplete: boolean;
-      expiredAt: Date | null;
+      expiredAt: string | null;
       isAvailable: boolean;
     };
   };

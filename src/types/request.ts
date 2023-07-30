@@ -24,6 +24,6 @@ export interface ICurrentRequest {
     appreciatedText: string;
   }[];
   isComplete: boolean;
-  expiredAt: Date | null;
+  expiredAt: string | null;
   isAvailable: boolean;
 }

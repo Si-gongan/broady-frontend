@@ -4,12 +4,14 @@ import Header from '../../components/common/Header';
 import RequestMessage from '../../components/Comment/CommentWriting/RequestMessage';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { requestListState } from '../../states/request';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ICurrentRequest, IRequest } from '../../types/request';
 import { getRequest } from '../../api/axios';
 import { authTokenState, fcmTokenState } from '../../states';
 import MessageList from '../../components/Comment/CommentWriting/MessageList';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import useInterval from '../../hooks/useInterval';
+import { getExpiredMinute, getKoreanTime } from '../../utils/time';
 
 interface IComment {
   id: number;
@@ -19,7 +21,7 @@ interface IComment {
 const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const { id } = route.params;
   // const [requestList, setRequestList] = useRecoilState(requestListState);
-  const [currentRequest, setCurrentRequest] = useState<ICurrentRequest>({} as any);
+  const [currentRequest, setCurrentRequest] = useState<ICurrentRequest>({} as ICurrentRequest);
   // const [commentList, setCommentList] = useState<IComment[]>([]);
   // const [commentTimer, setCommentTimer] = useState<number>(1);
 
@@ -73,6 +75,20 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
       getRequest(id, fcmToken, authToken).then((data) => setCurrentRequest(data));
     }
   }, [isFocused]);
+
+  const [commentTimer, setCommentTimer] = useState<number>(10);
+
+  useInterval(() => {
+    if (currentRequest.expiredAt !== null && getKoreanTime(new Date()) < new Date(currentRequest.expiredAt)) {
+      const result = getExpiredMinute(currentRequest.expiredAt);
+      setCommentTimer(result);
+      console.log('해설작성 id: ', result);
+    } else {
+      console.log('해설작성화면 괄호밖: ', currentRequest.expiredAt);
+      console.log('해설작성화면 괄호밖: ', getKoreanTime(new Date()));
+    }
+  }, 1000);
+
   return (
     <View style={styles.mainContainer}>
       <Header navigation={navigation}>해설 작성</Header>
@@ -86,11 +102,12 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
       <Footer
         id={id}
         request={currentRequest}
+        setRequest={setCurrentRequest}
         // status={currentRequest.status}
         // startComment={startComment}
         // sendComment={sendComment}
         // resetComment={resetComment}
-        // commentTimer={commentTimer}
+        commentTimer={commentTimer}
       />
     </View>
   );
