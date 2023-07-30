@@ -30,3 +30,10 @@ export type IReqeustListItem = {
   expiredAt: string | null;
   isAvailable: boolean;
 };
+
+export type IAlarmStatusReturnType = {
+  code: number;
+  result: {
+    isAccepted: boolean;
+  };
+};
