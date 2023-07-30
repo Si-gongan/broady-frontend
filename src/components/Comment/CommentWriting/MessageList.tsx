@@ -65,29 +65,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom: 10,
   },
-  chatContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    width: '90%',
-    gap: 10,
-    height: 60,
-    marginLeft: 20,
-  },
-  chatImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  chatText: {
-    width: '60%',
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderBottomLeftRadius: 0,
-    borderColor: 'rgba(158, 150, 150, .5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
 
 export default MessageList;
