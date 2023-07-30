@@ -12,12 +12,12 @@ import { getConvertDate, getExpiredMinute, getKoreanTime } from '../../../utils/
 
 const RequestItem = ({
   request,
-  setCurrentRequest,
+  setProceedRequest,
   status,
   navigation,
 }: {
   request: ICurrentRequest;
-  setCurrentRequest: any;
+  setProceedRequest: any;
   status: number;
   navigation: any;
 }) => {
@@ -30,18 +30,18 @@ const RequestItem = ({
 
   const [commentTimer, setCommentTimer] = useState<number>(10);
 
+  // 시간을 줄일수록 작성 중인 해설의 남은시간 계산속도가 빠름. 코스트 고려.
   useInterval(() => {
     if (request.expiredAt !== null) {
       if (getKoreanTime(new Date()) < new Date(request.expiredAt)) {
         const result = getExpiredMinute(request.expiredAt);
         setCommentTimer(result);
-        console.log('MY의뢰 남은시간: ', result);
       } else {
-        if (status === 0) getProceedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
-        if (status === 1) getCompletedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+        // MY의뢰화면에서 작성중인 의뢰가 시간이 지났을 때
+        if (status === 0) getProceedRequest(fcmToken, authToken).then((data) => setProceedRequest(data));
       }
     }
-  }, 1000);
+  }, 100);
 
   return (
     <TouchableOpacity

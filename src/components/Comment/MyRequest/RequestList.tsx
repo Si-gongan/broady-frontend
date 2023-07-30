@@ -5,12 +5,12 @@ import RequestItem from './RequestItem';
 const RequestList = ({
   navigation,
   requestList,
-  setCurrentRequest,
+  setProceedRequest,
   status,
 }: {
   navigation: any;
   requestList: ICurrentRequest[];
-  setCurrentRequest: any;
+  setProceedRequest: any;
   status: number;
 }) => {
   return (
@@ -19,7 +19,7 @@ const RequestList = ({
         <RequestItem
           key={request.id}
           request={request}
-          setCurrentRequest={setCurrentRequest}
+          setProceedRequest={setProceedRequest}
           status={status}
           navigation={navigation}
         />

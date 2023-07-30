@@ -6,7 +6,6 @@ import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { requestListState } from '../../../states/request';
 import { ICurrentRequest } from '../../../types/request';
-import { getKoreanTime } from '../../../utils/time';
 import RequestList from './RequestList';
 
 interface ITopTab {
@@ -15,14 +14,15 @@ interface ITopTab {
   clicked: boolean;
 }
 
-const requestStatus = ['작성 중', '완료'];
-
 const MyRequest = ({ navigation }: any) => {
-  const [requestList, setRequestList] = useRecoilState(requestListState);
-  const [currentRequest, setCurrentRequest] = useState<ICurrentRequest[]>([]);
-
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
+  // const [requestList, setRequestList] = useRecoilState(requestListState);
+  // const [currentRequest, setCurrentRequest] = useState<ICurrentRequest[]>([]);
+  const [proceedRequest, setProceedRequest] = useState<ICurrentRequest[]>([]);
+  const [completedRequest, setCompletedRequest] = useState<ICurrentRequest[]>([]);
+
+  const isFocused = useIsFocused();
 
   const [topTabNavigations, setTopTabNavigations] = useState([
     {
@@ -48,21 +48,22 @@ const MyRequest = ({ navigation }: any) => {
       )
     );
   };
-  const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
       console.log('하단탭으로 진입할 때');
-      if (lastClicked.current === 0) getProceedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
-      if (lastClicked.current === 1) getCompletedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+      getProceedRequest(fcmToken, authToken).then((data) => setProceedRequest(data));
+      getCompletedRequest(fcmToken, authToken).then((data) => setCompletedRequest(data));
+      // if (lastClicked.current === 0) getProceedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+      // if (lastClicked.current === 1) getCompletedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
     }
   }, [isFocused]);
 
   useEffect(() => {
     // TODO: 두개로 나눌지? 하나로 둘 지? 느리면 저장해뒀다가 상태변경됐을 때 리렌더링하도록 수정
     console.log('상단 탭을 클릭할 때');
-    if (lastClicked.current === 0) getProceedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
-    if (lastClicked.current === 1) getCompletedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+    // if (lastClicked.current === 0) getProceedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
+    // if (lastClicked.current === 1) getCompletedRequest(fcmToken, authToken).then((data) => setCurrentRequest(data));
   }, [topTabNavigations]);
 
   return (
@@ -80,8 +81,8 @@ const MyRequest = ({ navigation }: any) => {
       </View>
       <View style={styles.bodyContainer}>
         <RequestList
-          requestList={currentRequest}
-          setCurrentRequest={setCurrentRequest}
+          requestList={lastClicked.current ? completedRequest : proceedRequest}
+          setProceedRequest={setProceedRequest}
           navigation={navigation}
           status={lastClicked.current}
         />
