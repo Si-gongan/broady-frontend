@@ -9,13 +9,14 @@ import {
   AnotherAvatar,
   TimeViewer,
 } from '../../components/sigongan/request-state';
-import { GetChatList, PostImageQuestion, PostTextQuestion } from '../../api/axios';
+import { GetChatList, IGetChatListReturnType, PostImageQuestion, PostTextQuestion } from '../../api/axios';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SigonganColor, SigonganDesign } from '../../components/sigongan/styles';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
+import { ImageViewer } from '../../components/sigongan/ai-chat/ImageViewer';
 
 export const AIChatScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -23,9 +24,9 @@ export const AIChatScreen = () => {
   const [text, setText] = useState('');
 
   const [loading, setLoading] = useState(false);
-  console.log('loading: ', loading);
 
-  const [chatList, setChatList] = useState<any[]>([]);
+  type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
+  const [chatList, setChatList] = useState<ChatListType>([]);
   const chatId = useRef<string | null>(null);
 
   const scrollViewRef = useRef<ScrollView>(null);
@@ -150,7 +151,7 @@ export const AIChatScreen = () => {
                 <View key={i} style={styles.mySpeechEndWrapper}>
                   <TimeViewer date={item.createdAt} />
 
-                  <MySpeechBubble text={item.content} />
+                  {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
                 </View>
               ) : (
                 <View key={i} style={styles.AnotherSpeechWrapper}>
