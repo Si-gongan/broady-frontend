@@ -1,8 +1,8 @@
-import { StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
-import { ICurrentRequest, IRequest } from '../../../types/request';
+import { StyleSheet, ScrollView } from 'react-native';
+import { IRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
 
-const RequestList = ({ requestList, navigation }: { requestList: IRequest[]; navigation?: any }) => {
+const RequestList = ({ requestList, navigation }: { requestList: IRequest[]; navigation: any }) => {
   return (
     <ScrollView contentContainerStyle={styles.cardContainer}>
       {requestList.map((request: IRequest) => (

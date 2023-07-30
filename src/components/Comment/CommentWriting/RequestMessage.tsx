@@ -1,8 +1,5 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import ImageModal from 'react-native-image-modal';
-import { AWS_BUCKET_BASE_URL } from '@env';
 import { getFormattedTime } from '../../../utils/time';
-import { useEffect } from 'react';
 
 interface IRequestMessageProps {
   id: string;
@@ -30,22 +27,13 @@ const RequestMessage = ({ content }: { content: IRequestMessageProps }) => {
 };
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    marginTop: 30,
-  },
-  requestImage: {
-    width: 415,
-    height: 250,
-    borderRadius: 30,
-    marginBottom: 10,
-  },
   chatContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     width: '90%',
     gap: 10,
-    height: 60,
     marginLeft: 20,
+    marginTop: 20,
   },
   chatImage: {
     width: 40,

@@ -1,15 +1,13 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { View, Text, StyleSheet } from 'react-native';
+import { useRecoilValue } from 'recoil';
 import { getRequestAll } from '../../api/axios';
 import RequestList from '../../components/Comment/Home/RequestList';
 import { authTokenState, fcmTokenState } from '../../states';
-import { requestListState } from '../../states/request';
 import { IRequest } from '../../types/request';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
-  const [requestList, setRequestList] = useRecoilState<IRequest[]>(requestListState);
   const [currentRequest, setCurrentRequest] = useState<IRequest[]>([]);
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
@@ -36,10 +34,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
   header: {
     marginTop: 23,
     marginBottom: 20,

@@ -33,13 +33,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     gap: 10,
-    height: 60,
     marginRight: 20,
-  },
-  chatImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    marginTop: 20,
   },
   chatText: {
     width: '60%',
@@ -50,7 +45,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(158, 150, 150, .5)',
     backgroundColor: '#3B4A89',
     justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

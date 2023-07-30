@@ -4,7 +4,6 @@ import {
   ProceedRequestReturnType,
   CompletedRequestReturnType,
   startCommentReturnType,
-  endCommentReturnType,
 } from '..';
 import { Server } from '../setting';
 

@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { ICurrentRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
 
@@ -10,7 +10,7 @@ const RequestList = ({
 }: {
   navigation: any;
   requestList: ICurrentRequest[];
-  setProceedRequest: any;
+  setProceedRequest: (value: React.SetStateAction<ICurrentRequest[]>) => void;
   status: number;
 }) => {
   return (

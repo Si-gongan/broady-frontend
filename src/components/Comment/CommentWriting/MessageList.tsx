@@ -1,9 +1,7 @@
 import { AWS_BUCKET_BASE_URL } from '@env';
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ImageModal from 'react-native-image-modal';
 import { ICurrentRequest } from '../../../types/request';
-import { getFormattedTime } from '../../../utils/time';
 import RequestMessage from './RequestMessage';
 import ResponseMessage from './ResponseMessage';
 
@@ -64,29 +62,6 @@ const styles = StyleSheet.create({
     height: 250,
     borderRadius: 30,
     marginBottom: 10,
-  },
-  chatContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    width: '90%',
-    gap: 10,
-    height: 60,
-    marginLeft: 20,
-  },
-  chatImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  chatText: {
-    width: '60%',
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderBottomLeftRadius: 0,
-    borderColor: 'rgba(158, 150, 150, .5)',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

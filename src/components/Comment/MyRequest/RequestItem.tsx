@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
-import { imagePath } from '../../../../assets/imagePath';
-import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
+import { getProceedRequest } from '../../../api/axios';
 import useInterval from '../../../hooks/useInterval';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
@@ -17,7 +16,7 @@ const RequestItem = ({
   navigation,
 }: {
   request: ICurrentRequest;
-  setProceedRequest: any;
+  setProceedRequest: (value: React.SetStateAction<ICurrentRequest[]>) => void;
   status: number;
   navigation: any;
 }) => {
