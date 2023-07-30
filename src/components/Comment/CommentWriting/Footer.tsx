@@ -22,15 +22,13 @@ interface IFooterProps {
   request: ICurrentRequest;
   setRequest: (value: React.SetStateAction<ICurrentRequest>) => void;
   commentTimer: number;
-  handleStartTimer?: () => void;
-  resetComment?: () => void;
 }
 
-const Footer = ({ id, request, setRequest, commentTimer, handleStartTimer, resetComment }: IFooterProps) => {
-  const [text, setText] = useState<string>('');
+const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
-  //   const [keyboardStatus, setKeyboardStatus] = useState(false);
+
+  const [text, setText] = useState<string>('');
   const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
   const [isSent, setIsSent] = useState(false);
   const { isAvailable, isComplete } = request;
@@ -59,12 +57,9 @@ const Footer = ({ id, request, setRequest, commentTimer, handleStartTimer, reset
     if (inputText.length > 50) setIsSent(true);
     else setIsSent(false);
     setText(inputText);
-    // console.log('공백포함:', inputText.length);
-    // console.log('공백제외:', inputText.replaceAll(' ', '').length);
   };
 
   const handleClickSendBtn = async (id: string) => {
-    // 해설 내용이 추가된 post를 내보냄.
     const result = await endComment(id, text, fcmToken, authToken);
     setRequest(result);
     setIsSent(false);

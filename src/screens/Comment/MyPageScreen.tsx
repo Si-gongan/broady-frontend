@@ -22,8 +22,7 @@ const MyPageScreen = ({ navigation }: any) => {
   const [myPoint, setMyPoint] = useState<number>(0);
 
   useEffect(() => {
-    // 유저 포인트 내역 API 수정 필요.
-    // getPointList(fcmToken, authToken).then((data) => setPointList(data));
+    getPointList(fcmToken, authToken).then((data) => setPointList(data));
   }, []);
 
   useEffect(() => {

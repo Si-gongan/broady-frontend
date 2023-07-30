@@ -1,9 +1,7 @@
 import { AWS_BUCKET_BASE_URL } from '@env';
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ImageModal from 'react-native-image-modal';
 import { ICurrentRequest } from '../../../types/request';
-import { getFormattedTime } from '../../../utils/time';
 import RequestMessage from './RequestMessage';
 import ResponseMessage from './ResponseMessage';
 

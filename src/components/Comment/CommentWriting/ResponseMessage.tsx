@@ -36,11 +36,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
   },
-  chatImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
   chatText: {
     width: '60%',
     padding: 10,

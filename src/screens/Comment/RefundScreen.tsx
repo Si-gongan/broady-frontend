@@ -3,14 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-nativ
 import Header from '../../components/common/Header';
 import { commentColor, commentFont } from '../../components/Comment/styles';
 import RefundPointList from '../../components/Comment/Mypage/RefundPointList';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { accountState, authTokenState, fcmTokenState } from '../../states';
+import { useRecoilValue } from 'recoil';
+import { authTokenState, fcmTokenState } from '../../states';
 import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
 import { AuthColor } from '../../components/auth/styles';
 import { ACCOUNT_NUMBER, getData, storeData } from '../../components/common/async-storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const getMyPoint = (pointList: IPoint[]) => {
   const points = pointList.map((data) => data.point);
