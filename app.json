@@ -22,7 +22,8 @@
         "backgroundColor": "#ffffff"
       },
       "googleServicesFile": "./google-services.json",
-      "package": "com.sigongan.bomjaguk"
+      "package": "com.sigongan.bomjaguk",
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"

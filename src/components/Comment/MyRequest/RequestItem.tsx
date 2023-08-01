@@ -1,4 +1,3 @@
-import { AWS_BUCKET_BASE_URL } from '@env';
 import { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
@@ -52,7 +51,10 @@ const RequestItem = ({
     >
       <Shadow distance={3} sides={{ top: false, bottom: true, start: true, end: true }}>
         <View style={styles.imageContainer}>
-          <Image source={{ uri: `${AWS_BUCKET_BASE_URL}/${request.photo}` }} style={styles.image} />
+          <Image
+            source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
+            style={styles.image}
+          />
           <View style={styles.imageTextContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.createdAtRequest}>{gapTime}</Text>

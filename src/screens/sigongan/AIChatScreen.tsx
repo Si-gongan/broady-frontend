@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Alert, Keyboard } from 'react-native';
 import { QuestionBox, ImageSelectPopup, ImageSelectPopupHandler } from '../../components/sigongan/ai-chat';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   MySpeechBubble,
@@ -139,7 +138,7 @@ export const AIChatScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={0}
+      keyboardVerticalOffset={Platform.select({ android: 49 })}
     >
       <SigonganHeader text="AI 채팅" hideBackButton isBottomBorder />
 
