@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { API_SERVER_URL, AI_API_SERVER_URL } from '@env';
 
 export const Server = axios.create({
-  baseURL: API_SERVER_URL,
+  baseURL: process.env.EXPO_PUBLIC_API_SERVER_URL,
   timeout: 25000,
   headers: {
     'Content-Type': 'application/json',
@@ -10,7 +9,7 @@ export const Server = axios.create({
 });
 
 export const AIServer = axios.create({
-  baseURL: AI_API_SERVER_URL,
+  baseURL: process.env.EXPO_PUBLIC_AI_API_SERVER_URL,
   timeout: 25000,
   headers: {
     'Content-Type': 'application/json',

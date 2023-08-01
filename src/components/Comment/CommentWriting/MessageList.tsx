@@ -1,4 +1,3 @@
-import { AWS_BUCKET_BASE_URL } from '@env';
 import { View, StyleSheet } from 'react-native';
 import ImageModal from 'react-native-image-modal';
 import { ICurrentRequest } from '../../../types/request';
@@ -30,7 +29,7 @@ const MessageList = ({ request }: { request: ICurrentRequest }) => {
           resizeMode="contain"
           style={styles.requestImage}
           source={{
-            uri: `${AWS_BUCKET_BASE_URL}/${request.photo}`,
+            uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}`,
           }}
         />
       </View>

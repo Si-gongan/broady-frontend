@@ -8,7 +8,6 @@ import {
   RequestTextCard,
 } from '../../components/sigongan/home';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { AWS_BUCKET_BASE_URL } from '@env';
 
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
@@ -29,6 +28,8 @@ export const HomeScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
+      console.log(process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL);
+
       if (fcmToken) {
         LoadRequestList();
       }
@@ -75,7 +76,7 @@ export const HomeScreen = () => {
               onPress={() => navigation.navigate('해설 진행현황', { item })}
             >
               <View style={styles.requestItem}>
-                <RequestImageCard imgUrl={AWS_BUCKET_BASE_URL + '/' + item.photo} />
+                <RequestImageCard imgUrl={process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL + '/' + item.photo} />
                 <RequestTextCard date={item.createdAt} content={item.requestedUser[0].text} />
               </View>
             </TouchableOpacity>
