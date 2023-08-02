@@ -23,7 +23,7 @@
       },
       "googleServicesFile": "./google-services.json",
       "package": "com.sigongan.bomjaguk",
-      "versionCode": 3
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/favicon.png"

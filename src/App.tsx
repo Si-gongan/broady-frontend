@@ -8,6 +8,8 @@ import { AuthStack, SigonganStack, CommentStack } from './navigations';
 import { UserStateProvider, useUserState } from './providers';
 
 import { initializeNotifications, useNotifications } from './components/common/notifications';
+import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
 
 initializeNotifications();
 
@@ -40,6 +42,8 @@ const Main = () => {
         {userState === 'unLogin' && <AuthStack />}
         {userState === 'Sigongan' && <SigonganStack />}
         {userState === 'Comment' && <CommentStack />}
+
+        <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
       </GestureHandlerRootView>
     </NavigationContainer>
   );

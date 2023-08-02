@@ -28,8 +28,6 @@ export const HomeScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log(process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL);
-
       if (fcmToken) {
         LoadRequestList();
       }

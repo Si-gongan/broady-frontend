@@ -12,12 +12,17 @@ import { GetChatList, IGetChatListReturnType, PostImageQuestion, PostTextQuestio
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SigonganColor, SigonganDesign } from '../../components/sigongan/styles';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 import { ImageViewer } from '../../components/sigongan/ai-chat/ImageViewer';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { SigonganMainTabParamList } from '../../navigations';
 
 export const AIChatScreen = () => {
+  const navigation = useNavigation<BottomTabNavigationProp<SigonganMainTabParamList>>();
+
   const fcmToken = useRecoilValue(fcmTokenState);
 
   const [text, setText] = useState('');
@@ -58,6 +63,9 @@ export const AIChatScreen = () => {
   useEffect(() => {
     if (isKeyboardVisible) {
       scrollViewRef.current?.scrollToEnd({ animated: true });
+      navigation.setOptions({ tabBarStyle: { display: 'none' } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: 'flex' } });
     }
   }, [isKeyboardVisible]);
 
@@ -138,7 +146,7 @@ export const AIChatScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.select({ android: 49 })}
+      keyboardVerticalOffset={0}
     >
       <SigonganHeader text="AI 채팅" hideBackButton isBottomBorder />
 
