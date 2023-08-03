@@ -43,7 +43,7 @@ const Main = () => {
         {userState === 'Sigongan' && <SigonganStack />}
         {userState === 'Comment' && <CommentStack />}
 
-        <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+        <StatusBar style="auto" />
       </GestureHandlerRootView>
     </NavigationContainer>
   );
