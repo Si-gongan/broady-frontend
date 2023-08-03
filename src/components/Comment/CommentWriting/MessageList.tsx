@@ -64,8 +64,6 @@ const styles = StyleSheet.create({
   requestImage: {
     width: SCREEN_WIDTH * 0.9,
     height: 250,
-    borderRadius: 30,
-    marginBottom: 10,
   },
 });
 
