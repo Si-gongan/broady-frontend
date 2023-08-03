@@ -67,9 +67,14 @@ export const AIChatScreen = () => {
   useEffect(() => {
     if (isKeyboardVisible) {
       scrollViewRef.current?.scrollToEnd({ animated: true });
-      navigation.setOptions({ tabBarStyle: { display: 'none' } });
-    } else {
-      navigation.setOptions({ tabBarStyle: { display: 'flex' } });
+    }
+
+    if (Platform.OS === 'android') {
+      if (isKeyboardVisible) {
+        navigation.setOptions({ tabBarStyle: { display: 'none' } });
+      } else {
+        navigation.setOptions({ tabBarStyle: { display: 'flex' } });
+      }
     }
   }, [isKeyboardVisible]);
 
