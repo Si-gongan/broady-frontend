@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  Alert,
 } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
@@ -45,12 +46,17 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
   }, [isAvailable, isComplete]);
 
   const handleStartComment = async (id: string) => {
-    await startComment(id, fcmToken, authToken).then((data) => {
-      if (data.code === 0) {
-        getRequest(id, fcmToken, authToken).then((data) => setRequest(data));
-        setStatus(0);
-      }
-    });
+    setStatus(0);
+    await startComment(id, fcmToken, authToken)
+      .then((data) => {
+        if (data.code === 0) {
+          getRequest(id, fcmToken, authToken).then((data) => setRequest(data));
+        }
+      })
+      .catch(() => {
+        Alert.alert('통신에 에러가 발생하였습니다. 잠시후 다시 시도해주세요.');
+        setStatus(-1);
+      });
   };
 
   const handleCommentInput = (inputText: string) => {
