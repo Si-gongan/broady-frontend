@@ -68,3 +68,9 @@ export const getDateInfo = (date: Date) => {
 };
 
 export const getDate = (date: string) => new Date(date).getUTCDate();
+
+export const delay = (milliseconds: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+};

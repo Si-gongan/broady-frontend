@@ -18,6 +18,7 @@ import {
   RequestImageCard,
   RequestTextCard,
 } from '../../components/sigongan/home';
+import { NoticeError } from '../../api/axios';
 
 export const HomeScreen = () => {
   // page move
@@ -48,12 +49,7 @@ export const HomeScreen = () => {
       const tempList = res.data.result.posts;
       setRequestList(tempList);
     } catch {
-      Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
-        {
-          text: '확인',
-          style: 'default',
-        },
-      ]);
+      NoticeError();
     } finally {
       setLoading(false);
     }
