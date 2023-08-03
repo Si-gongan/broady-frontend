@@ -3,13 +3,14 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-nativ
 import Header from '../../components/common/Header';
 import { commentColor, commentFont } from '../../components/Comment/styles';
 import RefundPointList from '../../components/Comment/Mypage/RefundPointList';
-import { useRecoilValue } from 'recoil';
-import { authTokenState, fcmTokenState } from '../../states';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authTokenState, fcmTokenState, myPointState } from '../../states';
 import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
 import { AuthColor } from '../../components/auth/styles';
 import { ACCOUNT_NUMBER, getData, storeData } from '../../components/common/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const getMyPoint = (pointList: IPoint[]) => {
   const points = pointList.map((data) => data.point);
@@ -24,9 +25,10 @@ const RefundScreen = ({ navigation }: any) => {
   const [accountNumberInput, setAccountNumberInput] = useState<string>('');
   const [refundPoint, setRefundPoint] = useState<string>('');
   const [pointList, setPointList] = useState<IPoint[]>([]);
-  const [myPoint, setMyPoint] = useState<number>(0);
+  const [myPoint, setMyPoint] = useRecoilState(myPointState);
 
   const [isRefunded, setIsRefunded] = useState(false);
+  const isFocused = useIsFocused();
 
   const onClickRefundButton = async () => {
     Keyboard.dismiss();
@@ -48,19 +50,15 @@ const RefundScreen = ({ navigation }: any) => {
   };
 
   useEffect(() => {
-    getData(ACCOUNT_NUMBER).then((data) => {
-      if (typeof data === 'string') setAccountNumberInput(data);
-    });
-    getPointList(fcmToken, authToken)
-      .then((data) => setPointList(data))
-      .catch((error) => console.log('POINT ERROR ', error));
-  }, []);
-
-  useEffect(() => {
-    const total = getMyPoint(pointList);
-    setMyPoint(total);
-    console.log('total point: ', total);
-  }, [pointList]);
+    if (isFocused) {
+      getData(ACCOUNT_NUMBER).then((data) => {
+        if (typeof data === 'string') setAccountNumberInput(data);
+      });
+      getPointList(fcmToken, authToken)
+        .then((data) => setPointList(data))
+        .catch((error) => console.log('POINT ERROR ', error));
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.refundContainer}>

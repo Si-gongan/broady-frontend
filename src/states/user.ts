@@ -14,3 +14,8 @@ export const accountState = atom({
   key: 'accountState',
   default: '',
 });
+
+export const myPointState = atom({
+  key: 'myPointState',
+  default: 0,
+});
