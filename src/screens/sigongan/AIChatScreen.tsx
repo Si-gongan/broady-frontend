@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Alert, Keyboard } from 'react-native';
-import { QuestionBox, ImageSelectPopup, ImageSelectPopupHandler } from '../../components/sigongan/ai-chat';
+import {
+  QuestionBox,
+  ImageSelectPopup,
+  ImageSelectPopupHandler,
+  ImageViewer,
+  DateViewer,
+} from '../../components/sigongan/ai-chat';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   MySpeechBubble,
@@ -10,15 +16,13 @@ import {
 } from '../../components/sigongan/request-state';
 import { GetChatList, IGetChatListReturnType, PostImageQuestion, PostTextQuestion } from '../../api/axios';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { SigonganColor, SigonganDesign } from '../../components/sigongan/styles';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { ImageViewer } from '../../components/sigongan/ai-chat/ImageViewer';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { SigonganMainTabParamList } from '../../navigations';
+import { getDate } from '../../utils/time';
 
 export const AIChatScreen = () => {
   const navigation = useNavigation<BottomTabNavigationProp<SigonganMainTabParamList>>();
@@ -142,6 +146,9 @@ export const AIChatScreen = () => {
     chatId.current = newChatData._id;
   };
 
+  const isShowDate = (list: ChatListType, i: number) =>
+    i === 0 || (i - 2 >= 0 && getDate(list[i].createdAt) !== getDate(list[i - 2].createdAt));
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -155,22 +162,26 @@ export const AIChatScreen = () => {
           <View style={styles.chatWrapper}>
             {chatList.map((item, i) =>
               item.role === 'user' ? (
-                <View
-                  key={i}
-                  style={styles.mySpeechEndWrapper}
-                  accessible
-                  accessibilityLabel={`내가 전송한 ${item.isPhoto ? '사진' : '채팅'} ${
-                    !item.isPhoto ? item.content : ''
-                  }`}
-                >
-                  <TimeViewer date={item.createdAt} />
+                <View key={i} style={styles.chatItem}>
+                  {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
 
-                  {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
+                  <View
+                    key={i}
+                    style={styles.mySpeechEndWrapper}
+                    accessible
+                    accessibilityLabel={`내가 전송한 ${item.isPhoto ? '사진' : '채팅'} ${
+                      !item.isPhoto ? item.content : ''
+                    }`}
+                  >
+                    <TimeViewer date={item.createdAt} />
+
+                    {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
+                  </View>
                 </View>
               ) : (
                 <View
                   key={i}
-                  style={styles.AnotherSpeechWrapper}
+                  style={styles.anotherSpeechWrapper}
                   accessible
                   accessibilityLabel={`AI의 답변 ${item.content}`}
                 >
@@ -209,8 +220,11 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 12,
 
-    marginTop: 16,
+    marginTop: 3,
     marginBottom: 20,
+  },
+  chatItem: {
+    width: '100%',
   },
   mySpeechEndWrapper: {
     flexDirection: 'row',
@@ -219,7 +233,7 @@ const styles = StyleSheet.create({
     gap: 11,
     marginRight: 18,
   },
-  AnotherSpeechWrapper: {
+  anotherSpeechWrapper: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
 
