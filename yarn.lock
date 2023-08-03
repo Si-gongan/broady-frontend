@@ -3920,12 +3920,7 @@ expo-font@~11.1.1:
   dependencies:
     fontfaceobserver "^2.1.0"
 
-expo-image-loader@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-4.3.0.tgz#d897b4d4f1838faa8291c36f00b99c2b36a6ac5c"
-  integrity sha512-2kqJIO+oYM8J3GbvTUHLqTSpt1dLpOn/X0eB4U4RTuzz/faj8l/TyQELsMBLlGAkweNUuG9LqznbaBz+WuSFEw==
-
-expo-image-loader@~4.1.0:
+expo-image-loader@~4.1.0, expo-image-loader@~4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/expo-image-loader/-/expo-image-loader-4.1.1.tgz"
   integrity sha512-ciEHVokU0f6w0eTxdRxLCio6tskMsjxWIoV92+/ZD37qePUJYMfEphPhu1sruyvMBNR8/j5iyOvPFVGTfO8oxA==
@@ -6918,11 +6913,6 @@ react-native-loading-spinner-overlay@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-3.0.1.tgz"
   integrity sha512-4GdR54HQnKg2HPSSisVizfTLuyhSh4splY9eb8mKiYF1Ihjn/5EmdNo5bN3S7uKPFRC3WLzIZIouX6G6fXfnjw==
-
-react-native-mmkv@^2.10.1:
-  version "2.10.1"
-  resolved "https://registry.npmjs.org/react-native-mmkv/-/react-native-mmkv-2.10.1.tgz"
-  integrity sha512-MCrYytUJ3JhSVg7LwVXCj7ExbMHe48FoQdDA1xo1q/M4c1/QyI3M9L9d2dyJUhYPnsSO0+5c2mJICm7v39XA0w==
 
 react-native-modal@^13.0.1:
   version "13.0.1"

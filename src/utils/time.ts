@@ -12,7 +12,7 @@ export const getConvertDate = (target: string) => {
   const gapMinute = Math.floor(gapMiliseconds / (1000 * 60));
   const gapHour = Math.floor(gapMiliseconds / (1000 * 60 * 60));
   const gapDay = Math.floor(gapMiliseconds / (1000 * 60 * 60 * 24));
-  if (gapMinute < 60) return `${gapMinute}분 전`;
+  if (gapMinute < 60) return gapMinute === 0 ? '방금 전' : `${gapMinute}분 전`;
   else if (gapHour < 24) return `${gapHour}시간 전`;
   else return `${gapDay}일 전`;
 };
@@ -28,8 +28,17 @@ export const getRefundDate = (targetDate: Date) => {
   return result;
 };
 
+export const getExpiredMinute = (target: string) => {
+  const gap = new Date(target).getTime() - getKoreanTime(new Date()).getTime();
+  const gapMinute = Math.floor(gap / (1000 * 60));
+  return gapMinute;
+};
+
+// for sigongan
+
+// api 시간 값 보정.
+// 무조건 UTC로 얻어와야 한국 시간
 export const getFormattedTime = (target: string) => {
-  // api 시간 값 보정.
   const realTime = new Date(target);
 
   const hour = realTime.getUTCHours();
@@ -42,8 +51,26 @@ export const getFormattedTime = (target: string) => {
   }
 };
 
-export const getExpiredMinute = (target: string) => {
-  const gap = new Date(target).getTime() - getKoreanTime(new Date()).getTime();
-  const gapMinute = Math.floor(gap / (1000 * 60));
-  return gapMinute;
+export const getDayOfWeek = (date: Date) => {
+  const week = ['일', '월', '화', '수', '목', '금', '토'];
+
+  const dayOfWeek = week[date.getUTCDay()];
+
+  return dayOfWeek;
+};
+
+export const getDateInfo = (date: Date) => {
+  const year = date.getUTCFullYear().toString();
+  const month = (date.getUTCMonth() + 1).toString();
+  const day = date.getUTCDate().toString();
+
+  return { year, month, day };
+};
+
+export const getDate = (date: string) => new Date(date).getUTCDate();
+
+export const delay = (milliseconds: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
 };

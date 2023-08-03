@@ -1,6 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Alert, Keyboard } from 'react-native';
-import { QuestionBox, ImageSelectPopup, ImageSelectPopupHandler } from '../../components/sigongan/ai-chat';
+import { useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import {
+  QuestionBox,
+  ImageSelectPopup,
+  ImageSelectPopupHandler,
+  ImageViewer,
+  DateViewer,
+} from '../../components/sigongan/ai-chat';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   MySpeechBubble,
@@ -8,67 +14,38 @@ import {
   AnotherAvatar,
   TimeViewer,
 } from '../../components/sigongan/request-state';
-import { GetChatList, IGetChatListReturnType, PostImageQuestion, PostTextQuestion } from '../../api/axios';
+import { GetChatList, IGetChatListReturnType, NoticeError, PostImageQuestion, PostTextQuestion } from '../../api/axios';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { SigonganColor, SigonganDesign } from '../../components/sigongan/styles';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { ImageViewer } from '../../components/sigongan/ai-chat/ImageViewer';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { SigonganMainTabParamList } from '../../navigations';
+import { delay, getDate } from '../../utils/time';
+import { useKeyboard } from '../../hooks';
+
+type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
 
 export const AIChatScreen = () => {
+  // page move
   const navigation = useNavigation<BottomTabNavigationProp<SigonganMainTabParamList>>();
 
+  // api
   const fcmToken = useRecoilValue(fcmTokenState);
-
-  const [text, setText] = useState('');
-
-  const [loading, setLoading] = useState(false);
-
-  type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
   const [chatList, setChatList] = useState<ChatListType>([]);
   const chatId = useRef<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
+  // state
+  const [text, setText] = useState('');
   const scrollViewRef = useRef<ScrollView>(null);
+  const { isKeyboardVisible } = useKeyboard();
+
+  // popup
   const imageSelectPopupRef = useRef<ImageSelectPopupHandler>(null);
 
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    const keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', () => {
-      setKeyboardVisible(true);
-    });
-    const keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', () => {
-      setKeyboardVisible(false);
-    });
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardVisible(true);
-    });
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardVisible(false);
-    });
-
-    return () => {
-      keyboardWillShowListener?.remove();
-      keyboardWillHideListener?.remove();
-      keyboardDidHideListener?.remove();
-      keyboardDidShowListener?.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isKeyboardVisible) {
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-      navigation.setOptions({ tabBarStyle: { display: 'none' } });
-    } else {
-      navigation.setOptions({ tabBarStyle: { display: 'flex' } });
-    }
-  }, [isKeyboardVisible]);
-
+  // load initial chat
   useEffect(() => {
     (async () => {
       try {
@@ -92,20 +69,29 @@ export const AIChatScreen = () => {
     })();
   }, []);
 
+  // keyboard animation
+  useEffect(() => {
+    if (isKeyboardVisible) {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }
+
+    if (Platform.OS === 'android') {
+      if (isKeyboardVisible) {
+        navigation.setOptions({ tabBarStyle: { display: 'none' } });
+      } else {
+        navigation.setOptions({ tabBarStyle: { display: 'flex' } });
+      }
+    }
+  }, [isKeyboardVisible]);
+
   const onSendTextPress = async () => {
     try {
       setLoading(true);
 
-      const _ = await PostTextQuestion(chatId.current, text, fcmToken);
-
+      await PostTextQuestion(chatId.current, text, fcmToken);
       await refresh();
     } catch {
-      Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
-        {
-          text: '확인',
-          style: 'default',
-        },
-      ]);
+      NoticeError();
     } finally {
       setLoading(false);
       setText('');
@@ -113,19 +99,15 @@ export const AIChatScreen = () => {
   };
 
   const onSendImagePress = async (url: string) => {
+    await delay(500);
+
     try {
       setLoading(true);
 
-      const _ = await PostImageQuestion(chatId.current, url, fcmToken);
-
+      await PostImageQuestion(chatId.current, url, fcmToken);
       await refresh();
     } catch (e) {
-      Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
-        {
-          text: '확인',
-          style: 'default',
-        },
-      ]);
+      NoticeError();
     } finally {
       setLoading(false);
     }
@@ -142,6 +124,9 @@ export const AIChatScreen = () => {
     chatId.current = newChatData._id;
   };
 
+  const isShowDate = (list: ChatListType, i: number) =>
+    i === 0 || (i - 2 >= 0 && getDate(list[i].createdAt) !== getDate(list[i - 2].createdAt));
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -155,22 +140,26 @@ export const AIChatScreen = () => {
           <View style={styles.chatWrapper}>
             {chatList.map((item, i) =>
               item.role === 'user' ? (
-                <View
-                  key={i}
-                  style={styles.mySpeechEndWrapper}
-                  accessible
-                  accessibilityLabel={`내가 전송한 ${item.isPhoto ? '사진' : '채팅'} ${
-                    !item.isPhoto ? item.content : ''
-                  }`}
-                >
-                  <TimeViewer date={item.createdAt} />
+                <View key={i} style={styles.chatItem}>
+                  {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
 
-                  {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
+                  <View
+                    key={i}
+                    style={styles.mySpeechEndWrapper}
+                    accessible
+                    accessibilityLabel={`내가 전송한 ${item.isPhoto ? '사진' : '채팅'} ${
+                      !item.isPhoto ? item.content : ''
+                    }`}
+                  >
+                    <TimeViewer date={item.createdAt} />
+
+                    {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
+                  </View>
                 </View>
               ) : (
                 <View
                   key={i}
-                  style={styles.AnotherSpeechWrapper}
+                  style={styles.anotherSpeechWrapper}
                   accessible
                   accessibilityLabel={`AI의 답변 ${item.content}`}
                 >
@@ -209,8 +198,11 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 12,
 
-    marginTop: 16,
+    marginTop: 3,
     marginBottom: 20,
+  },
+  chatItem: {
+    width: '100%',
   },
   mySpeechEndWrapper: {
     flexDirection: 'row',
@@ -219,7 +211,7 @@ const styles = StyleSheet.create({
     gap: 11,
     marginRight: 18,
   },
-  AnotherSpeechWrapper: {
+  anotherSpeechWrapper: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
 
