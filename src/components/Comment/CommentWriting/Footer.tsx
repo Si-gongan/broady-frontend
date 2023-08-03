@@ -66,10 +66,15 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
   };
 
   const handleClickSendBtn = async (id: string) => {
-    const result = await endComment(id, text, fcmToken, authToken);
-    setRequest(result);
     setIsSent(false);
-    setText('');
+    try {
+      const result = await endComment(id, text, fcmToken, authToken);
+      setRequest(result);
+      setText('');
+    } catch (error) {
+      Alert.alert('통신에 에러가 발생하였습니다. 잠시후 다시 시도해주세요.');
+      setIsSent(true);
+    }
   };
 
   const handleClickStopComment = async (id: string) => {
