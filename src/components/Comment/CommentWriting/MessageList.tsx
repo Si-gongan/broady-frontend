@@ -38,15 +38,15 @@ const MessageList = ({ request }: { request: ICurrentRequest }) => {
         if (message.userId && message.appreciated && message.appreciatedText) {
           return (
             <>
-              <ResponseMessage key={idx} comment={message} />
-              <RequestMessage key={idx} content={{ ...message, text: message.appreciatedText }} />
+              <ResponseMessage key={message.userId} comment={message} />
+              <RequestMessage key={message.id} content={{ ...message, text: message.appreciatedText }} />
             </>
           );
         }
         // 해설자 측 답변
-        if (message.userId) return <ResponseMessage key={idx} comment={message} />;
+        if (message.userId) return <ResponseMessage key={message.userId} comment={message} />;
         // 시각장애인 측 의뢰
-        else return <RequestMessage key={idx} content={message} />;
+        else return <RequestMessage key={message.id} content={message} />;
       })}
     </>
   );
