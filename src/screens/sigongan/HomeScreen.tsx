@@ -1,5 +1,16 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { useState, useRef, useCallback } from 'react';
+import { View, StyleSheet, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../states';
+
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { SigonganStackParamList } from '../../navigations';
+
+import { GetRequestList, IReqeustListItem } from '../../api/axios/sigongan';
+
+import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 import {
   CommentRequestButton,
   CommentRequestPopup,
@@ -7,24 +18,18 @@ import {
   RequestImageCard,
   RequestTextCard,
 } from '../../components/sigongan/home';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-
-import { useRecoilValue } from 'recoil';
-import { fcmTokenState } from '../../states';
-
-import { GetRequestList, IReqeustListItem } from '../../api/axios/sigongan';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { SigonganStackParamList } from '../../navigations';
-import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 
 export const HomeScreen = () => {
+  // page move
+  const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
+
+  // api
   const fcmToken = useRecoilValue(fcmTokenState);
   const [requestList, setRequestList] = useState<IReqeustListItem[]>([]);
-
-  const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
-  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
-
   const [loading, setLoading] = useState(false);
+
+  // popup
+  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -34,6 +39,7 @@ export const HomeScreen = () => {
     }, [fcmToken])
   );
 
+  // get list
   const LoadRequestList = async () => {
     try {
       setLoading(true);
@@ -57,8 +63,10 @@ export const HomeScreen = () => {
     <View style={styles.container}>
       <SigonganHeader text="홈" hideBackButton />
 
+      {/* 해설 의뢰하기 버튼 */}
       <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
 
+      {/* 의뢰 목록 */}
       <View style={styles.requestList}>
         <FlatList
           data={requestList.sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1))}
@@ -82,6 +90,7 @@ export const HomeScreen = () => {
         />
       </View>
 
+      {/* 팝업 */}
       <CommentRequestPopup ref={commentRequestPopupRef} />
     </View>
   );
