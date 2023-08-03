@@ -30,7 +30,7 @@ const RequestList = ({
 
 const styles = StyleSheet.create({
   cardContainer: {
-    marginLeft: 35,
+    width: '90%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 30,

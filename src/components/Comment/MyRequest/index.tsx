@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 1,
+    alignItems: 'center',
   },
   mainTitle: {
     fontSize: 24,
