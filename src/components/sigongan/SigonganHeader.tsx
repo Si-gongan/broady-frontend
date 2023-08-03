@@ -23,6 +23,7 @@ export const SigonganHeader = ({ hideBackButton, text, isBottomBorder, onBackBut
           style={{ opacity: hideBackButton ? 0 : 1 }}
           accessible
           accessibilityLabel="뒤로가기 버튼"
+          disabled={hideBackButton}
         >
           <Ionicons name="arrow-back" style={styles.icon} />
         </TouchableOpacity>
