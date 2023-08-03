@@ -39,12 +39,12 @@ const MessageList = ({ request }: { request: ICurrentRequest }) => {
           return (
             <>
               <ResponseMessage key={message.userId} comment={message} />
-              <RequestMessage key={message.id} content={{ ...message, text: message.appreciatedText }} />
+              <RequestMessage key={message.createdAt} content={{ ...message, text: message.appreciatedText }} />
             </>
           );
         }
         // 해설자 측 답변
-        if (message.userId) return <ResponseMessage key={message.userId} comment={message} />;
+        if (message.userId) return <ResponseMessage key={message.createdAt} comment={message} />;
         // 시각장애인 측 의뢰
         else return <RequestMessage key={message.id} content={message} />;
       })}
