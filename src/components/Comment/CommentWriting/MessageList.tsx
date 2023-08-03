@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import ImageModal from 'react-native-image-modal';
 import { ICurrentRequest } from '../../../types/request';
 import RequestMessage from './RequestMessage';
@@ -16,6 +16,8 @@ interface IChat {
 // responseUser : 해설자 측
 // requestedUser : 시각장애인 측
 
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
 const MessageList = ({ request }: { request: ICurrentRequest }) => {
   const allMessageList = [...request.requestedUser, ...request.responseUser];
   const sortedMessageList = [...allMessageList].sort((a, b) =>
@@ -25,13 +27,15 @@ const MessageList = ({ request }: { request: ICurrentRequest }) => {
   return (
     <>
       <View style={styles.imageContainer}>
-        <ImageModal
-          resizeMode="contain"
-          style={styles.requestImage}
-          source={{
-            uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}`,
-          }}
-        />
+        <View>
+          <ImageModal
+            resizeMode="contain"
+            style={styles.requestImage}
+            source={{
+              uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}`,
+            }}
+          />
+        </View>
       </View>
       {sortedMessageList.map((message: IChat, idx: number) => {
         // 감사 인사한 경우
@@ -55,12 +59,11 @@ const MessageList = ({ request }: { request: ICurrentRequest }) => {
 const styles = StyleSheet.create({
   imageContainer: {
     marginTop: 30,
+    alignItems: 'center',
   },
   requestImage: {
-    width: 415,
+    width: SCREEN_WIDTH * 0.9,
     height: 250,
-    borderRadius: 30,
-    marginBottom: 10,
   },
 });
 
