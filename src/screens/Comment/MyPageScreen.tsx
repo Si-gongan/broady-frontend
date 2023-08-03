@@ -1,12 +1,13 @@
+import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { getPointList } from '../../api/axios/comment/user';
 import Refund from '../../components/Comment/Mypage/Refund';
 import CustomerService from '../../components/common/CustomerService';
 import { SigonganDesign } from '../../components/sigongan/styles';
 import { useUserState } from '../../providers';
-import { authTokenState, fcmTokenState } from '../../states';
+import { authTokenState, fcmTokenState, myPointState } from '../../states';
 import { IPoint } from '../../types/user';
 
 const getMyPoint = (pointList: IPoint[]) => {
@@ -19,11 +20,15 @@ const MyPageScreen = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
   const [pointList, setPointList] = useState<IPoint[]>([]);
-  const [myPoint, setMyPoint] = useState<number>(0);
+  const [myPoint, setMyPoint] = useRecoilState<number>(myPointState);
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    getPointList(fcmToken, authToken).then((data) => setPointList(data));
-  }, []);
+    if (isFocused) {
+      getPointList(fcmToken, authToken).then((data) => setPointList(data));
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     const total = getMyPoint(pointList);

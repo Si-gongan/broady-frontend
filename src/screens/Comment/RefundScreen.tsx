@@ -1,21 +1,16 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native';
 import Header from '../../components/common/Header';
 import { commentColor, commentFont } from '../../components/Comment/styles';
 import RefundPointList from '../../components/Comment/Mypage/RefundPointList';
-import { useRecoilValue } from 'recoil';
-import { authTokenState, fcmTokenState } from '../../states';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authTokenState, fcmTokenState, myPointState } from '../../states';
 import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
 import { AuthColor } from '../../components/auth/styles';
 import { ACCOUNT_NUMBER, getData, storeData } from '../../components/common/async-storage';
-
-const getMyPoint = (pointList: IPoint[]) => {
-  const points = pointList.map((data) => data.point);
-  const total = points.reduce((sum, value) => sum + value, 0);
-  return total;
-};
+import { useIsFocused } from '@react-navigation/native';
 
 const RefundScreen = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -24,15 +19,23 @@ const RefundScreen = ({ navigation }: any) => {
   const [accountNumberInput, setAccountNumberInput] = useState<string>('');
   const [refundPoint, setRefundPoint] = useState<string>('');
   const [pointList, setPointList] = useState<IPoint[]>([]);
-  const [myPoint, setMyPoint] = useState<number>(0);
+  const [myPoint, setMyPoint] = useRecoilState(myPointState);
 
   const [isRefunded, setIsRefunded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const isFocused = useIsFocused();
 
   const onClickRefundButton = async () => {
     Keyboard.dismiss();
-    requestRefundPoint(parseInt(refundPoint), accountNumberInput, fcmToken, authToken).then((data) => {
-      if (data.code === 0) getPointList(fcmToken, authToken).then((data) => setPointList(data));
-    });
+    setMyPoint((prevPoint) => prevPoint - parseInt(refundPoint));
+    requestRefundPoint(parseInt(refundPoint), accountNumberInput, fcmToken, authToken)
+      .then((data) => {
+        if (data.code === 0) getPointList(fcmToken, authToken).then((data) => setPointList(data));
+      })
+      .catch(() => {
+        Alert.alert('통신에 에러가 발생하였습니다. 잠시후 다시 시도해주세요.');
+        setMyPoint((prevPoint) => prevPoint + parseInt(refundPoint));
+      });
     storeData(ACCOUNT_NUMBER, accountNumberInput);
 
     setRefundPoint('');
@@ -48,19 +51,19 @@ const RefundScreen = ({ navigation }: any) => {
   };
 
   useEffect(() => {
-    getData(ACCOUNT_NUMBER).then((data) => {
-      if (typeof data === 'string') setAccountNumberInput(data);
-    });
-    getPointList(fcmToken, authToken)
-      .then((data) => setPointList(data))
-      .catch((error) => console.log('POINT ERROR ', error));
-  }, []);
-
-  useEffect(() => {
-    const total = getMyPoint(pointList);
-    setMyPoint(total);
-    console.log('total point: ', total);
-  }, [pointList]);
+    if (isFocused) {
+      setIsLoading(true);
+      getData(ACCOUNT_NUMBER).then((data) => {
+        if (typeof data === 'string') setAccountNumberInput(data);
+      });
+      getPointList(fcmToken, authToken)
+        .then((data) => {
+          setPointList(data);
+          setIsLoading(false);
+        })
+        .catch((error) => console.log('POINT ERROR ', error));
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.refundContainer}>
@@ -104,7 +107,15 @@ const RefundScreen = ({ navigation }: any) => {
         <View style={styles.pointList}>
           <Text style={commentFont.title}>포인트 내역</Text>
         </View>
-        <RefundPointList pointList={pointList} />
+        {isLoading ? (
+          <ActivityIndicator size="small" color="gray" />
+        ) : pointList.length === 0 ? (
+          <View style={styles.loadingPointList}>
+            <Text style={{ color: 'gray' }}>포인트 내역이 존재하지 않습니다. 해설을 진행해주세요!</Text>
+          </View>
+        ) : (
+          <RefundPointList pointList={pointList} />
+        )}
       </View>
     </View>
   );
@@ -151,6 +162,13 @@ const styles = StyleSheet.create({
   pointList: {
     marginLeft: 20,
     marginBottom: 20,
+  },
+  loadingPointList: {
+    borderTopWidth: 2,
+    borderColor: '#E8E8E8',
+    gap: 10,
+    marginHorizontal: 15,
+    paddingVertical: 20,
   },
 });
 
