@@ -14,7 +14,7 @@ const RequestList = ({ requestList, navigation }: { requestList: IRequest[]; nav
 
 const styles = StyleSheet.create({
   cardContainer: {
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 30,
