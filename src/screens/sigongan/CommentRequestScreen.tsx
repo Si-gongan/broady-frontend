@@ -1,59 +1,38 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
 import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useEffect, useRef, useState } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { SigonganStackParamList } from '../../navigations';
 import { CommentRequestPopup, ICommentRequestPopupHandler } from '../../components/sigongan/home';
-import { RegisterRequest } from '../../api/axios';
+import { NoticeError, RegisterRequest } from '../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
+import { useKeyboard } from '../../hooks';
 
 export const CommentRequestScreen = () => {
+  // for page move
+  /** @param url: 이미지 로컬 url */
   const {
     params: { url },
   } = useRoute<RouteProp<SigonganStackParamList, '해설의뢰'>>();
-  const [value, setValue] = useState('');
-  const fcmToken = useRecoilValue(fcmTokenState);
-
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const scrollViewRef = useRef<ScrollView>(null);
-
-  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
-
   const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
 
-  const insets = useSafeAreaInsets();
-
+  // api
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', () => {
-      setKeyboardVisible(true);
-    });
-    const keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', () => {
-      setKeyboardVisible(false);
-    });
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardVisible(true);
-    });
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardVisible(false);
-    });
+  // popup
+  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
 
-    return () => {
-      keyboardWillShowListener?.remove();
-      keyboardWillHideListener?.remove();
-      keyboardDidHideListener?.remove();
-      keyboardDidShowListener?.remove();
-    };
-  }, []);
-
+  // for ux
+  const scrollViewRef = useRef<ScrollView>(null);
+  const { isKeyboardVisible } = useKeyboard();
   useEffect(() => {
     if (isKeyboardVisible) {
       scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -75,15 +54,10 @@ export const CommentRequestScreen = () => {
     try {
       setLoading(true);
 
-      const _ = await RegisterRequest(value, url ?? '', fcmToken);
+      await RegisterRequest(value, url ?? '', fcmToken);
       navigation.goBack();
     } catch {
-      Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
-        {
-          text: '확인',
-          style: 'default',
-        },
-      ]);
+      NoticeError();
     } finally {
       setLoading(false);
     }
@@ -99,6 +73,7 @@ export const CommentRequestScreen = () => {
 
       <Spinner visible={loading} />
 
+      {/* 이미지, 전송 폼 */}
       <ScrollView ref={scrollViewRef}>
         <View style={styles.container}>
           {url && <ImageController imgUrl={url} onPress={() => commentRequestPopupRef.current?.open()} />}
@@ -107,8 +82,10 @@ export const CommentRequestScreen = () => {
         </View>
       </ScrollView>
 
+      {/* 전송 버튼 */}
       <SubmitRequestButton onPress={onSubmit} disabled={loading} />
 
+      {/* 사진 다시 선택 팝업 */}
       <CommentRequestPopup ref={commentRequestPopupRef} />
     </KeyboardAvoidingView>
   );
