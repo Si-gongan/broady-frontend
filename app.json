@@ -14,7 +14,8 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.sigongan.bomjaguk"
+      "bundleIdentifier": "com.sigongan.bomjaguk",
+      "buildNumber": "1.4"
     },
     "android": {
       "adaptiveIcon": {
