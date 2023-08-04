@@ -117,12 +117,7 @@ const RefundScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
         <View style={styles.refundPointContainer}>
-          <View
-            style={{
-              marginLeft: 20,
-              marginBottom: 20,
-            }}
-          >
+          <View style={{ margin: 20 }}>
             <Text style={commentFont.title}>포인트 내역</Text>
           </View>
           {isLoading ? (
@@ -145,13 +140,13 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   refundPointHeader: {
-    marginTop: 30,
+    marginVertical: 20,
     marginLeft: 20,
-    height: SCREEN_HEIGHT * 0.05,
+    // height: SCREEN_HEIGHT * 0.05,
   },
   refundBodyContainer: {
     // flex: 0.45,
-    height: SCREEN_HEIGHT * 0.35,
+    // height: SCREEN_HEIGHT * 0.15,
     alignItems: 'center',
   },
   inputContainer: {
