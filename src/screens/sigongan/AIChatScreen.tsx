@@ -85,6 +85,17 @@ export const AIChatScreen = () => {
   }, [isKeyboardVisible]);
 
   const onSendTextPress = async () => {
+    if (text.length === 0) {
+      Alert.alert('알림', '질문을 입력해주세요.', [
+        {
+          text: '확인',
+          style: 'default',
+        },
+      ]);
+
+      return;
+    }
+
     try {
       setLoading(true);
 
