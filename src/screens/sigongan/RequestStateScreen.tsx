@@ -17,60 +17,48 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { GetRequestList, IReqeustListItem } from '../../api/axios';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
+import { useKeyboard } from '../../hooks';
+import { DateViewer } from '../../components/sigongan/ai-chat';
+import { getDate } from '../../utils/time';
 
 export const RequestStateScreen = () => {
+  // for page move
   const {
     params: { item },
   } = useRoute<RouteProp<SigonganStackParamList, '해설 진행현황'>>();
-
-  const [chatList, setChatList] = useState<IReqeustListItem['requestedUser']>([]);
-
   const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
 
+  // api
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const [chatList, setChatList] = useState<IReqeustListItem['requestedUser']>([]);
+
+  // state
   const [isShowThanks, setShowThanks] = useState(false);
   const [isShowQuest, setShowQuest] = useState(false);
 
-  const fcmToken = useRecoilValue(fcmTokenState);
+  // for keyboard
   const insets = useSafeAreaInsets();
+  const keyboardBottom = insets.bottom === 0 ? 0 : 16 - insets.bottom;
 
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
+  // for ux
   const scrollViewRef = useRef<ScrollView>(null);
-
-  useEffect(() => {
-    const keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', () => {
-      setKeyboardVisible(true);
-    });
-    const keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', () => {
-      setKeyboardVisible(false);
-    });
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardVisible(true);
-    });
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardVisible(false);
-    });
-
-    return () => {
-      keyboardWillShowListener?.remove();
-      keyboardWillHideListener?.remove();
-      keyboardDidHideListener?.remove();
-      keyboardDidShowListener?.remove();
-    };
-  }, []);
-
+  const { isKeyboardVisible } = useKeyboard();
   useEffect(() => {
     if (isKeyboardVisible) {
       scrollViewRef.current?.scrollToEnd({ animated: true });
     }
   }, [isKeyboardVisible]);
 
+  // after
+  // item -> chatList
   useEffect(() => {
     if (item) {
       setChatList([...item.requestedUser, ...item.responseUser]);
     }
   }, [item]);
 
+  // after
+  // for ux
   useFocusEffect(
     useCallback(() => {
       setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 500);
@@ -98,50 +86,52 @@ export const RequestStateScreen = () => {
     }
   };
 
+  // for state
+  const isNotButtonClicked = !(isShowThanks || isShowQuest);
+
   const isMe = (item: IReqeustListItem['requestedUser'][0]) => item.userId === undefined;
   const isNextMe = (list: IReqeustListItem['requestedUser'], i: number) => list.length !== i + 1 && isMe(list[i + 1]);
   const isAppreciated = (item: IReqeustListItem['requestedUser'][0]) => item.appreciated;
 
-  const isNotButtonClicked = !(isShowThanks || isShowQuest);
+  const isShowDate = (list: IReqeustListItem['requestedUser'], i: number) =>
+    i === 0 || (i - 1 >= 0 && getDate(list[i].createdAt) !== getDate(list[i - 1].createdAt));
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? -15 : 0}
+      keyboardVerticalOffset={keyboardBottom}
     >
       <View style={styles.container}>
         <SigonganHeader text="해설 진행현황" onBackButtonPress={() => navigation.goBack()} isBottomBorder />
 
+        {/* 채팅 리스트 */}
         <ScrollView ref={scrollViewRef}>
           <View style={styles.speechContainer}>
             {chatList
               .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1))
               .map((item, i) =>
                 isMe(item) ? (
-                  isNextMe(chatList, i) ? (
+                  // 나의 대화
+                  <View key={item.createdAt}>
+                    {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
+
                     <View
-                      key={item.createdAt}
-                      style={styles.mySpeechWrapper}
+                      style={isNextMe(chatList, i) ? styles.mySpeechWrapper : styles.mySpeechEndWrapper}
                       accessible
                       accessibilityLabel={`나의 대화: ${item.text}`}
                     >
-                      <MySpeechBubble text={item.text} />
-                    </View>
-                  ) : (
-                    <View
-                      key={item.createdAt}
-                      style={styles.mySpeechEndWrapper}
-                      accessible
-                      accessibilityLabel={`나의 대화: ${item.text}`}
-                    >
-                      <TimeViewer date={item.createdAt} />
+                      {/* 다음 대화가 나일 때, 시간 표시를 없앰 */}
+                      {!isNextMe(chatList, i) && <TimeViewer date={item.createdAt} />}
 
                       <MySpeechBubble text={item.text} />
                     </View>
-                  )
-                ) : isAppreciated(item) ? (
+                  </View>
+                ) : (
+                  // 상대방의 대화
                   <View key={item.createdAt}>
+                    {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
+
                     <View
                       style={styles.AnotherSpeechWrapper}
                       accessible
@@ -153,34 +143,26 @@ export const RequestStateScreen = () => {
 
                       <TimeViewer date={item.createdAt} />
                     </View>
-                    <View
-                      style={[styles.mySpeechEndWrapper, { marginTop: 12 }]}
-                      accessible
-                      accessibilityLabel={`나의 대화: ${item.text}`}
-                    >
-                      <TimeViewer date={item.createdAt} />
 
-                      <MySpeechBubble text={item.appreciatedText ?? ''} />
-                    </View>
-                  </View>
-                ) : (
-                  <View
-                    key={item.createdAt}
-                    style={styles.AnotherSpeechWrapper}
-                    accessible
-                    accessibilityLabel={`해설자의 대화: ${item.text}`}
-                  >
-                    <AnotherAvatar />
+                    {/* 감사인사를 한 경우, 나의 감사인사도 표시 */}
+                    {isAppreciated(item) && (
+                      <View
+                        style={[styles.mySpeechEndWrapper, { marginTop: 12 }]}
+                        accessible
+                        accessibilityLabel={`나의 대화: ${item.text}`}
+                      >
+                        <TimeViewer date={item.createdAt} />
 
-                    <AnotherSpeechBubble text={item.text} />
-
-                    <TimeViewer date={item.createdAt} />
+                        <MySpeechBubble text={item.appreciatedText ?? ''} />
+                      </View>
+                    )}
                   </View>
                 )
               )}
           </View>
         </ScrollView>
 
+        {/* 질문, 감사 인사 버튼 */}
         {isNotButtonClicked && (
           <ActionButton
             isComplete={item?.isComplete}
@@ -189,9 +171,11 @@ export const RequestStateScreen = () => {
           />
         )}
 
-        {isShowThanks && <ThanksBox item={item} refresh={refresh} />}
-
+        {/* 질문 입력 창 */}
         {isShowQuest && <QuestionBox item={item} refresh={refresh} />}
+
+        {/* 감사 인사 입력 창*/}
+        {isShowThanks && <ThanksBox item={item} refresh={refresh} />}
       </View>
     </KeyboardAvoidingView>
   );
@@ -205,7 +189,7 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 12,
 
-    marginTop: 18,
+    marginTop: 3,
     marginBottom: 20,
   },
   mySpeechWrapper: {

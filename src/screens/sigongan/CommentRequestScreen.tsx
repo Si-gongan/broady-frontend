@@ -1,18 +1,22 @@
-import { View, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
-import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
-
-import { ScrollView } from 'react-native-gesture-handler';
 import { useEffect, useRef, useState } from 'react';
+import { View, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SigonganStackParamList } from '../../navigations';
-import { CommentRequestPopup, ICommentRequestPopupHandler } from '../../components/sigongan/home';
-import { NoticeError, RegisterRequest } from '../../api/axios';
+
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { NoticeError, RegisterRequest } from '../../api/axios';
+
+import { useKeyboard } from '../../hooks';
+
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
-import { useKeyboard } from '../../hooks';
+import { CommentRequestPopup, ICommentRequestPopupHandler } from '../../components/sigongan/home';
+import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
 
 export const CommentRequestScreen = () => {
   // for page move
@@ -29,6 +33,10 @@ export const CommentRequestScreen = () => {
 
   // popup
   const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
+
+  // for keyboard
+  const insets = useSafeAreaInsets();
+  const keyboardBottom = insets.bottom === 0 ? 0 : 16 - insets.bottom;
 
   // for ux
   const scrollViewRef = useRef<ScrollView>(null);
@@ -67,7 +75,7 @@ export const CommentRequestScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? -15 : 0}
+      keyboardVerticalOffset={keyboardBottom}
     >
       <SigonganHeader text="해설의뢰" onBackButtonPress={() => navigation.goBack()} />
 
