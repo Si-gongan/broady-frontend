@@ -1,4 +1,17 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert, Keyboard } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { SigonganStackParamList } from '../../navigations';
+
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../states';
+
+import { GetRequestList, IReqeustListItem } from '../../api/axios';
+
+import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 import {
   AnotherSpeechBubble,
   MySpeechBubble,
@@ -8,18 +21,10 @@ import {
   ThanksBox,
   QuestionBox,
 } from '../../components/sigongan/request-state';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
-import { SigonganStackParamList } from '../../navigations';
-import { useRecoilValue } from 'recoil';
-import { fcmTokenState } from '../../states';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { GetRequestList, IReqeustListItem } from '../../api/axios';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
-import { useKeyboard } from '../../hooks';
 import { DateViewer } from '../../components/sigongan/ai-chat';
+
 import { getDate } from '../../utils/time';
+import { useKeyboard } from '../../hooks';
 
 export const RequestStateScreen = () => {
   // for page move
