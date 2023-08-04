@@ -50,7 +50,7 @@ export const QuestionBox = ({ item, refresh }: QuestionBoxProps) => {
   };
 
   return (
-    <View style={[styles.container, SigonganColor.backgroundPrimary, { paddingBottom: insets.bottom || 22 }]}>
+    <View style={[styles.container, SigonganColor.backgroundPrimary, { paddingBottom: insets.bottom || 16 }]}>
       <Spinner visible={loading} />
 
       <TextInput
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     ...SigonganShadow.shadowTopHigh,
 
     paddingLeft: 17,
-    paddingTop: 22,
+    paddingTop: 16,
 
     flexDirection: 'row',
     gap: 12,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 
     paddingLeft: 11,
     paddingTop: 10,
-    paddingBottom: 7,
+    paddingBottom: 10,
 
     borderWidth: 0.5,
     borderColor: SigonganColor.contentSenary.color,

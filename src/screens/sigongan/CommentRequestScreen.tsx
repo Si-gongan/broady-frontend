@@ -1,59 +1,46 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
-import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
-
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useEffect, useRef, useState } from 'react';
+import { View, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SigonganStackParamList } from '../../navigations';
-import { CommentRequestPopup, ICommentRequestPopupHandler } from '../../components/sigongan/home';
-import { RegisterRequest } from '../../api/axios';
+
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { NoticeError, RegisterRequest } from '../../api/axios';
+
+import { useKeyboard } from '../../hooks';
+
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
+import { CommentRequestPopup, ICommentRequestPopupHandler } from '../../components/sigongan/home';
+import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
 
 export const CommentRequestScreen = () => {
+  // for page move
+  /** @param url: 이미지 로컬 url */
   const {
     params: { url },
   } = useRoute<RouteProp<SigonganStackParamList, '해설의뢰'>>();
-  const [value, setValue] = useState('');
-  const fcmToken = useRecoilValue(fcmTokenState);
-
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const scrollViewRef = useRef<ScrollView>(null);
-
-  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
-
   const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
 
-  const insets = useSafeAreaInsets();
-
+  // api
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', () => {
-      setKeyboardVisible(true);
-    });
-    const keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', () => {
-      setKeyboardVisible(false);
-    });
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardVisible(true);
-    });
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardVisible(false);
-    });
+  // popup
+  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
 
-    return () => {
-      keyboardWillShowListener?.remove();
-      keyboardWillHideListener?.remove();
-      keyboardDidHideListener?.remove();
-      keyboardDidShowListener?.remove();
-    };
-  }, []);
+  // for keyboard
+  const insets = useSafeAreaInsets();
+  const keyboardBottom = insets.bottom === 0 ? 0 : 16 - insets.bottom;
 
+  // for ux
+  const scrollViewRef = useRef<ScrollView>(null);
+  const { isKeyboardVisible } = useKeyboard();
   useEffect(() => {
     if (isKeyboardVisible) {
       scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -75,15 +62,10 @@ export const CommentRequestScreen = () => {
     try {
       setLoading(true);
 
-      const _ = await RegisterRequest(value, url ?? '', fcmToken);
+      await RegisterRequest(value, url ?? '', fcmToken);
       navigation.goBack();
     } catch {
-      Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
-        {
-          text: '확인',
-          style: 'default',
-        },
-      ]);
+      NoticeError();
     } finally {
       setLoading(false);
     }
@@ -93,12 +75,13 @@ export const CommentRequestScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? -15 : 0}
+      keyboardVerticalOffset={keyboardBottom}
     >
       <SigonganHeader text="해설의뢰" onBackButtonPress={() => navigation.goBack()} />
 
       <Spinner visible={loading} />
 
+      {/* 이미지, 전송 폼 */}
       <ScrollView ref={scrollViewRef}>
         <View style={styles.container}>
           {url && <ImageController imgUrl={url} onPress={() => commentRequestPopupRef.current?.open()} />}
@@ -107,8 +90,10 @@ export const CommentRequestScreen = () => {
         </View>
       </ScrollView>
 
+      {/* 전송 버튼 */}
       <SubmitRequestButton onPress={onSubmit} disabled={loading} />
 
+      {/* 사진 다시 선택 팝업 */}
       <CommentRequestPopup ref={commentRequestPopupRef} />
     </KeyboardAvoidingView>
   );
