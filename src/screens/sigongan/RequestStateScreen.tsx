@@ -127,7 +127,7 @@ export const RequestStateScreen = () => {
                       accessibilityLabel={`나의 대화: ${item.text}`}
                     >
                       {/* 다음 대화가 나일 때, 시간 표시를 없앰 */}
-                      {!isNextMe(chatList, i) && <TimeViewer date={item.createdAt} />}
+                      {(isShowDate(chatList, i) || !isNextMe(chatList, i)) && <TimeViewer date={item.createdAt} />}
 
                       <MySpeechBubble text={item.text} />
                     </View>
