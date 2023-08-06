@@ -70,7 +70,8 @@ const RefundScreen = ({ navigation }: any) => {
       });
       getPointList(fcmToken, authToken)
         .then((data) => {
-          setPointList(data);
+          const sortedPointList = [...data].sort((a, b) => (new Date(a.date) > new Date(b.date) ? -1 : 1));
+          setPointList(sortedPointList);
           setIsLoading(false);
         })
         .catch((error) => console.log('POINT ERROR ', error));
