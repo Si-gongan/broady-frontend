@@ -40,7 +40,11 @@ const RequestItem = ({
         setCommentTimer(result);
       } else {
         // MY의뢰화면에서 작성중인 의뢰가 시간이 지났을 때
-        if (status === 0) getProceedRequest(fcmToken, authToken).then((data) => setProceedRequest(data));
+        if (status === 0)
+          getProceedRequest(fcmToken, authToken).then((data) => {
+            const sortedList = [...data].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+            setProceedRequest(sortedList);
+          });
       }
     }
   }, 100);
@@ -53,7 +57,7 @@ const RequestItem = ({
         })
       }
     >
-      <Shadow distance={3} sides={{ top: false, bottom: true, start: true, end: true }}>
+      <Shadow distance={3} sides={{ top: true, bottom: true, start: true, end: true }}>
         <View style={styles.imageContainer}>
           <Image
             source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
@@ -85,15 +89,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     gap: 10,
     paddingBottom: 30,
-    backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 20,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.15)',
   },
   image: {
     width: '100%',
