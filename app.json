@@ -4,7 +4,7 @@
     "slug": "bomjaguk",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/adaptive-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.sigongan.bomjaguk",
-      "buildNumber": "1.5"
+      "buildNumber": "1.6"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +24,7 @@
       },
       "googleServicesFile": "./google-services.json",
       "package": "com.sigongan.bomjaguk",
-      "versionCode": 7
+      "versionCode": 8
     },
     "web": {
       "favicon": "./assets/favicon.png"
