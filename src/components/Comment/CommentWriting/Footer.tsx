@@ -17,6 +17,7 @@ import { useRecoilValue } from 'recoil';
 import { endComment, getCorrectText, getRequest, startComment, stopComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
+import Toast from 'react-native-root-toast';
 
 interface IFooterProps {
   id: string;
@@ -60,12 +61,16 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
   };
 
   const handleCommentInput = (inputText: string) => {
-    if (inputText.length > 50) setIsSent(true);
-    else setIsSent(false);
+    // if (inputText.length > 50) setIsSent(true);
+    // else setIsSent(false);
     setText(inputText);
   };
 
   const handleClickSendBtn = async (id: string) => {
+    if (text.length < 50) {
+      showToastMessage();
+      return;
+    }
     setIsSent(false);
     try {
       const result = await endComment(id, text, fcmToken, authToken);
@@ -80,6 +85,14 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
   const handleClickStopComment = async (id: string) => {
     await stopComment(id, fcmToken, authToken);
     setStatus(-1);
+  };
+
+  const showToastMessage = () => {
+    Toast.show('해설은 50자 이상 작성해야 전송이 가능합니다', {
+      duration: 1000,
+      animation: true,
+      position: Toast.positions.CENTER + 320,
+    });
   };
 
   useEffect(() => {
@@ -159,17 +172,8 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
                   autoComplete="off"
                 />
               </View>
-              <TouchableOpacity
-                style={styles.sendBtn}
-                onPress={() => handleClickSendBtn(id)}
-                activeOpacity={0.6}
-                disabled={!isSent}
-              >
-                <Image
-                  style={isSent ? { opacity: 1 } : { opacity: 0.5 }}
-                  source={require('../../../../assets/send.png')}
-                  alt=""
-                />
+              <TouchableOpacity style={styles.sendBtn} onPress={() => handleClickSendBtn(id)} activeOpacity={0.6}>
+                <Image source={require('../../../../assets/send.png')} alt="" />
               </TouchableOpacity>
             </View>
           </ScrollView>
