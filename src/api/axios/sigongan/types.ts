@@ -17,6 +17,7 @@ export type IReqeustListItem = {
     appreciated?: boolean;
     userId?: string;
     appreciatedText?: string;
+    appreciatedDate?: string;
   }[];
   responseUser: {
     id: string;
@@ -25,10 +26,12 @@ export type IReqeustListItem = {
     appreciated: boolean;
     userId: string;
     appreciatedText?: string;
+    appreciatedDate?: string;
   }[];
   isComplete: boolean;
   expiredAt: string | null;
   isAvailable: boolean;
+  updatedAt: string;
 };
 
 export type IAlarmStatusReturnType = {

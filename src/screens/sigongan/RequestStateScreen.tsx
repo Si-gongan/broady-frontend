@@ -100,6 +100,8 @@ export const RequestStateScreen = () => {
 
   const isShowDate = (list: IReqeustListItem['requestedUser'], i: number) =>
     i === 0 || (i - 1 >= 0 && getDate(list[i].createdAt) !== getDate(list[i - 1].createdAt));
+  const isShowTimeViewer = (list: IReqeustListItem['requestedUser'], i: number) =>
+    isShowDate(list, i) || !isNextMe(chatList, i);
 
   return (
     <KeyboardAvoidingView
@@ -122,14 +124,14 @@ export const RequestStateScreen = () => {
                     {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
 
                     <View
-                      style={isNextMe(chatList, i) ? styles.mySpeechWrapper : styles.mySpeechEndWrapper}
+                      style={isShowTimeViewer(chatList, i) ? styles.mySpeechEndWrapper : styles.mySpeechWrapper}
                       accessible
-                      accessibilityLabel={`나의 대화: ${item.text}`}
+                      accessibilityLabel={`나의 대화: ${item.text.trimEnd()}`}
                     >
                       {/* 다음 대화가 나일 때, 시간 표시를 없앰 */}
-                      {!isNextMe(chatList, i) && <TimeViewer date={item.createdAt} />}
+                      {isShowTimeViewer(chatList, i) && <TimeViewer date={item.createdAt} />}
 
-                      <MySpeechBubble text={item.text} />
+                      <MySpeechBubble text={item.text.trimEnd()} />
                     </View>
                   </View>
                 ) : (
@@ -140,11 +142,11 @@ export const RequestStateScreen = () => {
                     <View
                       style={styles.AnotherSpeechWrapper}
                       accessible
-                      accessibilityLabel={`해설자의 대화: ${item.text}`}
+                      accessibilityLabel={`해설자의 대화: ${item.text.trimEnd()}`}
                     >
                       <AnotherAvatar />
 
-                      <AnotherSpeechBubble text={item.text} />
+                      <AnotherSpeechBubble text={item.text.trimEnd()} />
 
                       <TimeViewer date={item.createdAt} />
                     </View>
@@ -156,7 +158,7 @@ export const RequestStateScreen = () => {
                         accessible
                         accessibilityLabel={`나의 대화: ${item.text}`}
                       >
-                        <TimeViewer date={item.createdAt} />
+                        <TimeViewer date={item.appreciatedDate ?? ''} />
 
                         <MySpeechBubble text={item.appreciatedText ?? ''} />
                       </View>

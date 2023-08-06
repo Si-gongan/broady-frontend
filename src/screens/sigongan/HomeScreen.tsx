@@ -55,6 +55,24 @@ export const HomeScreen = () => {
     }
   };
 
+  const getAppreciatedText = (item: IReqeustListItem) =>
+    item.responseUser
+      .filter((chat) => chat.appreciated)
+      .map((chat) => ({
+        text: chat.appreciatedText ?? '',
+        createdAt: chat.appreciatedDate ?? '',
+      }));
+
+  // const getLastChat = (item: IReqeustListItem) =>
+  //   [...item.requestedUser, ...item.responseUser, ...getAppreciatedText(item)].sort((a, b) =>
+  //     new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
+  //   )[0].text;
+
+  const getLastChat = (item: IReqeustListItem) =>
+    [...item.requestedUser, ...item.responseUser].sort((a, b) =>
+      new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
+    )[0].text;
+
   return (
     <View style={styles.container}>
       <SigonganHeader text="홈" hideBackButton />
@@ -65,7 +83,7 @@ export const HomeScreen = () => {
       {/* 의뢰 목록 */}
       <View style={styles.requestList}>
         <FlatList
-          data={requestList.sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1))}
+          data={requestList.sort((a, b) => (new Date(a.updatedAt) > new Date(b.updatedAt) ? -1 : 1))}
           keyExtractor={(item) => item.id}
           ItemSeparatorComponent={() => <View style={{ height: 17 }} />}
           onRefresh={() => LoadRequestList()}
@@ -79,7 +97,7 @@ export const HomeScreen = () => {
             >
               <View style={styles.requestItem}>
                 <RequestImageCard imgUrl={process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL + '/' + item.photo} />
-                <RequestTextCard date={item.createdAt} content={item.requestedUser[0].text} />
+                <RequestTextCard date={item.updatedAt} content={getLastChat(item)} />
               </View>
             </TouchableOpacity>
           )}
