@@ -55,7 +55,7 @@ const RefundScreen = ({ navigation }: any) => {
   };
 
   const handleChangeInput = (text: string) => {
-    if (parseInt(text) >= 500 && parseInt(text) < myPoint) setIsRefunded(true);
+    if (parseInt(text) >= 500 && parseInt(text) <= myPoint) setIsRefunded(true);
     else setIsRefunded(false);
 
     const numberReg = text.replace(/[^0-9]/g, '');
