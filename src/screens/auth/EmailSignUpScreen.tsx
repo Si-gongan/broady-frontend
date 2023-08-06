@@ -24,6 +24,7 @@ import { Login, Register } from '../../api/axios';
 import { useUserState } from '../../providers';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
+import * as WebBrowser from 'expo-web-browser';
 
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -74,6 +75,17 @@ export const EmailSignUpScreen = () => {
   };
 
   const [isChecked, setChecked] = useState(false);
+
+  const onCheckBoxClicked = async () => {
+    if (isChecked) {
+      setChecked(false);
+      return;
+    }
+
+    await WebBrowser.openBrowserAsync('https://sites.google.com/view/sigongan-useterm/홈');
+
+    setChecked((prev) => !prev);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -167,11 +179,11 @@ export const EmailSignUpScreen = () => {
               </View>
             </View>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() => setChecked((prev) => !prev)}>
+            <TouchableOpacity activeOpacity={0.8} onPress={onCheckBoxClicked}>
               <View style={styles.signUpWrapper}>
                 <Checkbox
                   value={isChecked}
-                  onValueChange={setChecked}
+                  onValueChange={onCheckBoxClicked}
                   color={isChecked ? AuthColor.secondary.backgroundColor : undefined}
                   accessible
                   accessibilityLabel="이용약관 숙지 체크박스"
