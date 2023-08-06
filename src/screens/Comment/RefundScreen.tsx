@@ -42,7 +42,11 @@ const RefundScreen = ({ navigation }: any) => {
     setMyPoint((prevPoint) => prevPoint - parseInt(refundPoint));
     requestRefundPoint(parseInt(refundPoint), accountNumberInput, fcmToken, authToken)
       .then((data) => {
-        if (data.code === 0) getPointList(fcmToken, authToken).then((data) => setPointList(data));
+        if (data.code === 0)
+          getPointList(fcmToken, authToken).then((data) => {
+            const sortedPointList = [...data].sort((a, b) => (new Date(a.date) > new Date(b.date) ? -1 : 1));
+            setPointList(sortedPointList);
+          });
       })
       .catch(() => {
         Alert.alert('통신에 에러가 발생하였습니다. 잠시후 다시 시도해주세요.');
