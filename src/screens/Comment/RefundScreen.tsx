@@ -88,7 +88,7 @@ const RefundScreen = ({ navigation }: any) => {
           <View style={styles.inputContainer}>
             <Text style={{ fontSize: 16 }}>입금 받을 계좌 입력</Text>
             <TextInput
-              placeholder="계좌번호 (-)없이 입력"
+              placeholder="ex) 우리 1234-567-8910"
               placeholderTextColor="#5E5E5E"
               onChangeText={(text) => setAccountNumberInput(text)}
               value={accountNumberInput}
