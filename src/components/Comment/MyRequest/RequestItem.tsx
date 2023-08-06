@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Dimensions } from 'react-native';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
@@ -7,6 +8,9 @@ import useInterval from '../../../hooks/useInterval';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import { getConvertDate, getExpiredMinute, getKoreanTime } from '../../../utils/time';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30; // 부모컴포넌트 width:90%에 2개씩 렌더링. gap: 30
 
 const RequestItem = ({
   request,
@@ -36,7 +40,11 @@ const RequestItem = ({
         setCommentTimer(result);
       } else {
         // MY의뢰화면에서 작성중인 의뢰가 시간이 지났을 때
-        if (status === 0) getProceedRequest(fcmToken, authToken).then((data) => setProceedRequest(data));
+        if (status === 0)
+          getProceedRequest(fcmToken, authToken).then((data) => {
+            const sortedList = [...data].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+            setProceedRequest(sortedList);
+          });
       }
     }
   }, 100);
@@ -49,7 +57,7 @@ const RequestItem = ({
         })
       }
     >
-      <Shadow distance={3} sides={{ top: false, bottom: true, start: true, end: true }}>
+      <Shadow distance={3} sides={{ top: true, bottom: true, start: true, end: true }}>
         <View style={styles.imageContainer}>
           <Image
             source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
@@ -75,21 +83,14 @@ const RequestItem = ({
 const styles = StyleSheet.create({
   imageContainer: {
     height: 200,
-    width: 160,
+    width: ITEM_WIDTH,
     display: 'flex',
     borderRadius: 12,
     overflow: 'hidden',
     gap: 10,
     paddingBottom: 30,
-    backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 20,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.15)',
   },
   image: {
     width: '100%',

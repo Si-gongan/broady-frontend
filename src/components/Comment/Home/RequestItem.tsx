@@ -2,6 +2,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'rea
 import { Shadow } from 'react-native-shadow-2';
 import { IRequest } from '../../../types/request';
 import { getConvertDate } from '../../../utils/time';
+import { SigonganShadow } from '../../sigongan/styles';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30; // 부모컴포넌트 width:90%에 2개씩 렌더링. gap: 30
@@ -15,7 +16,7 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
         })
       }
     >
-      <Shadow distance={3} sides={{ top: false, bottom: true, start: true, end: true }}>
+      <Shadow distance={3} sides={{ top: true, bottom: true, start: true, end: true }}>
         <View style={styles.imageContainer}>
           <Image
             source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
@@ -42,15 +43,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     gap: 10,
     paddingBottom: 30,
-    backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 20,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.15)',
   },
   image: {
     width: '100%',

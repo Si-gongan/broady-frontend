@@ -17,7 +17,10 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     if (isFocused) {
       // 모든 의뢰목록 가져오기
-      getRequestAll(fcmToken, authToken).then((data) => setCurrentRequest(data));
+      getRequestAll(fcmToken, authToken).then((data) => {
+        const sortedRequestList = [...data].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+        setCurrentRequest(sortedRequestList);
+      });
     }
   }, [isFocused]);
 

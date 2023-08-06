@@ -50,8 +50,14 @@ const MyRequest = ({ navigation }: any) => {
   useEffect(() => {
     if (isFocused) {
       console.log('하단탭으로 진입할 때');
-      getProceedRequest(fcmToken, authToken).then((data) => setProceedRequest(data));
-      getCompletedRequest(fcmToken, authToken).then((data) => setCompletedRequest(data));
+      getProceedRequest(fcmToken, authToken).then((data) => {
+        const sortedList = [...data].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+        setProceedRequest(sortedList);
+      });
+      getCompletedRequest(fcmToken, authToken).then((data) => {
+        const sortedList = [...data].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+        setCompletedRequest(sortedList);
+      });
     }
   }, [isFocused]);
 
