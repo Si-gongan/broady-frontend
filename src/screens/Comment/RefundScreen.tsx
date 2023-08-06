@@ -82,7 +82,7 @@ const RefundScreen = ({ navigation }: any) => {
       <ScrollView scrollEnabled={false}>
         <Header navigation={navigation}>환급 신청</Header>
         <View style={styles.refundPointHeader}>
-          <Text style={commentFont.title}>포인트 환급</Text>
+          <Text style={commentFont.title}>내 포인트 : {myPoint} P</Text>
         </View>
         <View style={styles.refundBodyContainer}>
           <View style={styles.inputContainer}>
@@ -96,7 +96,7 @@ const RefundScreen = ({ navigation }: any) => {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Text style={{ fontSize: 16 }}>신청 포인트 입력 (최소 500P, 최대 {myPoint}P)</Text>
+            <Text style={{ fontSize: 16 }}>신청 포인트 입력 ( 500P 부터 환급 가능 )</Text>
             <TextInput
               placeholder="신청 포인트 입력"
               placeholderTextColor="#5E5E5E"
