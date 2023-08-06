@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Dimensions } from 'react-native';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
@@ -7,6 +8,9 @@ import useInterval from '../../../hooks/useInterval';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import { getConvertDate, getExpiredMinute, getKoreanTime } from '../../../utils/time';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30; // 부모컴포넌트 width:90%에 2개씩 렌더링. gap: 30
 
 const RequestItem = ({
   request,
@@ -75,7 +79,7 @@ const RequestItem = ({
 const styles = StyleSheet.create({
   imageContainer: {
     height: 200,
-    width: 160,
+    width: ITEM_WIDTH,
     display: 'flex',
     borderRadius: 12,
     overflow: 'hidden',
