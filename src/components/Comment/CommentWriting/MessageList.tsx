@@ -48,9 +48,9 @@ const MessageList = ({ request }: { request: ICurrentRequest }) => {
           );
         }
         // 해설자 측 답변
-        if (message.userId) return <ResponseMessage key={message.createdAt} comment={message} />;
+        if (message.userId) return <ResponseMessage key={idx} comment={message} />;
         // 시각장애인 측 의뢰
-        else return <RequestMessage key={message.id} content={message} />;
+        else return <RequestMessage key={idx} content={message} />;
       })}
     </>
   );
