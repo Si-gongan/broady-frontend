@@ -55,7 +55,7 @@ const RefundScreen = ({ navigation }: any) => {
   };
 
   const handleChangeInput = (text: string) => {
-    if (parseInt(text) >= 500 && parseInt(text) < myPoint) setIsRefunded(true);
+    if (parseInt(text) >= 500 && parseInt(text) <= myPoint) setIsRefunded(true);
     else setIsRefunded(false);
 
     const numberReg = text.replace(/[^0-9]/g, '');
@@ -70,7 +70,8 @@ const RefundScreen = ({ navigation }: any) => {
       });
       getPointList(fcmToken, authToken)
         .then((data) => {
-          setPointList(data);
+          const sortedPointList = [...data].sort((a, b) => (new Date(a.date) > new Date(b.date) ? -1 : 1));
+          setPointList(sortedPointList);
           setIsLoading(false);
         })
         .catch((error) => console.log('POINT ERROR ', error));
@@ -82,13 +83,13 @@ const RefundScreen = ({ navigation }: any) => {
       <ScrollView scrollEnabled={false}>
         <Header navigation={navigation}>환급 신청</Header>
         <View style={styles.refundPointHeader}>
-          <Text style={commentFont.title}>포인트 환급</Text>
+          <Text style={commentFont.title}>내 포인트 : {myPoint} P</Text>
         </View>
         <View style={styles.refundBodyContainer}>
           <View style={styles.inputContainer}>
             <Text style={{ fontSize: 16 }}>입금 받을 계좌 입력</Text>
             <TextInput
-              placeholder="계좌번호 (-)없이 입력"
+              placeholder="ex) 우리 1234-567-8910"
               placeholderTextColor="#5E5E5E"
               onChangeText={(text) => setAccountNumberInput(text)}
               value={accountNumberInput}
@@ -96,7 +97,7 @@ const RefundScreen = ({ navigation }: any) => {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Text style={{ fontSize: 16 }}>신청 포인트 입력 (최소 500P, 최대 {myPoint}P)</Text>
+            <Text style={{ fontSize: 16 }}>신청 포인트 입력 ( 500P 부터 환급 가능 )</Text>
             <TextInput
               placeholder="신청 포인트 입력"
               placeholderTextColor="#5E5E5E"
