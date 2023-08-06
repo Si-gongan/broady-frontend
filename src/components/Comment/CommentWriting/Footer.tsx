@@ -32,7 +32,7 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
 
   const [text, setText] = useState<string>('');
   const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
-  const [isSent, setIsSent] = useState(false);
+  const [isSent, setIsSent] = useState(true);
   const { isAvailable, isComplete } = request;
 
   const handleClickAICorrectionBtn = async (inputText: string) => {
@@ -61,17 +61,16 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
   };
 
   const handleCommentInput = (inputText: string) => {
-    // if (inputText.length > 50) setIsSent(true);
-    // else setIsSent(false);
     setText(inputText);
   };
 
   const handleClickSendBtn = async (id: string) => {
+    setIsSent(false);
     if (text.length < 50) {
       showToastMessage();
+      setTimeout(() => setIsSent(true), 1000);
       return;
     }
-    setIsSent(false);
     try {
       const result = await endComment(id, text, fcmToken, authToken);
       setRequest(result);
@@ -91,7 +90,7 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
     Toast.show('해설은 50자 이상 작성해야 전송이 가능합니다', {
       duration: 1000,
       animation: true,
-      position: Toast.positions.CENTER + 320,
+      position: Toast.positions.CENTER,
     });
   };
 
@@ -172,8 +171,17 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
                   autoComplete="off"
                 />
               </View>
-              <TouchableOpacity style={styles.sendBtn} onPress={() => handleClickSendBtn(id)} activeOpacity={0.6}>
-                <Image source={require('../../../../assets/send.png')} alt="" />
+              <TouchableOpacity
+                style={styles.sendBtn}
+                onPress={() => handleClickSendBtn(id)}
+                activeOpacity={0.6}
+                disabled={!isSent}
+              >
+                <Image
+                  style={isSent ? { opacity: 1 } : { opacity: 0.5 }}
+                  source={require('../../../../assets/send.png')}
+                  alt=""
+                />
               </TouchableOpacity>
             </View>
           </ScrollView>
