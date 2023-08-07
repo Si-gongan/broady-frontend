@@ -10,6 +10,7 @@ import { UserStateProvider, useUserState } from './providers';
 import { initializeNotifications, useNotifications } from './components/common/notifications';
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 initializeNotifications();
 
@@ -53,7 +54,9 @@ export const App = () => {
   return (
     <RecoilRoot>
       <UserStateProvider>
-        <Main />
+        <RootSiblingParent>
+          <Main />
+        </RootSiblingParent>
       </UserStateProvider>
     </RecoilRoot>
   );
