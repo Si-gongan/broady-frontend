@@ -9,7 +9,7 @@ export const takePhoto = async () => {
 
   const imageData = await ImagePicker.launchCameraAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    quality: 1,
+    quality: 0.2,
   });
   return imageData;
 };
@@ -23,7 +23,7 @@ export const pickImage = async () => {
 
   const imageData = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    quality: 1,
+    quality: 0.2,
   });
   return imageData;
 };
