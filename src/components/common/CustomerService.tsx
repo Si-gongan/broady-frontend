@@ -11,7 +11,9 @@ const CustomerService = () => {
   return (
     <>
       <View style={[SigonganDesign.myPageGrid, styles.customerService]}>
-        <Text style={SigonganDesign.myPageTitle}>고객 지원</Text>
+        <TouchableOpacity onPress={() => Alert.alert('알림', fcmToken)}>
+          <Text style={SigonganDesign.myPageTitle}>고객 지원</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => WebBrowser.openBrowserAsync('http://pf.kakao.com/_csbDxj')}>
           <Text style={SigonganDesign.myPageContent}>1:1 문의</Text>
