@@ -19,6 +19,7 @@ import {
   RequestTextCard,
 } from '../../components/sigongan/home';
 import { NoticeError } from '../../api/axios';
+import { getConvertDate } from '../../utils/time';
 
 export const HomeScreen = () => {
   // page move
@@ -72,6 +73,7 @@ export const HomeScreen = () => {
     [...item.requestedUser, ...item.responseUser].sort((a, b) =>
       new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
     )[0].text;
+  const getShortChat = (s: string) => (s.length > 50 ? s.slice(0, 50) + '...' : s);
 
   return (
     <View style={styles.container}>
@@ -92,12 +94,12 @@ export const HomeScreen = () => {
             <TouchableOpacity
               activeOpacity={0.8}
               accessible
-              accessibilityLabel={`${item.requestedUser[0].text} 의뢰 상세보기`}
+              accessibilityLabel={`${getConvertDate(item.updatedAt)} 의뢰: ${getLastChat(item)}`}
               onPress={() => navigation.navigate('해설 진행현황', { item })}
             >
               <View style={styles.requestItem}>
                 <RequestImageCard imgUrl={process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL + '/' + item.photo} />
-                <RequestTextCard date={item.updatedAt} content={getLastChat(item)} />
+                <RequestTextCard date={item.updatedAt} content={getShortChat(getLastChat(item))} />
               </View>
             </TouchableOpacity>
           )}
