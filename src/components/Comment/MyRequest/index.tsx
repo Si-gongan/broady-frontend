@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';

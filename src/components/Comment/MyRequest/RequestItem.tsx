@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dimensions } from 'react-native';
+import { ActivityIndicator, Dimensions } from 'react-native';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
@@ -25,6 +25,7 @@ const RequestItem = ({
 }) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
+  const [isLoading, setIsLoading] = useState(false);
 
   const lastIndex: number = request.requestedUser.length - 1;
   /* 가장 최근 의뢰 질문을 기준으로 시간 계산 */
@@ -61,8 +62,16 @@ const RequestItem = ({
         <View style={styles.imageContainer}>
           <Image
             source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
-            style={styles.image}
+            style={isLoading ? styles.loadingImage : styles.image}
+            onLoadStart={() => setIsLoading(true)}
+            onLoadEnd={() => setIsLoading(false)}
           />
+          {isLoading && (
+            <View style={styles.loadingSpinner}>
+              <ActivityIndicator size="large" />
+            </View>
+          )}
+
           <View style={styles.imageTextContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.createdAtRequest}>{gapTime}</Text>
@@ -81,6 +90,14 @@ const RequestItem = ({
 };
 
 const styles = StyleSheet.create({
+  loadingImage: {
+    display: 'none',
+  },
+  loadingSpinner: {
+    height: 118,
+    display: 'flex',
+    justifyContent: 'center',
+  },
   imageContainer: {
     height: 200,
     width: ITEM_WIDTH,
