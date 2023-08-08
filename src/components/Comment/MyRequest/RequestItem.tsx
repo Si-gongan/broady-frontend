@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Dimensions } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions } from 'react-native';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
@@ -81,6 +81,14 @@ const RequestItem = ({
 };
 
 const styles = StyleSheet.create({
+  loadingImage: {
+    display: 'none',
+  },
+  loadingSpinner: {
+    height: 118,
+    display: 'flex',
+    justifyContent: 'center',
+  },
   imageContainer: {
     height: 200,
     width: ITEM_WIDTH,

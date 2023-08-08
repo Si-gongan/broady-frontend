@@ -149,9 +149,13 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
         >
           <ScrollView keyboardShouldPersistTaps="always">
             <View style={styles.inputTextHeader}>
-              <TouchableOpacity style={styles.AIBtn} onPress={() => handleClickAICorrectionBtn(text)}>
-                <Text style={{ color: 'white' }}>AI다듬기</Text>
-              </TouchableOpacity>
+              <View style={styles.leftHeader}>
+                <TouchableOpacity style={styles.AIBtn} onPress={() => handleClickAICorrectionBtn(text)}>
+                  <Text style={{ color: 'white' }}>AI다듬기</Text>
+                </TouchableOpacity>
+                <Text>{text.length} / 50 자</Text>
+              </View>
+
               <View style={styles.timer}>
                 <Text style={{ color: '#CF0000' }}>{commentTimer}분 남음</Text>
                 <TouchableOpacity style={styles.commentQuit} onPress={() => handleClickStopComment(id)}>
@@ -210,6 +214,11 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
 };
 
 const styles = StyleSheet.create({
+  leftHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   footerContainer: {
     alignItems: 'center',
     justifyContent: 'flex-end',
