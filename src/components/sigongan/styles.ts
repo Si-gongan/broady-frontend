@@ -201,7 +201,6 @@ export const SigonganDesign = StyleSheet.create({
     paddingBottom: 8,
     paddingRight: 13,
 
-    // TODO: android border radius error
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

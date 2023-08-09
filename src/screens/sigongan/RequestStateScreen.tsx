@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
@@ -139,17 +139,22 @@ export const RequestStateScreen = () => {
                   <View key={item.createdAt}>
                     {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
 
-                    <View
-                      style={styles.AnotherSpeechWrapper}
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onLongPress={() =>
+                        Alert.alert('알림', '이 답변을 신고하시겠습니까?', [{ text: '신고' }, { text: '취소' }])
+                      }
                       accessible
-                      accessibilityLabel={`해설자의 대화: ${item.text.trimEnd()}`}
+                      accessibilityLabel={`해설자의 대화: ${item.text.trimEnd()}, 신고하려면 길게 누르세요`}
                     >
-                      <AnotherAvatar />
+                      <View style={styles.AnotherSpeechWrapper}>
+                        <AnotherAvatar />
 
-                      <AnotherSpeechBubble text={item.text.trimEnd()} />
+                        <AnotherSpeechBubble text={item.text.trimEnd()} />
 
-                      <TimeViewer date={item.createdAt} />
-                    </View>
+                        <TimeViewer date={item.createdAt} />
+                      </View>
+                    </TouchableOpacity>
 
                     {/* 감사인사를 한 경우, 나의 감사인사도 표시 */}
                     {isAppreciated(item) && (
