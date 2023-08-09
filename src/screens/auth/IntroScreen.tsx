@@ -1,10 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { AuthStackParamList } from '../../navigations';
 import { useUserState } from '../../providers';
 import { AuthColor, AuthDesign, AuthFont, AuthResponsive } from '../../components/auth/styles';
-import { USER_STATE, storeData } from '../../components/common/async-storage';
 import { useState } from 'react';
 import Checkbox from 'expo-checkbox';
 import * as WebBrowser from 'expo-web-browser';
