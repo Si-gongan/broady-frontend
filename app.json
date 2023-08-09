@@ -12,6 +12,16 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "해설자측에 사진 해설 의뢰, AI 해설 기능 이용을 위해 카메라 권한을 승인해주세요.",
+          "photosPermission": "해설자측에 사진 해설 의뢰, AI 해설 기능 이용을 위해 사진 접근 권한을 승인해주세요.",
+          "microphonePermission": "해설자측에 사진 해설 의뢰, AI 해설 기능 이용을 위해 마이크 접근 권한을 승인해주세요."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.sigongan.bomjaguk",
