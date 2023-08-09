@@ -37,7 +37,7 @@ const MessageList = ({ request }: { request: ICurrentRequest }) => {
           />
         </View>
       </View>
-      {sortedMessageList.map((message: IChat, idx: number) => {
+      {sortedMessageList.map((message: IChat) => {
         // 감사 인사한 경우
         if (message.userId && message.appreciated && message.appreciatedText) {
           return (
@@ -48,7 +48,7 @@ const MessageList = ({ request }: { request: ICurrentRequest }) => {
           );
         }
         // 해설자 측 답변
-        if (message.userId) return <ResponseMessage key={message.id} comment={message} />;
+        if (message.userId) return <ResponseMessage key={message.createdAt} comment={message} />;
         // 시각장애인 측 의뢰
         else return <RequestMessage key={message.id} content={message} />;
       })}
