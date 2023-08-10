@@ -25,7 +25,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.sigongan.bomjaguk",
-      "buildNumber": "1.9"
+      "buildNumber": "1.10"
     },
     "android": {
       "adaptiveIcon": {
@@ -34,7 +34,7 @@
       },
       "googleServicesFile": "./google-services.json",
       "package": "com.sigongan.bomjaguk",
-      "versionCode": 11
+      "versionCode": 12
     },
     "web": {
       "favicon": "./assets/favicon.png"
