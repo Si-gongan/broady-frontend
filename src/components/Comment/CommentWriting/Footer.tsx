@@ -18,7 +18,6 @@ import { endComment, getCorrectText, getRequest, startComment, stopComment } fro
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import Toast from 'react-native-root-toast';
-import { Snackbar } from 'react-native-paper';
 
 interface IFooterProps {
   id: string;
@@ -34,22 +33,11 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
   const [text, setText] = useState<string>('');
   const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
   const [isSent, setIsSent] = useState(true);
-  const [isReported, setIsReported] = useState(false);
   const { isAvailable, isComplete } = request;
 
   const handleClickAICorrectionBtn = async (inputText: string) => {
     const result = await getCorrectText(inputText);
     setText(result);
-  };
-
-  useEffect(() => {
-    if (isAvailable && isComplete === false) setStatus(-1);
-    if (isAvailable === false && isComplete === false) setStatus(0);
-    if (isAvailable === false && isComplete) setStatus(1);
-  }, [isAvailable, isComplete]);
-
-  const handleReport = (id: string) => {
-    setIsReported(true);
   };
 
   const handleStartComment = async (id: string) => {
@@ -99,6 +87,12 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
       position: Toast.positions.CENTER,
     });
   };
+
+  useEffect(() => {
+    if (isAvailable && isComplete === false) setStatus(-1);
+    if (isAvailable === false && isComplete === false) setStatus(0);
+    if (isAvailable === false && isComplete) setStatus(1);
+  }, [isAvailable, isComplete]);
 
   useEffect(() => {
     const willShowSubscription = Keyboard.addListener('keyboardWillShow', () => {
@@ -205,29 +199,10 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
     <>
       <Shadow
         distance={10}
-        containerStyle={{ flex: 0.25 }}
+        containerStyle={{ flex: 0.15 }}
         style={{ width: '100%', height: '100%' }}
         sides={{ top: true, bottom: false, start: false, end: false }}
       >
-        <Snackbar
-          style={{ bottom: 120 }}
-          visible={isReported}
-          onDismiss={() => setIsReported(false)}
-          duration={2000}
-          action={{
-            label: '닫기',
-            onPress: () => {
-              setIsReported(false);
-            },
-          }}
-        >
-          게시물이 신고되었습니다
-        </Snackbar>
-        <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.commentBtn} onPress={() => handleReport(id)}>
-            <Text style={styles.commentText}>신고하기</Text>
-          </TouchableOpacity>
-        </View>
         <View style={styles.footerContainer}>
           <TouchableOpacity style={styles.commentBtn} onPress={() => handleStartComment(id)}>
             <Text style={styles.commentText}>해설하기</Text>
@@ -247,7 +222,6 @@ const styles = StyleSheet.create({
   footerContainer: {
     alignItems: 'center',
     justifyContent: 'flex-end',
-    height: '45%',
   },
   commentBtn: {
     backgroundColor: '#2C2C2C',

@@ -14,3 +14,13 @@ export const requestRefundPoint = async (point: number, accountNumber: string, f
   );
   return result.data;
 };
+
+export const reportPost = async (postId: string, fcmToken: string, token: string) => {
+  const result = await Server.post(`/user/post/${postId}`, { postId }, { headers: { fcmToken, Authorization: token } });
+  return result.data;
+};
+
+export const reportUser = async (userId: string, fcmToken: string, token: string) => {
+  const result = await Server.post(`/user/report`, { userId }, { headers: { fcmToken, Authorization: token } });
+  return result.data;
+};
