@@ -44,7 +44,6 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
       </Header>
       <ScrollView style={styles.bodyContainer}>
         {Object.keys(currentRequest).length > 0 && <MessageList request={currentRequest} />}
-        <Text>{isMenuVisible === true ? 'a' : 'b'}</Text>
       </ScrollView>
       <Footer id={id} request={currentRequest} setRequest={setCurrentRequest} commentTimer={commentTimer} />
       {isMenuVisible && (
