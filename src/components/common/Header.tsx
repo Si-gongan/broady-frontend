@@ -1,7 +1,14 @@
+import { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Header = ({ navigation, children }: { navigation?: any; children: string }) => {
+interface IHeaderProps {
+  navigation?: any;
+  setIsMenuVisible?: any;
+  children: string;
+}
+
+const Header = ({ navigation, setIsMenuVisible, children }: IHeaderProps) => {
   return (
     <>
       <View style={styles.header}>
@@ -10,7 +17,13 @@ const Header = ({ navigation, children }: { navigation?: any; children: string }
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{children}</Text>
         <View>
-          <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBlank} />
+          {setIsMenuVisible ? (
+            <TouchableOpacity onPress={() => setIsMenuVisible(true)}>
+              <MaterialCommunityIcons name="dots-vertical" style={styles.headerSettingIcon} />
+            </TouchableOpacity>
+          ) : (
+            <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBlank} />
+          )}
         </View>
       </View>
     </>
@@ -30,7 +43,11 @@ const styles = StyleSheet.create({
   },
   headerBackIcon: {
     fontSize: 40,
-    marginLeft: 5,
+    marginLeft: 10,
+  },
+  headerSettingIcon: {
+    fontSize: 30,
+    marginRight: 10,
   },
   headerBlank: {
     fontSize: 40,
