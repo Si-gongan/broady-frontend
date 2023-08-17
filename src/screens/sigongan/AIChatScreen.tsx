@@ -58,6 +58,10 @@ export const AIChatScreen = () => {
 
         setChatList(prevData.chat);
         chatId.current = prevData._id;
+
+        // hard coding
+        await delay(500);
+        scrollViewRef.current?.scrollToEnd({ animated: true });
       } catch {
         Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
           {
@@ -117,10 +121,6 @@ export const AIChatScreen = () => {
 
       await PostImageQuestion(chatId.current, url, fcmToken);
       await refresh();
-
-      // hard coding
-      await delay(500);
-      scrollViewRef.current?.scrollToEnd({ animated: true });
     } catch (e) {
       NoticeError();
     } finally {

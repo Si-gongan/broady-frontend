@@ -23,7 +23,7 @@ import {
 } from '../../components/sigongan/request-state';
 import { DateViewer } from '../../components/sigongan/ai-chat';
 
-import { getDate } from '../../utils/time';
+import { getDate, getFormattedTime } from '../../utils/time';
 import { useKeyboard } from '../../hooks';
 
 export const RequestStateScreen = () => {
@@ -126,7 +126,7 @@ export const RequestStateScreen = () => {
                     <View
                       style={isShowTimeViewer(chatList, i) ? styles.mySpeechEndWrapper : styles.mySpeechWrapper}
                       accessible
-                      accessibilityLabel={`나의 대화: ${item.text.trimEnd()}`}
+                      accessibilityLabel={`나의 대화: ${item.text.trimEnd()}, ${getFormattedTime(item.createdAt)}`}
                     >
                       {/* 다음 대화가 나일 때, 시간 표시를 없앰 */}
                       {isShowTimeViewer(chatList, i) && <TimeViewer date={item.createdAt} />}
@@ -145,7 +145,7 @@ export const RequestStateScreen = () => {
                         Alert.alert('알림', '이 답변을 신고하시겠습니까?', [{ text: '신고' }, { text: '취소' }])
                       }
                       accessible
-                      accessibilityLabel={`해설자의 대화: ${item.text.trimEnd()}, 신고하려면 길게 누르세요`}
+                      accessibilityLabel={`해설자의 대화: ${item.text.trimEnd()}, ${getFormattedTime(item.createdAt)}`}
                     >
                       <View style={styles.AnotherSpeechWrapper}>
                         <AnotherAvatar />
@@ -161,7 +161,7 @@ export const RequestStateScreen = () => {
                       <View
                         style={[styles.mySpeechEndWrapper, { marginTop: 12 }]}
                         accessible
-                        accessibilityLabel={`나의 대화: ${item.text}`}
+                        accessibilityLabel={`나의 대화: ${item.text}, ${getFormattedTime(item.appreciatedDate ?? '')}`}
                       >
                         <TimeViewer date={item.appreciatedDate ?? ''} />
 
