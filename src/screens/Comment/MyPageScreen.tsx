@@ -39,13 +39,15 @@ const MyPageScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <Refund myPoint={myPoint} navigation={navigation} />
-      <CustomerService />
+      <CustomerService isBlind={false} />
       <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
         <TouchableOpacity onPress={logout}>
           <Text style={SigonganDesign.myPageContent}>로그아웃</Text>
         </TouchableOpacity>
 
-        <Text style={styles.deleteUser}>회원 탈퇴</Text>
+        <TouchableOpacity onPress={logout}>
+          <Text style={styles.deleteUser}>회원 탈퇴</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

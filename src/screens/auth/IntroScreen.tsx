@@ -24,7 +24,7 @@ export const IntroScreen = () => {
       return;
     }
 
-    await WebBrowser.openBrowserAsync('https://sites.google.com/view/sigongan-useterm/홈');
+    // await WebBrowser.openBrowserAsync('https://sites.google.com/view/sigongan-useterm/홈');
 
     setChecked((prev) => !prev);
   };

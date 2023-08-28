@@ -14,7 +14,7 @@ export const MyPageScreen = () => {
 
       <AppSetting />
 
-      <CustomerService />
+      <CustomerService isBlind={true} />
 
       <TouchableOpacity onPress={logout} accessible accessibilityLabel="첫 화면으로 나가기 버튼">
         <View style={[SigonganDesign.myPageGrid, styles.goBack]}>
