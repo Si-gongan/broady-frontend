@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RecoilRoot } from 'recoil';
@@ -12,6 +13,7 @@ import { Alert } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { CommentServer } from './api/axios/comment/setting';
 import { AxiosError } from 'axios';
+import { useState } from 'react';
 
 initializeNotifications();
 
@@ -22,6 +24,9 @@ const Main = () => {
     'Inter-Bold': require('../assets/font/Inter-SemiBold.ttf'),
   });
   const { userState, logout } = useUserState();
+
+  // alert 중복 방지
+  const isErrorAlertRef = useRef(false);
 
   useNotifications();
 
@@ -48,9 +53,17 @@ const Main = () => {
         const response = error.response;
         const status = response?.status;
 
-        if (status === 401) {
-          Alert.alert('세션 만료', '다시 로그인 해주세요.');
-          return logout();
+        if (status === 401 && !isErrorAlertRef.current) {
+          isErrorAlertRef.current = true;
+          Alert.alert('세션 만료', '다시 로그인 해주세요.', [
+            {
+              text: '확인',
+              onPress: () => (isErrorAlertRef.current = false),
+            },
+          ]);
+
+          logout();
+          return Promise.reject(error);
         }
       } catch {
         return Promise.reject(error);
