@@ -5,8 +5,8 @@ import { useRecoilValue } from 'recoil';
 import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
+import MyRequestInformation from './MyRequestInformation';
 import RequestList from './RequestList';
-import HeaderInformation from '../../common/HeaderInformation';
 
 const MyRequest = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -20,27 +20,27 @@ const MyRequest = ({ navigation }: any) => {
   const lastClicked = useRef(0);
 
   const [requestList, setRequestList] = useState<ICurrentRequest[]>([]);
-  useEffect(() => {
-    if (isFocused) {
-      console.log('하단탭으로 진입할 때');
-      Promise.all([getProceedRequest(fcmToken, authToken), getCompletedRequest(fcmToken, authToken)]).then((res) => {
-        const sortedProceedList = [...res[0]].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
-        const sortedCompletedList = [...res[1]].sort((a, b) =>
-          new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
-        );
-        // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
-        // setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
-        setRequestList([...sortedProceedList, ...sortedCompletedList]);
-      });
-    }
-  }, [isFocused]);
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     console.log('하단탭으로 진입할 때');
+  //     Promise.all([getProceedRequest(fcmToken, authToken), getCompletedRequest(fcmToken, authToken)]).then((res) => {
+  //       const sortedProceedList = [...res[0]].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+  //       const sortedCompletedList = [...res[1]].sort((a, b) =>
+  //         new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
+  //       );
+  //       // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
+  //       // setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
+  //       setRequestList([...sortedProceedList, ...sortedCompletedList]);
+  //     });
+  //   }
+  // }, [isFocused]);
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
         <Text style={styles.mainTitle}>MY의뢰</Text>
       </View>
-      <HeaderInformation />
+      <MyRequestInformation />
 
       <View style={styles.bodyContainer}>
         <RequestList

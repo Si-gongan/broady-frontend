@@ -4,24 +4,23 @@ import { Shadow } from 'react-native-shadow-2';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30;
 
-const HeaderInformation = () => {
+const MyRequestInformation = () => {
   return (
     <>
       <View>
         <View style={styles.guideTextContainer}>
-          <Text style={styles.mainText}>시각장애인의 눈이 되어주세요!👀</Text>
-          <Text style={styles.guideText}>봄자국 간편 가이드❔</Text>
+          <Text style={styles.mainText}>오늘도 열심히 해설해주셨군요!</Text>
         </View>
         <View style={styles.requestContaier}>
           <Shadow distance={4} sides={{ top: true, bottom: true, start: true, end: true }}>
             <View style={styles.requestItemContainer}>
-              <Text style={styles.textCategory}>총 질문</Text>
+              <Text style={styles.textCategory}>내 누적 해설</Text>
               <Text style={styles.requestCountText}>12건</Text>
             </View>
           </Shadow>
           <Shadow distance={4} sides={{ top: true, bottom: true, start: true, end: true }}>
             <View style={styles.requestItemContainer}>
-              <Text style={styles.textCategory}>오늘의 질문</Text>
+              <Text style={styles.textCategory}>오늘 진행한 해설</Text>
               <Text style={styles.requestCountText}>03건</Text>
             </View>
           </Shadow>
@@ -35,6 +34,7 @@ const styles = StyleSheet.create({
   guideTextContainer: {
     gap: 5,
     alignItems: 'center',
+    marginVertical: 10,
   },
   mainText: {
     fontWeight: '700',
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HeaderInformation;
+export default MyRequestInformation;

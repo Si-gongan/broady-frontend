@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, Image, Button, Modal, StyleSheet } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getRequestAll } from '../../api/axios';
+import HomeInformation from '../../components/Comment/Home/HomeInformation';
 import RequestList from '../../components/Comment/Home/RequestList';
 import { authTokenState, fcmTokenState } from '../../states';
 import { IRequest } from '../../types/request';
@@ -37,6 +38,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           />
           </View>*/}
       </View>
+      <HomeInformation />
       <View style={styles.bodyContainer}>
         <RequestList requestList={currentRequest} navigation={navigation} />
       </View>
