@@ -20,26 +20,25 @@ const MyRequest = ({ navigation }: any) => {
   const lastClicked = useRef(0);
 
   const [requestList, setRequestList] = useState<ICurrentRequest[]>([]);
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     console.log('하단탭으로 진입할 때');
-  //     Promise.all([getProceedRequest(fcmToken, authToken), getCompletedRequest(fcmToken, authToken)]).then((res) => {
-  //       const sortedProceedList = [...res[0]].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
-  //       const sortedCompletedList = [...res[1]].sort((a, b) =>
-  //         new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
-  //       );
-  //       // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
-  //       // setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
-  //       setRequestList([...sortedProceedList, ...sortedCompletedList]);
-  //     });
-  //   }
-  // }, [isFocused]);
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log('하단탭으로 진입할 때');
+      Promise.all([getProceedRequest(fcmToken, authToken), getCompletedRequest(fcmToken, authToken)]).then((res) => {
+        const sortedProceedList = [...res[0]].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+        const sortedCompletedList = [...res[1]].sort((a, b) =>
+          new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
+        );
+        // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
+        // setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
+        setRequestList([...sortedProceedList, ...sortedCompletedList]);
+      });
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.header}>
-        <Text style={styles.mainTitle}>MY의뢰</Text>
-      </View>
+      <View style={styles.header}></View>
       <MyRequestInformation />
 
       <View style={styles.bodyContainer}>
@@ -65,9 +64,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 20,
     justifyContent: 'space-between',
-    height: 45,
     borderBottomColor: '#E2E2E2',
-    borderBottomWidth: 3,
+    borderBottomWidth: 2,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

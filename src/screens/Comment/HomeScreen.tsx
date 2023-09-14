@@ -28,15 +28,15 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   return (
     <>
       <View style={styles.header}>
-        <Text style={styles.mainTitle}>의뢰목록</Text>
-        {/*<View style={styles.button}>
+        {/* <Text style={styles.mainTitle}>의뢰목록</Text> */}
+        {/* <View style={styles.button}>
           <Button 
             title="해설 가이드"
             onPress={()=>{
               setModalVisible(true);
             }}
           />
-          </View>*/}
+          </View> */}
       </View>
       <HomeInformation />
       <View style={styles.bodyContainer}>
@@ -52,9 +52,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 20,
     justifyContent: 'space-between',
-    height: 45,
     borderBottomColor: '#E2E2E2',
-    borderBottomWidth: 3,
+    borderBottomWidth: 2,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
