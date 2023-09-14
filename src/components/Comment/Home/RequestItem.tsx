@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { IRequest } from '../../../types/request';
 import { getConvertDate } from '../../../utils/time';
@@ -19,11 +19,15 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
       }
     >
       <Shadow distance={3} sides={{ top: true, bottom: true, start: true, end: true }}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
-            style={styles.image}
-          />
+        <View style={styles.cardContainer}>
+          <View style={styles.image}>
+            <ImageBackground
+              source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
+              style={{ width: '100%', height: '100%' }}
+              resizeMode="stretch"
+              blurRadius={10} //Blur 효과
+            />
+          </View>
           <View style={styles.imageTextContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={styles.createdAtRequest}>{gapTime}</Text>
@@ -45,7 +49,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
   },
-  imageContainer: {
+  cardContainer: {
     height: 200,
     width: ITEM_WIDTH,
     display: 'flex',
