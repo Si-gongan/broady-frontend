@@ -4,7 +4,12 @@ import { Shadow } from 'react-native-shadow-2';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30;
 
-const HomeInformation = () => {
+interface HomeInformationProps {
+  totalRequestCount: number;
+  todayRequestCount: number;
+}
+
+const HomeInformation = ({ totalRequestCount, todayRequestCount }: HomeInformationProps) => {
   return (
     <>
       <View>
@@ -16,13 +21,13 @@ const HomeInformation = () => {
           <Shadow distance={4} sides={{ top: true, bottom: true, start: true, end: true }}>
             <View style={styles.requestItemContainer}>
               <Text style={styles.textCategory}>총 질문</Text>
-              <Text style={styles.requestCountText}>12건</Text>
+              <Text style={styles.requestCountText}>{totalRequestCount.toString().padStart(2, '0')}건</Text>
             </View>
           </Shadow>
           <Shadow distance={4} sides={{ top: true, bottom: true, start: true, end: true }}>
             <View style={styles.requestItemContainer}>
               <Text style={styles.textCategory}>오늘의 질문</Text>
-              <Text style={styles.requestCountText}>03건</Text>
+              <Text style={styles.requestCountText}>{todayRequestCount.toString().padStart(2, '0')}건</Text>
             </View>
           </Shadow>
         </View>

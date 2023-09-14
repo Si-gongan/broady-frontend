@@ -13,6 +13,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
+  const todayRequestCount = countTodayRequest(currentRequest);
+
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -38,12 +40,17 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           />
           </View> */}
       </View>
-      <HomeInformation />
+      <HomeInformation totalRequestCount={currentRequest.length} todayRequestCount={todayRequestCount} />
       <View style={styles.bodyContainer}>
         <RequestList requestList={currentRequest} navigation={navigation} />
       </View>
     </>
   );
+};
+
+const countTodayRequest = (requestList: IRequest[]) => {
+  const todayRequest = requestList.filter((request) => new Date().getDay() === new Date(request.createdAt).getDay());
+  return todayRequest.length;
 };
 
 const styles = StyleSheet.create({
