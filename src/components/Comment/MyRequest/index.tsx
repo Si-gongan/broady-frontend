@@ -1,11 +1,12 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import RequestList from './RequestList';
+import HeaderInformation from '../../common/HeaderInformation';
 
 const MyRequest = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -27,8 +28,9 @@ const MyRequest = ({ navigation }: any) => {
         const sortedCompletedList = [...res[1]].sort((a, b) =>
           new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
         );
-        const slicedCompletedList = sortedCompletedList.slice(0, 5);
-        setRequestList([...sortedProceedList, ...slicedCompletedList]);
+        // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
+        // setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
+        setRequestList([...sortedProceedList, ...sortedCompletedList]);
       });
     }
   }, [isFocused]);
@@ -37,16 +39,8 @@ const MyRequest = ({ navigation }: any) => {
     <View style={styles.mainContainer}>
       <View style={styles.header}>
         <Text style={styles.mainTitle}>MY의뢰</Text>
-        {/* <View style={styles.topTabContainer}>
-          {topTabNavigations.map((tab) => (
-            <TouchableOpacity style={tabStyles(tab.clicked).topTabItem} key={tab.id} onPress={handleClickTopTab}>
-              <Text id={`${tab.id}`} style={styles.tabText}>
-                {tab.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View> */}
       </View>
+      <HeaderInformation />
 
       <View style={styles.bodyContainer}>
         <RequestList
@@ -76,11 +70,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     flexDirection: 'row',
     flexWrap: 'wrap',
-  },
-  topTabContainer: {
-    width: '90%',
-    height: '60%',
-    flexDirection: 'row',
   },
   bodyContainer: {
     flex: 1,
