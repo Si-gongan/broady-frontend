@@ -6,7 +6,6 @@ import { getRequestAll } from '../../api/axios';
 import RequestList from '../../components/Comment/Home/RequestList';
 import { authTokenState, fcmTokenState } from '../../states';
 import { IRequest } from '../../types/request';
-import Carousel from 'react-native-snap-carousel';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [currentRequest, setCurrentRequest] = useState<IRequest[]>([]);
@@ -14,8 +13,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const authToken = useRecoilValue(authTokenState);
 
   const isFocused = useIsFocused();
-
-  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (isFocused) {
@@ -29,31 +26,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <>
-      <Modal
-          visible={modalVisible}
-          presentationStyle='formSheet'
-          animationType='slide'
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={{marginHorizontal:30, marginVertical:60, justifyContent: 'center'}}>
-            <Carousel
-              layout={'default'}
-              data={[1,2,3]}
-              renderItem={({item, index})=>{
-                return (<View style={{backgroundColor:'red'}}>
-                  <Image
-                    style={{width:320, height:400, resizeMode: 'contain'}}
-                    source={require('../../../assets/sample_comment.png')}
-                  />
-                </View>);
-              }}
-              sliderWidth={320}
-              itemWidth={320}
-            />
-          </View>
-        </Modal>
       <View style={styles.header}>
         <Text style={styles.mainTitle}>의뢰목록</Text>
         {/*<View style={styles.button}>
@@ -82,8 +54,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E2E2E2',
     borderBottomWidth: 3,
     flexDirection: 'row',
-    flexWrap: 'wrap'
-    
+    flexWrap: 'wrap',
   },
   mainTitle: {
     fontSize: 24,
@@ -96,7 +67,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginBottom: 30,
-  }
+  },
 });
 
 export default HomeScreen;
