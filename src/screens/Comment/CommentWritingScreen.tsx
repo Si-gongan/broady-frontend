@@ -28,7 +28,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
     }
   }, [isFocused]);
 
-  const [commentTimer, setCommentTimer] = useState<number>(10);
+  const [commentTimer, setCommentTimer] = useState<number>(7);
 
   useInterval(() => {
     if (currentRequest.expiredAt !== null && getKoreanTime(new Date()) < new Date(currentRequest.expiredAt)) {
@@ -45,7 +45,13 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
       <ScrollView style={styles.bodyContainer}>
         {Object.keys(currentRequest).length > 0 && <MessageList request={currentRequest} />}
       </ScrollView>
-      <Footer id={id} request={currentRequest} setRequest={setCurrentRequest} commentTimer={commentTimer} />
+      <Footer
+        id={id}
+        request={currentRequest}
+        setRequest={setCurrentRequest}
+        commentTimer={commentTimer}
+        navigation={navigation}
+      />
       {isMenuVisible && (
         <BottomMenu navigation={navigation} postId={id} visible={isMenuVisible} setVisible={setIsMenuVisible} />
       )}

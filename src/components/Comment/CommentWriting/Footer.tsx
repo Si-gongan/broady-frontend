@@ -18,15 +18,17 @@ import { endComment, getCorrectText, getRequest, startComment, stopComment } fro
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import Toast from 'react-native-root-toast';
+import StopCommentBottomMenu from './StopCommentBottomSheet';
 
 interface IFooterProps {
   id: string;
   request: ICurrentRequest;
   setRequest: (value: React.SetStateAction<ICurrentRequest>) => void;
   commentTimer: number;
+  navigation: any;
 }
 
-const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
+const Footer = ({ id, request, setRequest, commentTimer, navigation }: IFooterProps) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
@@ -34,6 +36,8 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
   const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
   const [isSent, setIsSent] = useState(true);
   const { isAvailable, isComplete } = request;
+
+  const [isStopComment, setIsStopComment] = useState(false);
 
   const handleClickAICorrectionBtn = async (inputText: string) => {
     const result = await getCorrectText(inputText);
@@ -61,7 +65,7 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
   const handleClickSendBtn = async (id: string) => {
     setIsSent(false);
     if (text.length < 50) {
-      showToastMessage();
+      showToastMessage('해설은 50자 이상 작성해야 전송이 가능합니다', 'CENTER');
       setTimeout(() => setIsSent(true), 1000);
       return;
     }
@@ -75,16 +79,22 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
     }
   };
 
-  const handleClickStopComment = async (id: string) => {
-    await stopComment(id, fcmToken, authToken);
-    setStatus(-1);
+  const handleStopCommentModal = () => {
+    setIsStopComment(true);
   };
 
-  const showToastMessage = () => {
-    Toast.show('해설은 50자 이상 작성해야 전송이 가능합니다', {
+  const handleClickStopComment = async () => {
+    await stopComment(id, fcmToken, authToken);
+    setStatus(-1);
+    navigation.navigate('Home');
+    showToastMessage('해설을 넘겼습니다.', 'TOP');
+  };
+
+  const showToastMessage = (message: string, position: string) => {
+    Toast.show(message, {
       duration: 1000,
       animation: true,
-      position: Toast.positions.CENTER,
+      position: position === 'CENTER' ? Toast.positions.CENTER : 100,
     });
   };
 
@@ -158,8 +168,8 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
 
               <View style={styles.timer}>
                 <Text style={{ color: '#CF0000' }}>{commentTimer}분 남음</Text>
-                <TouchableOpacity style={styles.commentQuit} onPress={() => handleClickStopComment(id)}>
-                  <Text style={{ color: 'white' }}>해설포기</Text>
+                <TouchableOpacity style={styles.commentQuit} onPress={handleStopCommentModal}>
+                  <Text style={{ color: 'white' }}>해설 넘기기</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -190,6 +200,13 @@ const Footer = ({ id, request, setRequest, commentTimer }: IFooterProps) => {
             </View>
           </ScrollView>
         </Shadow>
+        {isStopComment && (
+          <StopCommentBottomMenu
+            handleClickStopComment={handleClickStopComment}
+            visible={isStopComment}
+            setVisible={setIsStopComment}
+          />
+        )}
       </KeyboardAvoidingView>
     );
   }
