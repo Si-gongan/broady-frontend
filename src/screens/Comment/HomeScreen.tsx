@@ -7,6 +7,7 @@ import HomeInformation from '../../components/Comment/Home/HomeInformation';
 import RequestList from '../../components/Comment/Home/RequestList';
 import { authTokenState, fcmTokenState } from '../../states';
 import { IRequest } from '../../types/request';
+import { getKoreanTime } from '../../utils/time';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [currentRequest, setCurrentRequest] = useState<IRequest[]>([]);
@@ -49,7 +50,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 };
 
 const countTodayRequest = (requestList: IRequest[]) => {
-  const todayRequest = requestList.filter((request) => new Date().getDay() === new Date(request.createdAt).getDay());
+  const todayRequest = requestList.filter(
+    (request) => getKoreanTime(new Date()).getDay() === new Date(request.createdAt).getDay()
+  );
   return todayRequest.length;
 };
 
