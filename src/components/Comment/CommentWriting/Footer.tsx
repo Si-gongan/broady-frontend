@@ -18,7 +18,8 @@ import { endComment, getCorrectText, getRequest, startComment, stopComment } fro
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import Toast from 'react-native-root-toast';
-import StopCommentBottomMenu from './StopCommentBottomSheet';
+import StopCommentBottomMenu from './BottomSheet/StopCommentBottomSheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IFooterProps {
   id: string;
@@ -38,6 +39,8 @@ const Footer = ({ id, request, setRequest, commentTimer, navigation }: IFooterPr
   const { isAvailable, isComplete } = request;
 
   const [isStopComment, setIsStopComment] = useState(false);
+
+  const insets = useSafeAreaInsets();
 
   const handleClickAICorrectionBtn = async (inputText: string) => {
     const result = await getCorrectText(inputText);
@@ -94,7 +97,8 @@ const Footer = ({ id, request, setRequest, commentTimer, navigation }: IFooterPr
     Toast.show(message, {
       duration: 1000,
       animation: true,
-      position: position === 'CENTER' ? Toast.positions.CENTER : 100,
+      position:
+        position === 'CENTER' ? Toast.positions.CENTER : Platform.OS === 'ios' ? insets.top : Toast.positions.TOP,
     });
   };
 

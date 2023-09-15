@@ -1,21 +1,20 @@
-import { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import Toast from 'react-native-root-toast';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
-import { reportPost } from '../../../api/axios';
-import { authTokenState, fcmTokenState } from '../../../states';
-import { SigonganColor, SigonganDesign, SigonganFont, SigonganShadow } from '../../sigongan/styles';
+import { reportPost } from '../../../../api/axios';
+import { authTokenState, fcmTokenState } from '../../../../states';
+import { SigonganColor, SigonganDesign, SigonganFont, SigonganShadow } from '../../../sigongan/styles';
 
-interface IBottomMenuProps {
+interface IMenuBottomSheetProps {
   navigation: any;
   postId: string;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const BottomMenu = ({ navigation, postId, visible, setVisible }: IBottomMenuProps) => {
+const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBottomSheetProps) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
@@ -41,18 +40,21 @@ const BottomMenu = ({ navigation, postId, visible, setVisible }: IBottomMenuProp
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
       <View style={[styles.container, SigonganColor.backgroundPrimary]}>
         <View style={styles.titleWrapper}>
-          <Text style={(SigonganFont.secondary, styles.titleText)}>글 메뉴</Text>
+          <Text style={(SigonganFont.secondary, styles.titleText)}>메뉴</Text>
         </View>
         <View style={SigonganDesign.borderOpaque} />
         <View style={[styles.itemWrapper, { paddingBottom: insets.bottom || 16 }]}>
           <TouchableOpacity style={styles.item}>
-            <Text style={SigonganFont.secondary}>신고</Text>
+            <Text style={SigonganFont.secondary}>잘못된 사진 제보</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.item}>
+            <Text style={SigonganFont.secondary}>부적절한 의뢰 신고</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.item} onPress={() => handleReportPost(postId)}>
             <Text style={SigonganFont.secondary}>차단</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.item} onPress={() => onClose()}>
+          <TouchableOpacity style={styles.item} onPress={onClose}>
             <Text style={SigonganFont.secondary}>취소</Text>
           </TouchableOpacity>
         </View>
@@ -72,21 +74,22 @@ const styles = StyleSheet.create({
   titleWrapper: {
     // width: '100%',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: 20,
   },
   titleText: {
-    color: 'grey',
+    fontSize: 18,
   },
 
   itemWrapper: {
     // width: '100%'
   },
   item: {
-    alignItems: 'center',
+    // alignItems: 'center',
+    paddingLeft: 20,
     paddingVertical: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#E8E8E8',
   },
 });
 
-export default BottomMenu;
+export default MenuBottomSheet;

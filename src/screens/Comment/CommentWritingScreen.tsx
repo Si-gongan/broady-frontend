@@ -10,7 +10,7 @@ import MessageList from '../../components/Comment/CommentWriting/MessageList';
 import { useIsFocused } from '@react-navigation/native';
 import useInterval from '../../hooks/useInterval';
 import { getExpiredMinute, getKoreanTime } from '../../utils/time';
-import BottomMenu from '../../components/Comment/CommentWriting/BottomMenu';
+import MenuBottomSheet from '../../components/Comment/CommentWriting/BottomSheet/MenuBottomSheet';
 
 const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -53,7 +53,7 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
         navigation={navigation}
       />
       {isMenuVisible && (
-        <BottomMenu navigation={navigation} postId={id} visible={isMenuVisible} setVisible={setIsMenuVisible} />
+        <MenuBottomSheet navigation={navigation} postId={id} visible={isMenuVisible} setVisible={setIsMenuVisible} />
       )}
     </View>
   );

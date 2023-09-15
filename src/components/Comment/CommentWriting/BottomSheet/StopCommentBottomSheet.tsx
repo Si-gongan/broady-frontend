@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
-import { SigonganColor, SigonganDesign, SigonganShadow } from '../../sigongan/styles';
+import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
 
 interface IStopCommentBottomSheetProps {
   handleClickStopComment: () => void;
