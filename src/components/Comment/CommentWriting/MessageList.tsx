@@ -1,8 +1,14 @@
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, StyleSheet, Dimensions, ImageBackground } from 'react-native';
 import ImageModal from 'react-native-image-modal';
 import { ICurrentRequest } from '../../../types/request';
 import RequestMessage from './RequestMessage';
 import ResponseMessage from './ResponseMessage';
+
+// responseUser : 해설자 측
+// requestedUser : 시각장애인 측
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 interface IChat {
   id: string;
@@ -13,28 +19,41 @@ interface IChat {
   appreciatedText?: string;
 }
 
-// responseUser : 해설자 측
-// requestedUser : 시각장애인 측
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
 const MessageList = ({ request }: { request: ICurrentRequest }) => {
   const allMessageList = [...request.requestedUser, ...request.responseUser];
   const sortedMessageList = [...allMessageList].sort((a, b) =>
     new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1
   );
+  const [status, setStatus] = useState(-1);
+  const { isAvailable, isComplete } = request;
+
+  useEffect(() => {
+    if (isAvailable && isComplete === false) setStatus(-1);
+    if (isAvailable === false && isComplete === false) setStatus(0);
+    if (isAvailable === false && isComplete) setStatus(1);
+  }, [isAvailable, isComplete]);
 
   return (
     <>
       <View style={styles.imageContainer}>
         <View>
-          <ImageModal
-            resizeMode="contain"
-            style={styles.requestImage}
-            source={{
-              uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}`,
-            }}
-          />
+          {/* 해설 전이면 blur */}
+          {status == -1 ? (
+            <ImageBackground
+              source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
+              style={styles.requestImage}
+              resizeMode="contain"
+              blurRadius={10} //Blur 효과
+            />
+          ) : (
+            <ImageModal
+              resizeMode="contain"
+              style={styles.requestImage}
+              source={{
+                uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}`,
+              }}
+            />
+          )}
         </View>
       </View>
       {sortedMessageList.map((message: IChat) => {

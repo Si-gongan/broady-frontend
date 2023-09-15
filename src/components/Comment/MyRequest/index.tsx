@@ -1,17 +1,12 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
+import MyRequestInformation from './MyRequestInformation';
 import RequestList from './RequestList';
-
-interface ITopTab {
-  id: number;
-  name: string;
-  clicked: boolean;
-}
 
 const MyRequest = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -22,61 +17,34 @@ const MyRequest = ({ navigation }: any) => {
 
   const isFocused = useIsFocused();
 
-  const [topTabNavigations, setTopTabNavigations] = useState([
-    {
-      id: 0,
-      name: '작성 중',
-      clicked: true,
-    },
-    {
-      id: 1,
-      name: '완료',
-      clicked: false,
-    },
-  ]);
-
   const lastClicked = useRef(0);
 
-  const handleClickTopTab = (e: any) => {
-    const clickedId = parseInt(e._dispatchInstances.child.memoizedProps.id);
-    lastClicked.current = clickedId;
-    setTopTabNavigations(
-      topTabNavigations.map((tab: ITopTab) =>
-        tab.id === clickedId ? { ...tab, clicked: true } : { ...tab, clicked: false }
-      )
-    );
-  };
+  const [requestList, setRequestList] = useState<ICurrentRequest[]>([]);
 
   useEffect(() => {
     if (isFocused) {
       console.log('하단탭으로 진입할 때');
-      getProceedRequest(fcmToken, authToken).then((data) => {
-        const sortedList = [...data].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
-        setProceedRequest(sortedList);
-      });
-      getCompletedRequest(fcmToken, authToken).then((data) => {
-        const sortedList = [...data].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
-        setCompletedRequest(sortedList);
+      Promise.all([getProceedRequest(fcmToken, authToken), getCompletedRequest(fcmToken, authToken)]).then((res) => {
+        const sortedProceedList = [...res[0]].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+        const sortedCompletedList = [...res[1]].sort((a, b) =>
+          new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
+        );
+        // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
+        // setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
+        setRequestList([...sortedProceedList, ...sortedCompletedList]);
       });
     }
   }, [isFocused]);
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.header}>
-        <View style={styles.topTabContainer}>
-          {topTabNavigations.map((tab) => (
-            <TouchableOpacity style={tabStyles(tab.clicked).topTabItem} key={tab.id} onPress={handleClickTopTab}>
-              <Text id={`${tab.id}`} style={styles.tabText}>
-                {tab.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
+      <View style={styles.header}></View>
+      <MyRequestInformation />
+
       <View style={styles.bodyContainer}>
         <RequestList
-          requestList={lastClicked.current ? completedRequest : proceedRequest}
+          // requestList={lastClicked.current ? completedRequest : proceedRequest}
+          requestList={requestList}
           setProceedRequest={setProceedRequest}
           navigation={navigation}
           status={lastClicked.current}
@@ -92,14 +60,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    flex: 0.1,
-    marginTop: 30,
-    alignItems: 'center',
-  },
-  topTabContainer: {
-    width: '90%',
-    height: '60%',
+    marginTop: 23,
+    marginBottom: 10,
+    marginHorizontal: 20,
+    justifyContent: 'space-between',
+    borderBottomColor: '#E2E2E2',
+    borderBottomWidth: 2,
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   bodyContainer: {
     flex: 1,
@@ -107,6 +75,7 @@ const styles = StyleSheet.create({
   },
   mainTitle: {
     fontSize: 24,
+    paddingLeft: 35,
   },
   tabText: {
     fontSize: 18,
