@@ -29,9 +29,9 @@ const MyRequest = ({ navigation }: any) => {
         const sortedCompletedList = [...res[1]].sort((a, b) =>
           new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
         );
-        const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
-        setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
-        // setRequestList([...sortedProceedList, ...sortedCompletedList]);
+        // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
+        // setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
+        setRequestList([...sortedProceedList, ...sortedCompletedList]);
       });
     }
   }, [isFocused]);

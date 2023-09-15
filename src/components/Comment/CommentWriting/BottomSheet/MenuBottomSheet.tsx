@@ -8,6 +8,7 @@ import { reportPost } from '../../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../../states';
 import { SigonganColor, SigonganDesign, SigonganFont, SigonganShadow } from '../../../sigongan/styles';
 import ReportImageBottomSheet from './ReportImageBottomSheet';
+import ReportRequestBottomSheet from './ReportRequestBottomSheet';
 
 interface IMenuBottomSheetProps {
   navigation: any;
@@ -21,6 +22,7 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
   const authToken = useRecoilValue(authTokenState);
 
   const [isReportImage, setIsReportImage] = useState(false);
+  const [isReportRequest, setIsReportRequest] = useState(false);
 
   const insets = useSafeAreaInsets();
 
@@ -29,6 +31,10 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
   const handleClickReportImageBtn = () => {
     // onClose();
     setIsReportImage(true);
+  };
+
+  const handleClickReportRequestBtn = () => {
+    setIsReportRequest(true);
   };
 
   const handleReportPost = async (postId: string) => {
@@ -56,7 +62,7 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
           <TouchableOpacity style={styles.item} onPress={handleClickReportImageBtn}>
             <Text style={SigonganFont.secondary}>잘못된 사진 제보</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity style={styles.item} onPress={handleClickReportRequestBtn}>
             <Text style={SigonganFont.secondary}>부적절한 의뢰 신고</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.item} onPress={() => handleReportPost(postId)}>
@@ -69,6 +75,9 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
         </View>
         {isReportImage && (
           <ReportImageBottomSheet postId={postId} visible={isReportImage} setVisible={setIsReportImage} />
+        )}
+        {isReportRequest && (
+          <ReportRequestBottomSheet postId={postId} visible={isReportRequest} setVisible={setIsReportRequest} />
         )}
       </View>
     </BottomSheet>
