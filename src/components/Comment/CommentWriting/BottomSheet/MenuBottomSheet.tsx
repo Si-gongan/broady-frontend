@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import Toast from 'react-native-root-toast';
@@ -6,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { reportPost } from '../../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../../states';
 import { SigonganColor, SigonganDesign, SigonganFont, SigonganShadow } from '../../../sigongan/styles';
+import ReportImageBottomSheet from './ReportImageBottomSheet';
 
 interface IMenuBottomSheetProps {
   navigation: any;
@@ -18,9 +20,16 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
+  const [isReportImage, setIsReportImage] = useState(false);
+
   const insets = useSafeAreaInsets();
 
   const onClose = () => setVisible(false);
+
+  const handleClickReportImageBtn = () => {
+    // onClose();
+    setIsReportImage(true);
+  };
 
   const handleReportPost = async (postId: string) => {
     await reportPost(postId, fcmToken, authToken);
@@ -44,7 +53,7 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
         </View>
         <View style={SigonganDesign.borderOpaque} />
         <View style={[styles.itemWrapper, { paddingBottom: insets.bottom || 16 }]}>
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity style={styles.item} onPress={handleClickReportImageBtn}>
             <Text style={SigonganFont.secondary}>잘못된 사진 제보</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.item}>
@@ -58,6 +67,9 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
             <Text style={SigonganFont.secondary}>취소</Text>
           </TouchableOpacity>
         </View>
+        {isReportImage && (
+          <ReportImageBottomSheet postId={postId} visible={isReportImage} setVisible={setIsReportImage} />
+        )}
       </View>
     </BottomSheet>
   );
