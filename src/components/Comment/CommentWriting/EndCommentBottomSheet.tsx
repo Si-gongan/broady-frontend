@@ -2,29 +2,28 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../sigongan/styles';
 
-interface IStopCommentBottomSheetProps {
-  handleClickStopComment: () => void;
+interface IEndCommentBottomSheetProps {
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const StopCommentBottomSheet = ({ handleClickStopComment, visible, setVisible }: IStopCommentBottomSheetProps) => {
+const EndCommentBottomSheet = ({ visible, setVisible }: IEndCommentBottomSheetProps) => {
   const onClose = () => setVisible(false);
 
   return (
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
       <View style={[styles.container, SigonganColor.backgroundPrimary]}>
         <View style={styles.titleWrapper}>
-          <Text style={styles.titleText}>해설 넘기기</Text>
+          <Text style={styles.titleText}>해설 완료</Text>
         </View>
         <View style={SigonganDesign.borderOpaque} />
         <View style={styles.itemWrapper}>
-          <Text style={{ fontSize: 18 }}>해설을 그만두고 다른 해설자에게 넘길 경우</Text>
-          <Text style={{ fontSize: 18 }}>10P가 차감됩니다.</Text>
+          <Text style={{ fontSize: 18 }}>해설이 성공적으로 완료되었습니다!</Text>
+          <Text style={{ fontSize: 18 }}>50P를 지급해드렸어요.</Text>
         </View>
         <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.commentBtn} onPress={handleClickStopComment}>
-            <Text style={styles.commentText}>해설 넘기기</Text>
+          <TouchableOpacity style={styles.commentBtn} onPress={onClose}>
+            <Text style={styles.commentText}>확인</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -75,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StopCommentBottomSheet;
+export default EndCommentBottomSheet;

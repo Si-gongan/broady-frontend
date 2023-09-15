@@ -30,7 +30,7 @@ const RequestItem = ({
   /* 가장 최근 의뢰 질문을 기준으로 시간 계산 */
   const gapTime = getConvertDate(request.createdAt);
 
-  const [commentTimer, setCommentTimer] = useState<number>(10);
+  const [commentTimer, setCommentTimer] = useState<number>(7);
 
   // 시간을 줄일수록 작성 중인 해설의 남은시간 계산속도가 빠름. 코스트 고려.
   useInterval(() => {
