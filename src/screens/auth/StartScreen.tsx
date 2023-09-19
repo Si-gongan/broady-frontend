@@ -1,33 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { View, StyleSheet } from 'react-native';
-import { AuthStackParamList } from '../../navigations';
-import { CommonButton, CommonHeader } from '../../components/auth';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text } from 'react-native';
 
 export const StartScreen = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
-
   return (
-    <SafeAreaView style={styles.headerContainer}>
-      <CommonHeader text="시작하기" onBackButtonPress={() => navigation.goBack()} />
-
-      <View style={styles.container}>
-        <CommonButton text="이메일로 계속하기" onPress={() => navigation.push('이메일 회원가입')} />
-      </View>
-    </SafeAreaView>
+    <View>
+      <Text>Hello</Text>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    gap: 14,
-  },
-});
