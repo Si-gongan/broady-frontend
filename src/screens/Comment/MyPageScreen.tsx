@@ -46,18 +46,26 @@ const MyPageScreen = ({ navigation }: any) => {
             <Text style={styles.bold}>총 32명</Text>의 시각장애인을 도왔어요!
           </Text>
         </View>
-
         <TouchableOpacity onPress={() => navigation.navigate('Nickname')}>
           <Text style={SigonganDesign.myPageContent}>닉네임 설정</Text>
         </TouchableOpacity>
       </View>
+
       <Refund myPoint={myPoint} navigation={navigation} />
+
+      <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
+        <Text style={SigonganDesign.myPageTitle}>앱 설정</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Alert')}>
+          <Text style={SigonganDesign.myPageContent}>알림 설정</Text>
+        </TouchableOpacity>
+      </View>
+
       <CustomerService isBlind={false} />
+
       <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
         <TouchableOpacity onPress={logout}>
           <Text style={SigonganDesign.myPageContent}>로그아웃</Text>
         </TouchableOpacity>
-
         <TouchableOpacity onPress={logout}>
           <Text style={styles.deleteUser}>회원 탈퇴</Text>
         </TouchableOpacity>
