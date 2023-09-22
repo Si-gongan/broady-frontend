@@ -121,6 +121,7 @@ export const Fonts = StyleSheet.create({
 
 export const Utils = {
   backgroundColor: (s: string) => ({ backgroundColor: s }),
-  borderColor: (s: string) => ({ borderColor: s }),
+  borderColor: (s: string) => ({ borderWidth: 1, borderColor: s }),
+  borderBottomColor: (s: string) => ({ borderBottomWidth: 1, borderBottomColor: s }),
   fontColor: (s: string) => ({ color: s }),
 };

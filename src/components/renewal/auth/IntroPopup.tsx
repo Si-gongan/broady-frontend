@@ -6,6 +6,8 @@ import * as WebBrowser from 'expo-web-browser';
 import { Colors, Fonts, Utils } from '../styles';
 import { useUserState } from '../../../providers';
 
+import { TERMS_OF_USE } from '../constants';
+
 type IIntroPopupProps = {
   isChecked: boolean;
   setChecked: (b: boolean) => void;
@@ -24,7 +26,7 @@ export const IntroPopup = ({ isChecked, setChecked }: IIntroPopupProps) => {
             activeOpacity={0.8}
             accessible
             accessibilityLabel="이용약관을 숙지했으며, 이에 동의합니다. 이용약관 보러가기"
-            onPress={() => WebBrowser.openBrowserAsync('https://sites.google.com/view/sigongan-useterm/홈')}
+            onPress={() => WebBrowser.openBrowserAsync(TERMS_OF_USE)}
             style={{ flexDirection: 'row', alignItems: 'center' }}
           >
             <Text style={[Fonts.Regular14, { textDecorationLine: 'underline' }]}>이용약관</Text>
