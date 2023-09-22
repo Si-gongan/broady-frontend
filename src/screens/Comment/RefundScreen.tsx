@@ -93,7 +93,7 @@ const RefundScreen = ({ navigation }: any) => {
       <ScrollView scrollEnabled={false}>
         <Header navigation={navigation}>환급 신청</Header>
         <View style={styles.refundPointHeader}>
-          <Text style={commentFont.title}>내 포인트 : {myPoint} P</Text>
+          <Text style={commentFont.title}>포인트 환급 : {myPoint} P</Text>
         </View>
         <View style={styles.refundBodyContainer}>
           <View style={styles.inputContainer}>
