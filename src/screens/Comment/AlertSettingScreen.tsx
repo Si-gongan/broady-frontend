@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import Header from '../../components/common/Header';
+import { SigonganDesign } from '../../components/sigongan/styles';
 import { authTokenState, fcmTokenState } from '../../states';
 
 const AlertSettingScreen = ({ navigation }: { navigation: any }) => {
@@ -24,7 +25,7 @@ const AlertSettingScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.bodyContainer}>
         <View style={styles.alertContainer}>
           <View style={styles.toggleContainer}>
-            <Text style={{ fontSize: 20, fontWeight: '600' }}>추가 질문 알림</Text>
+            <Text style={SigonganDesign.myPageTitle}>추가 질문 알림</Text>
             <Switch
               trackColor={{ false: '#E8E8E8', true: '#000' }}
               thumbColor={isExtraQuestion ? '#fff' : '#fff'}
@@ -33,11 +34,13 @@ const AlertSettingScreen = ({ navigation }: { navigation: any }) => {
               value={isExtraQuestion}
             />
           </View>
-          <Text>내가 작성한 해설에 대해, 시각장애인의 추가 질문이 들어올 경우 푸시 알림을 수신합니다.</Text>
+          <Text style={SigonganDesign.myPageContent}>
+            내가 작성한 해설에 대해, 시각장애인의 추가 질문이 들어올 경우 푸시 알림을 수신합니다.
+          </Text>
         </View>
         <View style={styles.alertContainer}>
           <View style={styles.toggleContainer}>
-            <Text style={{ fontSize: 20, fontWeight: '600' }}>해설의뢰 알림</Text>
+            <Text style={SigonganDesign.myPageTitle}>해설의뢰 알림</Text>
             <Switch
               trackColor={{ false: '#E8E8E8', true: '#000' }}
               thumbColor={isNewRequest ? '#fff' : '#fff'}
@@ -46,7 +49,9 @@ const AlertSettingScreen = ({ navigation }: { navigation: any }) => {
               value={isNewRequest}
             />
           </View>
-          <Text>시각장애인의 새로운 사진 해설 의뢰가 업로드될 경우, 일정한 간격으로 푸시 알림을 수신합니다.</Text>
+          <Text style={SigonganDesign.myPageContent}>
+            시각장애인의 새로운 사진 해설 의뢰가 업로드될 경우, 일정한 간격으로 푸시 알림을 수신합니다.
+          </Text>
         </View>
       </View>
     </View>
