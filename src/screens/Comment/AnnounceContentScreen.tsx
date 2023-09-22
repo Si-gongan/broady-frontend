@@ -30,8 +30,6 @@ const AnnounceScreen = ({ navigation, route }: any) => {
 
 const styles = StyleSheet.create({
   mainTextContainer: {
-    borderTopWidth: 2,
-    borderColor: '#E8E8E8',
     width: '90%',
     paddingVertical: 20,
   },

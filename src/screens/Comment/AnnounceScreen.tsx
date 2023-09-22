@@ -29,7 +29,7 @@ const AnnounceScreen = ({ navigation }: any) => {
         {announceList.map((announce) => (
           <TouchableOpacity
             key={announce.id}
-            style={styles.refundPointItem}
+            style={styles.announceContainer}
             onPress={() => navigation.navigate('AnnounceContent', { title: announce.title })}
           >
             <Text style={styles.refundText}>{announce.title}</Text>
@@ -42,8 +42,8 @@ const AnnounceScreen = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  refundPointItem: {
-    borderTopWidth: 2,
+  announceContainer: {
+    borderBottomWidth: 2,
     borderColor: '#E8E8E8',
     gap: 10,
     marginHorizontal: 15,
