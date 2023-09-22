@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    marginTop: 23,
+    marginTop: 22,
     marginBottom: 10,
     marginHorizontal: 20,
     justifyContent: 'space-between',

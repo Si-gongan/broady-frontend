@@ -1,6 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AlertSettingScreen from '../../screens/Comment/AlertSettingScreen';
 import CommentWritingScreen from '../../screens/Comment/CommentWritingScreen';
+import NicknameScreen from '../../screens/Comment/NicknameScreen';
 import RefundScreen from '../../screens/Comment/RefundScreen';
+import { AnnounceStack } from './AnnouceStack';
 import { CommentTab } from './CommentTab';
 
 const Stack = createNativeStackNavigator();
@@ -22,6 +25,9 @@ export const CommentStack = () => {
         component={CommentWritingScreen}
       />
       <Stack.Screen name="Refund" options={{ headerShown: false }} component={RefundScreen} />
+      <Stack.Screen name="Nickname" options={{ headerShown: false }} component={NicknameScreen} />
+      <Stack.Screen name="Alert" options={{ headerShown: false }} component={AlertSettingScreen} />
+      <Stack.Screen name="Announce" options={{ headerShown: false }} component={AnnounceStack} />
     </Stack.Navigator>
   );
 };

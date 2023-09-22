@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, Text } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import Footer from '../../components/Comment/CommentWriting/Footer';
 import Header from '../../components/common/Header';
 import { useRecoilValue } from 'recoil';

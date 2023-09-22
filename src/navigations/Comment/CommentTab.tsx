@@ -14,7 +14,7 @@ export const CommentTab = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,
-          headerStyle: { shadowOpacity: 0 },
+          headerShown: false,
         }}
       />
       <Tab.Screen
