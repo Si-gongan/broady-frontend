@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, Text, Image, Button, Modal, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getRequestAll } from '../../api/axios';
 import HomeInformation from '../../components/Comment/Home/HomeInformation';

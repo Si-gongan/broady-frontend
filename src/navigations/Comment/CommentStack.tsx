@@ -1,6 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AlertSettingScreen from '../../screens/Comment/AlertSettingScreen';
-import AnnounceScreen from '../../screens/Comment/AnnounceScreen';
 import CommentWritingScreen from '../../screens/Comment/CommentWritingScreen';
 import NicknameScreen from '../../screens/Comment/NicknameScreen';
 import RefundScreen from '../../screens/Comment/RefundScreen';
