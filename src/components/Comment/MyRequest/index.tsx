@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    marginTop: 23,
+    marginTop: 22,
     marginBottom: 10,
     marginHorizontal: 20,
     justifyContent: 'space-between',
