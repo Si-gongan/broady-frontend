@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TouchableOpacity, View, Text, StyleSheet, Dimensions } from 'react-native';
-import { Colors, Fonts, Utils } from './styles';
+import { Colors, Fonts, Utils } from '../styles';
 
 type ILongButtonProps = {
   text: string;
@@ -65,6 +65,8 @@ export const LongButton = ({ text, onPress, theme, disabled = false }: ILongButt
           Utils.borderColor(LongButtonColor[theme]['border'][buttonState]),
         ]}
         disabled={disabled}
+        accessible
+        accessibilityLabel={`${text} 버튼`}
       >
         <Text style={[Fonts.Regular16, Utils.fontColor(LongButtonColor[theme]['font'][buttonState])]}>{text}</Text>
       </TouchableOpacity>
