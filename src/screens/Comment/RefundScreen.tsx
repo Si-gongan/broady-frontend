@@ -19,7 +19,7 @@ import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
 import { AuthColor } from '../../components/auth/styles';
-import { ACCOUNT_NUMBER, getData, storeData } from '../../components/common/async-storage';
+import { ACCOUNT_HOLDER, ACCOUNT_NUMBER, getData, storeData } from '../../components/common/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -28,6 +28,7 @@ const RefundScreen = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
+  const [accountHolder, setAccountHolder] = useState<string>('');
   const [accountNumberInput, setAccountNumberInput] = useState<string>('');
   const [refundPoint, setRefundPoint] = useState<string>('');
   const [pointList, setPointList] = useState<IPoint[]>([]);
@@ -53,6 +54,7 @@ const RefundScreen = ({ navigation }: any) => {
         setMyPoint((prevPoint) => prevPoint + parseInt(refundPoint));
       });
     storeData(ACCOUNT_NUMBER, accountNumberInput);
+    storeData(ACCOUNT_NUMBER, accountHolder);
 
     setRefundPoint('');
     setIsRefunded(false);
@@ -72,6 +74,10 @@ const RefundScreen = ({ navigation }: any) => {
       getData(ACCOUNT_NUMBER).then((data) => {
         if (typeof data === 'string') setAccountNumberInput(data);
       });
+      getData(ACCOUNT_HOLDER).then((data) => {
+        if (typeof data === 'string') setAccountHolder(data);
+      });
+
       getPointList(fcmToken, authToken)
         .then((data) => {
           const sortedPointList = [...data].sort((a, b) => (new Date(a.date) > new Date(b.date) ? -1 : 1));
@@ -97,6 +103,16 @@ const RefundScreen = ({ navigation }: any) => {
               placeholderTextColor="#5E5E5E"
               onChangeText={(text) => setAccountNumberInput(text)}
               value={accountNumberInput}
+              style={styles.inputBox}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={{ fontSize: 16 }}>예금주명</Text>
+            <TextInput
+              placeholder="홍길동"
+              placeholderTextColor="#5E5E5E"
+              onChangeText={(text) => setAccountHolder(text)}
+              value={accountHolder}
               style={styles.inputBox}
             />
           </View>
