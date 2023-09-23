@@ -4,14 +4,11 @@ import { LongButton } from '../../components/renewal';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigations';
-import { useUserState } from '../../providers';
 
 const LOGO_URL = '../../../assets/intro-icon2.png';
 
 export const IntroScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
-
-  const { loginToSigongan } = useUserState();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -20,11 +17,19 @@ export const IntroScreen = () => {
       </View>
 
       <View style={styles.button1}>
-        <LongButton text="사진 해설이 필요해요" theme="primary" onPress={() => loginToSigongan()} />
+        <LongButton
+          text="사진 해설이 필요해요"
+          theme="primary"
+          onPress={() => navigation.push('이메일 회원가입', { type: 'sigongan' })}
+        />
       </View>
 
       <View style={styles.button2}>
-        <LongButton text="해설자로 활동할게요" theme="secondary" onPress={() => navigation.push('이메일 회원가입')} />
+        <LongButton
+          text="해설자로 활동할게요"
+          theme="secondary"
+          onPress={() => navigation.push('이메일 회원가입', { type: 'comment' })}
+        />
       </View>
     </SafeAreaView>
   );
