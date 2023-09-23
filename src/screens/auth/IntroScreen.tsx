@@ -24,7 +24,7 @@ export const IntroScreen = () => {
       </View>
 
       <View style={styles.button2}>
-        <LongButton text="해설자로 활동할게요" theme="secondary" onPress={() => navigation.push('시작하기')} />
+        <LongButton text="해설자로 활동할게요" theme="secondary" onPress={() => navigation.push('이메일 회원가입')} />
       </View>
     </SafeAreaView>
   );

@@ -2,7 +2,6 @@ import { IReqeustListItem } from '../api/axios';
 
 export type AuthStackParamList = {
   인트로: undefined;
-  시작하기: undefined;
   '이메일 회원가입': undefined;
   '이메일 로그인': undefined;
 };
