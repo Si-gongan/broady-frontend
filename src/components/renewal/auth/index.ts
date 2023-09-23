@@ -1,1 +1,1 @@
-export * from './IntroPopup';
+export type temp = 'temp';
