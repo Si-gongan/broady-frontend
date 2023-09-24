@@ -1,1 +1,1 @@
-export type temp = 'temp';
+export * from './AuthInput';

@@ -26,7 +26,7 @@ export const Header = ({ text, isBottomBorder, hideBackButton }: IHeaderProps) =
         <Ionicons name="arrow-back" style={[styles.icon, Utils.fontColor(Colors.Font.secondary)]} />
       </TouchableOpacity>
 
-      <Text style={[Fonts.Bold24, Utils.fontColor(Colors.Font.primary)]}>{text}</Text>
+      <Text style={[Fonts.Regular20, Utils.fontColor(Colors.Font.primary)]}>{text}</Text>
 
       <Ionicons name="arrow-back" style={styles.icon2} accessible={false} />
     </View>

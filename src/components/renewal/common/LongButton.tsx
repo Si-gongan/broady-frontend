@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, Dimensions } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { Colors, Fonts, Utils } from '../styles';
 
 type ILongButtonProps = {
@@ -74,21 +74,21 @@ export const LongButton = ({ text, onPress, theme, disabled = false }: ILongButt
   );
 };
 
-const width = Dimensions.get('screen').width;
-
 const styles = StyleSheet.create({
   wrapper: {
+    width: '100%',
+
     justifyContent: 'center',
     alignItems: 'center',
   },
   container: {
+    width: '100%',
+
     justifyContent: 'center',
     alignItems: 'center',
 
     paddingVertical: 15,
 
     borderRadius: 12,
-
-    width: width - 40,
   },
 });

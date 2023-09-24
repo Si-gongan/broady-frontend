@@ -7,7 +7,7 @@ type IBomCheckBoxProps = {
   accessibilityLabel: string;
 };
 
-const CHECKBOX_SIZE = 24;
+const CHECKBOX_SIZE = 17;
 const INSETS = 10;
 
 export const BomCheckBox = ({ value, onValueChange, accessibilityLabel }: IBomCheckBoxProps) => {

@@ -92,6 +92,11 @@ export const Fonts = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '700',
   },
+  Regular20: {
+    fontSize: 20,
+    fontStyle: 'normal',
+    fontWeight: '400',
+  },
   Regular16: {
     fontSize: 16,
     fontStyle: 'normal',
