@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 30,
+    marginHorizontal: 20,
   },
 });
 
