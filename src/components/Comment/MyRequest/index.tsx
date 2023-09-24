@@ -20,6 +20,7 @@ const MyRequest = ({ navigation }: any) => {
   const lastClicked = useRef(0);
 
   const [requestList, setRequestList] = useState<ICurrentRequest[]>([]);
+  const totalCompletedRequest = useRef(0);
 
   useEffect(() => {
     if (isFocused) {
@@ -29,6 +30,7 @@ const MyRequest = ({ navigation }: any) => {
         const sortedCompletedList = [...res[1]].sort((a, b) =>
           new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
         );
+        totalCompletedRequest.current = res[1].length;
         // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
         // setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
         setRequestList([...sortedProceedList, ...sortedCompletedList]);
@@ -39,7 +41,7 @@ const MyRequest = ({ navigation }: any) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}></View>
-      <MyRequestInformation />
+      <MyRequestInformation totalCompletedRequest={totalCompletedRequest.current} />
 
       <View style={styles.bodyContainer}>
         <RequestList

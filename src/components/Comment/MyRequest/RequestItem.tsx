@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Shadow } from 'react-native-shadow-2';
 import { useRecoilValue } from 'recoil';
 import { getProceedRequest } from '../../../api/axios';
 import useInterval from '../../../hooks/useInterval';
@@ -57,25 +56,23 @@ const RequestItem = ({
         })
       }
     >
-      <Shadow distance={3} sides={{ top: true, bottom: true, start: true, end: true }}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
-            style={styles.image}
-          />
-          <View style={styles.imageTextContainer}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={styles.createdAtRequest}>{gapTime}</Text>
-              {request.expiredAt && getKoreanTime(new Date()) < new Date(request.expiredAt) ? (
-                <Text style={{ fontSize: 12, color: '#CF0000' }}>{commentTimer}분 남음</Text>
-              ) : (
-                <Text></Text>
-              )}
-            </View>
-            <Text style={styles.requestContent}>{request.requestedUser[lastIndex].text}</Text>
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
+          style={styles.image}
+        />
+        <View style={styles.imageTextContainer}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={styles.createdAtRequest}>{gapTime}</Text>
+            {request.expiredAt && getKoreanTime(new Date()) < new Date(request.expiredAt) ? (
+              <Text style={{ fontSize: 12, color: '#CF0000' }}>{commentTimer}분 남음</Text>
+            ) : (
+              <Text></Text>
+            )}
           </View>
+          <Text style={styles.requestContent}>{request.requestedUser[lastIndex].text}</Text>
         </View>
-      </Shadow>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -94,15 +91,30 @@ const styles = StyleSheet.create({
     width: ITEM_WIDTH,
     display: 'flex',
     borderRadius: 12,
-    overflow: 'hidden',
     gap: 10,
     paddingBottom: 30,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.15)',
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 2,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
   },
   image: {
     width: '100%',
     height: '70%',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   imageTextContainer: {
     flex: 1,
