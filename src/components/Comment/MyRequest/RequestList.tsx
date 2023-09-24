@@ -20,7 +20,7 @@ const RequestList = ({
         <RequestItem request={item} setProceedRequest={setProceedRequest} status={status} navigation={navigation} />
       )}
       keyExtractor={(item) => String(item.id)}
-      columnWrapperStyle={{ justifyContent: 'space-between', gap: 30 }}
+      columnWrapperStyle={{ justifyContent: 'space-between', gap: 30, marginHorizontal: 20 }}
       ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
       numColumns={2}
       onEndReachedThreshold={0.8}
