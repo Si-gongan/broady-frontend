@@ -4,7 +4,12 @@ import { Shadow } from 'react-native-shadow-2';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30;
 
-const MyRequestInformation = () => {
+interface IMyRequestInformationProps {
+  totalCompletedRequest: number;
+  // todayCompletedRequest: number;
+}
+
+const MyRequestInformation = ({ totalCompletedRequest }: IMyRequestInformationProps) => {
   return (
     <>
       <View>
@@ -15,13 +20,18 @@ const MyRequestInformation = () => {
           <Shadow distance={4} sides={{ top: true, bottom: true, start: true, end: true }}>
             <View style={styles.requestItemContainer}>
               <Text style={styles.textCategory}>내 누적 해설</Text>
-              <Text style={styles.requestCountText}>12건</Text>
+              <Text style={styles.requestCountText}>
+                {totalCompletedRequest ? totalCompletedRequest.toString().padStart(2, '0') : '00'}건
+              </Text>
             </View>
           </Shadow>
           <Shadow distance={4} sides={{ top: true, bottom: true, start: true, end: true }}>
             <View style={styles.requestItemContainer}>
               <Text style={styles.textCategory}>오늘 진행한 해설</Text>
-              <Text style={styles.requestCountText}>03건</Text>
+              <Text style={styles.requestCountText}>
+                {/* {todayCompletedRequest ? todayCompletedRequest.toString().padStart(2, '0') : '00'}건 */}
+                00건
+              </Text>
             </View>
           </Shadow>
         </View>
