@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Platform } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { IRequest } from '../../../types/request';
 import { getConvertDate } from '../../../utils/time';
@@ -18,24 +18,23 @@ const RequestItem = ({ request, navigation }: { request: IRequest; navigation: a
         })
       }
     >
-      <Shadow distance={3} sides={{ top: true, bottom: true, start: true, end: true }}>
-        <View style={styles.cardContainer}>
-          <View style={styles.image}>
-            <ImageBackground
-              source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
-              style={{ width: '100%', height: '100%' }}
-              resizeMode="stretch"
-              blurRadius={10} //Blur 효과
-            />
-          </View>
-          <View style={styles.imageTextContainer}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={styles.createdAtRequest}>{gapTime}</Text>
-            </View>
-            <Text style={styles.requestContent}>{request.text}</Text>
-          </View>
+      <View style={styles.cardContainer}>
+        <View style={styles.image}>
+          <ImageBackground
+            source={{ uri: `${process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL}/${request.photo}` }}
+            style={{ width: '100%', height: '100%' }}
+            imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
+            resizeMode="stretch"
+            blurRadius={10} //Blur 효과
+          />
         </View>
-      </Shadow>
+        <View style={styles.imageTextContainer}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={styles.createdAtRequest}>{gapTime}</Text>
+          </View>
+          <Text style={styles.requestContent}>{request.text}</Text>
+        </View>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -54,11 +53,26 @@ const styles = StyleSheet.create({
     width: ITEM_WIDTH,
     display: 'flex',
     borderRadius: 12,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     gap: 10,
     paddingBottom: 30,
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.15)',
+    backgroundColor: '#ffffff',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
   },
   image: {
     width: '100%',
