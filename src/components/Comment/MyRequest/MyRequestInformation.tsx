@@ -38,9 +38,8 @@ const MyRequestInformation = ({ totalCompletedRequest }: IMyRequestInformationPr
 
 const styles = StyleSheet.create({
   guideTextContainer: {
-    gap: 5,
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: 15,
   },
   mainText: {
     fontWeight: '700',
