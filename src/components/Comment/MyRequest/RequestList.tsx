@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, FlatList, View } from 'react-native';
+import { StyleSheet, FlatList, View } from 'react-native';
 import { ICurrentRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
 
@@ -15,12 +15,13 @@ const RequestList = ({
 }) => {
   return (
     <FlatList
+      showsVerticalScrollIndicator={false}
       data={requestList}
       renderItem={({ item }) => (
         <RequestItem request={item} setProceedRequest={setProceedRequest} status={status} navigation={navigation} />
       )}
       keyExtractor={(item) => String(item.id)}
-      columnWrapperStyle={{ justifyContent: 'space-between', gap: 30, marginHorizontal: 20 }}
+      columnWrapperStyle={styles.cardContainer}
       ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
       numColumns={2}
       onEndReachedThreshold={0.8}
@@ -28,14 +29,12 @@ const RequestList = ({
   );
 };
 
-// const styles = StyleSheet.create({
-//   cardContainer: {
-//     width: '90%',
-//     flexDirection: 'row',
-//     flexWrap: 'wrap',
-//     gap: 30,
-//     marginBottom: 30,
-//   },
-// });
+const styles = StyleSheet.create({
+  cardContainer: {
+    justifyContent: 'space-between',
+    gap: 30,
+    marginHorizontal: 20,
+  },
+});
 
 export default RequestList;
