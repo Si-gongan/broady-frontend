@@ -8,7 +8,7 @@ type IBomCheckBoxProps = {
 };
 
 const CHECKBOX_SIZE = 17;
-const INSETS = 10;
+const HITSLOP = 20;
 
 export const BomCheckBox = ({ value, onValueChange, accessibilityLabel }: IBomCheckBoxProps) => {
   return (
@@ -17,7 +17,7 @@ export const BomCheckBox = ({ value, onValueChange, accessibilityLabel }: IBomCh
       onValueChange={onValueChange}
       color={value ? Colors.None.Darken200 : Colors.None.Default}
       style={{ width: CHECKBOX_SIZE, height: CHECKBOX_SIZE }}
-      hitSlop={{ top: INSETS, left: INSETS, right: INSETS, bottom: INSETS }}
+      hitSlop={{ top: HITSLOP, left: HITSLOP, right: HITSLOP, bottom: HITSLOP }}
       accessible
       accessibilityLabel={accessibilityLabel}
       accessibilityLabelledBy="checkBox"

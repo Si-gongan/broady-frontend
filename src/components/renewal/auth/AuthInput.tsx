@@ -15,6 +15,8 @@ type IAuthInputProps = {
   inputRef?: React.RefObject<TextInput>;
 };
 
+const HITSLOP = 16;
+
 export const AuthInput = ({
   text,
   value,
@@ -31,6 +33,7 @@ export const AuthInput = ({
       <TextInput
         ref={inputRef}
         value={value}
+        hitSlop={{ top: HITSLOP, bottom: HITSLOP }}
         onBlur={onBlur}
         onChangeText={onChangeValue}
         onSubmitEditing={onSubmitEditing}
