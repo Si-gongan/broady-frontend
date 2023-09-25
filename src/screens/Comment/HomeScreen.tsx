@@ -8,7 +8,7 @@ import RequestList from '../../components/Comment/Home/RequestList';
 import { authTokenState, fcmTokenState } from '../../states';
 import { IRequest } from '../../types/request';
 import { getKoreanTime } from '../../utils/time';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import HomeHeader from '../../components/Comment/Home/HomeHeader';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [currentRequest, setCurrentRequest] = useState<IRequest[]>([]);
@@ -31,16 +31,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBackIcon} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>홈</Text>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Announce')}>
-          <MaterialCommunityIcons name="bullhorn-variant-outline" style={styles.headerSettingIcon} />
-        </TouchableOpacity>
-      </View>
+      <HomeHeader navigation={navigation} />
       <HomeInformation totalRequestCount={currentRequest.length} todayRequestCount={todayRequestCount} />
       <View style={styles.bodyContainer}>
         <RequestList requestList={currentRequest} navigation={navigation} />
@@ -57,35 +48,6 @@ const countTodayRequest = (requestList: IRequest[]) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 60,
-    marginHorizontal: 20,
-    marginBottom: 20,
-    paddingBottom: 25,
-    borderBottomColor: '#E2E2E2',
-    borderBottomWidth: 2,
-  },
-  headerBackIcon: {
-    fontSize: 40,
-    marginLeft: 10,
-  },
-  headerSettingIcon: {
-    fontSize: 30,
-    marginRight: 10,
-  },
-  headerBlank: {
-    fontSize: 40,
-    color: 'white',
-    marginRight: 5,
-  },
-  headerTitle: {
-    fontSize: 17,
-    fontWeight: '600',
-  },
-
   mainTitle: {
     fontSize: 24,
     paddingLeft: 35,
