@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { useRecoilValue } from 'recoil';
@@ -20,6 +20,7 @@ import {
 } from '../../components/sigongan/home';
 import { NoticeError } from '../../api/axios';
 import { getConvertDate } from '../../utils/time';
+import { Header, LongButton, PaddingHorizontal, RequestItem } from '../../components/renewal';
 
 export const HomeScreen = () => {
   // page move
@@ -76,56 +77,46 @@ export const HomeScreen = () => {
   const getShortChat = (s: string) => (s.length > 50 ? s.slice(0, 50) + '...' : s);
 
   return (
-    <View style={styles.container}>
-      <SigonganHeader text="홈" hideBackButton />
+    <SafeAreaView style={styles.container}>
+      <Header text="홈" hideBackButton isBottomBorder />
 
-      {/* 해설 의뢰하기 버튼 */}
-      <CommentRequestButton onPress={() => commentRequestPopupRef.current?.open()} />
+      <PaddingHorizontal value={20}>
+        <View style={styles.topButton}>
+          <LongButton text="+ 해설자에게 질문하기" theme="secondary" />
+        </View>
 
-      {/* 의뢰 목록 */}
-      <View style={styles.requestList}>
-        <FlatList
-          data={requestList.sort((a, b) => (new Date(a.updatedAt) > new Date(b.updatedAt) ? -1 : 1))}
-          keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={() => <View style={{ height: 17 }} />}
-          onRefresh={() => LoadRequestList()}
-          refreshing={loading}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              activeOpacity={0.8}
-              accessible
-              accessibilityLabel={`${getConvertDate(item.updatedAt)} 의뢰: ${getLastChat(item)}`}
-              onPress={() => navigation.navigate('해설 진행현황', { item })}
-            >
-              <View style={styles.requestItem}>
-                <RequestImageCard imgUrl={process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL + '/' + item.photo} />
-                <RequestTextCard date={item.updatedAt} content={getShortChat(getLastChat(item))} />
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-
-      {/* 팝업 */}
-      <CommentRequestPopup ref={commentRequestPopupRef} />
-    </View>
+        <View style={styles.list}>
+          <FlatList
+            data={requestList.sort((a, b) => (new Date(a.updatedAt) > new Date(b.updatedAt) ? -1 : 1))}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={() => <View style={{ height: 28 }} />}
+            onRefresh={() => LoadRequestList()}
+            refreshing={loading}
+            renderItem={({ item }) => (
+              <RequestItem
+                imgUrl={process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL + '/' + item.photo}
+                date={item.updatedAt}
+                chat={getShortChat(getLastChat(item))}
+              />
+            )}
+          />
+        </View>
+      </PaddingHorizontal>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
-  requestList: {
+  topButton: {
+    marginTop: 30,
+  },
+  list: {
     flex: 1,
 
-    marginTop: 25,
-    marginBottom: 15,
-  },
-  requestItem: {
-    flexDirection: 'row',
-
-    gap: 15,
+    marginTop: 30,
+    marginBottom: 25,
   },
 });
