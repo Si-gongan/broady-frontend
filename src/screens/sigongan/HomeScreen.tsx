@@ -20,7 +20,7 @@ import {
 } from '../../components/sigongan/home';
 import { NoticeError } from '../../api/axios';
 import { getConvertDate } from '../../utils/time';
-import { Header, LongButton, PaddingHorizontal, RequestItem } from '../../components/renewal';
+import { Header, LongButton, PaddingHorizontal, RequestItem, TabBar } from '../../components/renewal';
 
 export const HomeScreen = () => {
   // page move
@@ -102,6 +102,8 @@ export const HomeScreen = () => {
           />
         </View>
       </PaddingHorizontal>
+
+      <TabBar index={0} />
     </SafeAreaView>
   );
 };
@@ -117,6 +119,5 @@ const styles = StyleSheet.create({
     flex: 1,
 
     marginTop: 30,
-    marginBottom: 25,
   },
 });

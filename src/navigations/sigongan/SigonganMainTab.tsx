@@ -14,6 +14,10 @@ export const SigonganMainTab = () => {
       sceneContainerStyle={{ backgroundColor: 'white' }}
       screenOptions={{
         headerShown: false,
+
+        tabBarStyle: {
+          display: 'none',
+        },
       }}
     >
       <Tab.Screen
