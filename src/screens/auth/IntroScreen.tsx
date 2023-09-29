@@ -21,16 +21,12 @@ export const IntroScreen = () => {
           <LongButton
             text="사진 해설이 필요해요"
             theme="primary"
-            onPress={() => navigation.push('이메일 회원가입', { type: 'sigongan' })}
+            onPress={() => navigation.push('닉네임 입력', { type: 'sigongan' })}
           />
         </View>
 
         <View style={styles.button2}>
-          <LongButton
-            text="해설자로 활동할게요"
-            theme="secondary"
-            onPress={() => navigation.push('이메일 회원가입', { type: 'comment' })}
-          />
+          <LongButton text="해설자로 활동할게요" theme="secondary" onPress={() => navigation.push('이메일 회원가입')} />
         </View>
       </PaddingHorizontal>
     </SafeAreaView>

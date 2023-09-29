@@ -2,8 +2,8 @@ import { IReqeustListItem } from '../api/axios';
 
 export type AuthStackParamList = {
   인트로: undefined;
-  '이메일 회원가입': { type: 'sigongan' | 'comment' };
-  '이메일 로그인': { type: 'sigongan' | 'comment' };
+  '이메일 회원가입': undefined;
+  '이메일 로그인': undefined;
   '닉네임 입력': { type: 'sigongan' | 'comment' };
 };
 

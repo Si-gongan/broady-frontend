@@ -1,5 +1,5 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { AuthStackParamList } from '../../navigations';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -17,6 +17,10 @@ import { useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as WebBrowser from 'expo-web-browser';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Login, Register } from '../../api/axios';
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../states';
+import { useUserState } from '../../providers';
 
 type IRegisterForm = {
   email: string;
@@ -27,11 +31,9 @@ type IRegisterForm = {
 const SCROLL_GAP = 79.3;
 
 export const EmailSignUpScreen = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
+  const fcmToken = useRecoilValue(fcmTokenState);
 
-  const {
-    params: { type },
-  } = useRoute<RouteProp<AuthStackParamList, '이메일 회원가입'>>();
+  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
 
   const {
     control,
@@ -39,6 +41,8 @@ export const EmailSignUpScreen = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<IRegisterForm>();
+
+  const { loginToComment } = useUserState();
 
   // for ux
   const scrollViewRef = useRef<ScrollView>(null);
@@ -61,6 +65,17 @@ export const EmailSignUpScreen = () => {
   // for register
   const onSubmit = async (data: IRegisterForm) => {
     const { email, password } = data;
+
+    try {
+      await Register(email, password, fcmToken);
+
+      const resLogin = await Login(email, password, fcmToken);
+
+      const authToken = resLogin.data.result.token;
+      loginToComment(authToken);
+    } catch {
+      Alert.alert('알림', '이미 존재하는 이메일입니다.', [{ text: '확인', style: 'default' }]);
+    }
   };
 
   return (
@@ -174,7 +189,7 @@ export const EmailSignUpScreen = () => {
             <View style={styles.loginWrapper}>
               <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}>이미 회원이신가요?</Text>
 
-              <LongButton text="로그인" theme="secondary" onPress={() => navigation.push('이메일 로그인', { type })} />
+              <LongButton text="로그인" theme="secondary" onPress={() => navigation.push('이메일 로그인')} />
             </View>
           </ScrollView>
         </PaddingHorizontal>

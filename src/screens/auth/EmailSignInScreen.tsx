@@ -1,10 +1,12 @@
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
-import { AuthStackParamList } from '../../navigations';
+import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthInput, Fonts, Header, LongButton, PaddingHorizontal } from '../../components/renewal';
 import { useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { Login } from '../../api/axios';
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../states';
+import { useUserState } from '../../providers';
 
 type ILoginForm = {
   email: string;
@@ -14,16 +16,15 @@ type ILoginForm = {
 const SCROLL_GAP = 79.3;
 
 export const EmailSignInScreen = () => {
-  const {
-    params: { type },
-  } = useRoute<RouteProp<AuthStackParamList, '이메일 로그인'>>();
+  const fcmToken = useRecoilValue(fcmTokenState);
 
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<ILoginForm>();
+
+  const { loginToComment } = useUserState();
 
   // for ux
   const scrollViewRef = useRef<ScrollView>(null);
@@ -32,6 +33,15 @@ export const EmailSignInScreen = () => {
   // for login
   const onSubmit = async (data: ILoginForm) => {
     const { email, password } = data;
+
+    try {
+      const res = await Login(email, password, fcmToken);
+      const authToken = res.data.result.token;
+
+      loginToComment(authToken);
+    } catch {
+      Alert.alert('알림', '존재하지 않는 정보입니다.', [{ text: '확인', style: 'default' }]);
+    }
   };
 
   return (
@@ -96,7 +106,7 @@ export const EmailSignInScreen = () => {
             </View>
 
             <View style={styles.loginWrapper}>
-              <LongButton text="로그인" theme="secondary" />
+              <LongButton text="로그인" theme="secondary" onPress={handleSubmit(onSubmit)} disabled={isSubmitting} />
             </View>
           </ScrollView>
         </PaddingHorizontal>
