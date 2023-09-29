@@ -16,12 +16,15 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
+import { useUserState } from '../../providers';
 
 type INicknameForm = {
   nickname: string;
 };
 
 export const NicknameScreen = () => {
+  const { loginToSigongan } = useUserState();
+
   const {
     params: { type },
   } = useRoute<RouteProp<AuthStackParamList, '닉네임 입력'>>();
@@ -98,7 +101,7 @@ export const NicknameScreen = () => {
                 </View>
               )}
 
-              <LongButton text="봄자국 시작하기" theme="secondary" />
+              <LongButton text="봄자국 시작하기" theme="secondary" onPress={loginToSigongan} />
             </View>
           </ScrollView>
         </PaddingHorizontal>

@@ -19,6 +19,6 @@ export type SigonganStackParamList = {
 
 export type SigonganMainTabParamList = {
   홈: undefined;
-  'AI 채팅': undefined;
+  'AI 해설': undefined;
   마이페이지: undefined;
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Colors, Fonts, Utils } from '../styles';
 
 type ILongButtonProps = {
@@ -54,8 +54,7 @@ export const LongButton = ({ text, onPress, theme, disabled = false }: ILongButt
 
   return (
     <View style={styles.wrapper}>
-      <TouchableOpacity
-        activeOpacity={1}
+      <Pressable
         onPress={onPress}
         onPressIn={() => setPress(true)}
         onPressOut={() => setPress(false)}
@@ -69,7 +68,7 @@ export const LongButton = ({ text, onPress, theme, disabled = false }: ILongButt
         accessibilityLabel={`${text} 버튼`}
       >
         <Text style={[Fonts.Regular16, Utils.fontColor(LongButtonColor[theme]['font'][buttonState])]}>{text}</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

@@ -29,7 +29,7 @@ export const SigonganMainTab = () => {
         }}
       />
       <Tab.Screen
-        name="AI 채팅"
+        name="AI 해설"
         component={AIChatScreen}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="cards-diamond" color={color} size={size} />,

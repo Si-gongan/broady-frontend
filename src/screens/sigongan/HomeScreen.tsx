@@ -103,7 +103,7 @@ export const HomeScreen = () => {
         </View>
       </PaddingHorizontal>
 
-      <TabBar index={0} />
+      <TabBar currentIndex={0} />
     </SafeAreaView>
   );
 };
