@@ -4,6 +4,7 @@ import { AppSetting } from '../../components/sigongan/mypage';
 import { SigonganDesign } from '../../components/sigongan/styles';
 import { useUserState } from '../../providers';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
+import { TabBar } from '../../components/renewal';
 
 export const MyPageScreen = () => {
   const { logout } = useUserState();
@@ -21,6 +22,8 @@ export const MyPageScreen = () => {
           <Text style={SigonganDesign.myPageContent}>첫 화면으로 나가기</Text>
         </View>
       </TouchableOpacity>
+
+      <TabBar currentIndex={2} />
     </View>
   );
 };

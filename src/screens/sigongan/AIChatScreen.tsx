@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, Alert, SafeAreaView } from 'react-native';
 import {
   QuestionBox,
   ImageSelectPopup,
@@ -24,6 +24,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { SigonganMainTabParamList } from '../../navigations';
 import { delay, getDate } from '../../utils/time';
 import { useKeyboard } from '../../hooks';
+import { TabBar } from '../../components/renewal';
 
 type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
 
@@ -150,7 +151,7 @@ export const AIChatScreen = () => {
     >
       <SigonganHeader text="AI 채팅" hideBackButton isBottomBorder />
 
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <ScrollView ref={scrollViewRef}>
           <View style={styles.chatWrapper}>
             {chatList.map((item, i) =>
@@ -196,11 +197,13 @@ export const AIChatScreen = () => {
           onSendTextPress={onSendTextPress}
           disabled={loading}
         />
-      </View>
+      </SafeAreaView>
 
       <ImageSelectPopup ref={imageSelectPopupRef} onSendImagePress={onSendImagePress} />
 
       <Spinner visible={loading} />
+
+      <TabBar currentIndex={1} />
     </KeyboardAvoidingView>
   );
 };
