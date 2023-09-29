@@ -4,6 +4,7 @@ import { Colors, Fonts, Utils } from '../styles';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { SigonganMainTabParamList } from '../../../navigations';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // setting
 const TABBAR_NAME = ['홈', 'AI 해설', '마이페이지'] as const;
@@ -37,29 +38,44 @@ export const TabBar = ({ currentIndex }: ITabBarProps) => {
   const navigation = useNavigation<BottomTabNavigationProp<SigonganMainTabParamList>>();
 
   return (
-    <View style={styles.container}>
-      {TABBAR_NAME.map((name, i) => (
-        <Pressable key={i} style={styles.item} onPress={() => navigation.navigate(name)}>
-          <Svg width={30} height={30} viewBox="0 0 30 30" fill="none">
-            <Path d={TABBAR_ICON_PATH[i]} fill={currentIndex === i ? Color.selected : Color.unSelected} />
-          </Svg>
+    <LinearGradient
+      colors={[Colors.None.Lighten400, Colors.Red.Lighten200]}
+      style={styles.shadow}
+      end={{ x: 0.5, y: 0.2 }}
+    >
+      <View style={[styles.container, Utils.backgroundColor(Colors.None.Lighten400)]}>
+        {TABBAR_NAME.map((name, i) => (
+          <Pressable key={i} style={styles.item} onPress={() => navigation.navigate(name)}>
+            <Svg width={30} height={30} viewBox="0 0 30 30" fill="none">
+              <Path d={TABBAR_ICON_PATH[i]} fill={currentIndex === i ? Color.selected : Color.unSelected} />
+            </Svg>
 
-          <Text style={[Fonts.Regular12, Utils.fontColor(currentIndex === i ? Color.selected : Color.unSelected)]}>
-            {name}
-          </Text>
-        </Pressable>
-      ))}
-    </View>
+            <Text style={[Fonts.Regular12, Utils.fontColor(currentIndex === i ? Color.selected : Color.unSelected)]}>
+              {name}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  shadow: {
+    paddingTop: 5,
+
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
   container: {
     paddingTop: 20,
     paddingBottom: 5,
 
     flexDirection: 'row',
     justifyContent: 'space-around',
+
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   item: {
     width: 70,
