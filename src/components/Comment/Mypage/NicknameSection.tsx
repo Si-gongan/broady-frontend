@@ -1,25 +1,35 @@
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { nicknameState } from '../../../states';
 import { SigonganDesign } from '../../sigongan/styles';
+import { commentFont } from '../styles';
 
 const NicknameSection = ({ navigation }: any) => {
+  const nickname = useRecoilValue(nicknameState);
+
   return (
-    <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
-      <View>
-        <Text style={styles.nicknameText}>
-          <Text style={styles.bold}>곰지님</Text>은 오늘까지
+    <View>
+      <View style={styles.headerTextContainer}>
+        <Text style={commentFont.HEADER}>
+          <Text style={styles.bold}>{nickname}님</Text>은 오늘까지
         </Text>
-        <Text style={styles.nicknameText}>
+        <Text style={commentFont.HEADER}>
           <Text style={styles.bold}>총 32명</Text>의 시각장애인을 도왔어요!
         </Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('Nickname')}>
-        <Text style={SigonganDesign.myPageContent}>닉네임 설정</Text>
-      </TouchableOpacity>
+      <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
+        <TouchableOpacity onPress={() => navigation.navigate('Nickname')}>
+          <Text style={commentFont.BODY1}>닉네임 설정</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  headerTextContainer: {
+    marginBottom: 10,
+  },
   boxContainer: {
     paddingVertical: 17,
     paddingHorizontal: 14,
@@ -30,8 +40,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   bold: {
-    fontWeight: '600',
     lineHeight: 25,
+    color: '#F589A5',
   },
 });
 

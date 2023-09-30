@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Colors } from '../renewal';
 
 export const commentColor = StyleSheet.create({
   inputBackgroundColor: {
@@ -10,10 +11,20 @@ export const commentColor = StyleSheet.create({
 });
 
 export const commentFont = StyleSheet.create({
+  HEADER: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#565656',
+  },
   TITLE: {
     fontSize: 16,
     fontWeight: '700',
     color: '#565656',
+  },
+  MYPAGE_TITLE: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: Colors.Red.Lighten100,
   },
   BODY1: {
     fontSize: 16,

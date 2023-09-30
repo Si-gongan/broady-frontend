@@ -97,7 +97,7 @@ const RefundScreen = ({ navigation }: any) => {
         </View>
         <View style={styles.refundBodyContainer}>
           <View style={styles.inputContainer}>
-            <Text style={commentFont.BODY1}>입금 받을 계좌 입력</Text>
+            <Text style={commentFont.BODY1}>입금 받을 계좌</Text>
             <TextInput
               placeholder="ex) 우리 1234-567-8910"
               placeholderTextColor="#5E5E5E"
@@ -160,17 +160,12 @@ const RefundScreen = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  refundContainer: {
-    // flex: 1,
-  },
+  refundContainer: {},
   refundPointHeader: {
     marginVertical: 20,
     marginLeft: 20,
-    // height: SCREEN_HEIGHT * 0.05,
   },
   refundBodyContainer: {
-    // flex: 0.45,
-    // height: SCREEN_HEIGHT * 0.15,
     alignItems: 'center',
   },
   inputContainer: {
@@ -179,33 +174,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   refundPointContainer: {
-    // flex: 0.4,
-    // marginLeft: 20,
-    // marginBottom: 20,
     height: SCREEN_HEIGHT * 0.6,
   },
   inputBox: {
     borderWidth: 1,
     borderColor: '#767676',
-    marginTop: 5,
+    marginTop: 10,
     paddingLeft: 10,
     height: 50,
     borderRadius: 10,
     ...commentFont.BODY1,
   },
   refundBtn: {
-    width: '60%',
-    height: 40,
-    marginTop: 10,
-    marginBottom: 40,
+    width: '90%',
+    height: 50,
+    marginTop: 20,
+    marginBottom: 30,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
   },
-  pointList: {
-    // marginLeft: 20,
-    // marginBottom: 20,
-  },
+  pointList: {},
   loadingPointList: {
     borderTopWidth: 2,
     borderColor: '#E8E8E8',

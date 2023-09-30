@@ -1,24 +1,23 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SigonganDesign } from '../../../components/sigongan/styles';
+import { commentFont } from '../styles';
 
 const Refund = ({ navigation, myPoint }: { navigation: any; myPoint: number }) => {
   return (
-    <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
-      <Text style={SigonganDesign.myPageTitle}>내 포인트 {myPoint ? myPoint : '0'} P</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Refund')}>
-        <Text style={SigonganDesign.myPageContent}>환급 신청</Text>
-      </TouchableOpacity>
+    <View>
+      <Text style={[styles.pointText, commentFont.HEADER]}>내 포인트 {myPoint ? myPoint : '0'}P</Text>
+      <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
+        <TouchableOpacity onPress={() => navigation.navigate('Refund')}>
+          <Text style={commentFont.BODY1}>환급 신청</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    marginTop: 30,
-    gap: 20,
-    flex: 1,
+  pointText: {
+    marginBottom: 10,
   },
   boxContainer: {
     paddingVertical: 17,
