@@ -1,4 +1,6 @@
 import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
+import { Colors } from '../../renewal';
+import { commentFont } from '../styles';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30;
@@ -13,19 +15,19 @@ const MyRequestInformation = ({ totalCompletedRequest }: IMyRequestInformationPr
     <>
       <View>
         <View style={styles.guideTextContainer}>
-          <Text style={styles.mainText}>오늘도 열심히 해설해주셨군요!</Text>
+          <Text style={[styles.mainText, commentFont.SLOGAN]}>오늘도 열심히{'\n'}해설해주셨군요!</Text>
         </View>
         <View style={styles.requestContaier}>
           <View style={styles.requestItemContainer}>
-            <Text style={styles.textCategory}>내 누적 해설</Text>
-            <Text style={styles.requestCountText}>
+            <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>내 누적 해설</Text>
+            <Text style={commentFont.TITLE}>
               {totalCompletedRequest ? totalCompletedRequest.toString().padStart(2, '0') : '00'}건
             </Text>
           </View>
 
           <View style={styles.requestItemContainer}>
-            <Text style={styles.textCategory}>오늘 진행한 해설</Text>
-            <Text style={styles.requestCountText}>
+            <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>오늘 진행한 해설</Text>
+            <Text style={commentFont.TITLE}>
               {/* {todayCompletedRequest ? todayCompletedRequest.toString().padStart(2, '0') : '00'}건 */}
               00건
             </Text>
@@ -38,11 +40,12 @@ const MyRequestInformation = ({ totalCompletedRequest }: IMyRequestInformationPr
 
 const styles = StyleSheet.create({
   guideTextContainer: {
-    alignItems: 'center',
-    marginVertical: 15,
+    // marginVertical: 15,
+    marginLeft: 35,
+    // alignItems: 'center',
   },
   mainText: {
-    fontWeight: '700',
+    lineHeight: 40,
   },
   guideText: {
     fontSize: 12,
@@ -55,28 +58,16 @@ const styles = StyleSheet.create({
   },
   requestItemContainer: {
     width: ITEM_WIDTH,
-    height: 50,
+    height: 70,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.Red.Lighten300,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#ffffff',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 7,
-      },
-    }),
   },
   textCategory: {
-    fontSize: 10,
+    color: '#565656',
   },
   requestCountText: {
     fontSize: 14,

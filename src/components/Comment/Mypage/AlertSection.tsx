@@ -6,7 +6,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const AlertSection = ({ navigation }: any) => {
   return (
     <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
-      <Text style={commentFont.MYPAGE_TITLE}>앱 설정</Text>
+      <Text style={commentFont.SMALL_TITLE}>앱 설정</Text>
       <TouchableOpacity style={styles.touchContainer} onPress={() => navigation.navigate('Alert')}>
         <Text style={commentFont.BODY1}>알림 설정</Text>
         <MaterialIcons name="arrow-forward-ios" />

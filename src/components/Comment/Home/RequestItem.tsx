@@ -1,9 +1,6 @@
-import { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Platform } from 'react-native';
-import { Shadow } from 'react-native-shadow-2';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Platform } from 'react-native';
 import { IRequest } from '../../../types/request';
 import { getConvertDate } from '../../../utils/time';
-import { SigonganShadow } from '../../sigongan/styles';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30; // 부모컴포넌트 width:90%에 2개씩 렌더링. gap: 30

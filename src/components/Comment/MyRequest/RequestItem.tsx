@@ -7,6 +7,7 @@ import useInterval from '../../../hooks/useInterval';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import { getConvertDate, getExpiredMinute, getKoreanTime } from '../../../utils/time';
+import { Colors } from '../../renewal';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30; // 부모컴포넌트 width:90%에 2개씩 렌더링. gap: 30
@@ -78,14 +79,6 @@ const RequestItem = ({
 };
 
 const styles = StyleSheet.create({
-  loadingImage: {
-    display: 'none',
-  },
-  loadingSpinner: {
-    height: 118,
-    display: 'flex',
-    justifyContent: 'center',
-  },
   imageContainer: {
     height: 200,
     width: ITEM_WIDTH,
@@ -94,15 +87,15 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingBottom: 30,
     backgroundColor: '#ffffff',
-    shadowColor: '#000',
+    shadowColor: Colors.Red.Lighten100,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: Colors.Red.Lighten100,
         shadowOffset: {
           width: 2,
           height: 2,
         },
-        shadowOpacity: 0.25,
+        shadowOpacity: 0.5,
         shadowRadius: 3,
       },
       android: {

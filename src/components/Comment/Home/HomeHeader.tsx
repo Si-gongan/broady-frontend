@@ -1,5 +1,7 @@
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Colors } from '../../renewal';
+import { commentFont } from '../styles';
 
 const HomeHeader = ({ navigation }: any) => {
   return (
@@ -7,7 +9,7 @@ const HomeHeader = ({ navigation }: any) => {
       <TouchableOpacity>
         <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBackIcon} />
       </TouchableOpacity>
-      <Text style={styles.headerTitle}>홈</Text>
+      <Text style={commentFont.HEADLINE}>홈</Text>
       <TouchableOpacity onPress={() => navigation.navigate('Announce')}>
         <MaterialCommunityIcons name="bell-outline" style={styles.headerSettingIcon} />
       </TouchableOpacity>
@@ -24,8 +26,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 20,
     paddingBottom: 25,
-    borderBottomColor: '#E2E2E2',
-    borderBottomWidth: 2,
+    borderBottomColor: Colors.Red.Lighten400,
+    borderBottomWidth: 1,
   },
   headerBackIcon: {
     fontSize: 40,
@@ -35,10 +37,7 @@ const styles = StyleSheet.create({
   headerSettingIcon: {
     fontSize: 30,
     marginRight: 10,
-  },
-  headerTitle: {
-    fontSize: 17,
-    fontWeight: '600',
+    fontWeight: '400',
   },
 });
 

@@ -11,9 +11,19 @@ export const commentColor = StyleSheet.create({
 });
 
 export const commentFont = StyleSheet.create({
+  SLOGAN: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#565656',
+  },
   HEADER: {
     fontSize: 20,
     fontWeight: '700',
+    color: '#565656',
+  },
+  HEADLINE: {
+    fontSize: 20,
+    fontWeight: '400',
     color: '#565656',
   },
   TITLE: {
@@ -21,7 +31,7 @@ export const commentFont = StyleSheet.create({
     fontWeight: '700',
     color: '#565656',
   },
-  MYPAGE_TITLE: {
+  SMALL_TITLE: {
     fontSize: 14,
     fontWeight: '400',
     color: Colors.Red.Lighten100,

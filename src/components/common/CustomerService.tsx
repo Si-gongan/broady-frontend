@@ -13,7 +13,7 @@ const CustomerService = ({ isBlind }: CustomerServiceProps) => {
   return (
     <>
       <View style={[SigonganDesign.myPageGrid, styles.customerService]}>
-        <Text style={commentFont.MYPAGE_TITLE}>고객 지원</Text>
+        <Text style={commentFont.SMALL_TITLE}>고객 지원</Text>
 
         <TouchableOpacity
           style={styles.touchContainer}
