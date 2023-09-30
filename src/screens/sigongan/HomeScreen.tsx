@@ -18,6 +18,7 @@ import {
   TabBar,
   IImageMethodPopupHandler,
   ImageMethodPopup,
+  NoticeError,
 } from '../../components/renewal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -50,20 +51,23 @@ export const HomeScreen = () => {
       const tempList = res.data.result.posts;
       setRequestList(tempList);
     } catch {
-      console.log('error');
+      NoticeError();
     } finally {
       setLoading(false);
     }
   };
 
-  const getAppreciatedText = (item: IReqeustListItem) =>
-    item.responseUser
-      .filter((chat) => chat.appreciated)
-      .map((chat) => ({
-        text: chat.appreciatedText ?? '',
-        createdAt: chat.appreciatedDate ?? '',
-      }));
-
+  /**
+   * 감사인사도 최근 대화에 넣으려고 했으나,
+   * 시간 버그로 인해 잠시 제외
+   */
+  // const getAppreciatedText = (item: IReqeustListItem) =>
+  //   item.responseUser
+  //     .filter((chat) => chat.appreciated)
+  //     .map((chat) => ({
+  //       text: chat.appreciatedText ?? '',
+  //       createdAt: chat.appreciatedDate ?? '',
+  //     }));
   // const getLastChat = (item: IReqeustListItem) =>
   //   [...item.requestedUser, ...item.responseUser, ...getAppreciatedText(item)].sort((a, b) =>
   //     new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1

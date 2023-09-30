@@ -1,12 +1,15 @@
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { AuthInput, Fonts, Header, LongButton, Notice, PaddingHorizontal } from '../../components/renewal';
 import { useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Login } from '../../api/axios';
+import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { useUserState } from '../../providers';
+import { useLoading, useUserState } from '../../providers';
+
+import { AuthInput, Fonts, Header, LongButton, Notice, PaddingHorizontal } from '../../components/renewal';
+import { Login } from '../../api/axios';
 
 type ILoginForm = {
   email: string;
@@ -24,6 +27,8 @@ export const EmailSignInScreen = () => {
     formState: { errors, isSubmitting },
   } = useForm<ILoginForm>();
 
+  const { changeLoading } = useLoading();
+
   const { loginToComment } = useUserState();
 
   // for ux
@@ -35,12 +40,16 @@ export const EmailSignInScreen = () => {
     const { email, password } = data;
 
     try {
+      changeLoading(true);
+
       const res = await Login(email, password, fcmToken);
       const authToken = res.data.result.token;
 
       loginToComment(authToken);
     } catch {
       Notice('존재하지 않는 회원 정보입니다.');
+    } finally {
+      changeLoading(false);
     }
   };
 

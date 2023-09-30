@@ -5,7 +5,7 @@ import { RecoilRoot } from 'recoil';
 import { useFonts } from 'expo-font';
 
 import { AuthStack, SigonganStack, CommentStack } from './navigations';
-import { UserStateProvider, useUserState } from './providers';
+import { LoadingProvider, UserStateProvider, useUserState } from './providers';
 
 import { initializeNotifications, useNotifications } from './components/common/notifications';
 import { StatusBar } from 'expo-status-bar';
@@ -90,9 +90,11 @@ export const App = () => {
   return (
     <RecoilRoot>
       <UserStateProvider>
-        <RootSiblingParent>
-          <Main />
-        </RootSiblingParent>
+        <LoadingProvider>
+          <RootSiblingParent>
+            <Main />
+          </RootSiblingParent>
+        </LoadingProvider>
       </UserStateProvider>
     </RecoilRoot>
   );

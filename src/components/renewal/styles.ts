@@ -46,7 +46,7 @@ export const Colors = {
     Lighten400: '#FFF',
   },
   Font: {
-    primary: '#595959',
+    primary: '#565656',
     secondary: '#767676',
   },
 } as const;

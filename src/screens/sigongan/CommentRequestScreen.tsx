@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Alert, Text } from 'react-native';
+import { View, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Text, Image, TextInput } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -12,7 +12,19 @@ import { fcmTokenState } from '../../states';
 import { RegisterRequest } from '../../api/axios';
 
 import { useKeyboard } from '../../hooks';
-import { Header, IImageMethodPopupHandler, PaddingHorizontal } from '../../components/renewal';
+import {
+  Colors,
+  Fonts,
+  Header,
+  IImageMethodPopupHandler,
+  LongButton,
+  PaddingHorizontal,
+  Utils,
+  ImageMethodPopup,
+  NoticeError,
+  Notice,
+} from '../../components/renewal';
+import { useLoading } from '../../providers';
 
 export const CommentRequestScreen = () => {
   // for page move
@@ -25,14 +37,14 @@ export const CommentRequestScreen = () => {
   // api
   const fcmToken = useRecoilValue(fcmTokenState);
   const [value, setValue] = useState('');
-  const [loading, setLoading] = useState(false);
+
+  const { isLoading, changeLoading } = useLoading();
 
   // popup
-  const ImageMethodPopup = useRef<IImageMethodPopupHandler>(null);
+  const ImageMethodPopupRef = useRef<IImageMethodPopupHandler>(null);
 
   // for keyboard
   const insets = useSafeAreaInsets();
-  const keyboardBottom = insets.bottom === 0 ? 0 : 16 - insets.bottom;
 
   // for ux
   const scrollViewRef = useRef<ScrollView>(null);
@@ -45,25 +57,20 @@ export const CommentRequestScreen = () => {
 
   const onSubmit = async () => {
     if (value.length === 0) {
-      Alert.alert('알림', '질문을 입력해주세요.', [
-        {
-          text: '확인',
-          style: 'default',
-        },
-      ]);
+      Notice('질문을 입력해주세요.');
 
       return;
     }
 
     try {
-      setLoading(true);
+      changeLoading(true);
 
       await RegisterRequest(value, url ?? '', fcmToken);
       navigation.goBack();
     } catch {
-      console.log('error');
+      NoticeError();
     } finally {
-      setLoading(false);
+      changeLoading(false);
     }
   };
 
@@ -71,12 +78,48 @@ export const CommentRequestScreen = () => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={0}
+      keyboardVerticalOffset={-insets.bottom}
     >
       <SafeAreaView style={styles.container}>
         <Header text="질문작성" isBottomBorder />
 
-        <PaddingHorizontal value={20}></PaddingHorizontal>
+        <PaddingHorizontal value={20}>
+          <ScrollView ref={scrollViewRef}>
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: url }} style={styles.image} />
+            </View>
+
+            <View style={{ marginTop: 10 }}>
+              <LongButton
+                text="사진 다시 선택하기 &#8634;"
+                theme="primary"
+                onPress={() => ImageMethodPopupRef.current?.open()}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문을 입력해주세요.</Text>
+
+              <TextInput
+                style={[
+                  styles.input,
+                  Utils.borderColor(Colors.Red.Lighten300),
+                  Fonts.Regular14,
+                  Utils.fontColor(Colors.Font.secondary),
+                ]}
+                multiline
+                value={value}
+                onChangeText={setValue}
+              />
+            </View>
+
+            <View style={{ marginTop: 40, marginBottom: 15 }}>
+              <LongButton text="사진 질문하기" theme="secondary" onPress={onSubmit} disabled={isLoading} />
+            </View>
+          </ScrollView>
+        </PaddingHorizontal>
+
+        <ImageMethodPopup ref={ImageMethodPopupRef} />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -85,5 +128,31 @@ export const CommentRequestScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  imageContainer: {
+    marginTop: 30,
+
+    width: '100%',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    maxWidth: 353,
+    height: 252,
+
+    borderRadius: 12,
+  },
+  inputContainer: {
+    marginTop: 25,
+
+    gap: 10,
+  },
+  input: {
+    height: 150,
+
+    padding: 10,
+    paddingTop: 10,
+
+    borderRadius: 12,
   },
 });
