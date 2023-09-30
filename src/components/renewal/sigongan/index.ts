@@ -1,2 +1,3 @@
-export * from './RequestItem';
+export * from './home';
+
 export * from './TabBar';

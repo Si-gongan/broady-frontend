@@ -1,6 +1,6 @@
 import { View, Pressable, Image, StyleSheet, Text } from 'react-native';
-import { Colors, Fonts, Utils } from '../styles';
-import { getConvertDate } from '../utils';
+import { Colors, Fonts, Utils } from '../../styles';
+import { getConvertDate } from '../../utils';
 
 type IRequestItemProps = {
   imgUrl: string;

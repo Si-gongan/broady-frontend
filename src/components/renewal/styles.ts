@@ -129,4 +129,5 @@ export const Utils = {
   borderColor: (s: string) => ({ borderWidth: 1, borderColor: s }),
   borderBottomColor: (s: string) => ({ borderBottomWidth: 1, borderBottomColor: s }),
   fontColor: (s: string) => ({ color: s }),
+  safePaddingBottom: (i: number) => ({ paddingBottom: i || 5 }),
 };

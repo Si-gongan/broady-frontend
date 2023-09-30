@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { View, StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { useRecoilValue } from 'recoil';
@@ -10,17 +10,9 @@ import { SigonganStackParamList } from '../../navigations';
 
 import { GetRequestList, IReqeustListItem } from '../../api/axios/sigongan';
 
-import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
-import {
-  CommentRequestButton,
-  CommentRequestPopup,
-  ICommentRequestPopupHandler,
-  RequestImageCard,
-  RequestTextCard,
-} from '../../components/sigongan/home';
 import { NoticeError } from '../../api/axios';
-import { getConvertDate } from '../../utils/time';
 import { Header, LongButton, PaddingHorizontal, RequestItem, TabBar } from '../../components/renewal';
+import { IImageMethodPopupHandler, ImageMethodPopup } from '../../components/renewal/sigongan/home/ImageMethodPopup';
 
 export const HomeScreen = () => {
   // page move
@@ -32,7 +24,7 @@ export const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
 
   // popup
-  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
+  const ImageMethodPopupRef = useRef<IImageMethodPopupHandler>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -82,7 +74,11 @@ export const HomeScreen = () => {
 
       <PaddingHorizontal value={20}>
         <View style={styles.topButton}>
-          <LongButton text="+ 해설자에게 질문하기" theme="secondary" />
+          <LongButton
+            text="+ 해설자에게 질문하기"
+            theme="secondary"
+            onPress={() => ImageMethodPopupRef.current?.open()}
+          />
         </View>
 
         <View style={styles.list}>
@@ -104,6 +100,8 @@ export const HomeScreen = () => {
       </PaddingHorizontal>
 
       <TabBar currentIndex={0} />
+
+      <ImageMethodPopup ref={ImageMethodPopupRef} />
     </SafeAreaView>
   );
 };
