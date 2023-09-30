@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { useRecoilValue } from 'recoil';
@@ -10,17 +10,17 @@ import { SigonganStackParamList } from '../../navigations';
 
 import { GetRequestList, IReqeustListItem } from '../../api/axios/sigongan';
 
-import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 import {
-  CommentRequestButton,
-  CommentRequestPopup,
-  ICommentRequestPopupHandler,
-  RequestImageCard,
-  RequestTextCard,
-} from '../../components/sigongan/home';
-import { NoticeError } from '../../api/axios';
-import { getConvertDate } from '../../utils/time';
-import { Header, LongButton, PaddingHorizontal, RequestItem, TabBar } from '../../components/renewal';
+  Header,
+  LongButton,
+  PaddingHorizontal,
+  RequestItem,
+  TabBar,
+  IImageMethodPopupHandler,
+  ImageMethodPopup,
+  NoticeError,
+} from '../../components/renewal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const HomeScreen = () => {
   // page move
@@ -32,7 +32,7 @@ export const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
 
   // popup
-  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
+  const ImageMethodPopupRef = useRef<IImageMethodPopupHandler>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -57,14 +57,17 @@ export const HomeScreen = () => {
     }
   };
 
-  const getAppreciatedText = (item: IReqeustListItem) =>
-    item.responseUser
-      .filter((chat) => chat.appreciated)
-      .map((chat) => ({
-        text: chat.appreciatedText ?? '',
-        createdAt: chat.appreciatedDate ?? '',
-      }));
-
+  /**
+   * 감사인사도 최근 대화에 넣으려고 했으나,
+   * 시간 버그로 인해 잠시 제외
+   */
+  // const getAppreciatedText = (item: IReqeustListItem) =>
+  //   item.responseUser
+  //     .filter((chat) => chat.appreciated)
+  //     .map((chat) => ({
+  //       text: chat.appreciatedText ?? '',
+  //       createdAt: chat.appreciatedDate ?? '',
+  //     }));
   // const getLastChat = (item: IReqeustListItem) =>
   //   [...item.requestedUser, ...item.responseUser, ...getAppreciatedText(item)].sort((a, b) =>
   //     new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
@@ -74,6 +77,7 @@ export const HomeScreen = () => {
     [...item.requestedUser, ...item.responseUser].sort((a, b) =>
       new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
     )[0].text;
+
   const getShortChat = (s: string) => (s.length > 50 ? s.slice(0, 50) + '...' : s);
 
   return (
@@ -82,7 +86,11 @@ export const HomeScreen = () => {
 
       <PaddingHorizontal value={20}>
         <View style={styles.topButton}>
-          <LongButton text="+ 해설자에게 질문하기" theme="secondary" />
+          <LongButton
+            text="+ 해설자에게 질문하기"
+            theme="secondary"
+            onPress={() => ImageMethodPopupRef.current?.open()}
+          />
         </View>
 
         <View style={styles.list}>
@@ -94,6 +102,7 @@ export const HomeScreen = () => {
             refreshing={loading}
             renderItem={({ item }) => (
               <RequestItem
+                onPress={() => navigation.navigate('해설 진행현황', { item })}
                 imgUrl={process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL + '/' + item.photo}
                 date={item.updatedAt}
                 chat={getShortChat(getLastChat(item))}
@@ -104,6 +113,8 @@ export const HomeScreen = () => {
       </PaddingHorizontal>
 
       <TabBar currentIndex={0} />
+
+      <ImageMethodPopup ref={ImageMethodPopupRef} />
     </SafeAreaView>
   );
 };

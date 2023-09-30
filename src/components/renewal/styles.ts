@@ -46,7 +46,7 @@ export const Colors = {
     Lighten400: '#FFF',
   },
   Font: {
-    primary: '#595959',
+    primary: '#565656',
     secondary: '#767676',
   },
 } as const;
@@ -129,4 +129,5 @@ export const Utils = {
   borderColor: (s: string) => ({ borderWidth: 1, borderColor: s }),
   borderBottomColor: (s: string) => ({ borderBottomWidth: 1, borderBottomColor: s }),
   fontColor: (s: string) => ({ color: s }),
+  safePaddingBottom: (i: number) => ({ paddingBottom: i || 5 }),
 };

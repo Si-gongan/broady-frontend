@@ -1,9 +1,11 @@
 import { Image, View, StyleSheet } from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LongButton, PaddingHorizontal } from '../../components/renewal';
-import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigations';
+
+import { LongButton, PaddingHorizontal } from '../../components/renewal';
 
 const LOGO_URL = '../../../assets/intro-icon2.png';
 

@@ -1,7 +1,18 @@
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
-import { AuthStackParamList } from '../../navigations';
+import { useRef, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthStackParamList } from '../../navigations';
+
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../states';
+import { useLoading, useUserState } from '../../providers';
+
+import * as WebBrowser from 'expo-web-browser';
+
 import {
   AuthInput,
   BomCheckBox,
@@ -9,18 +20,12 @@ import {
   Fonts,
   Header,
   LongButton,
+  Notice,
   PaddingHorizontal,
   TERMS_OF_USE,
   Utils,
 } from '../../components/renewal';
-import { useRef, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import * as WebBrowser from 'expo-web-browser';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Login, Register } from '../../api/axios';
-import { useRecoilValue } from 'recoil';
-import { fcmTokenState } from '../../states';
-import { useUserState } from '../../providers';
 
 type IRegisterForm = {
   email: string;
@@ -43,6 +48,8 @@ export const EmailSignUpScreen = () => {
   } = useForm<IRegisterForm>();
 
   const { loginToComment } = useUserState();
+
+  const { changeLoading } = useLoading();
 
   // for ux
   const scrollViewRef = useRef<ScrollView>(null);
@@ -67,6 +74,8 @@ export const EmailSignUpScreen = () => {
     const { email, password } = data;
 
     try {
+      changeLoading(true);
+
       await Register(email, password, fcmToken);
 
       const resLogin = await Login(email, password, fcmToken);
@@ -74,7 +83,9 @@ export const EmailSignUpScreen = () => {
       const authToken = resLogin.data.result.token;
       loginToComment(authToken);
     } catch {
-      Alert.alert('알림', '이미 존재하는 이메일입니다.', [{ text: '확인', style: 'default' }]);
+      Notice('이미 존재하는 이메일입니다.');
+    } finally {
+      changeLoading(false);
     }
   };
 

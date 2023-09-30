@@ -2,10 +2,12 @@ import { ReactNode } from 'react';
 import { View } from 'react-native';
 
 type IPaddingHorizontalProps = {
-  children?: ReactNode;
   value: number;
+
+  children?: ReactNode;
+  noflex?: boolean;
 };
 
-export const PaddingHorizontal = ({ children, value }: IPaddingHorizontalProps) => {
-  return <View style={{ flex: 1, paddingHorizontal: value }}>{children}</View>;
+export const PaddingHorizontal = ({ children, value, noflex = false }: IPaddingHorizontalProps) => {
+  return <View style={[{ width: '100%', paddingHorizontal: value }, !noflex && { flex: 1 }]}>{children}</View>;
 };

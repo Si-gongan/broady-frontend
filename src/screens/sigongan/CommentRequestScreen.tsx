@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Alert } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Text, Image, TextInput } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -9,14 +9,22 @@ import { SigonganStackParamList } from '../../navigations';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 
-import { NoticeError, RegisterRequest } from '../../api/axios';
+import { RegisterRequest } from '../../api/axios';
 
 import { useKeyboard } from '../../hooks';
-
-import Spinner from 'react-native-loading-spinner-overlay';
-import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
-import { CommentRequestPopup, ICommentRequestPopupHandler } from '../../components/sigongan/home';
-import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
+import {
+  Colors,
+  Fonts,
+  Header,
+  IImageMethodPopupHandler,
+  LongButton,
+  PaddingHorizontal,
+  Utils,
+  ImageMethodPopup,
+  NoticeError,
+  Notice,
+} from '../../components/renewal';
+import { useLoading } from '../../providers';
 
 export const CommentRequestScreen = () => {
   // for page move
@@ -29,14 +37,14 @@ export const CommentRequestScreen = () => {
   // api
   const fcmToken = useRecoilValue(fcmTokenState);
   const [value, setValue] = useState('');
-  const [loading, setLoading] = useState(false);
+
+  const { isLoading, changeLoading } = useLoading();
 
   // popup
-  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
+  const ImageMethodPopupRef = useRef<IImageMethodPopupHandler>(null);
 
   // for keyboard
   const insets = useSafeAreaInsets();
-  const keyboardBottom = insets.bottom === 0 ? 0 : 16 - insets.bottom;
 
   // for ux
   const scrollViewRef = useRef<ScrollView>(null);
@@ -49,52 +57,70 @@ export const CommentRequestScreen = () => {
 
   const onSubmit = async () => {
     if (value.length === 0) {
-      Alert.alert('알림', '질문을 입력해주세요.', [
-        {
-          text: '확인',
-          style: 'default',
-        },
-      ]);
+      Notice('질문을 입력해주세요.');
 
       return;
     }
 
     try {
-      setLoading(true);
+      changeLoading(true);
 
       await RegisterRequest(value, url ?? '', fcmToken);
       navigation.goBack();
     } catch {
       NoticeError();
     } finally {
-      setLoading(false);
+      changeLoading(false);
     }
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={keyboardBottom}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={-insets.bottom}
     >
-      <SigonganHeader text="해설의뢰" onBackButtonPress={() => navigation.goBack()} />
+      <SafeAreaView style={styles.container}>
+        <Header text="질문작성" isBottomBorder />
 
-      <Spinner visible={loading} />
+        <PaddingHorizontal value={20}>
+          <ScrollView ref={scrollViewRef}>
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: url }} style={styles.image} />
+            </View>
 
-      {/* 이미지, 전송 폼 */}
-      <ScrollView ref={scrollViewRef}>
-        <View style={styles.container}>
-          {url && <ImageController imgUrl={url} onPress={() => commentRequestPopupRef.current?.open()} />}
+            <View style={{ marginTop: 10 }}>
+              <LongButton
+                text="사진 다시 선택하기 &#8634;"
+                theme="primary"
+                onPress={() => ImageMethodPopupRef.current?.open()}
+              />
+            </View>
 
-          <QuestTextArea value={value} onChangeValue={setValue} />
-        </View>
-      </ScrollView>
+            <View style={styles.inputContainer}>
+              <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문을 입력해주세요.</Text>
 
-      {/* 전송 버튼 */}
-      <SubmitRequestButton onPress={onSubmit} disabled={loading} />
+              <TextInput
+                style={[
+                  styles.input,
+                  Utils.borderColor(Colors.Red.Lighten300),
+                  Fonts.Regular14,
+                  Utils.fontColor(Colors.Font.secondary),
+                ]}
+                multiline
+                value={value}
+                onChangeText={setValue}
+              />
+            </View>
 
-      {/* 사진 다시 선택 팝업 */}
-      <CommentRequestPopup ref={commentRequestPopupRef} />
+            <View style={{ marginTop: 40, marginBottom: 15 }}>
+              <LongButton text="사진 질문하기" theme="secondary" onPress={onSubmit} disabled={isLoading} />
+            </View>
+          </ScrollView>
+        </PaddingHorizontal>
+
+        <ImageMethodPopup ref={ImageMethodPopupRef} />
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };
@@ -102,6 +128,31 @@ export const CommentRequestScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  imageContainer: {
+    marginTop: 30,
+
+    width: '100%',
     alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    maxWidth: 353,
+    height: 252,
+
+    borderRadius: 12,
+  },
+  inputContainer: {
+    marginTop: 25,
+
+    gap: 10,
+  },
+  input: {
+    height: 150,
+
+    padding: 10,
+    paddingTop: 10,
+
+    borderRadius: 12,
   },
 });
