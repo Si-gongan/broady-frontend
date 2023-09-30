@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getPointList } from '../../api/axios/comment/user';
 import AlertSection from '../../components/Comment/Mypage/AlertSection';
@@ -8,6 +8,7 @@ import NicknameSection from '../../components/Comment/Mypage/NicknameSection';
 import Refund from '../../components/Comment/Mypage/Refund';
 import UserDeleteSection from '../../components/Comment/Mypage/UserDeleteSection';
 import CustomerService from '../../components/common/CustomerService';
+import { Colors } from '../../components/renewal';
 import { authTokenState, fcmTokenState, myPointState } from '../../states';
 import { IPoint } from '../../types/user';
 
@@ -31,13 +32,16 @@ const MyPageScreen = ({ navigation }: any) => {
   }, [pointList]);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <NicknameSection navigation={navigation} />
-      <Refund myPoint={myPoint} navigation={navigation} />
-      <AlertSection navigation={navigation} />
-      <CustomerService isBlind={false} />
-      <UserDeleteSection />
-    </ScrollView>
+    <>
+      <View style={styles.header}></View>
+      <ScrollView contentContainerStyle={styles.container}>
+        <NicknameSection navigation={navigation} />
+        <Refund myPoint={myPoint} navigation={navigation} />
+        <AlertSection navigation={navigation} />
+        <CustomerService isBlind={false} />
+        <UserDeleteSection />
+      </ScrollView>
+    </>
   );
 };
 
@@ -48,6 +52,17 @@ const getMyPoint = (pointList: IPoint[]) => {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // marginTop: 60,
+    marginHorizontal: 20,
+    // marginBottom: 20,
+    paddingBottom: 22,
+    borderBottomColor: Colors.Red.Lighten400,
+    borderBottomWidth: 1,
+  },
   container: {
     alignItems: 'center',
     backgroundColor: 'white',

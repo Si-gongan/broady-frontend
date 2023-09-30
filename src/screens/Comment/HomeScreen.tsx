@@ -9,6 +9,7 @@ import { authTokenState, fcmTokenState } from '../../states';
 import { IRequest } from '../../types/request';
 import { getKoreanTime } from '../../utils/time';
 import HomeHeader from '../../components/Comment/Home/HomeHeader';
+import { commentFont } from '../../components/Comment/styles';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [currentRequest, setCurrentRequest] = useState<IRequest[]>([]);
@@ -35,7 +36,13 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       <HomeHeader navigation={navigation} />
       <HomeInformation totalRequestCount={currentRequest.length} todayRequestCount={todayRequestCount} />
       <View style={styles.bodyContainer}>
-        <RequestList requestList={currentRequest} navigation={navigation} />
+        {currentRequest.length > 0 ? (
+          <RequestList requestList={currentRequest} navigation={navigation} />
+        ) : (
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <Text style={commentFont.BODY1}>등록된 의뢰가 아직 없습니다.</Text>
+          </View>
+        )}
       </View>
     </>
   );
