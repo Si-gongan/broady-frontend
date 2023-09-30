@@ -1,4 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
+import { Colors } from '../renewal';
 
 export const SigonganColor = StyleSheet.create({
   backgroundPrimary: {
@@ -148,7 +149,7 @@ export const SigonganDesign = StyleSheet.create({
 
   myPageGrid: {
     borderWidth: 1,
-    borderColor: '#DFE4F5',
+    borderColor: Colors.Red.Lighten300,
 
     borderRadius: 10,
     width: 347,

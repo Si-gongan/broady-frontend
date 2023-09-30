@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { IPoint } from '../../../types/user';
 import RefundPointItem from './RefundPointItem';

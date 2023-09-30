@@ -1,16 +1,18 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { IPoint } from '../../../types/user';
 import { getRefundDate } from '../../../utils/time';
+import { Colors } from '../../renewal';
+import { commentFont } from '../styles';
 
 const RefundPointItem = ({ refund }: { refund: IPoint }) => {
   const date = getRefundDate(refund.date);
   return (
     <View style={styles.refundPointItem}>
       <View style={styles.refundPointContainer}>
-        <Text style={styles.refundText}>{refund.description}</Text>
+        <Text style={commentFont.BODY1}>{refund.description}</Text>
         <Text style={styles.refundText}>{refund.point}</Text>
       </View>
-      <Text style={styles.refundDate}>{date}</Text>
+      <Text style={commentFont.BODY2}>{date}</Text>
     </View>
   );
 };
@@ -29,6 +31,7 @@ const styles = StyleSheet.create({
   },
   refundText: {
     fontSize: 16,
+    color: Colors.Red.Default,
   },
   refundDate: {
     fontSize: 14,

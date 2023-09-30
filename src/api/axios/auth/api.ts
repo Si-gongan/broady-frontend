@@ -24,3 +24,15 @@ export const Register = async (email: string, password: string, fcmToken: string
     }
   );
 };
+
+export const editNickname = async (fcmToken: string, nickname: string) => {
+  return await Server.put(
+    `/user/nickname`,
+    { nickname },
+    {
+      headers: {
+        fcmToken,
+      },
+    }
+  );
+};

@@ -27,9 +27,9 @@ const AlertSettingScreen = ({ navigation }: { navigation: any }) => {
           <View style={styles.toggleContainer}>
             <Text style={SigonganDesign.myPageTitle}>추가 질문 알림</Text>
             <Switch
-              trackColor={{ false: '#E8E8E8', true: '#000' }}
+              trackColor={{ false: '#767676', true: '#AEB8F4' }}
               thumbColor={isExtraQuestion ? '#fff' : '#fff'}
-              ios_backgroundColor="#E8E8E8"
+              ios_backgroundColor="#767676"
               onValueChange={toggleExtraSwitch}
               value={isExtraQuestion}
             />
@@ -42,9 +42,9 @@ const AlertSettingScreen = ({ navigation }: { navigation: any }) => {
           <View style={styles.toggleContainer}>
             <Text style={SigonganDesign.myPageTitle}>해설의뢰 알림</Text>
             <Switch
-              trackColor={{ false: '#E8E8E8', true: '#000' }}
+              trackColor={{ false: '#767676', true: '#AEB8F4' }}
               thumbColor={isNewRequest ? '#fff' : '#fff'}
-              ios_backgroundColor="#E8E8E8"
+              ios_backgroundColor="#767676"
               onValueChange={toggleRequestSwitch}
               value={isNewRequest}
             />

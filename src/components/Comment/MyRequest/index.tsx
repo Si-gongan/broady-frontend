@@ -2,9 +2,10 @@ import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useRecoilValue } from 'recoil';
-import { getCompletedRequest, getProceedRequest } from '../../../api/axios';
+import { getCompletedRequest, getMyRequestAll, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
+import { Colors } from '../../renewal';
 import MyRequestInformation from './MyRequestInformation';
 import RequestList from './RequestList';
 
@@ -24,17 +25,18 @@ const MyRequest = ({ navigation }: any) => {
 
   useEffect(() => {
     if (isFocused) {
-      console.log('하단탭으로 진입할 때');
-      Promise.all([getProceedRequest(fcmToken, authToken), getCompletedRequest(fcmToken, authToken)]).then((res) => {
-        const sortedProceedList = [...res[0]].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
-        const sortedCompletedList = [...res[1]].sort((a, b) =>
-          new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
-        );
-        totalCompletedRequest.current = res[1].length;
-        // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
-        // setRequestList([...sortedProceedList, ...slicedCompletedList]); // 테스트용
-        setRequestList([...sortedProceedList, ...sortedCompletedList]);
-      });
+      try {
+        console.log('하단탭으로 진입할 때');
+        getMyRequestAll(fcmToken, authToken).then((res) => {
+          const sortedCompletedList = [...res].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+          totalCompletedRequest.current = sortedCompletedList.length;
+          // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
+          // setRequestList(slicedCompletedList); // 테스트용
+          setRequestList(sortedCompletedList);
+        });
+      } catch (error) {
+        console.log('MY의뢰 API 오류:', error);
+      }
     }
   }, [isFocused]);
 
@@ -42,7 +44,6 @@ const MyRequest = ({ navigation }: any) => {
     <View style={styles.mainContainer}>
       <View style={styles.header}></View>
       <MyRequestInformation totalCompletedRequest={totalCompletedRequest.current} />
-
       <View style={styles.bodyContainer}>
         <RequestList
           // requestList={lastClicked.current ? completedRequest : proceedRequest}
@@ -63,11 +64,11 @@ const styles = StyleSheet.create({
   },
   header: {
     marginTop: 22,
-    marginBottom: 10,
+    marginBottom: 20,
     marginHorizontal: 20,
     justifyContent: 'space-between',
-    borderBottomColor: '#E2E2E2',
-    borderBottomWidth: 2,
+    borderBottomColor: Colors.Red.Lighten400,
+    borderBottomWidth: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
@@ -83,17 +84,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
-
-const tabStyles = (clicked: boolean) =>
-  StyleSheet.create({
-    topTabItem: {
-      width: '50%',
-      height: '100%',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderBottomColor: `${clicked ? 'black' : '#E2E2E2'}`,
-      borderBottomWidth: 5,
-    },
-  });
 
 export default MyRequest;

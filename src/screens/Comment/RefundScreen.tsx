@@ -11,16 +11,16 @@ import {
   Dimensions,
 } from 'react-native';
 import Header from '../../components/common/Header';
-import { commentColor, commentFont } from '../../components/Comment/styles';
+import { commentFont } from '../../components/Comment/styles';
 import RefundPointList from '../../components/Comment/Mypage/RefundPointList';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { authTokenState, fcmTokenState, myPointState } from '../../states';
 import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
-import { AuthColor } from '../../components/auth/styles';
 import { ACCOUNT_HOLDER, ACCOUNT_NUMBER, getData, storeData } from '../../components/common/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import { Colors } from '../../components/renewal';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -93,11 +93,11 @@ const RefundScreen = ({ navigation }: any) => {
       <ScrollView scrollEnabled={false}>
         <Header navigation={navigation}>환급 신청</Header>
         <View style={styles.refundPointHeader}>
-          <Text style={commentFont.title}>포인트 환급 : {myPoint} P</Text>
+          <Text style={commentFont.TITLE}>포인트 환급 : {myPoint} P</Text>
         </View>
         <View style={styles.refundBodyContainer}>
           <View style={styles.inputContainer}>
-            <Text style={{ fontSize: 16 }}>입금 받을 계좌 입력</Text>
+            <Text style={commentFont.BODY1}>입금 받을 계좌</Text>
             <TextInput
               placeholder="ex) 우리 1234-567-8910"
               placeholderTextColor="#5E5E5E"
@@ -107,7 +107,7 @@ const RefundScreen = ({ navigation }: any) => {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Text style={{ fontSize: 16 }}>예금주명</Text>
+            <Text style={commentFont.BODY1}>예금주명</Text>
             <TextInput
               placeholder="홍길동"
               placeholderTextColor="#5E5E5E"
@@ -117,7 +117,7 @@ const RefundScreen = ({ navigation }: any) => {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Text style={{ fontSize: 16 }}>신청 포인트 입력 ( 500P 부터 환급 가능 )</Text>
+            <Text style={commentFont.BODY1}>신청 포인트 입력 ( 500P 부터 환급 가능 )</Text>
             <TextInput
               placeholder="신청 포인트 입력"
               placeholderTextColor="#5E5E5E"
@@ -129,7 +129,10 @@ const RefundScreen = ({ navigation }: any) => {
             />
           </View>
           <TouchableOpacity
-            style={[styles.refundBtn, isRefunded ? AuthColor.secondary : AuthColor.quaternary]}
+            style={[
+              styles.refundBtn,
+              isRefunded ? { backgroundColor: Colors.Red.Default } : { backgroundColor: Colors.Red.Lighten300 },
+            ]}
             activeOpacity={0.6}
             onPress={onClickRefundButton}
             disabled={!isRefunded}
@@ -138,8 +141,8 @@ const RefundScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
         <View style={styles.refundPointContainer}>
-          <View style={{ margin: 20 }}>
-            <Text style={commentFont.title}>포인트 내역</Text>
+          <View style={{ margin: 10 }}>
+            <Text style={commentFont.TITLE}>포인트 내역</Text>
           </View>
           {isLoading ? (
             <ActivityIndicator size="small" color="gray" />
@@ -157,17 +160,12 @@ const RefundScreen = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  refundContainer: {
-    // flex: 1,
-  },
+  refundContainer: {},
   refundPointHeader: {
     marginVertical: 20,
     marginLeft: 20,
-    // height: SCREEN_HEIGHT * 0.05,
   },
   refundBodyContainer: {
-    // flex: 0.45,
-    // height: SCREEN_HEIGHT * 0.15,
     alignItems: 'center',
   },
   inputContainer: {
@@ -176,33 +174,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   refundPointContainer: {
-    // flex: 0.4,
-    // marginLeft: 20,
-    // marginBottom: 20,
     height: SCREEN_HEIGHT * 0.6,
   },
   inputBox: {
-    ...commentColor.inputBackgroundColor,
-    marginTop: 5,
+    borderWidth: 1,
+    borderColor: '#767676',
+    marginTop: 10,
     paddingLeft: 10,
     height: 50,
-    fontSize: 16,
     borderRadius: 10,
+    ...commentFont.BODY1,
   },
   refundBtn: {
-    width: '60%',
-    height: 40,
-    marginTop: 10,
-    marginBottom: 40,
+    width: '90%',
+    height: 50,
+    marginTop: 20,
+    marginBottom: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
     borderRadius: 10,
   },
-  pointList: {
-    // marginLeft: 20,
-    // marginBottom: 20,
-  },
+  pointList: {},
   loadingPointList: {
     borderTopWidth: 2,
     borderColor: '#E8E8E8',

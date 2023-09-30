@@ -1,22 +1,25 @@
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, FlatList, View } from 'react-native';
 import { IRequest } from '../../../types/request';
 import RequestItem from './RequestItem';
 
 const RequestList = ({ requestList, navigation }: { requestList: IRequest[]; navigation: any }) => {
   return (
-    <ScrollView contentContainerStyle={styles.cardContainer}>
-      {requestList.map((request: IRequest) => (
-        <RequestItem key={request.id} request={request} navigation={navigation} />
-      ))}
-    </ScrollView>
+    <FlatList
+      showsVerticalScrollIndicator={false}
+      data={requestList}
+      renderItem={({ item }) => <RequestItem request={item} navigation={navigation} />}
+      keyExtractor={(item) => String(item.id)}
+      columnWrapperStyle={styles.cardContainer}
+      ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
+      numColumns={2}
+      onEndReachedThreshold={0.8}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   cardContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     gap: 30,
     marginHorizontal: 20,
   },
