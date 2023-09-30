@@ -9,7 +9,7 @@ import { SigonganStackParamList } from '../../navigations';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 
-import { NoticeError, RegisterRequest } from '../../api/axios';
+import { RegisterRequest } from '../../api/axios';
 
 import { useKeyboard } from '../../hooks';
 import { Header, IImageMethodPopupHandler, PaddingHorizontal } from '../../components/renewal';
@@ -61,7 +61,7 @@ export const CommentRequestScreen = () => {
       await RegisterRequest(value, url ?? '', fcmToken);
       navigation.goBack();
     } catch {
-      NoticeError();
+      console.log('error');
     } finally {
       setLoading(false);
     }

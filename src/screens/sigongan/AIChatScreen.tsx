@@ -14,7 +14,7 @@ import {
   AnotherAvatar,
   TimeViewer,
 } from '../../components/sigongan/request-state';
-import { GetChatList, IGetChatListReturnType, NoticeError, PostImageQuestion, PostTextQuestion } from '../../api/axios';
+import { GetChatList, IGetChatListReturnType, PostImageQuestion, PostTextQuestion } from '../../api/axios';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
 import { useNavigation } from '@react-navigation/native';
@@ -107,7 +107,7 @@ export const AIChatScreen = () => {
       await PostTextQuestion(chatId.current, text, fcmToken);
       await refresh();
     } catch {
-      NoticeError();
+      console.log('error');
     } finally {
       setLoading(false);
       setText('');
@@ -123,7 +123,7 @@ export const AIChatScreen = () => {
       await PostImageQuestion(chatId.current, url, fcmToken);
       await refresh();
     } catch (e) {
-      NoticeError();
+      console.log('error');
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AuthInput, Fonts, Header, LongButton, PaddingHorizontal } from '../../components/renewal';
+import { AuthInput, Fonts, Header, LongButton, Notice, PaddingHorizontal } from '../../components/renewal';
 import { useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Login } from '../../api/axios';
@@ -40,7 +40,7 @@ export const EmailSignInScreen = () => {
 
       loginToComment(authToken);
     } catch {
-      Alert.alert('알림', '존재하지 않는 정보입니다.', [{ text: '확인', style: 'default' }]);
+      Notice('존재하지 않는 회원 정보입니다.');
     }
   };
 

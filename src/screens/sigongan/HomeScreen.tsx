@@ -10,7 +10,6 @@ import { SigonganStackParamList } from '../../navigations';
 
 import { GetRequestList, IReqeustListItem } from '../../api/axios/sigongan';
 
-import { NoticeError } from '../../api/axios';
 import {
   Header,
   LongButton,
@@ -51,7 +50,7 @@ export const HomeScreen = () => {
       const tempList = res.data.result.posts;
       setRequestList(tempList);
     } catch {
-      NoticeError();
+      console.log('error');
     } finally {
       setLoading(false);
     }

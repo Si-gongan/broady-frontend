@@ -9,6 +9,7 @@ import {
   Fonts,
   Header,
   LongButton,
+  Notice,
   PaddingHorizontal,
   TERMS_OF_USE,
   Utils,
@@ -74,7 +75,7 @@ export const EmailSignUpScreen = () => {
       const authToken = resLogin.data.result.token;
       loginToComment(authToken);
     } catch {
-      Alert.alert('알림', '이미 존재하는 이메일입니다.', [{ text: '확인', style: 'default' }]);
+      Notice('이미 존재하는 이메일입니다.');
     }
   };
 
