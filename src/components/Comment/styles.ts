@@ -10,8 +10,19 @@ export const commentColor = StyleSheet.create({
 });
 
 export const commentFont = StyleSheet.create({
-  title: {
-    fontSize: 24,
+  TITLE: {
+    fontSize: 16,
     fontWeight: '700',
+    color: '#565656',
+  },
+  BODY1: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#565656',
+  },
+  BODY2: {
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#767676',
   },
 });
