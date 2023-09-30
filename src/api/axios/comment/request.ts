@@ -38,6 +38,14 @@ export const getCompletedRequest = async (fcmToken: string, token: string) => {
   return result.data.result.completedPosts;
 };
 
+export const getMyRequestAll = async (fcmToken: string, token: string) => {
+  const result = await CommentServer.get(`/post/all`, {
+    headers: { fcmToken, Authorization: token },
+  });
+
+  return result.data.result.completedPosts;
+};
+
 export const startComment = async (postId: string, fcmToken: string, token: string) => {
   const result = await CommentServer.put<startCommentReturnType>(
     `/post/start`,
