@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { View, StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { useRecoilValue } from 'recoil';
@@ -20,6 +20,7 @@ import {
   IImageMethodPopupHandler,
   ImageMethodPopup,
 } from '../../components/renewal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const HomeScreen = () => {
   // page move
@@ -73,6 +74,7 @@ export const HomeScreen = () => {
     [...item.requestedUser, ...item.responseUser].sort((a, b) =>
       new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
     )[0].text;
+
   const getShortChat = (s: string) => (s.length > 50 ? s.slice(0, 50) + '...' : s);
 
   return (

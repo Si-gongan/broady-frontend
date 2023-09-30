@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Alert } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Alert, Text } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -12,11 +12,7 @@ import { fcmTokenState } from '../../states';
 import { NoticeError, RegisterRequest } from '../../api/axios';
 
 import { useKeyboard } from '../../hooks';
-
-import Spinner from 'react-native-loading-spinner-overlay';
-import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
-import { CommentRequestPopup, ICommentRequestPopupHandler } from '../../components/sigongan/home';
-import { ImageController, QuestTextArea, SubmitRequestButton } from '../../components/sigongan/comment-request';
+import { Header, IImageMethodPopupHandler, PaddingHorizontal } from '../../components/renewal';
 
 export const CommentRequestScreen = () => {
   // for page move
@@ -32,7 +28,7 @@ export const CommentRequestScreen = () => {
   const [loading, setLoading] = useState(false);
 
   // popup
-  const commentRequestPopupRef = useRef<ICommentRequestPopupHandler>(null);
+  const ImageMethodPopup = useRef<IImageMethodPopupHandler>(null);
 
   // for keyboard
   const insets = useSafeAreaInsets();
@@ -73,28 +69,15 @@ export const CommentRequestScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={keyboardBottom}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={0}
     >
-      <SigonganHeader text="해설의뢰" onBackButtonPress={() => navigation.goBack()} />
+      <SafeAreaView style={styles.container}>
+        <Header text="질문작성" isBottomBorder />
 
-      <Spinner visible={loading} />
-
-      {/* 이미지, 전송 폼 */}
-      <ScrollView ref={scrollViewRef}>
-        <View style={styles.container}>
-          {url && <ImageController imgUrl={url} onPress={() => commentRequestPopupRef.current?.open()} />}
-
-          <QuestTextArea value={value} onChangeValue={setValue} />
-        </View>
-      </ScrollView>
-
-      {/* 전송 버튼 */}
-      <SubmitRequestButton onPress={onSubmit} disabled={loading} />
-
-      {/* 사진 다시 선택 팝업 */}
-      <CommentRequestPopup ref={commentRequestPopupRef} />
+        <PaddingHorizontal value={20}></PaddingHorizontal>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };
@@ -102,6 +85,5 @@ export const CommentRequestScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
 });

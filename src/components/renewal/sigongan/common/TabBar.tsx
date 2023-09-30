@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { Colors, Fonts, Utils } from '../../styles';
 import { useNavigation } from '@react-navigation/native';
@@ -45,7 +45,7 @@ export const TabBar = ({ currentIndex }: ITabBarProps) => {
     >
       <View style={[styles.container, Utils.backgroundColor(Colors.None.Lighten400)]}>
         {TABBAR_NAME.map((name, i) => (
-          <Pressable key={i} style={styles.item} onPress={() => navigation.navigate(name)}>
+          <TouchableOpacity key={i} activeOpacity={0.8} style={styles.item} onPress={() => navigation.navigate(name)}>
             <Svg width={30} height={30} viewBox="0 0 30 30" fill="none">
               <Path d={TABBAR_ICON_PATH[i]} fill={currentIndex === i ? Color.selected : Color.unSelected} />
             </Svg>
@@ -53,7 +53,7 @@ export const TabBar = ({ currentIndex }: ITabBarProps) => {
             <Text style={[Fonts.Regular12, Utils.fontColor(currentIndex === i ? Color.selected : Color.unSelected)]}>
               {name}
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         ))}
       </View>
     </LinearGradient>
