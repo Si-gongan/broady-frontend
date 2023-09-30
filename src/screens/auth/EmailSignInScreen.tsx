@@ -1,58 +1,46 @@
-import { useRef, useState } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { AuthInput, Fonts, Header, LongButton, PaddingHorizontal } from '../../components/renewal';
+import { useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-
-import { CommonButton, CommonHeader, CustomTextInput } from '../../components/auth';
-import { useUserState } from '../../providers';
 import { Login } from '../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { AuthFont } from '../../components/auth/styles';
-import { AUTH_TOKEN, USER_STATE, storeData } from '../../components/common/async-storage';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AuthStackParamList } from '../../navigations';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import Spinner from 'react-native-loading-spinner-overlay';
-import { KeyboardAvoidingView } from 'react-native';
-import { Platform } from 'react-native';
+import { useUserState } from '../../providers';
 
 type ILoginForm = {
   email: string;
   password: string;
 };
 
+const SCROLL_GAP = 79.3;
+
 export const EmailSignInScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
-
-  const { loginToComment } = useUserState();
-
-  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
-
-  const passwordRef = useRef<TextInput>(null);
-
-  const [loading, setLoading] = useState(false);
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ILoginForm>();
 
+  const { loginToComment } = useUserState();
+
+  // for ux
+  const scrollViewRef = useRef<ScrollView>(null);
+  const passwordRef = useRef<TextInput>(null);
+
+  // for login
   const onSubmit = async (data: ILoginForm) => {
     const { email, password } = data;
 
     try {
-      setLoading(true);
       const res = await Login(email, password, fcmToken);
       const authToken = res.data.result.token;
 
       loginToComment(authToken);
     } catch {
       Alert.alert('알림', '존재하지 않는 정보입니다.', [{ text: '확인', style: 'default' }]);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -62,15 +50,13 @@ export const EmailSignInScreen = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={0}
     >
-      <SafeAreaView style={{ flex: 1 }}>
-        <CommonHeader text="이메일로 로그인" onBackButtonPress={() => navigation.goBack()} />
+      <SafeAreaView style={styles.container}>
+        <Header text="이메일로 로그인" isBottomBorder />
 
-        <Spinner visible={loading} />
-
-        <ScrollView>
-          <View style={styles.container}>
-            <View style={styles.formWrapper}>
-              <View style={styles.inputWrapper}>
+        <PaddingHorizontal value={20}>
+          <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false}>
+            <View style={styles.inputsWrapper}>
+              <View style={styles.inputItem}>
                 <Controller
                   control={control}
                   rules={{
@@ -81,27 +67,30 @@ export const EmailSignInScreen = () => {
                     },
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <CustomTextInput
+                    <AuthInput
                       text="이메일"
                       value={value}
                       onBlur={onBlur}
                       onChangeValue={onChange}
-                      onSubmitEditing={() => passwordRef.current?.focus()}
+                      onSubmitEditing={() => {
+                        passwordRef.current?.focus();
+                        scrollViewRef.current?.scrollTo({ y: SCROLL_GAP, animated: true });
+                      }}
                     />
                   )}
                   name="email"
                 />
-                {errors.email && <Text style={[AuthFont.quaternary, { color: 'red' }]}>{errors.email?.message}</Text>}
+                {errors.email && <Text style={[Fonts.Regular14, { color: 'red' }]}>{errors.email?.message}</Text>}
               </View>
 
-              <View style={styles.inputWrapper}>
+              <View style={styles.inputItem}>
                 <Controller
                   control={control}
                   rules={{
                     required: '비밀번호를 입력해주세요.',
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <CustomTextInput
+                    <AuthInput
                       text="비밀번호"
                       inputRef={passwordRef}
                       value={value}
@@ -112,17 +101,15 @@ export const EmailSignInScreen = () => {
                   )}
                   name="password"
                 />
-                {errors.password && (
-                  <Text style={[AuthFont.quaternary, { color: 'red' }]}>{errors.password?.message}</Text>
-                )}
+                {errors.password && <Text style={[Fonts.Regular14, { color: 'red' }]}>{errors.password?.message}</Text>}
               </View>
             </View>
 
-            <View style={{ marginTop: 36 }}>
-              <CommonButton text="로그인" onPress={handleSubmit(onSubmit)} />
+            <View style={styles.loginWrapper}>
+              <LongButton text="로그인" theme="secondary" onPress={handleSubmit(onSubmit)} disabled={isSubmitting} />
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </PaddingHorizontal>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -131,14 +118,16 @@ export const EmailSignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 35,
-
-    alignItems: 'center',
   },
-  inputWrapper: {
+  inputsWrapper: {
+    marginTop: 30,
+
+    gap: 20,
+  },
+  inputItem: {
     gap: 5,
   },
-  formWrapper: {
-    gap: 22,
+  loginWrapper: {
+    marginTop: 30,
   },
 });
