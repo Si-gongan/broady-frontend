@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { nicknameState } from '../../../states';
 import { SigonganDesign } from '../../sigongan/styles';
 import { commentFont } from '../styles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const NicknameSection = ({ navigation }: any) => {
   const nickname = useRecoilValue(nicknameState);
@@ -18,8 +19,9 @@ const NicknameSection = ({ navigation }: any) => {
         </Text>
       </View>
       <View style={[SigonganDesign.myPageGrid, styles.boxContainer]}>
-        <TouchableOpacity onPress={() => navigation.navigate('Nickname')}>
+        <TouchableOpacity style={styles.touchContainer} onPress={() => navigation.navigate('Nickname')}>
           <Text style={commentFont.BODY1}>닉네임 설정</Text>
+          <MaterialIcons name="arrow-forward-ios" />
         </TouchableOpacity>
       </View>
     </View>
@@ -34,6 +36,11 @@ const styles = StyleSheet.create({
     paddingVertical: 17,
     paddingHorizontal: 14,
     gap: 18,
+  },
+  touchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   nicknameText: {
     color: '#111E4F',

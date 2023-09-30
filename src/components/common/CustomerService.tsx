@@ -3,6 +3,7 @@ import { SigonganDesign } from '../sigongan/styles';
 
 import * as WebBrowser from 'expo-web-browser';
 import { commentFont } from '../Comment/styles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 interface CustomerServiceProps {
   isBlind: boolean;
@@ -15,14 +16,17 @@ const CustomerService = ({ isBlind }: CustomerServiceProps) => {
         <Text style={commentFont.MYPAGE_TITLE}>고객 지원</Text>
 
         <TouchableOpacity
+          style={styles.touchContainer}
           onPress={() =>
             WebBrowser.openBrowserAsync(isBlind ? 'http://pf.kakao.com/_sAnVG' : 'https://open.kakao.com/o/gdtCWjwf')
           }
         >
           <Text style={commentFont.BODY1}>1:1 문의</Text>
+          <MaterialIcons name="arrow-forward-ios" />
         </TouchableOpacity>
 
         <TouchableOpacity
+          style={styles.touchContainer}
           onPress={() =>
             WebBrowser.openBrowserAsync(
               isBlind
@@ -32,20 +36,25 @@ const CustomerService = ({ isBlind }: CustomerServiceProps) => {
           }
         >
           <Text style={commentFont.BODY1}>자주 묻는 질문 (FAQ)</Text>
+          <MaterialIcons name="arrow-forward-ios" />
         </TouchableOpacity>
 
         <TouchableOpacity
+          style={styles.touchContainer}
           onPress={() =>
             WebBrowser.openBrowserAsync('https://sites.google.com/view/bomjaguk/개인정보처리방침?authuser=0')
           }
         >
           <Text style={commentFont.BODY1}>개인정보처리방침</Text>
+          <MaterialIcons name="arrow-forward-ios" />
         </TouchableOpacity>
 
         <TouchableOpacity
+          style={styles.touchContainer}
           onPress={() => WebBrowser.openBrowserAsync('https://sites.google.com/view/bomjaguk/이용약관')}
         >
           <Text style={commentFont.BODY1}>서비스 이용약관</Text>
+          <MaterialIcons name="arrow-forward-ios" />
         </TouchableOpacity>
       </View>
     </>
@@ -66,6 +75,11 @@ const styles = StyleSheet.create({
   goBack: {
     paddingVertical: 17,
     paddingHorizontal: 14,
+  },
+  touchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 
