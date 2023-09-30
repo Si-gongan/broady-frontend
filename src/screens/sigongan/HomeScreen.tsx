@@ -11,8 +11,15 @@ import { SigonganStackParamList } from '../../navigations';
 import { GetRequestList, IReqeustListItem } from '../../api/axios/sigongan';
 
 import { NoticeError } from '../../api/axios';
-import { Header, LongButton, PaddingHorizontal, RequestItem, TabBar } from '../../components/renewal';
-import { IImageMethodPopupHandler, ImageMethodPopup } from '../../components/renewal/sigongan/home/ImageMethodPopup';
+import {
+  Header,
+  LongButton,
+  PaddingHorizontal,
+  RequestItem,
+  TabBar,
+  IImageMethodPopupHandler,
+  ImageMethodPopup,
+} from '../../components/renewal';
 
 export const HomeScreen = () => {
   // page move
@@ -90,6 +97,7 @@ export const HomeScreen = () => {
             refreshing={loading}
             renderItem={({ item }) => (
               <RequestItem
+                onPress={() => navigation.navigate('해설 진행현황', { item })}
                 imgUrl={process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL + '/' + item.photo}
                 date={item.updatedAt}
                 chat={getShortChat(getLastChat(item))}

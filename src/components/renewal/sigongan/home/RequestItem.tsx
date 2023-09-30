@@ -1,4 +1,4 @@
-import { View, Pressable, Image, StyleSheet, Text } from 'react-native';
+import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Colors, Fonts, Utils } from '../../styles';
 import { getConvertDate } from '../../utils';
 
@@ -7,11 +7,13 @@ type IRequestItemProps = {
 
   date: string;
   chat: string;
+
+  onPress?: () => void;
 };
 
-export const RequestItem = ({ imgUrl, date, chat }: IRequestItemProps) => {
+export const RequestItem = ({ imgUrl, date, chat, onPress }: IRequestItemProps) => {
   return (
-    <Pressable style={styles.container}>
+    <TouchableOpacity activeOpacity={0.8} style={styles.container} onPress={onPress}>
       <Image source={{ uri: imgUrl }} style={styles.img} />
 
       <View style={[styles.box, Utils.borderColor(Colors.Red.Lighten300)]}>
@@ -19,7 +21,7 @@ export const RequestItem = ({ imgUrl, date, chat }: IRequestItemProps) => {
 
         <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}>{chat}</Text>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

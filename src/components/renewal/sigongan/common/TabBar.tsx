@@ -1,9 +1,9 @@
 import { View, StyleSheet, Text, Pressable } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { Colors, Fonts, Utils } from '../styles';
+import { Colors, Fonts, Utils } from '../../styles';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { SigonganMainTabParamList } from '../../../navigations';
+import { SigonganMainTabParamList } from '../../../../navigations';
 import { LinearGradient } from 'expo-linear-gradient';
 
 // setting
