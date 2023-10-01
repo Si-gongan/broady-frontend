@@ -1,5 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { Shadow } from 'react-native-shadow-2';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getRequest, startComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
@@ -31,24 +30,38 @@ const BeforeCommentFooter = ({ id, setStatus, setRequest }: BeforeCommentFooterP
   };
 
   return (
-    <>
-      <Shadow
-        distance={10}
-        containerStyle={{ flex: 0.15 }}
-        style={{ width: '100%', height: '100%' }}
-        sides={{ top: true, bottom: false, start: false, end: false }}
-      >
-        <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.commentBtn} onPress={handleStartComment}>
-            <Text style={styles.commentText}>해설하기</Text>
-          </TouchableOpacity>
-        </View>
-      </Shadow>
-    </>
+    <View style={styles.bottomContainer}>
+      <View style={styles.footerContainer}>
+        <TouchableOpacity style={styles.commentBtn} onPress={handleStartComment}>
+          <Text style={styles.commentText}>해설하기</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  bottomContainer: {
+    flex: 0.15,
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: Colors.Red.Default,
+        shadowOffset: {
+          width: 5,
+          height: -5,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
   footerContainer: {
     alignItems: 'center',
     justifyContent: 'flex-end',

@@ -1,5 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { Shadow } from 'react-native-shadow-2';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Colors } from '../../renewal';
 import EndCommentBottomSheet from './BottomSheet/EndCommentBottomSheet';
 
@@ -10,25 +9,39 @@ interface IAfterCommentFooterProps {
 
 const AfterCommentFooter = ({ isEndComment, setIsEndComment }: IAfterCommentFooterProps) => {
   return (
-    <>
-      <Shadow
-        distance={10}
-        containerStyle={{ flex: 0.15 }}
-        style={{ width: '100%', height: '100%' }}
-        sides={{ top: true, bottom: false, start: false, end: false }}
-      >
-        <View style={styles.footerContainer}>
-          <View style={styles.commentEndBtn}>
-            <Text style={styles.commentText}>해설하기</Text>
-          </View>
+    <View style={styles.bottomContainer}>
+      <View style={styles.footerContainer}>
+        <View style={styles.commentEndBtn}>
+          <Text style={styles.commentText}>해설하기</Text>
         </View>
-        {isEndComment && <EndCommentBottomSheet visible={isEndComment} setVisible={setIsEndComment} />}
-      </Shadow>
-    </>
+      </View>
+      {isEndComment && <EndCommentBottomSheet visible={isEndComment} setVisible={setIsEndComment} />}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  bottomContainer: {
+    flex: 0.15,
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: Colors.Red.Default,
+        shadowOffset: {
+          width: 5,
+          height: -5,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
   footerContainer: {
     alignItems: 'center',
     justifyContent: 'flex-end',
