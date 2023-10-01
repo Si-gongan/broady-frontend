@@ -5,21 +5,18 @@ import RequestItem from './RequestItem';
 const RequestList = ({
   navigation,
   requestList,
-  setProceedRequest,
-  status,
+  setRequestList,
 }: {
   navigation: any;
   requestList: ICurrentRequest[];
-  setProceedRequest: (value: React.SetStateAction<ICurrentRequest[]>) => void;
-  status: number;
+  setRequestList: (value: React.SetStateAction<ICurrentRequest[]>) => void;
 }) => {
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
       data={requestList}
-      renderItem={({ item }) => (
-        <RequestItem request={item} setProceedRequest={setProceedRequest} status={status} navigation={navigation} />
-      )}
+      initialNumToRender={4}
+      renderItem={({ item }) => <RequestItem request={item} setRequestList={setRequestList} navigation={navigation} />}
       keyExtractor={(item) => String(item.id)}
       columnWrapperStyle={styles.cardContainer}
       ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
