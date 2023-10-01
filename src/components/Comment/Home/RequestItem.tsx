@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Platform } from 'react-native';
 import { IRequest } from '../../../types/request';
 import { getConvertDate } from '../../../utils/time';
@@ -89,4 +90,4 @@ const styles = StyleSheet.create({
   requestContent: {},
 });
 
-export default RequestItem;
+export default memo(RequestItem);

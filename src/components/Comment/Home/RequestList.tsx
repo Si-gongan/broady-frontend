@@ -7,6 +7,7 @@ const RequestList = ({ requestList, navigation }: { requestList: IRequest[]; nav
     <FlatList
       showsVerticalScrollIndicator={false}
       data={requestList}
+      initialNumToRender={4}
       renderItem={({ item }) => <RequestItem request={item} navigation={navigation} />}
       keyExtractor={(item) => String(item.id)}
       columnWrapperStyle={styles.cardContainer}
