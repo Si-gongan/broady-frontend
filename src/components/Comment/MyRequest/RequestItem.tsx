@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dimensions, Platform } from 'react-native';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
@@ -15,12 +15,10 @@ const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30; // 부모컴포넌트 width:90
 const RequestItem = ({
   request,
   setProceedRequest,
-  status,
   navigation,
 }: {
   request: ICurrentRequest;
   setProceedRequest: (value: React.SetStateAction<ICurrentRequest[]>) => void;
-  status: number;
   navigation: any;
 }) => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -31,6 +29,15 @@ const RequestItem = ({
   const gapTime = getConvertDate(request.createdAt);
 
   const [commentTimer, setCommentTimer] = useState<number>(7);
+
+  const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
+  const { isAvailable, isComplete } = request;
+
+  useEffect(() => {
+    if (isAvailable && isComplete === false) setStatus(-1);
+    if (isAvailable === false && isComplete === false) setStatus(0);
+    if (isAvailable === false && isComplete) setStatus(1);
+  }, [isAvailable, isComplete]);
 
   // 시간을 줄일수록 작성 중인 해설의 남은시간 계산속도가 빠름. 코스트 고려.
   useInterval(() => {
@@ -65,7 +72,7 @@ const RequestItem = ({
         <View style={styles.imageTextContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.createdAtRequest}>{gapTime}</Text>
-            {request.expiredAt && getKoreanTime(new Date()) < new Date(request.expiredAt) ? (
+            {status === 0 ? (
               <Text style={{ fontSize: 12, color: '#CF0000' }}>{commentTimer}분 남음</Text>
             ) : (
               <Text></Text>
