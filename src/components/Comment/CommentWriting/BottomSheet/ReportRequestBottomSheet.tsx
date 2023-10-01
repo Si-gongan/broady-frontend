@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-nativ
 import { BottomSheet } from 'react-native-btr';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
 import { RadioButton } from 'react-native-paper';
+import { Colors } from '../../../renewal';
+import { commentFont } from '../../styles';
 
 interface IReportRequestBottomSheetProps {
   postId: string;
@@ -38,6 +40,11 @@ const ReportRequestBottomSheet = ({ postId, visible, setVisible }: IReportReques
         </View>
         <View style={SigonganDesign.borderOpaque} />
         <View style={styles.itemWrapper}>
+          <View style={{ width: '90%', paddingVertical: 10 }}>
+            <Text style={[commentFont.SMALL_TITLE, styles.description]}>
+              사진 및 질문이 (선정성, 폭력성, 사기 등) 부적절하다면{'\n'} 운영진에게 알려주세요.
+            </Text>
+          </View>
           <View style={{ width: '90%' }}>
             {selectList.map((question) => (
               <View key={question.id} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
@@ -49,15 +56,14 @@ const ReportRequestBottomSheet = ({ postId, visible, setVisible }: IReportReques
                     onPress={() => setSelected(question.id)}
                   />
                 </View>
-                <Text style={{ paddingLeft: 12, fontSize: 16 }}>{question.text}</Text>
+                <Text style={[commentFont.BODY1, styles.questionText]}>{question.text}</Text>
               </View>
             ))}
           </View>
         </View>
         <View style={{ marginBottom: 15 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20 }}>
-            <Text>신고 내용</Text>
-            <Text>{reportInput.length} / 100</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginHorizontal: 20 }}>
+            <Text style={commentFont.BODY2}>{reportInput.length} / 100</Text>
           </View>
           <View style={{ alignItems: 'center' }}>
             <TextInput
@@ -71,14 +77,12 @@ const ReportRequestBottomSheet = ({ postId, visible, setVisible }: IReportReques
             />
           </View>
         </View>
-
         <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.commentBtn} onPress={onClose}>
-            <Text style={styles.commentText}>취소하기</Text>
+          <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
+            <Text style={[commentFont.BUTTON_TEXT, styles.closeText]}>취소하기</Text>
           </TouchableOpacity>
-
           <TouchableOpacity style={styles.commentBtn} onPress={() => handleClickReportRequest(postId)}>
-            <Text style={styles.commentText}>신고하기</Text>
+            <Text style={[commentFont.BUTTON_TEXT, styles.commentText]}>신고하기</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -106,6 +110,14 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: 'center',
   },
+  description: {
+    color: '#767676',
+    textAlign: 'center',
+  },
+  questionText: {
+    paddingLeft: 12,
+    fontSize: 16,
+  },
   item: {
     alignItems: 'center',
     paddingVertical: 20,
@@ -117,27 +129,41 @@ const styles = StyleSheet.create({
     height: 80,
     width: '90%',
     fontSize: 16,
-    borderWidth: 3,
+    borderWidth: 1,
     borderRadius: 10,
-    borderColor: 'black',
+    borderColor: Colors.Red.Default,
   },
   footerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     gap: 20,
   },
+  closeBtn: {
+    backgroundColor: 'white',
+    width: '40%',
+    marginBottom: 30,
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.Red.Default,
+  },
   commentBtn: {
-    backgroundColor: '#2C2C2C',
-    width: '42%',
+    backgroundColor: Colors.Red.Default,
+    width: '40%',
     marginBottom: 30,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  closeText: {
+    color: Colors.Red.Default,
+  },
   commentText: {
     color: 'white',
-    fontSize: 16,
   },
 });
 

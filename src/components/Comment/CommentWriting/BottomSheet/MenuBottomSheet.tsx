@@ -6,9 +6,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
 import { reportPost } from '../../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../../states';
-import { SigonganColor, SigonganDesign, SigonganFont, SigonganShadow } from '../../../sigongan/styles';
+import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
 import ReportImageBottomSheet from './ReportImageBottomSheet';
 import ReportRequestBottomSheet from './ReportRequestBottomSheet';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { commentFont } from '../../styles';
+import { Colors } from '../../../renewal';
 
 interface IMenuBottomSheetProps {
   navigation: any;
@@ -55,22 +58,32 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
       <View style={[styles.container, SigonganColor.backgroundPrimary]}>
         <View style={styles.titleWrapper}>
-          <Text style={(SigonganFont.secondary, styles.titleText)}>메뉴</Text>
+          <Text style={commentFont.BUTTON_TEXT}>메뉴</Text>
         </View>
         <View style={SigonganDesign.borderOpaque} />
         <View style={[styles.itemWrapper, { paddingBottom: insets.bottom || 16 }]}>
           <TouchableOpacity style={styles.item} onPress={handleClickReportImageBtn}>
-            <Text style={SigonganFont.secondary}>잘못된 사진 제보</Text>
+            <View style={styles.touchContainer}>
+              <Text style={commentFont.BODY1}>잘못된 사진 제보</Text>
+              <MaterialIcons name="arrow-forward-ios" />
+            </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.item} onPress={handleClickReportRequestBtn}>
-            <Text style={SigonganFont.secondary}>부적절한 의뢰 신고</Text>
+            <View style={styles.touchContainer}>
+              <Text style={commentFont.BODY1}>부적절한 의뢰 신고</Text>
+              <MaterialIcons name="arrow-forward-ios" />
+            </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.item} onPress={() => handleReportPost(postId)}>
-            <Text style={SigonganFont.secondary}>차단</Text>
+            <View style={styles.touchContainer}>
+              <Text style={commentFont.BODY1}>차단</Text>
+              <MaterialIcons name="arrow-forward-ios" />
+            </View>
           </TouchableOpacity>
-
-          <TouchableOpacity style={styles.item} onPress={onClose}>
-            <Text style={SigonganFont.secondary}>취소</Text>
+          <TouchableOpacity style={styles.closeContainer} onPress={onClose}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={[commentFont.BODY1, styles.closeText]}>취소</Text>
+            </View>
           </TouchableOpacity>
         </View>
         {isReportImage && (
@@ -86,30 +99,40 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
 
 const styles = StyleSheet.create({
   container: {
-    // alignItems: 'center',
     paddingTop: 8,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     ...SigonganShadow.shadowTopHigh,
   },
   titleWrapper: {
-    // width: '100%',
     alignItems: 'center',
-    paddingVertical: 20,
-  },
-  titleText: {
-    fontSize: 18,
+    paddingVertical: 15,
   },
 
-  itemWrapper: {
-    // width: '100%'
-  },
+  itemWrapper: {},
   item: {
-    // alignItems: 'center',
-    paddingLeft: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#E8E8E8',
+  },
+  touchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 12,
+  },
+  closeText: {
+    color: Colors.Red.Default,
+  },
+  closeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.Red.Default,
+    borderRadius: 12,
+    marginHorizontal: 20,
     paddingVertical: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E8E8E8',
   },
 });
 
