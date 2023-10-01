@@ -38,10 +38,6 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
   const [reportInput, setReportInput] = useState<string>('');
   const [selected, setSelected] = useState<number>(0);
 
-  const handleReportInput = (text: string) => {
-    setReportInput(text);
-  };
-
   const onClose = () => setVisible(false);
 
   const handleClickReportImage = (postId: string) => {
@@ -73,7 +69,7 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
             <TextInput
               placeholder="제보할 내용을 작성해주세요"
               multiline
-              onChangeText={(text) => handleReportInput(text)}
+              onChangeText={(text) => setReportInput(text)}
               value={reportInput}
               textAlignVertical="top"
               style={styles.inputBox}
