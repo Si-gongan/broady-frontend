@@ -1,8 +1,14 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { Colors } from '../../renewal';
+import EndCommentBottomSheet from './BottomSheet/EndCommentBottomSheet';
 
-const AfterCommentFooter = () => {
+interface IAfterCommentFooterProps {
+  isEndComment: boolean;
+  setIsEndComment: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AfterCommentFooter = ({ isEndComment, setIsEndComment }: IAfterCommentFooterProps) => {
   return (
     <>
       <Shadow
@@ -16,6 +22,7 @@ const AfterCommentFooter = () => {
             <Text style={styles.commentText}>해설하기</Text>
           </View>
         </View>
+        {isEndComment && <EndCommentBottomSheet visible={isEndComment} setVisible={setIsEndComment} />}
       </Shadow>
     </>
   );

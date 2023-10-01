@@ -18,25 +18,34 @@ import { endComment, getCorrectText, stopComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import Toast from 'react-native-root-toast';
-import StopCommentBottomMenu from './BottomSheet/StopCommentBottomSheet';
+import StopCommentBottomSheet from './BottomSheet/StopCommentBottomSheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../../renewal';
 import { commentFont } from '../styles';
+import EndCommentBottomSheet from './BottomSheet/EndCommentBottomSheet';
 
 interface IFCurrentCommentFooterProps {
   id: string;
   setRequest: (value: React.SetStateAction<ICurrentRequest>) => void;
   commentTimer: number;
   setStatus: (value: React.SetStateAction<number>) => void;
+  setIsEndComment: React.Dispatch<React.SetStateAction<boolean>>;
   navigation: any;
 }
 
-const CurrentCommentFooter = ({ id, setRequest, commentTimer, setStatus, navigation }: IFCurrentCommentFooterProps) => {
+const CurrentCommentFooter = ({
+  id,
+  setRequest,
+  commentTimer,
+  setStatus,
+  setIsEndComment,
+  navigation,
+}: IFCurrentCommentFooterProps) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState('');
   const insets = useSafeAreaInsets();
   const [isSent, setIsSent] = useState(true);
   const [isStopComment, setIsStopComment] = useState(false);
@@ -59,6 +68,7 @@ const CurrentCommentFooter = ({ id, setRequest, commentTimer, setStatus, navigat
     }
     try {
       const result = await endComment(id, text, fcmToken, authToken);
+      setIsEndComment(true);
       setRequest(result);
       setText('');
     } catch (error) {
@@ -112,57 +122,50 @@ const CurrentCommentFooter = ({ id, setRequest, commentTimer, setStatus, navigat
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Shadow
-        distance={10}
-        containerStyle={{ paddingBottom: 20 }}
-        style={{ width: '100%' }}
-        sides={{ top: true, bottom: false, start: false, end: false }}
-      >
-        <ScrollView keyboardShouldPersistTaps="always">
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.AIBtn} onPress={() => handleClickAICorrectionBtn(text)}>
-              <Text style={{ color: 'white' }}>AI다듬기</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.commentQuit} onPress={handleStopCommentModal}>
-              <Text style={{ color: 'white' }}>해설 넘기기</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.inputTextContainer}>
-            <View style={{ flex: 0.9, gap: 5 }}>
-              <View style={styles.textContainer}>
-                <TextInput
-                  placeholder="해설을 작성해주세요..."
-                  multiline
-                  onChangeText={(text) => handleCommentInput(text)}
-                  value={text}
-                  textAlignVertical="top"
-                  style={styles.inputBox}
-                  autoComplete="off"
+      <View style={styles.bottomContainer}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.AIBtn} onPress={() => handleClickAICorrectionBtn(text)}>
+            <Text style={styles.whiteText}>AI다듬기</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.commentQuit} onPress={handleStopCommentModal}>
+            <Text style={styles.whiteText}>해설 넘기기</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.inputTextContainer}>
+          <View style={{ flex: 0.9, gap: 5 }}>
+            <View style={styles.textContainer}>
+              <TextInput
+                placeholder="해설을 작성해주세요..."
+                multiline
+                onChangeText={(text) => handleCommentInput(text)}
+                value={text}
+                textAlignVertical="top"
+                style={styles.inputBox}
+                autoComplete="off"
+              />
+              <TouchableOpacity
+                style={styles.sendBtn}
+                onPress={() => handleClickSendBtn(id)}
+                activeOpacity={0.6}
+                disabled={!isSent}
+              >
+                <Icon
+                  name="send"
+                  style={isSent ? { opacity: 1 } : { opacity: 0.5 }}
+                  color={Colors.Red.Default}
+                  size={30}
                 />
-                <TouchableOpacity
-                  style={styles.sendBtn}
-                  onPress={() => handleClickSendBtn(id)}
-                  activeOpacity={0.6}
-                  disabled={!isSent}
-                >
-                  <Icon
-                    name="send"
-                    style={isSent ? { opacity: 1 } : { opacity: 0.5 }}
-                    color={Colors.Red.Default}
-                    size={30}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.commentTimerContainer}>
-                <Text style={[commentFont.BODY2, styles.commentTimerText]}>{commentTimer}분 남음</Text>
-                <Text style={commentFont.BODY2}>{text.length} / 50 자</Text>
-              </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.commentTimerContainer}>
+              <Text style={[commentFont.BODY2, styles.commentTimerText]}>{commentTimer}분 남음</Text>
+              <Text style={commentFont.BODY2}>{text.length} / 50 자</Text>
             </View>
           </View>
-        </ScrollView>
-      </Shadow>
+        </View>
+      </View>
       {isStopComment && (
-        <StopCommentBottomMenu
+        <StopCommentBottomSheet
           handleClickStopComment={handleClickStopComment}
           visible={isStopComment}
           setVisible={setIsStopComment}
@@ -173,6 +176,26 @@ const CurrentCommentFooter = ({ id, setRequest, commentTimer, setStatus, navigat
 };
 
 const styles = StyleSheet.create({
+  bottomContainer: {
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 30,
+    ...Platform.select({
+      ios: {
+        shadowColor: Colors.Red.Default,
+        shadowOffset: {
+          width: 5,
+          height: -5,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
   leftHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -184,7 +207,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
-    // marginLeft: 20,
   },
   timer: {
     flexDirection: 'row',
@@ -205,6 +227,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     gap: 20,
     marginLeft: 20,
+  },
+  whiteText: {
+    color: 'white',
   },
   inputTextContainer: {
     flexDirection: 'row',

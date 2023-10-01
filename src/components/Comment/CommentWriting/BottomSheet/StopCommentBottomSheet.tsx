@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
+import { Colors } from '../../../renewal';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
+import { commentFont } from '../../styles';
 
 interface IStopCommentBottomSheetProps {
   handleClickStopComment: () => void;
@@ -15,16 +17,19 @@ const StopCommentBottomSheet = ({ handleClickStopComment, visible, setVisible }:
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
       <View style={[styles.container, SigonganColor.backgroundPrimary]}>
         <View style={styles.titleWrapper}>
-          <Text style={styles.titleText}>해설 넘기기</Text>
+          <Text style={commentFont.BUTTON_TEXT}>해설 넘기기</Text>
         </View>
         <View style={SigonganDesign.borderOpaque} />
         <View style={styles.itemWrapper}>
-          <Text style={{ fontSize: 18 }}>해설을 그만두고 다른 해설자에게 넘길 경우</Text>
-          <Text style={{ fontSize: 18 }}>10P가 차감됩니다.</Text>
+          <Text style={commentFont.BODY1}>해설을 그만두고 다른 해설자에게 넘길 경우</Text>
+          <Text style={commentFont.BODY1}>10P가 차감됩니다.</Text>
         </View>
         <View style={styles.footerContainer}>
+          <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
+            <Text style={[commentFont.BUTTON_TEXT, styles.closeText]}>취소</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.commentBtn} onPress={handleClickStopComment}>
-            <Text style={styles.commentText}>해설 넘기기</Text>
+            <Text style={[commentFont.BUTTON_TEXT, styles.commentText]}>해설 넘기기</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   titleText: {
-    fontSize: 18,
+    fontWeight: '500',
   },
   itemWrapper: {
     paddingVertical: 40,
@@ -57,21 +62,36 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
+    gap: 20,
+  },
+  closeBtn: {
+    backgroundColor: 'white',
+    width: '40%',
+    marginBottom: 30,
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.Red.Default,
   },
   commentBtn: {
-    backgroundColor: '#2C2C2C',
-    width: '90%',
-    // height: '35%',
+    backgroundColor: Colors.Red.Default,
+    width: '40%',
     marginBottom: 30,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  closeText: {
+    color: Colors.Red.Default,
+  },
   commentText: {
     color: 'white',
-    fontSize: 22,
   },
 });
 

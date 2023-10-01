@@ -3,6 +3,10 @@ import { ICurrentRequest } from '../../../types/request';
 import BeforeCommentFooter from './BeforeCommentFooter';
 import AfterCommentFooter from './AfterCommentFooter';
 import CurrentCommentFooter from './CurrentCommentFooter';
+import { getKoreanTime } from '../../../utils/time';
+import { stopComment } from '../../../api/axios';
+import { useRecoilValue } from 'recoil';
+import { authTokenState, fcmTokenState } from '../../../states';
 
 interface IFooterProps {
   id: string;
@@ -15,6 +19,7 @@ interface IFooterProps {
 const Footer = ({ id, request, setRequest, commentTimer, navigation }: IFooterProps) => {
   const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
   const { isAvailable, isComplete } = request;
+  const [isEndComment, setIsEndComment] = useState(false);
 
   useEffect(() => {
     if (isAvailable && isComplete === false) setStatus(-1);
@@ -32,10 +37,11 @@ const Footer = ({ id, request, setRequest, commentTimer, navigation }: IFooterPr
           setRequest={setRequest}
           commentTimer={commentTimer}
           setStatus={setStatus}
+          setIsEndComment={setIsEndComment}
           navigation={navigation}
         />
       )}
-      {status === 1 && <AfterCommentFooter />}
+      {status === 1 && <AfterCommentFooter isEndComment={isEndComment} setIsEndComment={setIsEndComment} />}
     </>
   );
 };
