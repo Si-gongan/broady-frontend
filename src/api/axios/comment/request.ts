@@ -39,7 +39,7 @@ export const getCompletedRequest = async (fcmToken: string, token: string) => {
 };
 
 export const getMyRequestAll = async (fcmToken: string, token: string) => {
-  const result = await CommentServer.get(`/post/all`, {
+  const result = await CommentServer.get<CompletedRequestReturnType>(`/post/all`, {
     headers: { fcmToken, Authorization: token },
   });
 
