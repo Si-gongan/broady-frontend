@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     justifyContent: 'space-between',
     gap: 30,
-    marginHorizontal: 20,
+    margin: 20,
   },
 });
 
