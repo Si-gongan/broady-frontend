@@ -7,11 +7,10 @@ import { useRecoilValue } from 'recoil';
 import { reportPost } from '../../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../../states';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
-import ReportImageBottomSheet from './ReportImageBottomSheet';
-import ReportRequestBottomSheet from './ReportRequestBottomSheet';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { commentFont } from '../../styles';
 import { Colors } from '../../../renewal';
+import ReportBottomSheet from './ReportBottomSheet';
 
 interface IMenuBottomSheetProps {
   navigation: any;
@@ -24,20 +23,21 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
-  const [isReportImage, setIsReportImage] = useState(false);
-  const [isReportRequest, setIsReportRequest] = useState(false);
+  const [isOpened, setIsOpened] = useState(false);
+  const [category, setCategory] = useState(0); // image: 0, request: 1
 
   const insets = useSafeAreaInsets();
 
   const onClose = () => setVisible(false);
 
   const handleClickReportImageBtn = () => {
-    // onClose();
-    setIsReportImage(true);
+    setIsOpened(true);
+    setCategory(0);
   };
 
   const handleClickReportRequestBtn = () => {
-    setIsReportRequest(true);
+    setIsOpened(true);
+    setCategory(1);
   };
 
   const handleReportPost = async (postId: string) => {
@@ -86,11 +86,8 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
             </View>
           </TouchableOpacity>
         </View>
-        {isReportImage && (
-          <ReportImageBottomSheet postId={postId} visible={isReportImage} setVisible={setIsReportImage} />
-        )}
-        {isReportRequest && (
-          <ReportRequestBottomSheet postId={postId} visible={isReportRequest} setVisible={setIsReportRequest} />
+        {isOpened && (
+          <ReportBottomSheet postId={postId} category={category} visible={isOpened} setVisible={setIsOpened} />
         )}
       </View>
     </BottomSheet>
