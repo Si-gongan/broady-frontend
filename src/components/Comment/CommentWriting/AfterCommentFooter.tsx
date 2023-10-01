@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
+import { Colors } from '../../renewal';
 
 const AfterCommentFooter = () => {
   return (
@@ -25,16 +26,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
-  commentBtn: {
-    backgroundColor: '#2C2C2C',
-    width: '90%',
-    height: '80%',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   commentEndBtn: {
-    backgroundColor: 'rgba(44, 44, 44, 0.52)',
+    backgroundColor: Colors.Red.Lighten300,
     width: '90%',
     height: '80%',
     borderRadius: 10,

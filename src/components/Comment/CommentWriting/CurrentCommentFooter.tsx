@@ -20,6 +20,9 @@ import { ICurrentRequest } from '../../../types/request';
 import Toast from 'react-native-root-toast';
 import StopCommentBottomMenu from './BottomSheet/StopCommentBottomSheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Colors } from '../../renewal';
+import { commentFont } from '../styles';
 
 interface IFCurrentCommentFooterProps {
   id: string;
@@ -116,45 +119,45 @@ const CurrentCommentFooter = ({ id, setRequest, commentTimer, setStatus, navigat
         sides={{ top: true, bottom: false, start: false, end: false }}
       >
         <ScrollView keyboardShouldPersistTaps="always">
-          <View style={styles.inputTextHeader}>
-            <View style={styles.leftHeader}>
-              <TouchableOpacity style={styles.AIBtn} onPress={() => handleClickAICorrectionBtn(text)}>
-                <Text style={{ color: 'white' }}>AI다듬기</Text>
-              </TouchableOpacity>
-              <Text>{text.length} / 50 자</Text>
-            </View>
-
-            <View style={styles.timer}>
-              <Text style={{ color: '#CF0000' }}>{commentTimer}분 남음</Text>
-              <TouchableOpacity style={styles.commentQuit} onPress={handleStopCommentModal}>
-                <Text style={{ color: 'white' }}>해설 넘기기</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.AIBtn} onPress={() => handleClickAICorrectionBtn(text)}>
+              <Text style={{ color: 'white' }}>AI다듬기</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.commentQuit} onPress={handleStopCommentModal}>
+              <Text style={{ color: 'white' }}>해설 넘기기</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.inputTextContainer}>
-            <View style={{ flex: 0.75 }}>
-              <TextInput
-                placeholder="해설을 작성해주세요..."
-                multiline
-                onChangeText={(text) => handleCommentInput(text)}
-                value={text}
-                textAlignVertical="top"
-                style={styles.inputBox}
-                autoComplete="off"
-              />
+            <View style={{ flex: 0.9, gap: 5 }}>
+              <View style={styles.textContainer}>
+                <TextInput
+                  placeholder="해설을 작성해주세요..."
+                  multiline
+                  onChangeText={(text) => handleCommentInput(text)}
+                  value={text}
+                  textAlignVertical="top"
+                  style={styles.inputBox}
+                  autoComplete="off"
+                />
+                <TouchableOpacity
+                  style={styles.sendBtn}
+                  onPress={() => handleClickSendBtn(id)}
+                  activeOpacity={0.6}
+                  disabled={!isSent}
+                >
+                  <Icon
+                    name="send"
+                    style={isSent ? { opacity: 1 } : { opacity: 0.5 }}
+                    color={Colors.Red.Default}
+                    size={30}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.commentTimerContainer}>
+                <Text style={[commentFont.BODY2, styles.commentTimerText]}>{commentTimer}분 남음</Text>
+                <Text style={commentFont.BODY2}>{text.length} / 50 자</Text>
+              </View>
             </View>
-            <TouchableOpacity
-              style={styles.sendBtn}
-              onPress={() => handleClickSendBtn(id)}
-              activeOpacity={0.6}
-              disabled={!isSent}
-            >
-              <Image
-                style={isSent ? { opacity: 1 } : { opacity: 0.5 }}
-                source={require('../../../../assets/send.png')}
-                alt=""
-              />
-            </TouchableOpacity>
           </View>
         </ScrollView>
       </Shadow>
@@ -177,10 +180,11 @@ const styles = StyleSheet.create({
   },
   AIBtn: {
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.80)',
-    padding: 10,
-    borderRadius: 10,
-    marginLeft: 20,
+    backgroundColor: Colors.Red.Default,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    // marginLeft: 20,
   },
   timer: {
     flexDirection: 'row',
@@ -189,15 +193,18 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   commentQuit: {
-    backgroundColor: 'rgba(0, 0, 0, 0.80)',
-    padding: 10,
-    borderRadius: 10,
+    justifyContent: 'center',
+    backgroundColor: Colors.Red.Default,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
   },
-  inputTextHeader: {
+  buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    height: 60,
+    paddingVertical: 10,
+    gap: 20,
+    marginLeft: 20,
   },
   inputTextContainer: {
     flexDirection: 'row',
@@ -207,16 +214,31 @@ const styles = StyleSheet.create({
   inputBox: {
     marginTop: 5,
     paddingLeft: 10,
-    paddingTop: 15,
-    height: 50,
-    fontSize: 16,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#6E6E6E',
+    paddingTop: 0,
+    paddingBottom: 0,
+    ...commentFont.BODY1,
+    flex: 0.95,
   },
   sendBtn: {
     flex: 0.15,
     alignItems: 'center',
+  },
+  textContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: Colors.Red.Default,
+    height: 40,
+  },
+  commentTimerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: 10,
+  },
+  commentTimerText: {
+    color: '#D23928',
   },
 });
 

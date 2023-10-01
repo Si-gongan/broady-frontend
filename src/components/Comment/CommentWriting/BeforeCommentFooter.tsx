@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { getRequest, startComment } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
+import { Colors } from '../../renewal';
 
 interface BeforeCommentFooterProps {
   id: string;
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   commentBtn: {
-    backgroundColor: '#2C2C2C',
+    backgroundColor: Colors.Red.Default,
     width: '90%',
     height: '80%',
     borderRadius: 10,
