@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Dimensions, Platform } from 'react-native';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
-import { getProceedRequest } from '../../../api/axios';
+import { getMyRequestAll } from '../../../api/axios';
 import useInterval from '../../../hooks/useInterval';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
@@ -14,13 +14,11 @@ const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30; // 부모컴포넌트 width:90
 
 const RequestItem = ({
   request,
-  setProceedRequest,
-  status,
+  setRequestList,
   navigation,
 }: {
   request: ICurrentRequest;
-  setProceedRequest: (value: React.SetStateAction<ICurrentRequest[]>) => void;
-  status: number;
+  setRequestList: (value: React.SetStateAction<ICurrentRequest[]>) => void;
   navigation: any;
 }) => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -32,6 +30,15 @@ const RequestItem = ({
 
   const [commentTimer, setCommentTimer] = useState<number>(7);
 
+  const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
+  const { isAvailable, isComplete } = request;
+
+  useEffect(() => {
+    if (isAvailable && isComplete === false) setStatus(-1);
+    if (isAvailable === false && isComplete === false) setStatus(0);
+    if (isAvailable === false && isComplete) setStatus(1);
+  }, [isAvailable, isComplete]);
+
   // 시간을 줄일수록 작성 중인 해설의 남은시간 계산속도가 빠름. 코스트 고려.
   useInterval(() => {
     if (request.expiredAt !== null) {
@@ -40,11 +47,22 @@ const RequestItem = ({
         setCommentTimer(result);
       } else {
         // MY의뢰화면에서 작성중인 의뢰가 시간이 지났을 때
-        if (status === 0)
-          getProceedRequest(fcmToken, authToken).then((data) => {
-            const sortedList = [...data].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
-            setProceedRequest(sortedList);
+        if (status === 0 && getKoreanTime(new Date()) > new Date(request.expiredAt)) {
+          setStatus(-1);
+          getMyRequestAll(fcmToken, authToken).then((res) => {
+            const proceedList = [...res]
+              .filter((data) => data.isAvailable === false && data.isComplete === false)
+              .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+
+            const completeList = [...res]
+              .filter((data) => data.isAvailable === false && data.isComplete === true)
+              .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+
+            const sortedCompletedList = [...proceedList, ...completeList];
+
+            setRequestList(sortedCompletedList);
           });
+        }
       }
     }
   }, 100);
@@ -65,7 +83,7 @@ const RequestItem = ({
         <View style={styles.imageTextContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.createdAtRequest}>{gapTime}</Text>
-            {request.expiredAt && getKoreanTime(new Date()) < new Date(request.expiredAt) ? (
+            {status === 0 ? (
               <Text style={{ fontSize: 12, color: '#CF0000' }}>{commentTimer}분 남음</Text>
             ) : (
               <Text></Text>
@@ -121,4 +139,4 @@ const styles = StyleSheet.create({
   requestContent: {},
 });
 
-export default RequestItem;
+export default memo(RequestItem);

@@ -31,6 +31,10 @@ export const commentFont = StyleSheet.create({
     fontWeight: '700',
     color: '#565656',
   },
+  BUTTON_TEXT: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
   SMALL_TITLE: {
     fontSize: 14,
     fontWeight: '400',

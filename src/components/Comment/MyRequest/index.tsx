@@ -13,25 +13,26 @@ const MyRequest = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
-  const [proceedRequest, setProceedRequest] = useState<ICurrentRequest[]>([]);
-  const [completedRequest, setCompletedRequest] = useState<ICurrentRequest[]>([]);
-
-  const isFocused = useIsFocused();
-
-  const lastClicked = useRef(0);
-
   const [requestList, setRequestList] = useState<ICurrentRequest[]>([]);
   const totalCompletedRequest = useRef(0);
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
       try {
-        console.log('하단탭으로 진입할 때');
+        console.log('MY의뢰');
         getMyRequestAll(fcmToken, authToken).then((res) => {
-          const sortedCompletedList = [...res].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
-          totalCompletedRequest.current = sortedCompletedList.length;
-          // const slicedCompletedList = sortedCompletedList.slice(0, 5); // 테스트용
-          // setRequestList(slicedCompletedList); // 테스트용
+          const proceedList = [...res]
+            .filter((data) => data.isAvailable === false && data.isComplete === false)
+            .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+
+          const completeList = [...res]
+            .filter((data) => data.isAvailable === false && data.isComplete === true)
+            .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
+
+          const sortedCompletedList = [...proceedList, ...completeList];
+          totalCompletedRequest.current = completeList.length;
           setRequestList(sortedCompletedList);
         });
       } catch (error) {
@@ -45,13 +46,7 @@ const MyRequest = ({ navigation }: any) => {
       <View style={styles.header}></View>
       <MyRequestInformation totalCompletedRequest={totalCompletedRequest.current} />
       <View style={styles.bodyContainer}>
-        <RequestList
-          // requestList={lastClicked.current ? completedRequest : proceedRequest}
-          requestList={requestList}
-          setProceedRequest={setProceedRequest}
-          navigation={navigation}
-          status={lastClicked.current}
-        />
+        <RequestList requestList={requestList} setRequestList={setRequestList} navigation={navigation} />
       </View>
     </View>
   );

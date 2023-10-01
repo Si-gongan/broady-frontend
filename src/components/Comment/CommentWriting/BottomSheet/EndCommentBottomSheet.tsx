@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
+import { Colors } from '../../../renewal';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
+import { commentFont } from '../../styles';
 
 interface IEndCommentBottomSheetProps {
   visible: boolean;
@@ -14,16 +16,16 @@ const EndCommentBottomSheet = ({ visible, setVisible }: IEndCommentBottomSheetPr
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
       <View style={[styles.container, SigonganColor.backgroundPrimary]}>
         <View style={styles.titleWrapper}>
-          <Text style={styles.titleText}>해설 완료</Text>
+          <Text style={commentFont.BUTTON_TEXT}>해설 완료</Text>
         </View>
         <View style={SigonganDesign.borderOpaque} />
         <View style={styles.itemWrapper}>
-          <Text style={{ fontSize: 18 }}>해설이 성공적으로 완료되었습니다!</Text>
-          <Text style={{ fontSize: 18 }}>50P를 지급해드렸어요.</Text>
+          <Text style={commentFont.BODY1}>해설이 성공적으로 완료되었습니다!</Text>
+          <Text style={commentFont.BODY1}>50P를 지급해드렸어요.</Text>
         </View>
         <View style={styles.footerContainer}>
           <TouchableOpacity style={styles.commentBtn} onPress={onClose}>
-            <Text style={styles.commentText}>확인</Text>
+            <Text style={[commentFont.BUTTON_TEXT, styles.commentText]}>확인</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -59,9 +61,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   commentBtn: {
-    backgroundColor: '#2C2C2C',
+    backgroundColor: Colors.Red.Default,
     width: '90%',
-    // height: '35%',
     marginBottom: 30,
     padding: 15,
     borderRadius: 10,
@@ -70,7 +71,6 @@ const styles = StyleSheet.create({
   },
   commentText: {
     color: 'white',
-    fontSize: 22,
   },
 });
 

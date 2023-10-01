@@ -18,7 +18,7 @@ const Header = ({ navigation, setIsMenuVisible, children }: IHeaderProps) => {
         <View>
           {setIsMenuVisible ? (
             <TouchableOpacity onPress={() => setIsMenuVisible(true)}>
-              <MaterialCommunityIcons name="dots-vertical" style={styles.headerSettingIcon} />
+              <MaterialCommunityIcons name="cog" style={styles.headerSettingIcon} />
             </TouchableOpacity>
           ) : (
             <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBlank} />
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   headerSettingIcon: {
     fontSize: 30,
-    marginRight: 10,
+    marginRight: 20,
   },
   headerBlank: {
     fontSize: 40,
