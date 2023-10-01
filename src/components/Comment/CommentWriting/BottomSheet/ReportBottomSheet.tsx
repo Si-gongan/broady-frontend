@@ -94,7 +94,13 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
   );
 };
 
-const QuestionList = ({ category, selected, setSelected }: any) => {
+interface IQuestionListProps {
+  category: number;
+  selected: number;
+  setSelected: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const QuestionList = ({ category, selected, setSelected }: IQuestionListProps) => {
   return (
     <>
       {category
