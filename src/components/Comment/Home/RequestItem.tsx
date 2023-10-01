@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Platform } from 'react-native';
 import { IRequest } from '../../../types/request';
 import { getConvertDate } from '../../../utils/time';
+import { Colors } from '../../renewal';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30; // 부모컴포넌트 width:90%에 2개씩 렌더링. gap: 30
@@ -56,14 +57,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.15)',
     backgroundColor: '#ffffff',
+    shadowColor: Colors.Red.Lighten100,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: Colors.Red.Lighten100,
         shadowOffset: {
-          width: 0,
+          width: 2,
           height: 2,
         },
-        shadowOpacity: 0.25,
+        shadowOpacity: 0.5,
         shadowRadius: 3,
       },
       android: {

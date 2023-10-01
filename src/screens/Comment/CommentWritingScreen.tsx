@@ -21,6 +21,8 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const isFocused = useIsFocused();
 
+  const [commentTimer, setCommentTimer] = useState<number>(7);
+
   useEffect(() => {
     // TODO: postId 넘어오는 건 테스트 완료. 해설의뢰가 들어온 뒤에 테스트 가능
     if (isFocused) {
@@ -28,10 +30,8 @@ const CommentWritingScreen = ({ navigation, route }: { navigation: any; route: a
     }
   }, [isFocused]);
 
-  const [commentTimer, setCommentTimer] = useState<number>(7);
-
   useInterval(() => {
-    if (currentRequest.expiredAt !== null && getKoreanTime(new Date()) < new Date(currentRequest.expiredAt)) {
+    if (currentRequest.expiredAt !== null && getKoreanTime(new Date()) <= new Date(currentRequest.expiredAt)) {
       const result = getExpiredMinute(currentRequest.expiredAt);
       setCommentTimer(result);
     }
