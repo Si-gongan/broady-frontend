@@ -6,20 +6,22 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Colors, Fonts, Utils } from '../../styles';
 
-import { LongButton } from '../../common';
+import { BomCheckBox, LongButton } from '../../common';
 
 export type IReportPopupHandler = {
   open: () => void;
   close: () => void;
 };
 
-type IReportPopupProps = object;
-
 // eslint-disable-next-line
-export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({}, ref) => {
+export const ReportPopup = forwardRef<IReportPopupHandler, any>((_, ref) => {
   const insets = useSafeAreaInsets();
 
   const [visible, setVisible] = useState(false);
+
+  const [isFirst, setFirst] = useState(false);
+  const [isSecond, setSecond] = useState(false);
+  const [isThird, setThird] = useState(false);
 
   const onClose = () => setVisible(false);
 
@@ -50,6 +52,21 @@ export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({
           <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.secondary)]}>
             운영진이 검토 후, 해당 해설자에게 제재가 부여됩니다.
           </Text>
+        </View>
+
+        <View>
+          <View>
+            <BomCheckBox value={isFirst} onValueChange={setFirst} />
+            <Text>1</Text>
+          </View>
+          <View>
+            <BomCheckBox value={isSecond} onValueChange={setSecond} />
+            <Text>2</Text>
+          </View>
+          <View>
+            <BomCheckBox value={isThird} onValueChange={setThird} />
+            <Text>3</Text>
+          </View>
         </View>
       </View>
     </BottomSheet>
