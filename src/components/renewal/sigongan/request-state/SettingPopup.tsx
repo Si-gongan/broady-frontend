@@ -1,16 +1,16 @@
-import { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { BottomSheet } from 'react-native-btr';
-import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { pickImage, takePhoto } from '../../../common/media';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { SigonganStackParamList } from '../../../../navigations';
+
 import Svg, { Path } from 'react-native-svg';
+
 import { PaddingHorizontal } from '../../design';
 import { Colors, Fonts, Utils } from '../../styles';
+
 import { LongButton } from '../../common';
+import { DeleteCheckPopup, IDeleteCheckPopupHandler } from './DeleteCheckPopup';
 
 export type ISettingPopupHandler = {
   open: () => void;
@@ -26,6 +26,8 @@ export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>
   const insets = useSafeAreaInsets();
 
   const [visible, setVisible] = useState(false);
+
+  const DeleteCheckPopupRef = useRef<IDeleteCheckPopupHandler>(null);
 
   const onClose = () => setVisible(false);
 
@@ -50,7 +52,13 @@ export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>
         <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>메뉴</Text>
 
         <PaddingHorizontal value={30} noflex>
-          <TouchableOpacity activeOpacity={0.8} style={[styles.button]} onPress={onDelete}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={[styles.button]}
+            onPress={() => {
+              DeleteCheckPopupRef.current?.open();
+            }}
+          >
             <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문 삭제하기</Text>
 
             <Svg width="9" height="16" viewBox="0 0 9 16" fill="none">
@@ -64,6 +72,8 @@ export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>
           <LongButton text="취소" theme="primary" onPress={onClose} />
         </PaddingHorizontal>
       </View>
+
+      <DeleteCheckPopup ref={DeleteCheckPopupRef} onprevPopupClose={onClose} onDelete={onDelete} />
     </BottomSheet>
   );
 });

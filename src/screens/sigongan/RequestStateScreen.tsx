@@ -1,5 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, SafeAreaView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 
 import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -25,6 +33,8 @@ import {
   NoticeError,
   ISettingPopupHandler,
   SettingPopup,
+  IReportPopupHandler,
+  ReportPopup,
 } from '../../components/renewal';
 
 const SETTING_ICON_PATH =
@@ -47,6 +57,7 @@ export const RequestStateScreen = () => {
   const [text, setText] = useState('');
 
   const SettingPopupRef = useRef<ISettingPopupHandler>(null);
+  const ReportPopupRef = useRef<IReportPopupHandler>(null);
 
   // for ux
   const scrollViewRef = useRef<ScrollView>(null);
@@ -133,13 +144,15 @@ export const RequestStateScreen = () => {
                     <View key={item.createdAt}>
                       {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
 
-                      <View style={styles.AnotherSpeechWrapper}>
-                        <AnotherAvatar />
+                      <TouchableOpacity activeOpacity={0.8} onLongPress={() => ReportPopupRef?.current?.open()}>
+                        <View style={styles.AnotherSpeechWrapper}>
+                          <AnotherAvatar />
 
-                        <AnotherSpeechBubble text={item.text.trimEnd()} />
+                          <AnotherSpeechBubble text={item.text.trimEnd()} />
 
-                        <TimeViewer date={item.createdAt} />
-                      </View>
+                          <TimeViewer date={item.createdAt} />
+                        </View>
+                      </TouchableOpacity>
 
                       {/* 감사인사를 한 경우, 나의 감사인사도 표시 */}
                       {isAppreciated(item) && (
@@ -165,6 +178,7 @@ export const RequestStateScreen = () => {
         <InputBar value={text} onChangeText={setText} />
 
         <SettingPopup ref={SettingPopupRef} onDelete={() => 1} />
+        <ReportPopup ref={ReportPopupRef} />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );

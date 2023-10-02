@@ -5,3 +5,5 @@ export * from './TimeViewer';
 export * from './AnotherAvatar';
 export * from './InputBar';
 export * from './SettingPopup';
+export * from './DeleteCheckPopup';
+export * from './ReportPopup';

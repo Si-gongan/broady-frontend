@@ -8,6 +8,7 @@ type ILongButtonProps = {
 
   onPress?: () => void;
   disabled?: boolean;
+  isShort?: boolean;
 };
 
 const LongButtonColor = {
@@ -47,13 +48,13 @@ const LongButtonColor = {
   },
 };
 
-export const LongButton = ({ text, onPress, theme, disabled = false }: ILongButtonProps) => {
+export const LongButton = ({ text, onPress, theme, disabled = false, isShort = false }: ILongButtonProps) => {
   const [isPress, setPress] = useState(false);
 
   const buttonState = disabled ? 'disabled' : isPress ? 'pressed' : 'def';
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, { width: isShort ? 150 : '100%' }]}>
       <Pressable
         onPress={onPress}
         onPressIn={() => setPress(true)}
@@ -75,8 +76,6 @@ export const LongButton = ({ text, onPress, theme, disabled = false }: ILongButt
 
 const styles = StyleSheet.create({
   wrapper: {
-    width: '100%',
-
     justifyContent: 'center',
     alignItems: 'center',
   },
