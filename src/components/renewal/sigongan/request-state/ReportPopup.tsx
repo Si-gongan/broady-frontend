@@ -41,13 +41,15 @@ export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({
           Utils.safePaddingBottom(insets.bottom),
         ]}
       >
-        <View style={[styles.topButtonWrapper, Utils.borderBottomColor(Colors.Blue.Lighten400)]}>
-          <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문 삭제</Text>
+        <View style={[styles.topWrapper, Utils.borderBottomColor(Colors.Blue.Lighten400)]}>
+          <Text style={[Fonts.Medium16, Utils.fontColor(Colors.Font.primary)]}>신고</Text>
         </View>
 
         <View style={styles.textWrapper}>
-          <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문을 삭제하시겠습니까?</Text>
-          <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>대화 내용은 복구가 불가능합니다.</Text>
+          <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.secondary)]}>해설 신고사유를 알려주세요.</Text>
+          <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.secondary)]}>
+            운영진이 검토 후, 해당 해설자에게 제재가 부여됩니다.
+          </Text>
         </View>
       </View>
     </BottomSheet>
@@ -61,28 +63,21 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
-  topButtonWrapper: {
+  topWrapper: {
     width: '100%',
 
     alignItems: 'center',
     justifyContent: 'center',
 
-    paddingVertical: 16,
+    paddingTop: 20,
+    paddingBottom: 10,
   },
   textWrapper: {
     width: '100%',
 
-    marginTop: 30,
+    marginTop: 20,
 
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  buttons: {
-    marginTop: 30,
-    marginBottom: 20,
-
-    flexDirection: 'row',
-
-    gap: 10,
   },
 });

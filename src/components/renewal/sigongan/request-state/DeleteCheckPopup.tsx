@@ -48,7 +48,7 @@ export const DeleteCheckPopup = forwardRef<IDeleteCheckPopupHandler, IDeleteChec
             Utils.safePaddingBottom(insets.bottom),
           ]}
         >
-          <View style={[styles.topButtonWrapper, Utils.borderBottomColor(Colors.Blue.Lighten400)]}>
+          <View style={[styles.topWrapper, Utils.borderBottomColor(Colors.Blue.Lighten400)]}>
             <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문 삭제</Text>
           </View>
 
@@ -59,7 +59,7 @@ export const DeleteCheckPopup = forwardRef<IDeleteCheckPopupHandler, IDeleteChec
             </Text>
           </View>
 
-          <View style={styles.buttons}>
+          <View style={styles.buttonWrapper}>
             <LongButton text="돌아가기" theme="primary" isShort onPress={onClose} />
 
             <LongButton
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
-  topButtonWrapper: {
+  topWrapper: {
     width: '100%',
 
     alignItems: 'center',
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttons: {
+  buttonWrapper: {
     marginTop: 30,
     marginBottom: 20,
 
