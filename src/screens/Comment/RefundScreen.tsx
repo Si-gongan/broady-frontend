@@ -54,7 +54,7 @@ const RefundScreen = () => {
         setMyPoint((prevPoint) => prevPoint + parseInt(refundPoint));
       });
     storeData(ACCOUNT_NUMBER, accountNumberInput);
-    storeData(ACCOUNT_NUMBER, accountHolder);
+    storeData(ACCOUNT_HOLDER, accountHolder);
 
     setRefundPoint('');
     setIsRefunded(false);

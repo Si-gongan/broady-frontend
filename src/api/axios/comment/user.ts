@@ -8,10 +8,16 @@ export const getPointList = async (fcmToken: string, token: string) => {
   return result.data.result.pointHistories;
 };
 
-export const requestRefundPoint = async (point: number, accountNumber: string, fcmToken: string, token: string) => {
+export const requestRefundPoint = async (
+  point: number,
+  accountNumber: string,
+  accountName: string,
+  fcmToken: string,
+  token: string
+) => {
   const result = await CommentServer.post(
     '/user/point',
-    { point, accountNumber },
+    { point, accountNumber, accountName },
     { headers: { fcmToken, Authorization: token } }
   );
   return result.data;
