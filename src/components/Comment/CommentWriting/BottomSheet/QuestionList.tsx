@@ -1,30 +1,25 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { RadioButton } from 'react-native-paper';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '../../../renewal';
 import { commentFont } from '../../styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface IQuestionListProps {
-  questionData: { id: number; text: string }[];
-
-  selected: number;
-  setSelected: React.Dispatch<React.SetStateAction<number>>;
+  questionData: { id: number; text: string; checked: boolean }[];
+  handleSelect: (id: number) => void;
 }
 
-const QuestionList = ({ questionData, selected, setSelected }: IQuestionListProps) => {
+const QuestionList = ({ questionData, handleSelect }: IQuestionListProps) => {
   return (
     <View style={styles.questionListContainer}>
       {questionData.map((question) => (
-        <View key={question.id} style={styles.questionContainer}>
-          <View style={styles.radioBtnContainer}>
-            <RadioButton
-              color="black"
-              value={question.text}
-              status={selected === question.id ? 'checked' : 'unchecked'}
-              onPress={() => setSelected(question.id)}
-            />
-          </View>
+        <TouchableOpacity key={question.id} style={styles.questionContainer} onPress={() => handleSelect(question.id)}>
+          {question.checked ? (
+            <Icon name="checkbox" size={25} color={Colors.Red.Default}></Icon>
+          ) : (
+            <Icon name="square-outline" size={25}></Icon>
+          )}
           <Text style={[commentFont.BODY1, styles.questionText]}>{question.text}</Text>
-        </View>
+        </TouchableOpacity>
       ))}
     </View>
   );
@@ -42,31 +37,6 @@ const styles = StyleSheet.create({
   questionText: {
     paddingLeft: 12,
     fontSize: 16,
-  },
-  radioBtnContainer: {
-    borderWidth: 1,
-    borderRadius: 20,
-  },
-  item: {
-    alignItems: 'center',
-    paddingVertical: 20,
-  },
-  inputBox: {
-    marginTop: 5,
-    paddingLeft: 10,
-    paddingTop: 15,
-    height: 80,
-    width: '90%',
-    fontSize: 16,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: Colors.Red.Default,
-  },
-  footerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 20,
   },
 });
 

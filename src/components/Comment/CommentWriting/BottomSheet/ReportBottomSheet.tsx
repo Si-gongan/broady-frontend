@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { useRef, useState } from 'react';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
 import { commentFont } from '../../styles';
@@ -8,15 +8,20 @@ import QuestionList from './QuestionList';
 import ReportButton from './ReportButton';
 
 interface IData {
-  [key: string]: { questionList: { id: number; text: string }[]; title: string; text: string; buttonText: string };
+  [key: string]: {
+    questionList: { id: number; text: string; checked: boolean }[];
+    title: string;
+    text: string;
+    buttonText: string;
+  };
 }
 
 const questionData: IData = {
   image: {
     questionList: [
-      { id: 0, text: '질문과 관계 없는 사진입니다.' },
-      { id: 1, text: '사진을 제대로 식별할 수 없습니다.' },
-      { id: 2, text: '기타' },
+      { id: 0, text: '질문과 관계 없는 사진입니다.', checked: false },
+      { id: 1, text: '사진을 제대로 식별할 수 없습니다.', checked: false },
+      { id: 2, text: '기타', checked: false },
     ],
     title: '잘못된 사진 제보',
     text: '의뢰자에게 사진에 어떤 문제가 있는지 구체적으로 알려주세요.\n 제보 내용은 의뢰자에게 즉시 전달됩니다.',
@@ -24,9 +29,9 @@ const questionData: IData = {
   },
   request: {
     questionList: [
-      { id: 0, text: '부적절한 사진입니다.' },
-      { id: 1, text: '부적절한 질문입니다.' },
-      { id: 2, text: '기타' },
+      { id: 0, text: '부적절한 사진입니다.', checked: false },
+      { id: 1, text: '부적절한 질문입니다.', checked: false },
+      { id: 2, text: '기타', checked: false },
     ],
     title: '부적절한 의뢰 신고',
     text: '사진 및 질문이 (선정성, 폭력성, 사기 등) 부적절하다면\n 운영진에게 알려주세요.',
@@ -43,12 +48,25 @@ interface IReportImageBottomSheetProps {
 
 const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportImageBottomSheetProps) => {
   const [reportInput, setReportInput] = useState<string>('');
-  const [selected, setSelected] = useState<number>(0);
+  const selectedNumber = useRef(0);
+
+  const [selectQuestion, setSelectQuestion] = useState(questionData[category].questionList);
 
   const onClose = () => setVisible(false);
 
   const handleReport = () => {
     // TODO: 잘못된 사진 제보 API 연동.
+  };
+
+  const handleSelect = (id: number) => {
+    const selected = selectQuestion.filter((question) => question.id === id);
+    selectedNumber.current = selected[0].id;
+
+    setSelectQuestion(
+      selectQuestion.map((question) =>
+        question.id === id ? { ...question, checked: true } : { ...question, checked: false }
+      )
+    );
   };
 
   return (
@@ -62,11 +80,7 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
           <View style={styles.titleContainer}>
             <Text style={[commentFont.SMALL_TITLE, styles.description]}>{questionData[category].text}</Text>
           </View>
-          <QuestionList
-            questionData={questionData[category].questionList}
-            selected={selected}
-            setSelected={setSelected}
-          />
+          <QuestionList questionData={selectQuestion} handleSelect={handleSelect} />
         </View>
         <View style={styles.inputContainer}>
           <View style={styles.inputLengthContainer}>
@@ -119,9 +133,6 @@ const styles = StyleSheet.create({
     color: '#767676',
     textAlign: 'center',
   },
-  questionListContainer: {
-    width: '90%',
-  },
   inputLengthContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -150,32 +161,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 20,
     marginBottom: 30,
-  },
-  closeBtn: {
-    backgroundColor: 'white',
-    width: '40%',
-    marginBottom: 30,
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: Colors.Red.Default,
-  },
-  commentBtn: {
-    backgroundColor: Colors.Red.Default,
-    width: '40%',
-    marginBottom: 30,
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  closeText: {
-    color: Colors.Red.Default,
-  },
-  commentText: {
-    color: 'white',
   },
 });
 
