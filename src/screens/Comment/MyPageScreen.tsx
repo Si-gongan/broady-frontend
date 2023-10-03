@@ -8,6 +8,7 @@ import NicknameSection from '../../components/Comment/Mypage/NicknameSection';
 import Refund from '../../components/Comment/Mypage/Refund';
 import UserDeleteSection from '../../components/Comment/Mypage/UserDeleteSection';
 import CustomerService from '../../components/common/CustomerService';
+import Header from '../../components/common/Header';
 import { Colors } from '../../components/renewal';
 import { authTokenState, fcmTokenState, myPointState } from '../../states';
 import { IPoint } from '../../types/user';
@@ -33,7 +34,7 @@ const MyPageScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <View style={styles.header}></View>
+      <Header isBack={false}>마이페이지</Header>
       <ScrollView contentContainerStyle={styles.container}>
         <NicknameSection navigation={navigation} />
         <Refund myPoint={myPoint} navigation={navigation} />
@@ -52,15 +53,6 @@ const getMyPoint = (pointList: IPoint[]) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 20,
-    paddingBottom: 22,
-    borderBottomColor: Colors.Red.Lighten400,
-    borderBottomWidth: 1,
-  },
   container: {
     alignItems: 'center',
     backgroundColor: 'white',

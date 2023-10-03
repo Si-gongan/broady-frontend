@@ -19,11 +19,7 @@ export const CommentStack = () => {
       }}
     >
       <Stack.Screen name="Home" options={{ headerShown: false }} component={CommentTab} />
-      <Stack.Screen
-        name="Writing"
-        options={{ title: '해설 작성', headerShown: false }}
-        component={CommentWritingScreen}
-      />
+      <Stack.Screen name="Writing" options={{ headerShown: false }} component={CommentWritingScreen} />
       <Stack.Screen name="Refund" options={{ headerShown: false }} component={RefundScreen} />
       <Stack.Screen name="Nickname" options={{ headerShown: false }} component={NicknameScreen} />
       <Stack.Screen name="Alert" options={{ headerShown: false }} component={AlertSettingScreen} />

@@ -5,7 +5,7 @@ import Header from '../../components/common/Header';
 import { SigonganDesign } from '../../components/sigongan/styles';
 import { authTokenState, fcmTokenState } from '../../states';
 
-const AlertSettingScreen = ({ navigation }: { navigation: any }) => {
+const AlertSettingScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
   const [isExtraQuestion, setIsExtraQuestion] = useState<boolean>(false);
@@ -21,7 +21,7 @@ const AlertSettingScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <View>
-      <Header navigation={navigation}>알림 설정</Header>
+      <Header isBack={true}>알림 설정</Header>
       <View style={styles.bodyContainer}>
         <View style={styles.alertContainer}>
           <View style={styles.toggleContainer}>

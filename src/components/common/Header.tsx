@@ -1,31 +1,41 @@
+import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { commentFont } from '../Comment/styles';
+import { Colors } from '../renewal';
 
 interface IHeaderProps {
-  navigation?: any;
-  setIsMenuVisible?: any;
+  isBack: boolean;
   children: string;
+  type?: string;
+  handleClick?: () => void;
 }
 
-const Header = ({ navigation, setIsMenuVisible, children }: IHeaderProps) => {
+const Header = ({ isBack, type, handleClick, children }: IHeaderProps) => {
+  const navigation = useNavigation();
+
   return (
-    <>
-      <View style={styles.header}>
+    <View style={styles.header}>
+      {isBack ? (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBackIcon} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{children}</Text>
-        <View>
-          {setIsMenuVisible ? (
-            <TouchableOpacity onPress={() => setIsMenuVisible(true)}>
-              <MaterialCommunityIcons name="cog" style={styles.headerSettingIcon} />
-            </TouchableOpacity>
+      ) : (
+        <View style={styles.headerBlank}></View>
+      )}
+      <Text style={commentFont.HEADLINE}>{children}</Text>
+      <View>
+        <TouchableOpacity onPress={handleClick}>
+          {type === 'home' ? (
+            <MaterialCommunityIcons name="bell-outline" style={styles.headerSettingIcon} />
+          ) : type === 'comment' ? (
+            <MaterialCommunityIcons name="cog" style={styles.headerSettingIcon} />
           ) : (
-            <MaterialCommunityIcons name="arrow-left-thin" style={styles.headerBlank} />
+            <View style={styles.headerBlank}></View>
           )}
-        </View>
+        </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -34,28 +44,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 60,
+    paddingHorizontal: 20,
+    paddingBottom: 25,
+    borderBottomColor: Colors.Red.Lighten400,
+    borderBottomWidth: 1,
   },
   headerBackIcon: {
     fontSize: 40,
-    marginLeft: 10,
   },
   headerSettingIcon: {
     fontSize: 30,
-    marginRight: 20,
   },
   headerBlank: {
-    fontSize: 40,
-    color: 'white',
-    marginRight: 5,
-  },
-  headerTitle: {
-    fontSize: 17,
-    fontWeight: '600',
+    width: 40,
+    height: 40,
   },
 });
 

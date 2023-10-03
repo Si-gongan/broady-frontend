@@ -24,7 +24,7 @@ import { Colors } from '../../components/renewal';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-const RefundScreen = ({ navigation }: any) => {
+const RefundScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
@@ -41,7 +41,7 @@ const RefundScreen = ({ navigation }: any) => {
   const onClickRefundButton = async () => {
     Keyboard.dismiss();
     setMyPoint((prevPoint) => prevPoint - parseInt(refundPoint));
-    requestRefundPoint(parseInt(refundPoint), accountNumberInput, fcmToken, authToken)
+    requestRefundPoint(parseInt(refundPoint), accountNumberInput, accountHolder, fcmToken, authToken)
       .then((data) => {
         if (data.code === 0)
           getPointList(fcmToken, authToken).then((data) => {
@@ -54,7 +54,7 @@ const RefundScreen = ({ navigation }: any) => {
         setMyPoint((prevPoint) => prevPoint + parseInt(refundPoint));
       });
     storeData(ACCOUNT_NUMBER, accountNumberInput);
-    storeData(ACCOUNT_NUMBER, accountHolder);
+    storeData(ACCOUNT_HOLDER, accountHolder);
 
     setRefundPoint('');
     setIsRefunded(false);
@@ -91,7 +91,7 @@ const RefundScreen = ({ navigation }: any) => {
   return (
     <View style={styles.refundContainer}>
       <ScrollView scrollEnabled={false}>
-        <Header navigation={navigation}>환급 신청</Header>
+        <Header isBack={true}>환급 신청</Header>
         <View style={styles.refundPointHeader}>
           <Text style={commentFont.TITLE}>포인트 환급 : {myPoint} P</Text>
         </View>

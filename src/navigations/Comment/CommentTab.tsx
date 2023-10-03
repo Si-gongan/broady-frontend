@@ -24,6 +24,7 @@ export const CommentTab = () => {
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="text-box" color={color} size={size} />,
           headerStyle: { shadowOpacity: 0 },
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -32,6 +33,7 @@ export const CommentTab = () => {
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="account" color={color} size={size} />,
           headerStyle: { shadowOpacity: 0 },
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

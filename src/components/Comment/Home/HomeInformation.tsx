@@ -13,32 +13,33 @@ interface HomeInformationProps {
 
 const HomeInformation = ({ totalRequestCount, todayRequestCount }: HomeInformationProps) => {
   return (
-    <>
-      <View>
-        <View style={styles.guideTextContainer}>
-          <Text style={[styles.mainText, commentFont.SLOGAN]}>시각장애인의{'\n'}눈이 되어주세요!👀</Text>
+    <View style={styles.mainContainer}>
+      <View style={styles.guideTextContainer}>
+        <Text style={[styles.mainText, commentFont.SLOGAN]}>시각장애인의{'\n'}눈이 되어주세요!👀</Text>
+      </View>
+      <View style={styles.requestContainer}>
+        <View style={styles.requestItemContainer}>
+          <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>총 질문</Text>
+          <Text style={commentFont.TITLE}>{totalRequestCount.toString().padStart(2, '0')}건</Text>
         </View>
-        <View style={styles.requestContainer}>
-          <View style={styles.requestItemContainer}>
-            <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>총 질문</Text>
-            <Text style={commentFont.TITLE}>{totalRequestCount.toString().padStart(2, '0')}건</Text>
-          </View>
 
-          <View style={styles.requestItemContainer}>
-            <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>오늘의 질문</Text>
-            <Text style={commentFont.TITLE}>{todayRequestCount.toString().padStart(2, '0')}건</Text>
-          </View>
-        </View>
-        <View style={styles.guideContainer}>
-          <Text style={[commentFont.SMALL_TITLE, styles.guideText]}>봄자국 간편 가이드</Text>
-          <Icon name="help-circle-outline" size={15}></Icon>
+        <View style={styles.requestItemContainer}>
+          <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>오늘의 질문</Text>
+          <Text style={commentFont.TITLE}>{todayRequestCount.toString().padStart(2, '0')}건</Text>
         </View>
       </View>
-    </>
+      <View style={styles.guideContainer}>
+        <Text style={[commentFont.SMALL_TITLE, styles.guideText]}>봄자국 간편 가이드</Text>
+        <Icon name="help-circle-outline" size={15}></Icon>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    marginTop: 20,
+  },
   guideTextContainer: {
     marginLeft: 35,
   },

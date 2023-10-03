@@ -24,8 +24,8 @@ const AnnounceScreen = ({ navigation }: any) => {
 
   return (
     <>
-      <Header navigation={navigation}>공지사항</Header>
-      <ScrollView style={{ marginTop: 25 }}>
+      <Header isBack={true}>공지사항</Header>
+      <ScrollView>
         {announceList.map((announce) => (
           <TouchableOpacity
             key={announce.id}
