@@ -12,6 +12,8 @@ import { Colors } from '../../../renewal';
 import ReportBottomSheet from './ReportBottomSheet';
 import MenuButton from './MenuButton';
 
+const categoryList = ['image', 'request'];
+
 interface IMenuBottomSheetProps {
   navigation: any;
   postId: string;
@@ -24,7 +26,7 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
   const authToken = useRecoilValue(authTokenState);
 
   const [isOpened, setIsOpened] = useState(false);
-  const [category, setCategory] = useState(0); // image: 0, request: 1
+  const [category, setCategory] = useState('');
 
   const insets = useSafeAreaInsets();
 
@@ -32,12 +34,12 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
 
   const handleClickReportImageBtn = () => {
     setIsOpened(true);
-    setCategory(0);
+    setCategory(categoryList[0]);
   };
 
   const handleClickReportRequestBtn = () => {
     setIsOpened(true);
-    setCategory(1);
+    setCategory(categoryList[1]);
   };
 
   const handleReportPost = async () => {

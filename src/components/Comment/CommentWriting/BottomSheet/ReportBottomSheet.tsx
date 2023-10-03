@@ -5,8 +5,13 @@ import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan
 import { RadioButton } from 'react-native-paper';
 import { commentFont } from '../../styles';
 import { Colors } from '../../../renewal';
+import QuestionList from './QuestionList';
 
-const data = {
+interface IData {
+  [key: string]: { questionList: { id: number; text: string }[]; title: string; text: string };
+}
+
+const questionData: IData = {
   image: {
     questionList: [
       { id: 0, text: '질문과 관계 없는 사진입니다.' },
@@ -29,7 +34,7 @@ const data = {
 
 interface IReportImageBottomSheetProps {
   postId: string;
-  category: number;
+  category: string;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -48,18 +53,18 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
       <View style={[styles.container, SigonganColor.backgroundPrimary]}>
         <View style={styles.titleWrapper}>
-          <Text style={styles.titleText}>{category ? data.request.title : data.image.title}</Text>
+          <Text style={styles.titleText}>{questionData[category].title}</Text>
         </View>
         <View style={SigonganDesign.borderOpaque} />
         <View style={styles.itemWrapper}>
           <View style={styles.titleContainer}>
-            <Text style={[commentFont.SMALL_TITLE, styles.description]}>
-              {category ? data.request.text : data.image.text}
-            </Text>
+            <Text style={[commentFont.SMALL_TITLE, styles.description]}>{questionData[category].text}</Text>
           </View>
-          <View style={styles.questionListContainer}>
-            <QuestionList category={category} selected={selected} setSelected={setSelected} />
-          </View>
+          <QuestionList
+            questionData={questionData[category].questionList}
+            selected={selected}
+            setSelected={setSelected}
+          />
         </View>
         <View style={styles.inputContainer}>
           <View style={styles.inputLengthContainer}>
@@ -90,46 +95,6 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
   );
 };
 
-interface IQuestionListProps {
-  category: number;
-  selected: number;
-  setSelected: React.Dispatch<React.SetStateAction<number>>;
-}
-
-const QuestionList = ({ category, selected, setSelected }: IQuestionListProps) => {
-  return (
-    <>
-      {category
-        ? data.request.questionList.map((question) => (
-            <View key={question.id} style={styles.questionContainer}>
-              <View style={styles.radioBtnContainer}>
-                <RadioButton
-                  color="black"
-                  value={question.text}
-                  status={selected === question.id ? 'checked' : 'unchecked'}
-                  onPress={() => setSelected(question.id)}
-                />
-              </View>
-              <Text style={[commentFont.BODY1, styles.questionText]}>{question.text}</Text>
-            </View>
-          ))
-        : data.image.questionList.map((question) => (
-            <View key={question.id} style={styles.questionContainer}>
-              <View style={styles.radioBtnContainer}>
-                <RadioButton
-                  color="black"
-                  value={question.text}
-                  status={selected === question.id ? 'checked' : 'unchecked'}
-                  onPress={() => setSelected(question.id)}
-                />
-              </View>
-              <Text style={[commentFont.BODY1, styles.questionText]}>{question.text}</Text>
-            </View>
-          ))}
-    </>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     paddingTop: 8,
@@ -145,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   itemWrapper: {
-    paddingVertical: 20,
+    paddingTop: 20,
     alignItems: 'center',
   },
   titleContainer: {
@@ -169,23 +134,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     alignItems: 'center',
-  },
-  questionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 5,
-  },
-  questionText: {
-    paddingLeft: 12,
-    fontSize: 16,
-  },
-  radioBtnContainer: {
-    borderWidth: 1,
-    borderRadius: 20,
-  },
-  item: {
-    alignItems: 'center',
-    paddingVertical: 20,
   },
   inputBox: {
     marginTop: 5,
