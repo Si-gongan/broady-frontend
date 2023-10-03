@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import { Colors } from '../../../renewal';
-import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
 import { commentFont } from '../../styles';
 
 interface IEndCommentBottomSheetProps {
@@ -14,11 +13,11 @@ const EndCommentBottomSheet = ({ visible, setVisible }: IEndCommentBottomSheetPr
 
   return (
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
-      <View style={[styles.container, SigonganColor.backgroundPrimary]}>
+      <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <Text style={commentFont.BUTTON_TEXT}>해설 완료</Text>
         </View>
-        <View style={SigonganDesign.borderOpaque} />
+        <View style={styles.divisionLine} />
         <View style={styles.itemWrapper}>
           <Text style={commentFont.BODY1}>해설이 성공적으로 완료되었습니다!</Text>
           <Text style={commentFont.BODY1}>50P를 지급해드렸어요.</Text>
@@ -35,16 +34,19 @@ const EndCommentBottomSheet = ({ visible, setVisible }: IEndCommentBottomSheetPr
 
 const styles = StyleSheet.create({
   container: {
-    // alignItems: 'center',
+    backgroundColor: '#fff',
     paddingTop: 8,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    ...SigonganShadow.shadowTopHigh,
   },
   titleWrapper: {
-    // width: '100%',
     alignItems: 'center',
     paddingVertical: 10,
+  },
+  divisionLine: {
+    width: '100%',
+    height: 1,
+    backgroundColor: '#E8E8E8',
   },
   titleText: {
     fontSize: 18,

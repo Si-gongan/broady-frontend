@@ -6,7 +6,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
 import { reportPost } from '../../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../../states';
-import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
 import { commentFont } from '../../styles';
 import { Colors } from '../../../renewal';
 import ReportBottomSheet from '../../../common/reportBottomSheet';
@@ -56,11 +55,11 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
 
   return (
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
-      <View style={[styles.container, SigonganColor.backgroundPrimary]}>
+      <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <Text style={commentFont.BUTTON_TEXT}>메뉴</Text>
         </View>
-        <View style={SigonganDesign.borderOpaque} />
+        <View style={styles.divisionLine} />
         <View style={[styles.itemWrapper, { paddingBottom: insets.bottom || 16 }]}>
           <MenuButton content="잘못된 사진 제보" handleClick={handleClickReportImageBtn} />
           <MenuButton content="부적절한 의뢰 신고" handleClick={handleClickReportRequestBtn} />
@@ -81,16 +80,20 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#fff',
     paddingTop: 8,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    ...SigonganShadow.shadowTopHigh,
   },
   titleWrapper: {
     alignItems: 'center',
     paddingVertical: 15,
   },
-
+  divisionLine: {
+    width: '100%',
+    height: 1,
+    backgroundColor: '#E8E8E8',
+  },
   itemWrapper: {},
   item: {
     paddingHorizontal: 20,
