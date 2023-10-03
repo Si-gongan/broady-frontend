@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import { useRecoilValue } from 'recoil';
+import { commentFont } from '../../components/Comment/styles';
 import Header from '../../components/common/Header';
-import { SigonganDesign } from '../../components/sigongan/styles';
 import { authTokenState, fcmTokenState } from '../../states';
 
 const AlertSettingScreen = () => {
@@ -25,7 +25,7 @@ const AlertSettingScreen = () => {
       <View style={styles.bodyContainer}>
         <View style={styles.alertContainer}>
           <View style={styles.toggleContainer}>
-            <Text style={SigonganDesign.myPageTitle}>추가 질문 알림</Text>
+            <Text style={commentFont.TITLE}>추가 질문 알림</Text>
             <Switch
               trackColor={{ false: '#767676', true: '#AEB8F4' }}
               thumbColor={isExtraQuestion ? '#fff' : '#fff'}
@@ -34,13 +34,14 @@ const AlertSettingScreen = () => {
               value={isExtraQuestion}
             />
           </View>
-          <Text style={SigonganDesign.myPageContent}>
-            내가 작성한 해설에 대해, 시각장애인의 추가 질문이 들어올 경우 푸시 알림을 수신합니다.
+          <Text style={[commentFont.SMALL_TITLE, styles.blackText]}>
+            내가 작성한 해설에 대해, 시각장애인의 추가 질문이{'\n'}들어올 경우 푸시 알림을 수신합니다.
           </Text>
         </View>
+        <View style={styles.divisionLine} />
         <View style={styles.alertContainer}>
           <View style={styles.toggleContainer}>
-            <Text style={SigonganDesign.myPageTitle}>해설의뢰 알림</Text>
+            <Text style={commentFont.TITLE}>해설의뢰 알림</Text>
             <Switch
               trackColor={{ false: '#767676', true: '#AEB8F4' }}
               thumbColor={isNewRequest ? '#fff' : '#fff'}
@@ -49,8 +50,8 @@ const AlertSettingScreen = () => {
               value={isNewRequest}
             />
           </View>
-          <Text style={SigonganDesign.myPageContent}>
-            시각장애인의 새로운 사진 해설 의뢰가 업로드될 경우, 일정한 간격으로 푸시 알림을 수신합니다.
+          <Text style={[commentFont.SMALL_TITLE, styles.blackText]}>
+            시각장애인의 새로운 사진 해설 의뢰가 업로드될 경우,{'\n'}일정한 간격으로 푸시 알림을 수신합니다.
           </Text>
         </View>
       </View>
@@ -70,7 +71,16 @@ const styles = StyleSheet.create({
   toggleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingBottom: 15,
+  },
+  blackText: {
+    color: 'black',
+  },
+  divisionLine: {
+    width: '100%',
+    height: 1,
+    backgroundColor: '#E8E8E8',
   },
 });
 
