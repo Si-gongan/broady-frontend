@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
-import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
-import { commentFont } from '../../styles';
-import { Colors } from '../../../renewal';
+import { SigonganColor, SigonganDesign, SigonganShadow } from '../../sigongan/styles';
+import { commentFont } from '../../Comment/styles';
+import { Colors } from '../../renewal';
 import QuestionList from './QuestionList';
 import ReportButton from './ReportButton';
 

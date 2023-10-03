@@ -9,10 +9,8 @@ import { authTokenState, fcmTokenState } from '../../../../states';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
 import { commentFont } from '../../styles';
 import { Colors } from '../../../renewal';
-import ReportBottomSheet from './ReportBottomSheet';
+import ReportBottomSheet from '../../../common/reportBottomSheet';
 import MenuButton from './MenuButton';
-
-const categoryList = ['image', 'request'];
 
 interface IMenuBottomSheetProps {
   navigation: any;
@@ -34,12 +32,12 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
 
   const handleClickReportImageBtn = () => {
     setIsOpened(true);
-    setCategory(categoryList[0]);
+    setCategory('image');
   };
 
   const handleClickReportRequestBtn = () => {
     setIsOpened(true);
-    setCategory(categoryList[1]);
+    setCategory('request');
   };
 
   const handleReportPost = async () => {
