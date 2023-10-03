@@ -7,10 +7,10 @@ import { useRecoilValue } from 'recoil';
 import { reportPost } from '../../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../../states';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { commentFont } from '../../styles';
 import { Colors } from '../../../renewal';
 import ReportBottomSheet from './ReportBottomSheet';
+import MenuButton from './MenuButton';
 
 interface IMenuBottomSheetProps {
   navigation: any;
@@ -40,7 +40,7 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
     setCategory(1);
   };
 
-  const handleReportPost = async (postId: string) => {
+  const handleReportPost = async () => {
     await reportPost(postId, fcmToken, authToken);
     navigation.navigate('Home');
     showToastMessage('차단이 완료되었습니다.');
@@ -62,26 +62,11 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
         </View>
         <View style={SigonganDesign.borderOpaque} />
         <View style={[styles.itemWrapper, { paddingBottom: insets.bottom || 16 }]}>
-          <TouchableOpacity style={styles.item} onPress={handleClickReportImageBtn}>
-            <View style={styles.touchContainer}>
-              <Text style={commentFont.BODY1}>잘못된 사진 제보</Text>
-              <MaterialIcons name="arrow-forward-ios" />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.item} onPress={handleClickReportRequestBtn}>
-            <View style={styles.touchContainer}>
-              <Text style={commentFont.BODY1}>부적절한 의뢰 신고</Text>
-              <MaterialIcons name="arrow-forward-ios" />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.item} onPress={() => handleReportPost(postId)}>
-            <View style={styles.touchContainer}>
-              <Text style={commentFont.BODY1}>차단</Text>
-              <MaterialIcons name="arrow-forward-ios" />
-            </View>
-          </TouchableOpacity>
+          <MenuButton content="잘못된 사진 제보" handleClick={handleClickReportImageBtn} />
+          <MenuButton content="부적절한 의뢰 신고" handleClick={handleClickReportRequestBtn} />
+          <MenuButton content="차단" handleClick={handleReportPost} />
           <TouchableOpacity style={styles.closeContainer} onPress={onClose}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={styles.closeBtn}>
               <Text style={[commentFont.BODY1, styles.closeText]}>취소</Text>
             </View>
           </TouchableOpacity>
@@ -118,6 +103,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 12,
+  },
+  closeBtn: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   closeText: {
     color: Colors.Red.Default,
