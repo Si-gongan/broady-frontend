@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
-import { RadioButton } from 'react-native-paper';
 import { commentFont } from '../../styles';
 import { Colors } from '../../../renewal';
 import QuestionList from './QuestionList';
+import ReportButton from './ReportButton';
 
 interface IData {
-  [key: string]: { questionList: { id: number; text: string }[]; title: string; text: string };
+  [key: string]: { questionList: { id: number; text: string }[]; title: string; text: string; buttonText: string };
 }
 
 const questionData: IData = {
@@ -20,6 +20,7 @@ const questionData: IData = {
     ],
     title: '잘못된 사진 제보',
     text: '의뢰자에게 사진에 어떤 문제가 있는지 구체적으로 알려주세요.\n 제보 내용은 의뢰자에게 즉시 전달됩니다.',
+    buttonText: '제보하기',
   },
   request: {
     questionList: [
@@ -29,6 +30,7 @@ const questionData: IData = {
     ],
     title: '부적절한 의뢰 신고',
     text: '사진 및 질문이 (선정성, 폭력성, 사기 등) 부적절하다면\n 운영진에게 알려주세요.',
+    buttonText: '신고하기',
   },
 };
 
@@ -45,7 +47,7 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
 
   const onClose = () => setVisible(false);
 
-  const handleClickReportImage = (postId: string) => {
+  const handleReport = () => {
     // TODO: 잘못된 사진 제보 API 연동.
   };
 
@@ -83,12 +85,8 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
           </View>
         </View>
         <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
-            <Text style={[commentFont.BUTTON_TEXT, styles.closeText]}>취소하기</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.commentBtn} onPress={() => handleClickReportImage(postId)}>
-            <Text style={[commentFont.BUTTON_TEXT, styles.commentText]}>제보하기</Text>
-          </TouchableOpacity>
+          <ReportButton content="취소하기" type={0} handleClick={onClose} />
+          <ReportButton content={questionData[category].buttonText} type={1} handleClick={handleReport} />
         </View>
       </View>
     </BottomSheet>
@@ -151,6 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 20,
+    marginBottom: 30,
   },
   closeBtn: {
     backgroundColor: 'white',
