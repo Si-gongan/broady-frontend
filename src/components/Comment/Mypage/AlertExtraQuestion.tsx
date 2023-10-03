@@ -40,6 +40,7 @@ const AlertExtraQuestion = () => {
               onPress: () => Linking.openSettings(),
             },
           ]);
+          throw new Error();
         }
       }
 
