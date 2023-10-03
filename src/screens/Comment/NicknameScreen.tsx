@@ -30,7 +30,7 @@ const NicknameScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <View>
-      <Header navigation={navigation}>닉네임 설정</Header>
+      <Header isBack={true}>닉네임 설정</Header>
       <View style={{ margin: 20, alignItems: 'center' }}>
         <Text style={commentFont.BODY1}>사용하실 닉네임을 입력해주세요.</Text>
       </View>

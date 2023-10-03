@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getRequestAll } from '../../api/axios';
 import HomeInformation from '../../components/Comment/Home/HomeInformation';
@@ -8,8 +8,8 @@ import RequestList from '../../components/Comment/Home/RequestList';
 import { authTokenState, fcmTokenState } from '../../states';
 import { IRequest } from '../../types/request';
 import { getKoreanTime } from '../../utils/time';
-import HomeHeader from '../../components/Comment/Home/HomeHeader';
 import { commentFont } from '../../components/Comment/styles';
+import Header from '../../components/common/Header';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [currentRequest, setCurrentRequest] = useState<IRequest[]>([]);
@@ -33,7 +33,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <>
-      <HomeHeader navigation={navigation} />
+      <Header isBack={false} type="home" handleClick={() => navigation.navigate('Announce')}>
+        홈
+      </Header>
       <HomeInformation totalRequestCount={currentRequest.length} todayRequestCount={todayRequestCount} />
       <View style={styles.bodyContainer}>
         {currentRequest.length > 0 ? (

@@ -1,11 +1,11 @@
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 import Header from '../../components/common/Header';
 
-const AnnounceScreen = ({ navigation, route }: any) => {
+const AnnounceScreen = ({ route }: any) => {
   const { title } = route.params;
   return (
     <View style={{ flex: 1 }}>
-      <Header navigation={navigation}>공지사항</Header>
+      <Header isBack={true}>공지사항</Header>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={{ marginTop: 25 }}>
         <View style={styles.mainTextContainer}>
           <Text style={styles.mainText}>{title}</Text>
