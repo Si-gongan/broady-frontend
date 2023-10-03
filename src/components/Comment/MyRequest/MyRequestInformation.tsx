@@ -12,8 +12,8 @@ interface IMyRequestInformationProps {
 
 const MyRequestInformation = ({ totalCompletedRequest }: IMyRequestInformationProps) => {
   return (
-    <>
-      <View>
+    
+      <View style={styles.mainContainer}>
         <View style={styles.guideTextContainer}>
           <Text style={[styles.mainText, commentFont.SLOGAN]}>오늘도 열심히{'\n'}해설해주셨군요!</Text>
         </View>
@@ -34,11 +34,14 @@ const MyRequestInformation = ({ totalCompletedRequest }: IMyRequestInformationPr
           </View>
         </View>
       </View>
-    </>
+    
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    marginTop: 20,
+  },
   guideTextContainer: {
     // marginVertical: 15,
     marginLeft: 35,

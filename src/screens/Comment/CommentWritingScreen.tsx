@@ -24,7 +24,6 @@ const CommentWritingScreen = ({ navigation, route }: any) => {
   };
 
   useEffect(() => {
-    // TODO: postId 넘어오는 건 테스트 완료. 해설의뢰가 들어온 뒤에 테스트 가능
     if (isFocused) {
       getRequest(id, fcmToken, authToken).then((data) => setCurrentRequest(data));
     }

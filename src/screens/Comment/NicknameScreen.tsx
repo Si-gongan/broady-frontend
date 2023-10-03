@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '90%',
-    // height: 100,
     justifyContent: 'center',
   },
   inputBox: {

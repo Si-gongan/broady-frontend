@@ -6,8 +6,8 @@ import { Colors } from '../renewal';
 
 interface IHeaderProps {
   isBack: boolean;
-  type?: string;
   children: string;
+  type?: string;
   handleClick?: () => void;
 }
 

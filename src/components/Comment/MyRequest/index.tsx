@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { getCompletedRequest, getMyRequestAll, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
+import Header from '../../common/Header';
 import { Colors } from '../../renewal';
 import MyRequestInformation from './MyRequestInformation';
 import RequestList from './RequestList';
@@ -43,7 +44,7 @@ const MyRequest = ({ navigation }: any) => {
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.header}></View>
+      <Header isBack={false}>MY의뢰</Header>
       <MyRequestInformation totalCompletedRequest={totalCompletedRequest.current} />
       <View style={styles.bodyContainer}>
         <RequestList requestList={requestList} setRequestList={setRequestList} navigation={navigation} />
