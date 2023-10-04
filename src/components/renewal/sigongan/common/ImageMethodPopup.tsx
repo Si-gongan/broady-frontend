@@ -10,7 +10,7 @@ import { SigonganStackParamList } from '../../../../navigations';
 import Svg, { Path } from 'react-native-svg';
 import { PaddingHorizontal } from '../../design';
 import { Colors, Fonts, Utils } from '../../styles';
-import { LongButton } from '../../common';
+import { BomButton } from '../../common';
 
 export type IImageMethodPopupHandler = {
   open: () => void;
@@ -100,7 +100,7 @@ export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, any>((_, re
             </Svg>
           </TouchableOpacity>
 
-          <LongButton text="취소" theme="primary" onPress={onClose} />
+          <BomButton text="취소" theme="primary" onPress={onClose} />
         </PaddingHorizontal>
       </View>
     </BottomSheet>

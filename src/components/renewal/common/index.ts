@@ -1,3 +1,3 @@
-export * from './LongButton';
+export * from './BomButton';
 export * from './BomCheckBox';
-export * from './Header';
+export * from './BomHeader';

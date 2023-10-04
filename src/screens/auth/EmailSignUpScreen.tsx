@@ -18,8 +18,8 @@ import {
   BomCheckBox,
   Colors,
   Fonts,
-  Header,
-  LongButton,
+  BomHeader,
+  BomButton,
   Notice,
   PaddingHorizontal,
   TERMS_OF_USE,
@@ -96,7 +96,7 @@ export const EmailSignUpScreen = () => {
       keyboardVerticalOffset={0}
     >
       <SafeAreaView style={styles.container}>
-        <Header text="이메일로 로그인" isBottomBorder />
+        <BomHeader text="이메일로 로그인" isBottomBorder />
 
         <PaddingHorizontal value={20}>
           <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false}>
@@ -189,7 +189,7 @@ export const EmailSignUpScreen = () => {
                   이용약관을 숙지했으며, 이에 동의합니다.
                 </Text>
               </View>
-              <LongButton
+              <BomButton
                 text="회원가입"
                 onPress={handleSubmit(onSubmit)}
                 disabled={!isChecked || isSubmitting}
@@ -200,7 +200,7 @@ export const EmailSignUpScreen = () => {
             <View style={styles.loginWrapper}>
               <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}>이미 회원이신가요?</Text>
 
-              <LongButton text="로그인" theme="secondary" onPress={() => navigation.push('이메일 로그인')} />
+              <BomButton text="로그인" theme="secondary" onPress={() => navigation.push('이메일 로그인')} />
             </View>
           </ScrollView>
         </PaddingHorizontal>

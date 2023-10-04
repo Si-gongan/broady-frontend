@@ -23,7 +23,7 @@ import {
   AnotherAvatar,
   AnotherSpeechBubble,
   DateViewer,
-  Header,
+  BomHeader,
   InputBar,
   MySpeechBubble,
   PaddingHorizontal,
@@ -115,7 +115,7 @@ export const RequestStateScreen = () => {
       keyboardVerticalOffset={0}
     >
       <SafeAreaView style={styles.container}>
-        <Header
+        <BomHeader
           text="답변 현황"
           isBottomBorder
           rightIcon={{ path: SETTING_ICON_PATH, onPress: () => SettingPopupRef.current?.open() }}

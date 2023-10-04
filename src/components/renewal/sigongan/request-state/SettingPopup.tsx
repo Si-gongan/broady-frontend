@@ -9,7 +9,7 @@ import Svg, { Path } from 'react-native-svg';
 import { PaddingHorizontal } from '../../design';
 import { Colors, Fonts, Utils } from '../../styles';
 
-import { LongButton } from '../../common';
+import { BomButton } from '../../common';
 import { DeleteCheckPopup, IDeleteCheckPopupHandler } from './DeleteCheckPopup';
 
 export type ISettingPopupHandler = {
@@ -69,7 +69,7 @@ export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>
             </Svg>
           </TouchableOpacity>
 
-          <LongButton text="취소" theme="primary" onPress={onClose} />
+          <BomButton text="취소" theme="primary" onPress={onClose} />
         </PaddingHorizontal>
       </View>
 

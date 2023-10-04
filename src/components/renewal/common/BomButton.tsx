@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Colors, Fonts, Utils } from '../styles';
 
-type ILongButtonProps = {
+type IBomButtonProps = {
   text: string;
   theme: 'primary' | 'secondary';
 
@@ -11,7 +11,7 @@ type ILongButtonProps = {
   isShort?: boolean;
 };
 
-const LongButtonColor = {
+const BomButtonColor = {
   primary: {
     background: {
       def: Colors.None.Lighten400,
@@ -48,7 +48,7 @@ const LongButtonColor = {
   },
 };
 
-export const LongButton = ({ text, onPress, theme, disabled = false, isShort = false }: ILongButtonProps) => {
+export const BomButton = ({ text, onPress, theme, disabled = false, isShort = false }: IBomButtonProps) => {
   const [isPress, setPress] = useState(false);
 
   const buttonState = disabled ? 'disabled' : isPress ? 'pressed' : 'def';
@@ -61,14 +61,14 @@ export const LongButton = ({ text, onPress, theme, disabled = false, isShort = f
         onPressOut={() => setPress(false)}
         style={[
           styles.container,
-          Utils.backgroundColor(LongButtonColor[theme]['background'][buttonState]),
-          Utils.borderColor(LongButtonColor[theme]['border'][buttonState]),
+          Utils.backgroundColor(BomButtonColor[theme]['background'][buttonState]),
+          Utils.borderColor(BomButtonColor[theme]['border'][buttonState]),
         ]}
         disabled={disabled}
         accessible
         accessibilityLabel={`${text} 버튼`}
       >
-        <Text style={[Fonts.Regular16, Utils.fontColor(LongButtonColor[theme]['font'][buttonState])]}>{text}</Text>
+        <Text style={[Fonts.Regular16, Utils.fontColor(BomButtonColor[theme]['font'][buttonState])]}>{text}</Text>
       </Pressable>
     </View>
   );

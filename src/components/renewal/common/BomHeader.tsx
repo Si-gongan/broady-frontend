@@ -1,10 +1,9 @@
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors, Fonts, Utils } from '../styles';
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Path } from 'react-native-svg';
 
-type IHeaderProps = {
+type IBomHeaderProps = {
   text: string;
   isBottomBorder?: boolean;
 
@@ -19,7 +18,7 @@ type IHeaderProps = {
 const BACK_ARROW_PATH =
   'M9.21628 15.9374L16.3365 23.0577L15 24.3749L5.625 15L15 5.625L16.3365 6.94228L9.21628 14.0625H24.3749V15.9374H9.21628Z';
 
-export const Header = ({ text, isBottomBorder, hideBackButton, rightIcon }: IHeaderProps) => {
+export const BomHeader = ({ text, isBottomBorder, hideBackButton, rightIcon }: IBomHeaderProps) => {
   const navigation = useNavigation();
 
   return (

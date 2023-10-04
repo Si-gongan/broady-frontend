@@ -6,8 +6,8 @@ import {
   AuthInput,
   BomCheckBox,
   Fonts,
-  Header,
-  LongButton,
+  BomHeader,
+  BomButton,
   PaddingHorizontal,
   TERMS_OF_USE,
   Utils,
@@ -61,7 +61,7 @@ export const NicknameScreen = () => {
       keyboardVerticalOffset={0}
     >
       <SafeAreaView style={styles.container}>
-        <Header text="닉네임 설정" isBottomBorder />
+        <BomHeader text="닉네임 설정" isBottomBorder />
 
         <PaddingHorizontal value={20}>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -101,7 +101,7 @@ export const NicknameScreen = () => {
                 </View>
               )}
 
-              <LongButton text="봄자국 시작하기" theme="secondary" onPress={loginToSigongan} />
+              <BomButton text="봄자국 시작하기" theme="secondary" onPress={loginToSigongan} />
             </View>
           </ScrollView>
         </PaddingHorizontal>

@@ -6,12 +6,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Colors, Fonts, Utils } from '../../styles';
 
-import { BomCheckBox, LongButton } from '../../common';
+import { BomCheckBox, BomButton } from '../../common';
 
 export type IReportPopupHandler = {
   open: () => void;
   close: () => void;
 };
+
+type ReportOption = 'first' | 'second' | 'third' | 'none';
 
 // eslint-disable-next-line
 export const ReportPopup = forwardRef<IReportPopupHandler, any>((_, ref) => {
@@ -19,9 +21,14 @@ export const ReportPopup = forwardRef<IReportPopupHandler, any>((_, ref) => {
 
   const [visible, setVisible] = useState(false);
 
-  const [isFirst, setFirst] = useState(false);
-  const [isSecond, setSecond] = useState(false);
-  const [isThird, setThird] = useState(false);
+  const [option, setOption] = useState<ReportOption>('none');
+  const changeOption = (data: ReportOption) => {
+    if (data === option) {
+      setOption('none');
+    } else {
+      setOption(data);
+    }
+  };
 
   const onClose = () => setVisible(false);
 
@@ -54,18 +61,20 @@ export const ReportPopup = forwardRef<IReportPopupHandler, any>((_, ref) => {
           </Text>
         </View>
 
-        <View>
-          <View>
-            <BomCheckBox value={isFirst} onValueChange={setFirst} />
-            <Text>1</Text>
+        <View style={styles.checkWrapper}>
+          <View style={styles.checkItem}>
+            <BomCheckBox value={option === 'first'} onValueChange={() => changeOption('first')} />
+            <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>
+              해설에 부적절한 내용이 포함돼있습니다.
+            </Text>
           </View>
-          <View>
-            <BomCheckBox value={isSecond} onValueChange={setSecond} />
-            <Text>2</Text>
+          <View style={styles.checkItem}>
+            <BomCheckBox value={option === 'second'} onValueChange={() => changeOption('second')} />
+            <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>불성실한 해설입니다.</Text>
           </View>
-          <View>
-            <BomCheckBox value={isThird} onValueChange={setThird} />
-            <Text>3</Text>
+          <View style={styles.checkItem}>
+            <BomCheckBox value={option === 'third'} onValueChange={() => changeOption('third')} />
+            <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>기타</Text>
           </View>
         </View>
       </View>
@@ -96,5 +105,18 @@ const styles = StyleSheet.create({
 
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  checkWrapper: {
+    width: '100%',
+
+    paddingHorizontal: 30,
+
+    paddingTop: 20,
+    gap: 10,
+  },
+  checkItem: {
+    flexDirection: 'row',
+
+    gap: 15,
   },
 });

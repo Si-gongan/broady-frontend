@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 import { useLoading, useUserState } from '../../providers';
 
-import { AuthInput, Fonts, Header, LongButton, Notice, PaddingHorizontal } from '../../components/renewal';
+import { AuthInput, Fonts, BomHeader, BomButton, Notice, PaddingHorizontal } from '../../components/renewal';
 import { Login } from '../../api/axios';
 
 type ILoginForm = {
@@ -60,7 +60,7 @@ export const EmailSignInScreen = () => {
       keyboardVerticalOffset={0}
     >
       <SafeAreaView style={styles.container}>
-        <Header text="이메일로 로그인" isBottomBorder />
+        <BomHeader text="이메일로 로그인" isBottomBorder />
 
         <PaddingHorizontal value={20}>
           <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false}>
@@ -115,7 +115,7 @@ export const EmailSignInScreen = () => {
             </View>
 
             <View style={styles.loginWrapper}>
-              <LongButton text="로그인" theme="secondary" onPress={handleSubmit(onSubmit)} disabled={isSubmitting} />
+              <BomButton text="로그인" theme="secondary" onPress={handleSubmit(onSubmit)} disabled={isSubmitting} />
             </View>
           </ScrollView>
         </PaddingHorizontal>

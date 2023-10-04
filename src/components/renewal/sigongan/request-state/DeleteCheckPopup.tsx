@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Colors, Fonts, Utils } from '../../styles';
 
-import { LongButton } from '../../common';
+import { BomButton } from '../../common';
 
 export type IDeleteCheckPopupHandler = {
   open: () => void;
@@ -60,9 +60,9 @@ export const DeleteCheckPopup = forwardRef<IDeleteCheckPopupHandler, IDeleteChec
           </View>
 
           <View style={styles.buttonWrapper}>
-            <LongButton text="돌아가기" theme="primary" isShort onPress={onClose} />
+            <BomButton text="돌아가기" theme="primary" isShort onPress={onClose} />
 
-            <LongButton
+            <BomButton
               text="질문 삭제하기"
               theme="secondary"
               isShort

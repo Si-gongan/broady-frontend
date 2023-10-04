@@ -11,8 +11,8 @@ import { SigonganStackParamList } from '../../navigations';
 import { GetRequestList, IReqeustListItem } from '../../api/axios/sigongan';
 
 import {
-  Header,
-  LongButton,
+  BomHeader,
+  BomButton,
   PaddingHorizontal,
   RequestItem,
   TabBar,
@@ -82,11 +82,11 @@ export const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header text="홈" hideBackButton isBottomBorder />
+      <BomHeader text="홈" hideBackButton isBottomBorder />
 
       <PaddingHorizontal value={20}>
         <View style={styles.topButton}>
-          <LongButton
+          <BomButton
             text="+ 해설자에게 질문하기"
             theme="secondary"
             onPress={() => ImageMethodPopupRef.current?.open()}
