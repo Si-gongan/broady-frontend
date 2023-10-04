@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { SigonganMainTabParamList } from '../../../../navigations';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // setting
 const TABBAR_NAME = ['홈', 'AI 해설', '마이페이지'] as const;
@@ -35,6 +36,9 @@ type ITabBarProps = {
 };
 
 export const TabBar = ({ currentIndex }: ITabBarProps) => {
+  const insets = useSafeAreaInsets();
+  const paddingBottom = insets.bottom !== 0 ? 0 : 20;
+
   const navigation = useNavigation<BottomTabNavigationProp<SigonganMainTabParamList>>();
 
   return (
@@ -43,7 +47,7 @@ export const TabBar = ({ currentIndex }: ITabBarProps) => {
       style={styles.shadow}
       end={{ x: 0.5, y: 0.2 }}
     >
-      <View style={[styles.container, Utils.backgroundColor(Colors.None.Lighten400)]}>
+      <View style={[styles.container, Utils.backgroundColor(Colors.None.Lighten400), { paddingBottom }]}>
         {TABBAR_NAME.map((name, i) => (
           <TouchableOpacity key={i} activeOpacity={0.8} style={styles.item} onPress={() => navigation.navigate(name)}>
             <Svg width={30} height={30} viewBox="0 0 30 30" fill="none">
@@ -69,7 +73,6 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingTop: 20,
-    paddingBottom: 5,
 
     flexDirection: 'row',
     justifyContent: 'space-around',
