@@ -15,9 +15,9 @@ import { useKeyboard } from '../../hooks';
 import {
   Colors,
   Fonts,
-  Header,
+  BomHeader,
   IImageMethodPopupHandler,
-  LongButton,
+  BomButton,
   PaddingHorizontal,
   Utils,
   ImageMethodPopup,
@@ -81,7 +81,7 @@ export const CommentRequestScreen = () => {
       keyboardVerticalOffset={-insets.bottom}
     >
       <SafeAreaView style={styles.container}>
-        <Header text="질문작성" isBottomBorder />
+        <BomHeader text="질문작성" isBottomBorder />
 
         <PaddingHorizontal value={20}>
           <ScrollView ref={scrollViewRef}>
@@ -90,7 +90,7 @@ export const CommentRequestScreen = () => {
             </View>
 
             <View style={{ marginTop: 10 }}>
-              <LongButton
+              <BomButton
                 text="사진 다시 선택하기 &#8634;"
                 theme="primary"
                 onPress={() => ImageMethodPopupRef.current?.open()}
@@ -114,7 +114,7 @@ export const CommentRequestScreen = () => {
             </View>
 
             <View style={{ marginTop: 40, marginBottom: 15 }}>
-              <LongButton text="사진 질문하기" theme="secondary" onPress={onSubmit} disabled={isLoading} />
+              <BomButton text="사진 질문하기" theme="secondary" onPress={onSubmit} disabled={isLoading} />
             </View>
           </ScrollView>
         </PaddingHorizontal>
