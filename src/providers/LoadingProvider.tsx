@@ -1,6 +1,6 @@
 import { createContext, useState, useMemo, useCallback, useContext } from 'react';
 import type { ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Keyboard } from 'react-native';
 import { Colors, Fonts, Utils } from '../components/renewal';
 
 const LoadingContext = createContext<{
@@ -12,6 +12,9 @@ export const LoadingProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setLoading] = useState(false);
 
   const changeLoading = useCallback((b: boolean) => {
+    // 추가 작업
+    Keyboard.dismiss();
+
     setLoading(b);
   }, []);
 

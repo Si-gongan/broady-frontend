@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, Alert, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView } from 'react-native';
 import { GetChatList, IGetChatListReturnType, PostImageQuestion, PostTextQuestion } from '../../api/axios';
 
-import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { SigonganMainTabParamList } from '../../navigations';
+
 import { delay, getDate } from '../../utils/time';
 import { useKeyboard } from '../../hooks';
+import { useLoading } from '../../providers';
 import {
   BomHeader,
   AIInputBar,
@@ -16,24 +15,31 @@ import {
   TabBar,
   IImageMethodPopupHandler,
   ImageMethodPopup,
+  DateViewer,
+  TimeViewer,
+  MySpeechBubble,
+  AnotherSpeechBubble,
+  RobotAvatar,
+  ImageViewer,
+  NoticeError,
+  Notice,
 } from '../../components/renewal';
 
 type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
 
-export const AIChatScreen = () => {
-  // page move
-  const navigation = useNavigation<BottomTabNavigationProp<SigonganMainTabParamList>>();
+const LOAD_DELAY = 500;
 
+export const AIChatScreen = () => {
   // api
   const fcmToken = useRecoilValue(fcmTokenState);
   const [chatList, setChatList] = useState<ChatListType>([]);
   const chatId = useRef<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   // state
   const [text, setText] = useState('');
   const scrollViewRef = useRef<ScrollView>(null);
   const { isKeyboardVisible } = useKeyboard();
+  const { isLoading, changeLoading } = useLoading();
 
   // popup
   const ImageMethodPopupRef = useRef<IImageMethodPopupHandler>(null);
@@ -53,15 +59,10 @@ export const AIChatScreen = () => {
         chatId.current = prevData._id;
 
         // hard coding
-        await delay(500);
+        await delay(LOAD_DELAY);
         scrollViewRef.current?.scrollToEnd({ animated: true });
       } catch {
-        Alert.alert('알림', '일시적인 오류가 발생했습니다.', [
-          {
-            text: '확인',
-            style: 'default',
-          },
-        ]);
+        NoticeError();
       }
     })();
   }, []);
@@ -71,53 +72,37 @@ export const AIChatScreen = () => {
     if (isKeyboardVisible) {
       scrollViewRef.current?.scrollToEnd({ animated: true });
     }
-
-    if (Platform.OS === 'android') {
-      if (isKeyboardVisible) {
-        navigation.setOptions({ tabBarStyle: { display: 'none' } });
-      } else {
-        navigation.setOptions({ tabBarStyle: { display: 'flex' } });
-      }
-    }
   }, [isKeyboardVisible]);
 
-  const onSendTextPress = async () => {
+  const onTextSubmit = async () => {
     if (text.length === 0) {
-      Alert.alert('알림', '질문을 입력해주세요.', [
-        {
-          text: '확인',
-          style: 'default',
-        },
-      ]);
-
+      Notice('질문을 입력해주세요.');
       return;
     }
 
     try {
-      setLoading(true);
+      changeLoading(true);
 
       await PostTextQuestion(chatId.current, text, fcmToken);
       await refresh();
     } catch {
-      console.log('error');
+      NoticeError();
     } finally {
-      setLoading(false);
+      changeLoading(false);
       setText('');
     }
   };
 
-  const onSendImagePress = async (url: string) => {
-    await delay(500);
-
+  const onImageSubmit = async (url: string) => {
     try {
-      setLoading(true);
+      changeLoading(true);
 
       await PostImageQuestion(chatId.current, url, fcmToken);
       await refresh();
-    } catch (e) {
-      console.log('error');
+    } catch {
+      NoticeError();
     } finally {
-      setLoading(false);
+      changeLoading(false);
     }
   };
 
@@ -130,6 +115,10 @@ export const AIChatScreen = () => {
 
     setChatList(newChatData.chat);
     chatId.current = newChatData._id;
+
+    // hard coding
+    await delay(LOAD_DELAY);
+    scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
   const isShowDate = (list: ChatListType, i: number) =>
@@ -144,14 +133,46 @@ export const AIChatScreen = () => {
       >
         <BomHeader text="AI 해설" hideBackButton isBottomBorder />
 
-        <PaddingHorizontal value={20}></PaddingHorizontal>
+        <PaddingHorizontal value={20}>
+          <ScrollView ref={scrollViewRef}>
+            <View style={styles.chatWrapper}>
+              {chatList.map((item, i) =>
+                item.role === 'user' ? (
+                  <View key={i}>
+                    {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
 
-        <AIInputBar value={text} onChangeText={setText} onImagePress={() => ImageMethodPopupRef.current?.open()} />
+                    <View style={styles.mySpeechWrapper}>
+                      <TimeViewer date={item.createdAt} />
+
+                      {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
+                    </View>
+                  </View>
+                ) : (
+                  <View key={i} style={styles.anotherSpeechWrapper}>
+                    <RobotAvatar />
+
+                    <AnotherSpeechBubble text={item.content} />
+
+                    <TimeViewer date={item.createdAt} />
+                  </View>
+                )
+              )}
+            </View>
+          </ScrollView>
+        </PaddingHorizontal>
+
+        <AIInputBar
+          value={text}
+          onChangeText={setText}
+          isSubmitting={isLoading}
+          onImagePress={() => ImageMethodPopupRef.current?.open()}
+          onTextSubmit={onTextSubmit}
+        />
       </KeyboardAvoidingView>
 
       <TabBar currentIndex={1} />
 
-      <ImageMethodPopup ref={ImageMethodPopupRef} aiChat={{ onImageSubmit: () => 1 }} />
+      <ImageMethodPopup ref={ImageMethodPopupRef} aiChat={{ onImageSubmit }} />
     </SafeAreaView>
   );
 };
@@ -159,5 +180,23 @@ export const AIChatScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  chatWrapper: {
+    marginTop: 5,
+    marginBottom: 15,
+
+    gap: 12,
+  },
+  mySpeechWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+
+    gap: 10,
+  },
+  anotherSpeechWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+
+    gap: 10,
   },
 });

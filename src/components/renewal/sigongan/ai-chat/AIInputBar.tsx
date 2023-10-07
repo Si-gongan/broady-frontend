@@ -6,9 +6,10 @@ import Svg, { Path } from 'react-native-svg';
 type IAIInputBarProps = {
   value: string;
   onChangeText: (text: string) => void;
+  isSubmitting: boolean;
 
-  onImagePress?: () => void;
-  onTextSubmit?: () => void;
+  onImagePress: () => void;
+  onTextSubmit: () => void;
 };
 
 const IMAGE_ICON_PATH =
@@ -16,7 +17,7 @@ const IMAGE_ICON_PATH =
 
 const SUBMIT_ICON_PATH = 'M3 20V4L22 12L3 20ZM5 17L16.85 12L5 7V10.5L11 12L5 13.5V17Z';
 
-export const AIInputBar = ({ value, onChangeText, onImagePress, onTextSubmit }: IAIInputBarProps) => {
+export const AIInputBar = ({ value, onChangeText, isSubmitting, onImagePress, onTextSubmit }: IAIInputBarProps) => {
   return (
     <LinearGradient
       colors={[Colors.None.Lighten400, Colors.Red.Lighten200]}
@@ -32,13 +33,18 @@ export const AIInputBar = ({ value, onChangeText, onImagePress, onTextSubmit }: 
             placeholder="질문을 입력해주세요..."
           />
 
-          <TouchableOpacity activeOpacity={0.8} onPress={onImagePress}>
+          <TouchableOpacity activeOpacity={0.8} onPress={onImagePress} disabled={isSubmitting}>
             <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <Path d={IMAGE_ICON_PATH} fill={Colors.Red.Lighten200} />
             </Svg>
           </TouchableOpacity>
 
-          <TouchableOpacity activeOpacity={0.8} style={styles.submitButton} onPress={onTextSubmit}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.submitButton}
+            onPress={onTextSubmit}
+            disabled={isSubmitting}
+          >
             <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <Path d={SUBMIT_ICON_PATH} fill={Colors.Red.Lighten200} />
             </Svg>

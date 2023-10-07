@@ -145,7 +145,7 @@ export const RequestStateScreen = () => {
                       {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
 
                       <TouchableOpacity activeOpacity={0.8} onLongPress={() => ReportPopupRef?.current?.open()}>
-                        <View style={styles.AnotherSpeechWrapper}>
+                        <View style={styles.anotherSpeechWrapper}>
                           <AnotherAvatar />
 
                           <AnotherSpeechBubble text={item.text.trimEnd()} />
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
 
     gap: 10,
   },
-  AnotherSpeechWrapper: {
+  anotherSpeechWrapper: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
 
