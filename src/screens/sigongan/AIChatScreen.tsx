@@ -1,22 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, Alert, SafeAreaView } from 'react-native';
-import {
-  QuestionBox,
-  ImageSelectPopup,
-  ImageSelectPopupHandler,
-  ImageViewer,
-  DateViewer,
-} from '../../components/sigongan/ai-chat';
-import { ScrollView } from 'react-native-gesture-handler';
-import {
-  MySpeechBubble,
-  AnotherSpeechBubble,
-  AnotherAvatar,
-  TimeViewer,
-} from '../../components/sigongan/request-state';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, Alert, SafeAreaView, ScrollView } from 'react-native';
 import { GetChatList, IGetChatListReturnType, PostImageQuestion, PostTextQuestion } from '../../api/axios';
-import Spinner from 'react-native-loading-spinner-overlay';
-import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
+
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
@@ -24,7 +9,14 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { SigonganMainTabParamList } from '../../navigations';
 import { delay, getDate } from '../../utils/time';
 import { useKeyboard } from '../../hooks';
-import { TabBar } from '../../components/renewal';
+import {
+  BomHeader,
+  AIInputBar,
+  PaddingHorizontal,
+  TabBar,
+  IImageMethodPopupHandler,
+  ImageMethodPopup,
+} from '../../components/renewal';
 
 type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
 
@@ -44,7 +36,7 @@ export const AIChatScreen = () => {
   const { isKeyboardVisible } = useKeyboard();
 
   // popup
-  const imageSelectPopupRef = useRef<ImageSelectPopupHandler>(null);
+  const ImageMethodPopupRef = useRef<IImageMethodPopupHandler>(null);
 
   // load initial chat
   useEffect(() => {
@@ -144,96 +136,28 @@ export const AIChatScreen = () => {
     i === 0 || (i - 2 >= 0 && getDate(list[i].createdAt) !== getDate(list[i - 2].createdAt));
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-      keyboardVerticalOffset={0}
-    >
-      <SigonganHeader text="AI 채팅" hideBackButton isBottomBorder />
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={0}
+      >
+        <BomHeader text="AI 해설" hideBackButton isBottomBorder />
 
-      <SafeAreaView style={styles.container}>
-        <ScrollView ref={scrollViewRef}>
-          <View style={styles.chatWrapper}>
-            {chatList.map((item, i) =>
-              item.role === 'user' ? (
-                <View key={i} style={styles.chatItem}>
-                  {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
+        <PaddingHorizontal value={20}></PaddingHorizontal>
 
-                  <View
-                    key={i}
-                    style={styles.mySpeechEndWrapper}
-                    accessible
-                    accessibilityLabel={`내가 전송한 ${item.isPhoto ? '사진' : '채팅'} ${
-                      !item.isPhoto ? item.content : ''
-                    }`}
-                  >
-                    <TimeViewer date={item.createdAt} />
-
-                    {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
-                  </View>
-                </View>
-              ) : (
-                <View
-                  key={i}
-                  style={styles.anotherSpeechWrapper}
-                  accessible
-                  accessibilityLabel={`AI의 답변 ${item.content}`}
-                >
-                  <AnotherAvatar />
-
-                  <AnotherSpeechBubble text={item.content} />
-
-                  <TimeViewer date={item.createdAt} />
-                </View>
-              )
-            )}
-          </View>
-        </ScrollView>
-
-        <QuestionBox
-          value={text}
-          onChangeValue={setText}
-          onImagePopupPress={() => imageSelectPopupRef.current?.open()}
-          onSendTextPress={onSendTextPress}
-          disabled={loading}
-        />
-      </SafeAreaView>
-
-      <ImageSelectPopup ref={imageSelectPopupRef} onSendImagePress={onSendImagePress} />
-
-      <Spinner visible={loading} />
+        <AIInputBar value={text} onChangeText={setText} onImagePress={() => ImageMethodPopupRef.current?.open()} />
+      </KeyboardAvoidingView>
 
       <TabBar currentIndex={1} />
-    </KeyboardAvoidingView>
+
+      <ImageMethodPopup ref={ImageMethodPopupRef} aiChat={{ onImageSubmit: () => 1 }} />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  chatWrapper: {
-    flex: 1,
-    gap: 12,
-
-    marginTop: 3,
-    marginBottom: 20,
-  },
-  chatItem: {
-    width: '100%',
-  },
-  mySpeechEndWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-
-    gap: 11,
-    marginRight: 18,
-  },
-  anotherSpeechWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-
-    marginLeft: 16,
-    gap: 8,
   },
 });

@@ -24,7 +24,7 @@ import {
   AnotherSpeechBubble,
   DateViewer,
   BomHeader,
-  InputBar,
+  RequestInputBar,
   MySpeechBubble,
   PaddingHorizontal,
   TimeViewer,
@@ -175,7 +175,7 @@ export const RequestStateScreen = () => {
           </ScrollView>
         </PaddingHorizontal>
 
-        <InputBar value={text} onChangeText={setText} />
+        <RequestInputBar value={text} onChangeText={setText} />
 
         <SettingPopup ref={SettingPopupRef} onDelete={() => 1} />
         <ReportPopup ref={ReportPopupRef} />

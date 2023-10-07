@@ -17,8 +17,14 @@ export type IImageMethodPopupHandler = {
   close: () => void;
 };
 
+type IImageMethodPopupProps = {
+  aiChat?: {
+    onImageSubmit: (url: string) => void;
+  };
+};
+
 // eslint-disable-next-line
-export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, any>((_, ref) => {
+export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, IImageMethodPopupProps>(({ aiChat }, ref) => {
   const insets = useSafeAreaInsets();
 
   const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
@@ -46,7 +52,12 @@ export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, any>((_, re
     onClose();
 
     const url = result?.assets[0].uri;
-    navigation.navigate('해설의뢰', { url });
+
+    if (aiChat) {
+      aiChat.onImageSubmit(url ?? '');
+    } else {
+      navigation.navigate('해설의뢰', { url });
+    }
   };
 
   const onPressPickImage = async () => {
@@ -59,7 +70,12 @@ export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, any>((_, re
     onClose();
 
     const url = result?.assets[0].uri;
-    navigation.navigate('해설의뢰', { url });
+
+    if (aiChat) {
+      aiChat.onImageSubmit(url ?? '');
+    } else {
+      navigation.navigate('해설의뢰', { url });
+    }
   };
 
   return (
