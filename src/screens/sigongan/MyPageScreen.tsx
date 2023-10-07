@@ -1,46 +1,37 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import CustomerService from '../../components/common/CustomerService';
-import { AppSetting } from '../../components/sigongan/mypage';
-import { SigonganDesign } from '../../components/sigongan/styles';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useUserState } from '../../providers';
-import { SigonganHeader } from '../../components/sigongan/SigonganHeader';
-import { TabBar } from '../../components/renewal';
+import { BomHeader, Colors, Fonts, NextButton, PaddingHorizontal, TabBar, Utils } from '../../components/renewal';
 
 export const MyPageScreen = () => {
   const { logout } = useUserState();
 
   return (
-    <View style={styles.container}>
-      <SigonganHeader text="마이페이지" hideBackButton />
+    <SafeAreaView style={styles.container}>
+      <BomHeader text="마이페이지" isBottomBorder />
 
-      <AppSetting />
+      <PaddingHorizontal value={20}>
+        <View style={[styles.nicknameWrapper, Utils.borderColor(Colors.Red.Lighten300)]}>
+          <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>닉네임 설정</Text>
 
-      <CustomerService isBlind={true} />
-
-      <TouchableOpacity onPress={logout} accessible accessibilityLabel="첫 화면으로 나가기 버튼">
-        <View style={[SigonganDesign.myPageGrid, styles.goBack]}>
-          <Text style={SigonganDesign.myPageContent}>첫 화면으로 나가기</Text>
+          <NextButton />
         </View>
-      </TouchableOpacity>
+      </PaddingHorizontal>
 
       <TabBar currentIndex={2} />
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    gap: 20,
+    flex: 1,
   },
-  customerService: {
-    paddingVertical: 16,
-    paddingHorizontal: 12,
+  nicknameWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
 
-    gap: 18,
-  },
-  goBack: {
-    paddingVertical: 17,
-    paddingHorizontal: 14,
+    borderRadius: 12,
+
+    padding: 20,
   },
 });
