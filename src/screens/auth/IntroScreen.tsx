@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigations';
 
-import { LongButton, PaddingHorizontal } from '../../components/renewal';
+import { BomButton, PaddingHorizontal } from '../../components/renewal';
 
 const LOGO_URL = '../../../assets/intro-icon2.png';
 
@@ -20,7 +20,7 @@ export const IntroScreen = () => {
         </View>
 
         <View style={styles.button1}>
-          <LongButton
+          <BomButton
             text="사진 해설이 필요해요"
             theme="primary"
             onPress={() => navigation.push('닉네임 입력', { type: 'sigongan' })}
@@ -28,7 +28,7 @@ export const IntroScreen = () => {
         </View>
 
         <View style={styles.button2}>
-          <LongButton text="해설자로 활동할게요" theme="secondary" onPress={() => navigation.push('이메일 회원가입')} />
+          <BomButton text="해설자로 활동할게요" theme="secondary" onPress={() => navigation.push('이메일 회원가입')} />
         </View>
       </PaddingHorizontal>
     </SafeAreaView>

@@ -4,7 +4,7 @@ import { Colors } from '../styles';
 type IBomCheckBoxProps = {
   value: boolean;
   onValueChange: (b: boolean) => void;
-  accessibilityLabel: string;
+  accessibilityLabel?: string;
 };
 
 const CHECKBOX_SIZE = 17;
