@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import { Colors } from '../../../renewal';
-import { SigonganColor, SigonganDesign, SigonganShadow } from '../../../sigongan/styles';
 import { commentFont } from '../../styles';
 
 interface IStopCommentBottomSheetProps {
@@ -15,11 +14,11 @@ const StopCommentBottomSheet = ({ handleClickStopComment, visible, setVisible }:
 
   return (
     <BottomSheet visible={visible} onBackButtonPress={onClose} onBackdropPress={onClose}>
-      <View style={[styles.container, SigonganColor.backgroundPrimary]}>
+      <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <Text style={commentFont.BUTTON_TEXT}>해설 넘기기</Text>
         </View>
-        <View style={SigonganDesign.borderOpaque} />
+        <View style={styles.divisionLine} />
         <View style={styles.itemWrapper}>
           <Text style={commentFont.BODY1}>해설을 그만두고 다른 해설자에게 넘길 경우</Text>
           <Text style={commentFont.BODY1}>10P가 차감됩니다.</Text>
@@ -39,16 +38,19 @@ const StopCommentBottomSheet = ({ handleClickStopComment, visible, setVisible }:
 
 const styles = StyleSheet.create({
   container: {
-    // alignItems: 'center',
+    backgroundColor: '#fff',
     paddingTop: 8,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    ...SigonganShadow.shadowTopHigh,
   },
   titleWrapper: {
-    // width: '100%',
     alignItems: 'center',
     paddingVertical: 10,
+  },
+  divisionLine: {
+    width: '100%',
+    height: 1,
+    backgroundColor: '#E8E8E8',
   },
   titleText: {
     fontWeight: '500',

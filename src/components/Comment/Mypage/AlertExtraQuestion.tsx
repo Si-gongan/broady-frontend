@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Switch, Alert, Linking } from 'react-native';
-import { SigonganDesign } from '../styles';
-import { getNotificationPermissions } from '../../common/notifications';
-import { ChangeAlarmStatus, GetAlarmStatus } from '../../../api/axios';
+import { useEffect, useState } from 'react';
+import { Alert, View, Text, Switch, StyleSheet, Linking } from 'react-native';
 import { useRecoilValue } from 'recoil';
+import { ChangeAlarmStatus, GetAlarmStatus } from '../../../api/axios';
 import { fcmTokenState } from '../../../states';
+import { getNotificationPermissions } from '../../common/notifications';
+import { commentFont } from '../styles';
 import * as Notifications from 'expo-notifications';
 
-export const AppSetting = () => {
+const AlertExtraQuestion = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
-
   const [isEnabled, setIsEnabled] = useState(false);
 
   const toggleSwitch = async () => {
@@ -63,42 +62,44 @@ export const AppSetting = () => {
   }, []);
 
   return (
-    <View style={[SigonganDesign.myPageGrid, styles.appSetting]}>
-      <Text style={SigonganDesign.myPageTitle}>앱 설정</Text>
-
-      <View style={styles.rowWrap}>
-        <Text nativeID="Switch" style={SigonganDesign.myPageContent}>
-          알림 설정
-        </Text>
-
+    <View style={styles.alertContainer}>
+      <View style={styles.toggleContainer}>
+        <Text style={commentFont.TITLE}>추가 질문 알림</Text>
         <Switch
-          trackColor={{ false: '#E8E8E8', true: '#000' }}
+          trackColor={{ false: '#767676', true: '#AEB8F4' }}
           thumbColor={isEnabled ? '#fff' : '#fff'}
-          ios_backgroundColor="#E8E8E8"
+          ios_backgroundColor="#767676"
           onValueChange={toggleSwitch}
           value={isEnabled}
-          accessible
-          accessibilityLabel="알림 설정 스위치 버튼"
-          accessibilityLabelledBy="Switch"
-          accessibilityState={{ checked: isEnabled }}
         />
       </View>
+      <Text style={[commentFont.SMALL_TITLE, styles.blackText]}>
+        내가 작성한 해설에 대해, 시각장애인의 추가 질문이{'\n'}들어올 경우 푸시 알림을 수신합니다.
+      </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  appSetting: {
-    marginTop: 10,
-
-    paddingVertical: 13,
-    paddingHorizontal: 14,
-
-    gap: 15,
+  alertContainer: {
+    width: '80%',
+    justifyContent: 'center',
+    marginVertical: 20,
   },
-  rowWrap: {
+  toggleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingBottom: 15,
+  },
+  blackText: {
+    color: 'black',
+  },
+  divisionLine: {
+    width: '100%',
+    height: 1,
+    backgroundColor: '#E8E8E8',
   },
 });
+
+export default AlertExtraQuestion;
