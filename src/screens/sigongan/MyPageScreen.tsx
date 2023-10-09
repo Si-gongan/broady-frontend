@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Switch, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Pressable } from 'react-native';
 import { useUserState } from '../../providers';
 import {
   BomHeader,

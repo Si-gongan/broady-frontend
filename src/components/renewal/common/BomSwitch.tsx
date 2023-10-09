@@ -8,15 +8,17 @@ type IBomSwitchProps = {
   onChangeValue: (b: boolean) => void;
 };
 
-const OFFSET_VALUE = [3, 24];
+const OFFSET_VALUE = [3, 24] as const;
+type IOffsetType = (typeof OFFSET_VALUE)[number];
 
 export const BomSwitch = ({ value, onChangeValue }: IBomSwitchProps) => {
-  const offset = useSharedValue(3);
+  const offset = useSharedValue<IOffsetType>(OFFSET_VALUE[0]);
 
   const onPress = () => {
-    onChangeValue(!value);
+    const newValue = !value;
+    onChangeValue(newValue);
 
-    if (!value) {
+    if (newValue) {
       offset.value = withTiming(OFFSET_VALUE[1]);
     } else {
       offset.value = withTiming(OFFSET_VALUE[0]);
