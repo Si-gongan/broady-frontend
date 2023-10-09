@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { getCompletedRequest, getMyRequestAll, getProceedRequest } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
+import { getKoreanTime } from '../../../utils/time';
 import Header from '../../common/Header';
 import { Colors } from '../../renewal';
 import MyRequestInformation from './MyRequestInformation';
@@ -15,7 +16,8 @@ const MyRequest = ({ navigation }: any) => {
   const authToken = useRecoilValue(authTokenState);
 
   const [requestList, setRequestList] = useState<ICurrentRequest[]>([]);
-  const totalCompletedRequest = useRef(0);
+  const totalCompletedCount = useRef(0);
+  const todayCompletedCount = countTodayCompletedRequest(requestList);
 
   const isFocused = useIsFocused();
 
@@ -33,7 +35,7 @@ const MyRequest = ({ navigation }: any) => {
             .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
 
           const sortedCompletedList = [...proceedList, ...completeList];
-          totalCompletedRequest.current = completeList.length;
+          totalCompletedCount.current = completeList.length;
           setRequestList(sortedCompletedList);
         });
       } catch (error) {
@@ -45,12 +47,22 @@ const MyRequest = ({ navigation }: any) => {
   return (
     <View style={styles.mainContainer}>
       <Header isBack={false}>MY의뢰</Header>
-      <MyRequestInformation totalCompletedRequest={totalCompletedRequest.current} />
+      <MyRequestInformation
+        totalCompletedCount={totalCompletedCount.current}
+        todayCompletedCount={todayCompletedCount}
+      />
       <View style={styles.bodyContainer}>
         <RequestList requestList={requestList} setRequestList={setRequestList} navigation={navigation} />
       </View>
     </View>
   );
+};
+
+const countTodayCompletedRequest = (requestList: ICurrentRequest[]) => {
+  const todayRequest = requestList.filter(
+    (request) => getKoreanTime(new Date()).getDay() === new Date(request.createdAt).getDay()
+  );
+  return todayRequest.length;
 };
 
 const styles = StyleSheet.create({

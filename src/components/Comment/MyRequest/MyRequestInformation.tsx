@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Colors } from '../../renewal';
 import { commentFont } from '../styles';
 
@@ -6,35 +6,32 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30;
 
 interface IMyRequestInformationProps {
-  totalCompletedRequest: number;
-  // todayCompletedRequest: number;
+  totalCompletedCount: number;
+  todayCompletedCount: number;
 }
 
-const MyRequestInformation = ({ totalCompletedRequest }: IMyRequestInformationProps) => {
+const MyRequestInformation = ({ totalCompletedCount, todayCompletedCount }: IMyRequestInformationProps) => {
   return (
-    
-      <View style={styles.mainContainer}>
-        <View style={styles.guideTextContainer}>
-          <Text style={[styles.mainText, commentFont.SLOGAN]}>오늘도 열심히{'\n'}해설해주셨군요!</Text>
+    <View style={styles.mainContainer}>
+      <View style={styles.guideTextContainer}>
+        <Text style={[styles.mainText, commentFont.SLOGAN]}>오늘도 열심히{'\n'}해설해주셨군요!</Text>
+      </View>
+      <View style={styles.requestContaier}>
+        <View style={styles.requestItemContainer}>
+          <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>내 누적 해설</Text>
+          <Text style={commentFont.TITLE}>
+            {totalCompletedCount ? totalCompletedCount.toString().padStart(2, '0') : '00'}건
+          </Text>
         </View>
-        <View style={styles.requestContaier}>
-          <View style={styles.requestItemContainer}>
-            <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>내 누적 해설</Text>
-            <Text style={commentFont.TITLE}>
-              {totalCompletedRequest ? totalCompletedRequest.toString().padStart(2, '0') : '00'}건
-            </Text>
-          </View>
 
-          <View style={styles.requestItemContainer}>
-            <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>오늘 진행한 해설</Text>
-            <Text style={commentFont.TITLE}>
-              {/* {todayCompletedRequest ? todayCompletedRequest.toString().padStart(2, '0') : '00'}건 */}
-              00건
-            </Text>
-          </View>
+        <View style={styles.requestItemContainer}>
+          <Text style={[commentFont.SMALL_TITLE, styles.textCategory]}>오늘 진행한 해설</Text>
+          <Text style={commentFont.TITLE}>
+            {todayCompletedCount ? todayCompletedCount.toString().padStart(2, '0') : '00'}건
+          </Text>
         </View>
       </View>
-    
+    </View>
   );
 };
 
