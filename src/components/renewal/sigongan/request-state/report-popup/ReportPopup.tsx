@@ -12,14 +12,18 @@ import { CheckGroup, ReportOption } from './CheckGroup';
 import { ReportInput } from './ReportInput';
 import { BomButton } from '../../../common';
 
+import { IReqeustListItem } from '../../../../../api/axios';
+
 export type IReportPopupHandler = {
-  open: () => void;
+  open: (_user: IReqeustListItem['requestedUser'][0]) => void;
   close: () => void;
 };
 
 // eslint-disable-next-line
 export const ReportPopup = forwardRef<IReportPopupHandler, any>((_, ref) => {
   const insets = useSafeAreaInsets();
+
+  const [user, setUser] = useState<IReqeustListItem['requestedUser'][0]>();
 
   const [visible, setVisible] = useState(false);
 
@@ -30,10 +34,17 @@ export const ReportPopup = forwardRef<IReportPopupHandler, any>((_, ref) => {
 
   const onClose = () => setVisible(false);
 
+  // const onReport = async () => {
+
+  // }
+
   useImperativeHandle(
     ref,
     () => ({
-      open: () => setVisible(true),
+      open: (_user) => {
+        setVisible(true);
+        setUser(_user);
+      },
       close: () => setVisible(false),
     }),
     []

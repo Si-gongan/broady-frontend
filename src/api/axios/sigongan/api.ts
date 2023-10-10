@@ -99,3 +99,29 @@ export const ChangeAlarmStatus = async (isAccepted: boolean, fcmToken: string) =
     }
   );
 };
+
+export const ReportPost = async (
+  postId: string,
+  type: string,
+  reason: string,
+  text: string,
+  userId: string | null,
+  fcmToken: string
+) => {
+  return await Server.post(
+    '/report/post',
+    {
+      postId,
+      type,
+      reason,
+      text,
+      userId,
+    },
+    {
+      headers: {
+        fcmToken,
+        authorization: 0,
+      },
+    }
+  );
+};
