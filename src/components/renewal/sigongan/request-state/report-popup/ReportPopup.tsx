@@ -15,8 +15,7 @@ import { BomButton } from '../../../common';
 import { IReqeustListItem, ReportPost } from '../../../../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../../../../states';
-import { useLoading } from '../../../../../providers';
-import { Notice, NoticeError, delay } from '../../../utils';
+import { Notice, NoticeError } from '../../../utils';
 
 export type IReportPopupHandler = {
   open: (_user: IReqeustListItem['requestedUser'][0]) => void;
@@ -39,7 +38,7 @@ export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({
   const [option, setOption] = useState<ReportOption>('none');
   const [text, setText] = useState('');
 
-  const { changeLoading } = useLoading();
+  // const { changeLoading } = useLoading();
 
   const { isKeyboardVisible, keyboardHeight } = useKeyboard();
 
@@ -62,8 +61,6 @@ export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({
     }
 
     try {
-      changeLoading(true);
-
       onClose();
 
       await ReportPost(item.id, option, option, text || 'none', user?.userId ?? '', fcmToken);
@@ -71,8 +68,6 @@ export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({
       Notice('신고를 완료했습니다!');
     } catch {
       NoticeError();
-    } finally {
-      changeLoading(false);
     }
   };
 
