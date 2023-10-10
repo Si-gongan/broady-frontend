@@ -12,6 +12,7 @@ type IBomHeaderProps = {
   rightIcon?: {
     path: string;
     onPress: () => void;
+    accessibilityLabel: string;
   };
 };
 
@@ -39,7 +40,13 @@ export const BomHeader = ({ text, isBottomBorder, hideBackButton, rightIcon }: I
       <Text style={[Fonts.Regular20, Utils.fontColor(Colors.Font.primary)]}>{text}</Text>
 
       {rightIcon ? (
-        <TouchableOpacity activeOpacity={0.8} onPress={() => rightIcon.onPress()} style={styles.icon2_real}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => rightIcon.onPress()}
+          style={styles.icon2_real}
+          accessible
+          accessibilityLabel={rightIcon.accessibilityLabel}
+        >
           <Svg width="30" height="30" viewBox="0 0 30 30" fill="none">
             <Path d={rightIcon.path} fill={Colors.Font.secondary} />
           </Svg>

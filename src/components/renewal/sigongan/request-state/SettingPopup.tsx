@@ -58,6 +58,8 @@ export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>
             onPress={() => {
               DeleteCheckPopupRef.current?.open();
             }}
+            accessible
+            accessibilityLabel="질문 삭제하기 버튼"
           >
             <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문 삭제하기</Text>
 

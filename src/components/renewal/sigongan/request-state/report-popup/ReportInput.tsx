@@ -26,6 +26,8 @@ export const ReportInput = ({ value, onChangeText, disabled = false }: IReportIn
         ]}
         multiline
         editable={!disabled}
+        accessible
+        accessibilityLabel="신고 사유 입력 창"
       />
     </View>
   );

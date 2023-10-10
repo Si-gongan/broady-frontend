@@ -31,9 +31,17 @@ export const AIInputBar = ({ value, onChangeText, isSubmitting, onImagePress, on
             value={value}
             onChangeText={onChangeText}
             placeholder="질문을 입력해주세요..."
+            accessible
+            accessibilityLabel="질문 입력 창"
           />
 
-          <TouchableOpacity activeOpacity={0.8} onPress={onImagePress} disabled={isSubmitting}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={onImagePress}
+            disabled={isSubmitting}
+            accessible
+            accessibilityLabel="이미지 선택 팝업 열기 버튼"
+          >
             <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <Path d={IMAGE_ICON_PATH} fill={Colors.Red.Lighten200} />
             </Svg>
@@ -44,6 +52,8 @@ export const AIInputBar = ({ value, onChangeText, isSubmitting, onImagePress, on
             style={styles.submitButton}
             onPress={onTextSubmit}
             disabled={isSubmitting}
+            accessible
+            accessibilityLabel="질문 전송 버튼"
           >
             <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <Path d={SUBMIT_ICON_PATH} fill={Colors.Red.Lighten200} />

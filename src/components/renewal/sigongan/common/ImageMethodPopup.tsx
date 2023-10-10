@@ -94,6 +94,8 @@ export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, IImageMetho
             activeOpacity={0.8}
             style={[styles.button, Utils.borderBottomColor(Colors.Blue.Lighten400)]}
             onPress={onPressTakePhoto}
+            accessible
+            accessibilityLabel="직접 촬영 버튼"
           >
             <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>직접 촬영</Text>
 
@@ -105,7 +107,13 @@ export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, IImageMetho
             </Svg>
           </TouchableOpacity>
 
-          <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={onPressPickImage}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.button}
+            onPress={onPressPickImage}
+            accessible
+            accessibilityLabel="갤러리에서 선택 버튼"
+          >
             <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>갤러리에서 선택</Text>
 
             <Svg width="9" height="16" viewBox="0 0 9 16" fill="none">

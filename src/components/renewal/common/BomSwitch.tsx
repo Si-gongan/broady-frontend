@@ -37,6 +37,10 @@ export const BomSwitch = ({ value, onChangeValue }: IBomSwitchProps) => {
     <Pressable
       style={[styles.container, Utils.backgroundColor(value ? Colors.Blue.Lighten300 : Colors.Font.secondary)]}
       onPress={onPress}
+      accessible
+      accessibilityLabel="알림 변경 스위치 토글"
+      accessibilityRole="switch"
+      accessibilityState={{ checked: value }}
     >
       <Animated.View
         style={[styles.point, Utils.backgroundColor(Colors.None.Lighten300), animatedStyles]}

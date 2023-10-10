@@ -60,6 +60,8 @@ export const PutNicknameScreen = () => {
               ]}
               value={text}
               onChangeText={setText}
+              accessible
+              accessibilityLabel="바꿀 닉네임 입력 창"
             />
 
             <View style={{ marginTop: 50 }}>

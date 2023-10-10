@@ -86,7 +86,7 @@ export const CommentRequestScreen = () => {
         <PaddingHorizontal value={20}>
           <ScrollView ref={scrollViewRef}>
             <View style={styles.imageContainer}>
-              <Image source={{ uri: url }} style={styles.image} />
+              <Image source={{ uri: url }} style={styles.image} accessible accessibilityLabel="업로드한 사진" />
             </View>
 
             <View style={{ marginTop: 10 }}>
@@ -110,6 +110,8 @@ export const CommentRequestScreen = () => {
                 multiline
                 value={value}
                 onChangeText={setValue}
+                accessible
+                accessibilityLabel="질문 입력 창"
               />
             </View>
 

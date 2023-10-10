@@ -158,7 +158,11 @@ export const RequestStateScreen = () => {
         <BomHeader
           text="답변 현황"
           isBottomBorder
-          rightIcon={{ path: SETTING_ICON_PATH, onPress: () => SettingPopupRef.current?.open() }}
+          rightIcon={{
+            path: SETTING_ICON_PATH,
+            onPress: () => SettingPopupRef.current?.open(),
+            accessibilityLabel: '설정 버튼',
+          }}
         />
 
         <PaddingHorizontal value={20}>
@@ -172,7 +176,11 @@ export const RequestStateScreen = () => {
                     <View key={user.createdAt}>
                       {isShowDate(chatList, i) && <DateViewer date={user.createdAt} />}
 
-                      <View style={isShowTimeViewer(chatList, i) && styles.mySpeechWrapper}>
+                      <View
+                        style={isShowTimeViewer(chatList, i) && styles.mySpeechWrapper}
+                        accessible
+                        accessibilityLabel={`나의 대화: ${user.text.trimEnd()}, ${getFormattedTime(user.createdAt)}`}
+                      >
                         {/* 다음 대화가 내가 아니면, 시간 표시를 넣음 */}
                         {isShowTimeViewer(chatList, i) && <TimeViewer date={user.createdAt} />}
 
@@ -184,7 +192,14 @@ export const RequestStateScreen = () => {
                     <View key={user.createdAt}>
                       {isShowDate(chatList, i) && <DateViewer date={user.createdAt} />}
 
-                      <TouchableOpacity activeOpacity={0.8} onLongPress={() => ReportPopupRef?.current?.open(user)}>
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onLongPress={() => ReportPopupRef?.current?.open(user)}
+                        accessible
+                        accessibilityLabel={`해설자의 대화: ${user.text.trimEnd()}, ${getFormattedTime(
+                          user.createdAt
+                        )}`}
+                      >
                         <View style={styles.anotherSpeechWrapper}>
                           <AnotherAvatar />
 
@@ -215,7 +230,7 @@ export const RequestStateScreen = () => {
           </ScrollView>
         </PaddingHorizontal>
 
-        <RequestInputBar value={text} onChangeText={setText} onPress={addQuestion} />
+        <RequestInputBar value={text} onChangeText={setText} onPress={addQuestion} isSubmitting={isLoading} />
       </KeyboardAvoidingView>
 
       <SettingPopup ref={SettingPopupRef} onDelete={onDelete} />
