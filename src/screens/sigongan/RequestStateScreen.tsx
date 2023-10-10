@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,14 +9,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SigonganStackParamList } from '../../navigations';
 
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 
-import { AddQuestion, GetRequestList, IReqeustListItem } from '../../api/axios';
+import { AddQuestion, DeleteQuestion, GetRequestList, IReqeustListItem } from '../../api/axios';
 
 import { useKeyboard } from '../../hooks';
 import {
@@ -105,6 +105,19 @@ export const RequestStateScreen = () => {
 
       await AddQuestion(item.id, text, fcmToken);
       refresh();
+    } catch (e) {
+      NoticeError();
+    } finally {
+      changeLoading(false);
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      changeLoading(true);
+
+      await DeleteQuestion(item.id, fcmToken);
+      navigation.goBack();
     } catch (e) {
       NoticeError();
     } finally {
@@ -206,7 +219,7 @@ export const RequestStateScreen = () => {
         <RequestInputBar value={text} onChangeText={setText} onPress={addQuestion} />
       </KeyboardAvoidingView>
 
-      <SettingPopup ref={SettingPopupRef} onDelete={() => 1} />
+      <SettingPopup ref={SettingPopupRef} onDelete={onDelete} />
       <ReportPopup ref={ReportPopupRef} />
     </SafeAreaView>
   );

@@ -4,7 +4,7 @@ export type AuthStackParamList = {
   인트로: undefined;
   '이메일 회원가입': undefined;
   '이메일 로그인': undefined;
-  '닉네임 입력': { type: 'sigongan' | 'comment' };
+  '닉네임 입력': { type: 'Sigongan' | 'Comment'; token?: string };
 };
 
 export type CommentaryTabParamList = {

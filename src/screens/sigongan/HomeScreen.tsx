@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { useRecoilValue } from 'recoil';
@@ -20,7 +20,6 @@ import {
   ImageMethodPopup,
   NoticeError,
 } from '../../components/renewal';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const HomeScreen = () => {
   // page move

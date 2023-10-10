@@ -47,6 +47,18 @@ export const AddQuestion = async (postId: string, text: string, fcmToken: string
   );
 };
 
+export const DeleteQuestion = async (postId: string, fcmToken: string) => {
+  return await Server.delete('/post', {
+    data: {
+      postId,
+    },
+    headers: {
+      fcmToken,
+      authorization: 0,
+    },
+  });
+};
+
 export const AddThanks = async (postId: string, answerId: string, text: string, fcmToken: string) => {
   return await Server.post(
     '/post/appreciate',

@@ -1,6 +1,5 @@
-import { Image, View, StyleSheet } from 'react-native';
+import { Image, View, StyleSheet, SafeAreaView } from 'react-native';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigations';
@@ -23,7 +22,7 @@ export const IntroScreen = () => {
           <BomButton
             text="사진 해설이 필요해요"
             theme="primary"
-            onPress={() => navigation.push('닉네임 입력', { type: 'sigongan' })}
+            onPress={() => navigation.push('닉네임 입력', { type: 'Sigongan' })}
           />
         </View>
 
