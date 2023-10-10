@@ -6,6 +6,7 @@ import Svg, { Path } from 'react-native-svg';
 type IReuqestInputBarProps = {
   value: string;
   onChangeText: (text: string) => void;
+  isSubmitting: boolean;
 
   onPress?: () => void;
 };
@@ -13,7 +14,7 @@ type IReuqestInputBarProps = {
 const SUBMIT_ICON_PATH =
   'M3.75 25V5L27.5 15L3.75 25ZM6.25 21.25L21.0625 15L6.25 8.75V13.125L13.75 15L6.25 16.875V21.25Z';
 
-export const RequestInputBar = ({ value, onChangeText, onPress }: IReuqestInputBarProps) => {
+export const RequestInputBar = ({ value, onChangeText, isSubmitting, onPress }: IReuqestInputBarProps) => {
   return (
     <LinearGradient
       colors={[Colors.None.Lighten400, Colors.Red.Lighten200]}
@@ -27,9 +28,18 @@ export const RequestInputBar = ({ value, onChangeText, onPress }: IReuqestInputB
             value={value}
             onChangeText={onChangeText}
             placeholder="질문을 입력해주세요..."
+            accessible
+            accessibilityLabel="질문 입력 창"
           />
 
-          <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={onPress}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.button}
+            onPress={onPress}
+            disabled={isSubmitting}
+            accessible
+            accessibilityLabel="질문 전송 버튼"
+          >
             <Svg width="30" height="30" viewBox="0 0 30 30" fill="none">
               <Path d={SUBMIT_ICON_PATH} fill={Colors.Red.Lighten200} />
             </Svg>

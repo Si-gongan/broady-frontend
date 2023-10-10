@@ -49,7 +49,14 @@ export const TabBar = ({ currentIndex }: ITabBarProps) => {
     >
       <View style={[styles.container, Utils.backgroundColor(Colors.None.Lighten400), { paddingBottom }]}>
         {TABBAR_NAME.map((name, i) => (
-          <TouchableOpacity key={i} activeOpacity={0.8} style={styles.item} onPress={() => navigation.navigate(name)}>
+          <TouchableOpacity
+            key={i}
+            activeOpacity={0.8}
+            style={styles.item}
+            onPress={() => navigation.navigate(name)}
+            accessible
+            accessibilityLabel={`${name} 화면으로 이동`}
+          >
             <Svg width={30} height={30} viewBox="0 0 30 30" fill="none">
               <Path d={TABBAR_ICON_PATH[i]} fill={currentIndex === i ? Color.selected : Color.unSelected} />
             </Svg>

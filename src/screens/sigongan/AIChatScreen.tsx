@@ -142,14 +142,25 @@ export const AIChatScreen = () => {
                   <View key={i}>
                     {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
 
-                    <View style={styles.mySpeechWrapper}>
+                    <View
+                      style={styles.mySpeechWrapper}
+                      accessible
+                      accessibilityLabel={`내가 전송한 ${item.isPhoto ? '사진' : '채팅'} ${
+                        !item.isPhoto ? item.content : ''
+                      }`}
+                    >
                       <TimeViewer date={item.createdAt} />
 
                       {item.isPhoto ? <ImageViewer url={item.content} /> : <MySpeechBubble text={item.content} />}
                     </View>
                   </View>
                 ) : (
-                  <View key={i} style={styles.anotherSpeechWrapper}>
+                  <View
+                    key={i}
+                    style={styles.anotherSpeechWrapper}
+                    accessible
+                    accessibilityLabel={`AI의 답변 ${item.content}`}
+                  >
                     <RobotAvatar />
 
                     <AnotherSpeechBubble text={item.content} />
