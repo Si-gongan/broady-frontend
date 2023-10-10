@@ -47,6 +47,7 @@ export const MyPageScreen = () => {
               onPress={() => navigation.push('닉네임 수정')}
               accessible
               accessibilityLabel="닉네임 수정 버튼"
+              hitSlop={{ top: 15, bottom: 15 }}
             >
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>닉네임 설정</Text>
 
