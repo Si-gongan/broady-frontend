@@ -6,6 +6,7 @@ import { AUTH_TOKEN, USER_STATE, getData, storeData, removeData, NICKNAME } from
 import { useRecoilState } from 'recoil';
 import { authTokenState, nicknameState } from '../states';
 import { delay } from '../components/renewal';
+import { CheckNickname, PutNickname } from '../api/axios';
 
 /**
  * @description
@@ -22,14 +23,15 @@ const UserStateContext = createContext<{
   changeUserState: (userState: UserState) => void;
   loginToComment: (token: string, nickname: string | null) => Promise<void>;
   loginToSigongan: (nickname: string) => void;
-  changeNickname: (nickname: string) => void;
+  changeNickname: (type: UserState, nickname: string, fcmToken: string, authToken?: string) => Promise<void>;
   logout: () => void;
 } | null>(null);
 
 export const UserStateProvider = ({ children }: { children: ReactNode }) => {
+  const [userState, setUserState] = useState<UserState>('unLogin');
+
   const [, setAuthToken] = useRecoilState(authTokenState);
   const [, setNickname] = useRecoilState(nicknameState);
-  const [userState, setUserState] = useState<UserState>('unLogin');
 
   useEffect(() => {
     (async () => {
@@ -78,10 +80,26 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
     setUserState('Sigongan');
   }, []);
 
-  const changeNickname = useCallback((nickname: string) => {
-    storeData(NICKNAME, nickname);
-    setNickname(nickname);
-  }, []);
+  const changeNickname = useCallback(
+    async (type: UserState, nickname: string, fcmToken: string, authToken?: string) => {
+      if (type === 'Sigongan') {
+        storeData(NICKNAME, nickname);
+        setNickname(nickname);
+        return;
+      }
+
+      if (type === 'Comment') {
+        await CheckNickname(nickname, fcmToken);
+        await PutNickname(nickname, fcmToken, authToken ?? '');
+
+        storeData(NICKNAME, nickname);
+        setNickname(nickname);
+
+        return;
+      }
+    },
+    []
+  );
 
   const logout = useCallback(() => {
     removeData(USER_STATE);

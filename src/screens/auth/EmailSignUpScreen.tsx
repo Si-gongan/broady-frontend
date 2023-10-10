@@ -86,7 +86,7 @@ export const EmailSignUpScreen = () => {
       const resLogin = await Login(email, password, fcmToken);
       const authToken = resLogin.data.result.token;
 
-      navigation.push('닉네임 입력', { type: 'comment', token: authToken });
+      navigation.push('닉네임 입력', { type: 'Comment', token: authToken });
     } catch {
       Notice('이미 존재하는 이메일입니다.');
     } finally {

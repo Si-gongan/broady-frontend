@@ -23,8 +23,6 @@ import {
 } from '../../components/renewal';
 import { useLoading, useUserState } from '../../providers';
 
-import { CheckNickname, PutNickname } from '../../api/axios';
-
 import * as WebBrowser from 'expo-web-browser';
 
 type INicknameForm = {
@@ -38,7 +36,7 @@ export const NicknameScreen = () => {
     params: { type, token },
   } = useRoute<RouteProp<AuthStackParamList, '닉네임 입력'>>();
 
-  const { loginToSigongan, loginToComment } = useUserState();
+  const { loginToSigongan, loginToComment, changeNickname } = useUserState();
   const { changeLoading } = useLoading();
 
   const {
@@ -65,18 +63,17 @@ export const NicknameScreen = () => {
     const { nickname } = data;
 
     // 시각장애인 로그인
-    if (type === 'sigongan') {
+    if (type === 'Sigongan') {
       loginToSigongan(nickname);
       return;
     }
 
     // 해설자 로그인
-    if (type === 'comment') {
+    if (type === 'Comment') {
       try {
         changeLoading(true);
 
-        await CheckNickname(nickname, fcmToken);
-        await PutNickname(nickname, fcmToken, token ?? '');
+        await changeNickname('Comment', nickname, fcmToken, token);
 
         loginToComment(token ?? '', nickname);
       } catch {
@@ -122,7 +119,7 @@ export const NicknameScreen = () => {
             </View>
 
             <View style={styles.startWrapper}>
-              {type === 'sigongan' && (
+              {type === 'Sigongan' && (
                 <View style={styles.checkWrapper}>
                   <BomCheckBox
                     value={isChecked}
@@ -140,7 +137,7 @@ export const NicknameScreen = () => {
                 text="봄자국 시작하기"
                 theme="secondary"
                 onPress={handleSubmit(onSubmit)}
-                disabled={(type === 'sigongan' && !isChecked) || isSubmitting}
+                disabled={(type === 'Sigongan' && !isChecked) || isSubmitting}
               />
             </View>
           </ScrollView>

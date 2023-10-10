@@ -22,7 +22,7 @@ export const IntroScreen = () => {
           <BomButton
             text="사진 해설이 필요해요"
             theme="primary"
-            onPress={() => navigation.push('닉네임 입력', { type: 'sigongan' })}
+            onPress={() => navigation.push('닉네임 입력', { type: 'Sigongan' })}
           />
         </View>
 

@@ -60,7 +60,7 @@ export const EmailSignInScreen = () => {
 
       // 닉네임이 아직 등록되지 않은 상태
       if (nickname.length === 0) {
-        navigation.push('닉네임 입력', { type: 'comment', token: authToken });
+        navigation.push('닉네임 입력', { type: 'Comment', token: authToken });
         return;
       }
 

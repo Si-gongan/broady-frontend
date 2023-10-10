@@ -45,16 +45,3 @@ export const PutNickname = async (nickname: string, fcmToken: string, authToken:
     }
   );
 };
-
-// after delete
-export const editNickname = async (fcmToken: string, nickname: string) => {
-  return await Server.put(
-    `/user/nickname`,
-    { nickname },
-    {
-      headers: {
-        fcmToken,
-      },
-    }
-  );
-};
