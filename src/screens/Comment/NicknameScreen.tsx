@@ -1,16 +1,20 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { commentColor, commentFont } from '../../components/Comment/styles';
 import Header from '../../components/common/Header';
 import { Colors } from '../../components/renewal';
 import { authTokenState, fcmTokenState, nicknameState } from '../../states';
 import { useUserState } from '../../providers';
+import Toast from 'react-native-root-toast';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const NicknameScreen = ({ navigation }: { navigation: any }) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
   const nickname = useRecoilValue(nicknameState);
+
+  const insets = useSafeAreaInsets();
 
   const { changeNickname } = useUserState();
 
@@ -20,12 +24,21 @@ const NicknameScreen = ({ navigation }: { navigation: any }) => {
     setNicknameInput(text);
   };
 
+  const showToastMessage = (message: string, position: string) => {
+    Toast.show(message, {
+      duration: 1000,
+      animation: true,
+      position:
+        position === 'CENTER' ? Toast.positions.CENTER : Platform.OS === 'ios' ? insets.top : Toast.positions.TOP,
+    });
+  };
+
   const handleClickNewNickname = async () => {
     try {
       await changeNickname('Comment', nicknameInput, fcmToken, authToken);
-
       navigation.navigate('마이페이지');
     } catch (error) {
+      showToastMessage('기존 닉네임과 동일합니다.', 'TOP');
       console.log('NICKNAME EDIT ERROR: ', error);
     }
   };
