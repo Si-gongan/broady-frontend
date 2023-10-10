@@ -23,7 +23,7 @@ const UserStateContext = createContext<{
   changeUserState: (userState: UserState) => void;
   loginToComment: (token: string, nickname: string | null) => Promise<void>;
   loginToSigongan: (nickname: string) => void;
-  changeNickname: (type: UserState, nickname: string, fcmToken: string, authToken?: string) => Promise<void>;
+  changeNickname: (type: UserState, nickname: string, fcmToken?: string, authToken?: string) => Promise<void>;
   logout: () => void;
 } | null>(null);
 
@@ -81,7 +81,7 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const changeNickname = useCallback(
-    async (type: UserState, nickname: string, fcmToken: string, authToken?: string) => {
+    async (type: UserState, nickname: string, fcmToken?: string, authToken?: string) => {
       if (type === 'Sigongan') {
         storeData(NICKNAME, nickname);
         setNickname(nickname);
@@ -89,8 +89,8 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (type === 'Comment') {
-        await CheckNickname(nickname, fcmToken);
-        await PutNickname(nickname, fcmToken, authToken ?? '');
+        await CheckNickname(nickname, fcmToken ?? '');
+        await PutNickname(nickname, fcmToken ?? '', authToken ?? '');
 
         storeData(NICKNAME, nickname);
         setNickname(nickname);

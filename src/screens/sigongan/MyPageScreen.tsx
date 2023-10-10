@@ -11,11 +11,20 @@ import {
   TabBar,
   Utils,
 } from '../../components/renewal';
+import { useRecoilValue } from 'recoil';
+import { nicknameState } from '../../states';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { SigonganStackParamList } from '../../navigations';
 
 export const MyPageScreen = () => {
+  // page move
+  const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
+
   const { logout } = useUserState();
 
   const [isChecked, setChecked] = useState(false);
+  const nickname = useRecoilValue(nicknameState);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,16 +33,16 @@ export const MyPageScreen = () => {
       <PaddingHorizontal value={20}>
         <ScrollView>
           <View style={styles.textWrapper}>
-            <Text style={[Fonts.Bold20, Utils.fontColor(Colors.Red.Lighten100)]}>곰지님</Text>
+            <Text style={[Fonts.Bold20, Utils.fontColor(Colors.Red.Lighten100)]}>{nickname}님</Text>
             <Text style={[Fonts.Bold20, Utils.fontColor(Colors.Font.primary)]}>안녕하세요!</Text>
           </View>
 
           <View style={[styles.borderWrapper, Utils.borderColor(Colors.Red.Lighten300), { marginTop: 10 }]}>
-            <View style={styles.rowWrapper}>
+            <Pressable style={styles.rowWrapper} onPress={() => navigation.push('닉네임 수정')}>
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>닉네임 설정</Text>
 
               <NextButton />
-            </View>
+            </Pressable>
           </View>
 
           <View style={[styles.borderWrapper, Utils.borderColor(Colors.Red.Lighten300), { marginTop: 20 }]}>

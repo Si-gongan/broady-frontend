@@ -15,6 +15,7 @@ export type SigonganStackParamList = {
   메인: undefined;
   해설의뢰: { url?: string };
   '해설 진행현황': { item: IReqeustListItem };
+  '닉네임 수정': undefined;
 };
 
 export type SigonganMainTabParamList = {
