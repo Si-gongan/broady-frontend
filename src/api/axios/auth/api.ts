@@ -25,6 +25,28 @@ export const Register = async (email: string, password: string, fcmToken: string
   );
 };
 
+export const CheckNickname = async (nickname: string, fcmToken: string) => {
+  return await Server.get(`/user/duplicate/nickname/${nickname}`, {
+    headers: {
+      fcmToken,
+    },
+  });
+};
+
+export const PutNickname = async (nickname: string, fcmToken: string, authToken: string) => {
+  return await Server.put(
+    `/user/nickname`,
+    { nickname },
+    {
+      headers: {
+        fcmToken,
+        authorization: authToken,
+      },
+    }
+  );
+};
+
+// after delete
 export const editNickname = async (fcmToken: string, nickname: string) => {
   return await Server.put(
     `/user/nickname`,

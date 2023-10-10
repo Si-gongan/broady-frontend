@@ -6,6 +6,9 @@ import { AuthStackParamList } from '../../navigations';
 
 import { useForm, Controller } from 'react-hook-form';
 
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../states';
+
 import {
   AuthInput,
   BomCheckBox,
@@ -16,8 +19,11 @@ import {
   TERMS_OF_USE,
   Utils,
   Colors,
+  Notice,
 } from '../../components/renewal';
-import { useUserState } from '../../providers';
+import { useLoading, useUserState } from '../../providers';
+
+import { CheckNickname, PutNickname } from '../../api/axios';
 
 import * as WebBrowser from 'expo-web-browser';
 
@@ -26,13 +32,15 @@ type INicknameForm = {
 };
 
 export const NicknameScreen = () => {
-  const { loginToSigongan, loginToComment } = useUserState();
+  const fcmToken = useRecoilValue(fcmTokenState);
 
   const {
     params: { type, token },
   } = useRoute<RouteProp<AuthStackParamList, '닉네임 입력'>>();
 
-  console.log('a', type, token);
+  const { loginToSigongan, loginToComment } = useUserState();
+  const { changeLoading } = useLoading();
+
   const {
     control,
     handleSubmit,
@@ -64,7 +72,19 @@ export const NicknameScreen = () => {
 
     // 해설자 로그인
     if (type === 'comment') {
-      loginToComment(token ?? '', nickname);
+      try {
+        changeLoading(true);
+
+        await CheckNickname(nickname, fcmToken);
+        await PutNickname(nickname, fcmToken, token ?? '');
+
+        loginToComment(token ?? '', nickname);
+      } catch {
+        Notice('이미 존재하는 닉네임입니다.');
+      } finally {
+        changeLoading(false);
+      }
+
       return;
     }
   };

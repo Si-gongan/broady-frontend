@@ -5,6 +5,7 @@ import { AUTH_TOKEN, USER_STATE, getData, storeData, removeData, NICKNAME } from
 
 import { useRecoilState } from 'recoil';
 import { authTokenState, nicknameState } from '../states';
+import { delay } from '../components/renewal';
 
 /**
  * @description
@@ -19,7 +20,7 @@ type UserState = 'unLogin' | 'Sigongan' | 'Comment';
 const UserStateContext = createContext<{
   userState: UserState;
   changeUserState: (userState: UserState) => void;
-  loginToComment: (token: string, nickname: string | null) => void;
+  loginToComment: (token: string, nickname: string | null) => Promise<void>;
   loginToSigongan: (nickname: string) => void;
   changeNickname: (nickname: string) => void;
   logout: () => void;
@@ -56,23 +57,25 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
     setUserState(userState);
   }, []);
 
-  const loginToComment = useCallback((token: string, nickname: string | null) => {
-    storeData(USER_STATE, 'Comment');
-    setUserState('Comment');
-
+  const loginToComment = useCallback(async (token: string, nickname: string | null) => {
     storeData(AUTH_TOKEN, token);
     setAuthToken(token);
 
     storeData(NICKNAME, nickname ?? '');
     setNickname(nickname ?? '');
+
+    await delay(500);
+
+    storeData(USER_STATE, 'Comment');
+    setUserState('Comment');
   }, []);
 
   const loginToSigongan = useCallback((nickname: string) => {
-    storeData(USER_STATE, 'Sigongan');
-    setUserState('Sigongan');
-
     storeData(NICKNAME, nickname);
     setNickname(nickname);
+
+    storeData(USER_STATE, 'Sigongan');
+    setUserState('Sigongan');
   }, []);
 
   const changeNickname = useCallback((nickname: string) => {
@@ -85,7 +88,10 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
     setUserState('unLogin');
 
     removeData(AUTH_TOKEN);
+    setAuthToken('');
+
     removeData(NICKNAME);
+    setNickname('');
   }, []);
 
   const context = useMemo(
