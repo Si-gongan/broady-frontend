@@ -119,9 +119,9 @@ export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({
             </View>
 
             <View style={styles.buttonWrapper}>
-              <BomButton text="취소하기" theme="primary" isShort onPress={onClose} />
+              <BomButton text="취소하기" theme="primary" fixedWidth={150} onPress={onClose} />
 
-              <BomButton text="신고하기" theme="secondary" isShort onPress={onReport} />
+              <BomButton text="신고하기" theme="secondary" fixedWidth={150} onPress={onReport} />
             </View>
           </PaddingHorizontal>
         </ScrollView>

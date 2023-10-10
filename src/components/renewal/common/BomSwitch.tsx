@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Colors, Utils } from '../styles';
 import { Pressable } from 'react-native';
+import { useEffect } from 'react';
 
 type IBomSwitchProps = {
   value: boolean;
@@ -15,15 +16,16 @@ export const BomSwitch = ({ value, onChangeValue }: IBomSwitchProps) => {
   const offset = useSharedValue<IOffsetType>(OFFSET_VALUE[0]);
 
   const onPress = () => {
-    const newValue = !value;
-    onChangeValue(newValue);
+    onChangeValue(!value);
+  };
 
-    if (newValue) {
+  useEffect(() => {
+    if (value) {
       offset.value = withTiming(OFFSET_VALUE[1]);
     } else {
       offset.value = withTiming(OFFSET_VALUE[0]);
     }
-  };
+  }, [value]);
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
