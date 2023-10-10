@@ -4,6 +4,7 @@ export type ILoginReturnType = {
     user: {
       id: string;
       email: string;
+      nickname: string;
       fcmToken: string;
     };
     token: string;

@@ -1,8 +1,15 @@
 import { useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
-
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+} from 'react-native';
 
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
@@ -10,6 +17,9 @@ import { useLoading, useUserState } from '../../providers';
 
 import { AuthInput, Fonts, BomHeader, BomButton, Notice, PaddingHorizontal } from '../../components/renewal';
 import { Login } from '../../api/axios';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthStackParamList } from '../../navigations';
 
 type ILoginForm = {
   email: string;
@@ -20,6 +30,7 @@ const SCROLL_GAP = 79.3;
 
 export const EmailSignInScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
+  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
 
   const {
     control,
@@ -43,9 +54,17 @@ export const EmailSignInScreen = () => {
       changeLoading(true);
 
       const res = await Login(email, password, fcmToken);
-      const authToken = res.data.result.token;
 
-      loginToComment(authToken);
+      const authToken = res.data.result.token;
+      const nickname = res.data.result.user.nickname;
+
+      // 닉네임이 아직 등록되지 않은 상태
+      if (nickname.length === 0) {
+        navigation.push('닉네임 입력', { type: 'comment', token: authToken });
+        return;
+      }
+
+      loginToComment(authToken, nickname);
     } catch {
       Notice('존재하지 않는 회원 정보입니다.');
     } finally {

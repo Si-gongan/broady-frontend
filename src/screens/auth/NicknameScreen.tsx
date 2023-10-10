@@ -1,7 +1,11 @@
+import { useState } from 'react';
+import { View, SafeAreaView, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { AuthStackParamList } from '../../navigations';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useForm, Controller } from 'react-hook-form';
+
 import {
   AuthInput,
   BomCheckBox,
@@ -13,26 +17,25 @@ import {
   Utils,
   Colors,
 } from '../../components/renewal';
-import { useForm, Controller } from 'react-hook-form';
-import * as WebBrowser from 'expo-web-browser';
-import { useState } from 'react';
 import { useUserState } from '../../providers';
+
+import * as WebBrowser from 'expo-web-browser';
 
 type INicknameForm = {
   nickname: string;
 };
 
 export const NicknameScreen = () => {
-  const { loginToSigongan } = useUserState();
+  const { loginToSigongan, loginToComment } = useUserState();
 
   const {
-    params: { type },
+    params: { type, token },
   } = useRoute<RouteProp<AuthStackParamList, '닉네임 입력'>>();
 
+  console.log('a', type, token);
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<INicknameForm>();
 
@@ -49,9 +52,21 @@ export const NicknameScreen = () => {
     setChecked((prev) => !prev);
   };
 
-  // for upload-nickname
+  // submit nickname
   const onSubmit = async (data: INicknameForm) => {
     const { nickname } = data;
+
+    // 시각장애인 로그인
+    if (type === 'sigongan') {
+      loginToSigongan(nickname);
+      return;
+    }
+
+    // 해설자 로그인
+    if (type === 'comment') {
+      loginToComment(token ?? '', nickname);
+      return;
+    }
   };
 
   return (
@@ -101,7 +116,12 @@ export const NicknameScreen = () => {
                 </View>
               )}
 
-              <BomButton text="봄자국 시작하기" theme="secondary" onPress={loginToSigongan} />
+              <BomButton
+                text="봄자국 시작하기"
+                theme="secondary"
+                onPress={handleSubmit(onSubmit)}
+                disabled={(type === 'sigongan' && !isChecked) || isSubmitting}
+              />
             </View>
           </ScrollView>
         </PaddingHorizontal>

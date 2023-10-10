@@ -1,6 +1,5 @@
-import { Image, View, StyleSheet } from 'react-native';
+import { Image, View, StyleSheet, SafeAreaView } from 'react-native';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigations';
