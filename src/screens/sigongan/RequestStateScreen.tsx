@@ -36,7 +36,6 @@ import {
   IReportPopupHandler,
   ReportPopup,
   Notice,
-  delay,
 } from '../../components/renewal';
 import { useLoading } from '../../providers';
 
@@ -185,7 +184,7 @@ export const RequestStateScreen = () => {
                     <View key={item.createdAt}>
                       {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
 
-                      <TouchableOpacity activeOpacity={0.8} onLongPress={() => ReportPopupRef?.current?.open()}>
+                      <TouchableOpacity activeOpacity={0.8} onLongPress={() => ReportPopupRef?.current?.open(item)}>
                         <View style={styles.anotherSpeechWrapper}>
                           <AnotherAvatar />
 
