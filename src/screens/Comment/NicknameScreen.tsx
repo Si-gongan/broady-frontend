@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { editNickname } from '../../api/axios/auth';
+import { useRecoilValue } from 'recoil';
 import { commentColor, commentFont } from '../../components/Comment/styles';
 import Header from '../../components/common/Header';
 import { Colors } from '../../components/renewal';
 import { authTokenState, fcmTokenState, nicknameState } from '../../states';
+import { useUserState } from '../../providers';
 
 const NicknameScreen = ({ navigation }: { navigation: any }) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
-  const [nickname, setNickname] = useRecoilState(nicknameState);
+  const nickname = useRecoilValue(nicknameState);
+
+  const { changeNickname } = useUserState();
 
   const [nicknameInput, setNicknameInput] = useState<string>(nickname || '');
 
@@ -20,8 +22,8 @@ const NicknameScreen = ({ navigation }: { navigation: any }) => {
 
   const handleClickNewNickname = async () => {
     try {
-      // await editNickname(fcmToken, nickname);
-      setNickname(nicknameInput);
+      await changeNickname('Comment', nicknameInput, fcmToken, authToken);
+
       navigation.navigate('마이페이지');
     } catch (error) {
       console.log('NICKNAME EDIT ERROR: ', error);

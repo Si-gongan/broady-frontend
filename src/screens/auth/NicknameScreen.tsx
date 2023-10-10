@@ -1,7 +1,14 @@
+import { useState } from 'react';
+import { View, SafeAreaView, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { AuthStackParamList } from '../../navigations';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useForm, Controller } from 'react-hook-form';
+
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../states';
+
 import {
   AuthInput,
   BomCheckBox,
@@ -12,27 +19,29 @@ import {
   TERMS_OF_USE,
   Utils,
   Colors,
+  Notice,
 } from '../../components/renewal';
-import { useForm, Controller } from 'react-hook-form';
+import { useLoading, useUserState } from '../../providers';
+
 import * as WebBrowser from 'expo-web-browser';
-import { useState } from 'react';
-import { useUserState } from '../../providers';
 
 type INicknameForm = {
   nickname: string;
 };
 
 export const NicknameScreen = () => {
-  const { loginToSigongan } = useUserState();
+  const fcmToken = useRecoilValue(fcmTokenState);
 
   const {
-    params: { type },
+    params: { type, token },
   } = useRoute<RouteProp<AuthStackParamList, '닉네임 입력'>>();
+
+  const { loginToSigongan, loginToComment, changeNickname } = useUserState();
+  const { changeLoading } = useLoading();
 
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<INicknameForm>();
 
@@ -49,9 +58,32 @@ export const NicknameScreen = () => {
     setChecked((prev) => !prev);
   };
 
-  // for upload-nickname
+  // submit nickname
   const onSubmit = async (data: INicknameForm) => {
     const { nickname } = data;
+
+    // 시각장애인 로그인
+    if (type === 'Sigongan') {
+      loginToSigongan(nickname);
+      return;
+    }
+
+    // 해설자 로그인
+    if (type === 'Comment') {
+      try {
+        changeLoading(true);
+
+        await changeNickname('Comment', nickname, fcmToken, token);
+
+        loginToComment(token ?? '', nickname);
+      } catch {
+        Notice('이미 존재하는 닉네임입니다.');
+      } finally {
+        changeLoading(false);
+      }
+
+      return;
+    }
   };
 
   return (
@@ -87,7 +119,7 @@ export const NicknameScreen = () => {
             </View>
 
             <View style={styles.startWrapper}>
-              {type === 'sigongan' && (
+              {type === 'Sigongan' && (
                 <View style={styles.checkWrapper}>
                   <BomCheckBox
                     value={isChecked}
@@ -101,7 +133,12 @@ export const NicknameScreen = () => {
                 </View>
               )}
 
-              <BomButton text="봄자국 시작하기" theme="secondary" onPress={loginToSigongan} />
+              <BomButton
+                text="봄자국 시작하기"
+                theme="secondary"
+                onPress={handleSubmit(onSubmit)}
+                disabled={(type === 'Sigongan' && !isChecked) || isSubmitting}
+              />
             </View>
           </ScrollView>
         </PaddingHorizontal>

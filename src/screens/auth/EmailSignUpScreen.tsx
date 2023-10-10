@@ -1,15 +1,23 @@
 import { useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+} from 'react-native';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigations';
 
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
-import { useLoading, useUserState } from '../../providers';
+import { useLoading } from '../../providers';
 
 import * as WebBrowser from 'expo-web-browser';
 
@@ -37,7 +45,6 @@ const SCROLL_GAP = 79.3;
 
 export const EmailSignUpScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
-
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
 
   const {
@@ -46,8 +53,6 @@ export const EmailSignUpScreen = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<IRegisterForm>();
-
-  const { loginToComment } = useUserState();
 
   const { changeLoading } = useLoading();
 
@@ -79,9 +84,9 @@ export const EmailSignUpScreen = () => {
       await Register(email, password, fcmToken);
 
       const resLogin = await Login(email, password, fcmToken);
-
       const authToken = resLogin.data.result.token;
-      loginToComment(authToken);
+
+      navigation.push('닉네임 입력', { type: 'Comment', token: authToken });
     } catch {
       Notice('이미 존재하는 이메일입니다.');
     } finally {

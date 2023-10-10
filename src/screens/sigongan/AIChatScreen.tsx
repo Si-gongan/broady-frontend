@@ -5,7 +5,6 @@ import { GetChatList, IGetChatListReturnType, PostImageQuestion, PostTextQuestio
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 
-import { delay, getDate } from '../../utils/time';
 import { useKeyboard } from '../../hooks';
 import { useLoading } from '../../providers';
 import {
@@ -23,6 +22,8 @@ import {
   ImageViewer,
   NoticeError,
   Notice,
+  delay,
+  getDate,
 } from '../../components/renewal';
 
 type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
