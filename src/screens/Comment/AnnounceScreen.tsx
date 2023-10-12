@@ -8,7 +8,7 @@ import Header from '../../components/common/Header';
 import { authTokenState, fcmTokenState } from '../../states';
 import { getYYMMDD } from '../../utils/time';
 
-interface IAnnounceListProp {
+interface IAnnounce {
   _id: string;
   reportedBy: string;
   reportedAt: Date;
@@ -28,9 +28,14 @@ const AnnounceScreen = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
-  const [announceList, setAnnounceList] = useState<IAnnounceListProp[]>([]);
+  const [announceList, setAnnounceList] = useState<IAnnounce[]>([]);
 
   const isFocused = useIsFocused();
+
+  const handleClickReportContent = (id: string) => {
+    const selectedContent = announceList.filter((announce) => announce._id === id);
+    navigation.navigate('AnnounceContent', { announce: selectedContent });
+  };
 
   useEffect(() => {
     if (isFocused) {
@@ -49,7 +54,7 @@ const AnnounceScreen = ({ navigation }: any) => {
             <TouchableOpacity
               key={announce._id}
               style={styles.announceContainer}
-              onPress={() => navigation.navigate('AnnounceContent', { title: announce.type })}
+              onPress={() => handleClickReportContent(announce._id)}
             >
               <Text style={styles.refundText}>{announce.type}</Text>
               <Text style={styles.refundDate}>{getYYMMDD(new Date(announce.reportedAt))}</Text>
