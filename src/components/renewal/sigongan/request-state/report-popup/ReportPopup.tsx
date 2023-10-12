@@ -16,6 +16,7 @@ import { IReqeustListItem, ReportPost } from '../../../../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../../../../states';
 import { Notice, NoticeError } from '../../../utils';
+import { ReportText } from './constants';
 
 export type IReportPopupHandler = {
   open: (_user: IReqeustListItem['requestedUser'][0]) => void;
@@ -63,7 +64,14 @@ export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({
     try {
       onClose();
 
-      await ReportPost(item.id, option, option, text || 'none', user?.userId ?? '', fcmToken);
+      await ReportPost(
+        item.id,
+        ReportText[option],
+        option === 'third' ? text : '없음',
+        user?.text ?? '',
+        user?.userId ?? '',
+        fcmToken
+      );
 
       Notice('신고를 완료했습니다!');
     } catch {
