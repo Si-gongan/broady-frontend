@@ -59,9 +59,9 @@ const MyRequest = ({ navigation }: any) => {
 };
 
 const countTodayCompletedRequest = (requestList: ICurrentRequest[]) => {
-  const todayRequest = requestList.filter(
-    (request) => getKoreanTime(new Date()).getDay() === new Date(request.createdAt).getDay()
-  );
+  const todayRequest = requestList.filter((request) => {
+    if (request.expiredAt) return getKoreanTime(new Date()).getDate() === new Date(request.expiredAt).getDate();
+  });
   return todayRequest.length;
 };
 
