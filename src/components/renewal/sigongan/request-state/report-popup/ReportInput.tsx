@@ -20,11 +20,14 @@ export const ReportInput = ({ value, onChangeText, disabled = false }: IReportIn
         onChangeText={onChangeText}
         style={[
           styles.input,
-          Utils.borderColor(Colors.Red.Lighten200),
+          Utils.borderColor(disabled ? Colors.None.Darken200 : Colors.Red.Lighten200),
           Fonts.Regular14,
           Utils.fontColor(Colors.Font.secondary),
         ]}
         multiline
+        editable={!disabled}
+        accessible
+        accessibilityLabel="신고 사유 입력 창"
       />
     </View>
   );

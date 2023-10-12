@@ -12,28 +12,80 @@ import { CheckGroup, ReportOption } from './CheckGroup';
 import { ReportInput } from './ReportInput';
 import { BomButton } from '../../../common';
 
+import { IReqeustListItem, ReportPost } from '../../../../../api/axios';
+import { useRecoilValue } from 'recoil';
+import { fcmTokenState } from '../../../../../states';
+import { Notice, NoticeError } from '../../../utils';
+import { ReportText } from './constants';
+
 export type IReportPopupHandler = {
-  open: () => void;
+  open: (_user: IReqeustListItem['requestedUser'][0]) => void;
   close: () => void;
 };
 
+type IReportPopupProps = {
+  item: IReqeustListItem;
+};
+
 // eslint-disable-next-line
-export const ReportPopup = forwardRef<IReportPopupHandler, any>((_, ref) => {
+export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({ item }, ref) => {
   const insets = useSafeAreaInsets();
+
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const [user, setUser] = useState<IReqeustListItem['requestedUser'][0]>();
 
   const [visible, setVisible] = useState(false);
 
   const [option, setOption] = useState<ReportOption>('none');
   const [text, setText] = useState('');
 
+  // const { changeLoading } = useLoading();
+
   const { isKeyboardVisible, keyboardHeight } = useKeyboard();
 
-  const onClose = () => setVisible(false);
+  const onClose = () => {
+    setOption('none');
+    setText('');
+
+    setVisible(false);
+  };
+
+  const onReport = async () => {
+    if (option === 'none') {
+      Notice('신고 유형을 선택해주세요.');
+      return;
+    }
+
+    if (option === 'third' && text.length === 0) {
+      Notice('신고 사유를 입력해주세요.');
+      return;
+    }
+
+    try {
+      onClose();
+
+      await ReportPost(
+        item.id,
+        ReportText[option],
+        option === 'third' ? text : '없음',
+        user?.text ?? '',
+        user?.userId ?? '',
+        fcmToken
+      );
+
+      Notice('신고를 완료했습니다!');
+    } catch {
+      NoticeError();
+    }
+  };
 
   useImperativeHandle(
     ref,
     () => ({
-      open: () => setVisible(true),
+      open: (_user) => {
+        setVisible(true);
+        setUser(_user);
+      },
       close: () => setVisible(false),
     }),
     []
@@ -66,13 +118,13 @@ export const ReportPopup = forwardRef<IReportPopupHandler, any>((_, ref) => {
             </View>
 
             <View style={styles.inputWrapper}>
-              <ReportInput value={text} onChangeText={setText} />
+              <ReportInput value={text} onChangeText={setText} disabled={option !== 'third'} />
             </View>
 
             <View style={styles.buttonWrapper}>
-              <BomButton text="취소하기" theme="primary" isShort onPress={onClose} />
+              <BomButton text="취소하기" theme="primary" fixedWidth={150} onPress={onClose} />
 
-              <BomButton text="신고하기" theme="secondary" isShort />
+              <BomButton text="신고하기" theme="secondary" fixedWidth={150} onPress={onReport} />
             </View>
           </PaddingHorizontal>
         </ScrollView>

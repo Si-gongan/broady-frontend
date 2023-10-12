@@ -36,7 +36,6 @@ import {
   IReportPopupHandler,
   ReportPopup,
   Notice,
-  delay,
 } from '../../components/renewal';
 import { useLoading } from '../../providers';
 
@@ -140,9 +139,9 @@ export const RequestStateScreen = () => {
     }
   };
 
-  const isMe = (item: IReqeustListItem['requestedUser'][0]) => item.userId === undefined;
+  const isMe = (user: IReqeustListItem['requestedUser'][0]) => user.userId === undefined;
   const isNextMe = (list: IReqeustListItem['requestedUser'], i: number) => list.length !== i + 1 && isMe(list[i + 1]);
-  const isAppreciated = (item: IReqeustListItem['requestedUser'][0]) => item.appreciated;
+  const isAppreciated = (user: IReqeustListItem['requestedUser'][0]) => user.appreciated;
 
   const isShowDate = (list: IReqeustListItem['requestedUser'], i: number) =>
     i === 0 || (i - 1 >= 0 && getDate(list[i].createdAt) !== getDate(list[i - 1].createdAt));
@@ -159,7 +158,11 @@ export const RequestStateScreen = () => {
         <BomHeader
           text="답변 현황"
           isBottomBorder
-          rightIcon={{ path: SETTING_ICON_PATH, onPress: () => SettingPopupRef.current?.open() }}
+          rightIcon={{
+            path: SETTING_ICON_PATH,
+            onPress: () => SettingPopupRef.current?.open(),
+            accessibilityLabel: '설정 버튼',
+          }}
         />
 
         <PaddingHorizontal value={20}>
@@ -167,46 +170,57 @@ export const RequestStateScreen = () => {
             <View style={styles.speechContainer}>
               {chatList
                 .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1))
-                .map((item, i) =>
-                  isMe(item) ? (
+                .map((user, i) =>
+                  isMe(user) ? (
                     // 나의 대화
-                    <View key={item.createdAt}>
-                      {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
+                    <View key={user.createdAt}>
+                      {isShowDate(chatList, i) && <DateViewer date={user.createdAt} />}
 
-                      <View style={isShowTimeViewer(chatList, i) && styles.mySpeechWrapper}>
+                      <View
+                        style={isShowTimeViewer(chatList, i) && styles.mySpeechWrapper}
+                        accessible
+                        accessibilityLabel={`나의 대화: ${user.text.trimEnd()}, ${getFormattedTime(user.createdAt)}`}
+                      >
                         {/* 다음 대화가 내가 아니면, 시간 표시를 넣음 */}
-                        {isShowTimeViewer(chatList, i) && <TimeViewer date={item.createdAt} />}
+                        {isShowTimeViewer(chatList, i) && <TimeViewer date={user.createdAt} />}
 
-                        <MySpeechBubble text={item.text.trimEnd()} />
+                        <MySpeechBubble text={user.text.trimEnd()} />
                       </View>
                     </View>
                   ) : (
                     // 상대방의 대화
-                    <View key={item.createdAt}>
-                      {isShowDate(chatList, i) && <DateViewer date={item.createdAt} />}
+                    <View key={user.createdAt}>
+                      {isShowDate(chatList, i) && <DateViewer date={user.createdAt} />}
 
-                      <TouchableOpacity activeOpacity={0.8} onLongPress={() => ReportPopupRef?.current?.open()}>
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onLongPress={() => ReportPopupRef?.current?.open(user)}
+                        accessible
+                        accessibilityLabel={`해설자의 대화: ${user.text.trimEnd()}, ${getFormattedTime(
+                          user.createdAt
+                        )}`}
+                      >
                         <View style={styles.anotherSpeechWrapper}>
                           <AnotherAvatar />
 
-                          <AnotherSpeechBubble text={item.text.trimEnd()} />
+                          <AnotherSpeechBubble text={user.text.trimEnd()} />
 
-                          <TimeViewer date={item.createdAt} />
+                          <TimeViewer date={user.createdAt} />
                         </View>
                       </TouchableOpacity>
 
                       {/* 감사인사를 한 경우, 나의 감사인사도 표시 */}
-                      {isAppreciated(item) && (
+                      {isAppreciated(user) && (
                         <View
                           style={[styles.mySpeechWrapper, { marginTop: 12 }]}
                           accessible
-                          accessibilityLabel={`나의 대화: ${item.text}, ${getFormattedTime(
-                            item.appreciatedDate ?? ''
+                          accessibilityLabel={`나의 대화: ${user.text}, ${getFormattedTime(
+                            user.appreciatedDate ?? ''
                           )}`}
                         >
-                          <TimeViewer date={item.appreciatedDate ?? ''} />
+                          <TimeViewer date={user.appreciatedDate ?? ''} />
 
-                          <MySpeechBubble text={item.appreciatedText ?? ''} />
+                          <MySpeechBubble text={user.appreciatedText ?? ''} />
                         </View>
                       )}
                     </View>
@@ -216,11 +230,11 @@ export const RequestStateScreen = () => {
           </ScrollView>
         </PaddingHorizontal>
 
-        <RequestInputBar value={text} onChangeText={setText} onPress={addQuestion} />
+        <RequestInputBar value={text} onChangeText={setText} onPress={addQuestion} isSubmitting={isLoading} />
       </KeyboardAvoidingView>
 
       <SettingPopup ref={SettingPopupRef} onDelete={onDelete} />
-      <ReportPopup ref={ReportPopupRef} />
+      <ReportPopup ref={ReportPopupRef} item={item} />
     </SafeAreaView>
   );
 };

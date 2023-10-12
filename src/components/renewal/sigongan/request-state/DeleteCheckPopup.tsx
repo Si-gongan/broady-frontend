@@ -60,12 +60,12 @@ export const DeleteCheckPopup = forwardRef<IDeleteCheckPopupHandler, IDeleteChec
           </View>
 
           <View style={styles.buttonWrapper}>
-            <BomButton text="돌아가기" theme="primary" isShort onPress={onClose} />
+            <BomButton text="돌아가기" theme="primary" fixedWidth={150} onPress={onClose} />
 
             <BomButton
               text="질문 삭제하기"
               theme="secondary"
-              isShort
+              fixedWidth={150}
               onPress={() => {
                 onClose();
                 onDelete();

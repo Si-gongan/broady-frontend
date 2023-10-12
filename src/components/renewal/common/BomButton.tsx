@@ -8,7 +8,8 @@ type IBomButtonProps = {
 
   onPress?: () => void;
   disabled?: boolean;
-  isShort?: boolean;
+
+  fixedWidth?: number;
 };
 
 const BomButtonColor = {
@@ -48,13 +49,13 @@ const BomButtonColor = {
   },
 };
 
-export const BomButton = ({ text, onPress, theme, disabled = false, isShort = false }: IBomButtonProps) => {
+export const BomButton = ({ text, onPress, theme, disabled = false, fixedWidth }: IBomButtonProps) => {
   const [isPress, setPress] = useState(false);
 
   const buttonState = disabled ? 'disabled' : isPress ? 'pressed' : 'def';
 
   return (
-    <View style={[styles.wrapper, { width: isShort ? 150 : '100%' }]}>
+    <View style={[styles.wrapper, { width: fixedWidth ?? '100%' }]}>
       <Pressable
         onPress={onPress}
         onPressIn={() => setPress(true)}

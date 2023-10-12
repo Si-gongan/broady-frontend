@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { BomCheckBox } from '../../../common';
 import { Fonts, Utils, Colors } from '../../../styles';
+import { ReportText } from './constants';
 
 export type ReportOption = 'first' | 'second' | 'third' | 'none';
 
@@ -21,18 +22,28 @@ export const CheckGroup = ({ option, setOption }: ICheckGroupProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.checkItem}>
-        <BomCheckBox value={option === 'first'} onValueChange={() => changeOption('first')} />
-        <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>
-          해설에 부적절한 내용이 포함돼있습니다.
-        </Text>
+        <BomCheckBox
+          value={option === 'first'}
+          onValueChange={() => changeOption('first')}
+          accessibilityLabel={`${ReportText.first} 체크박스`}
+        />
+        <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>{ReportText.first}</Text>
       </View>
       <View style={styles.checkItem}>
-        <BomCheckBox value={option === 'second'} onValueChange={() => changeOption('second')} />
-        <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>불성실한 해설입니다.</Text>
+        <BomCheckBox
+          value={option === 'second'}
+          onValueChange={() => changeOption('second')}
+          accessibilityLabel={`${ReportText.second} 체크박스`}
+        />
+        <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>{ReportText.second}</Text>
       </View>
       <View style={styles.checkItem}>
-        <BomCheckBox value={option === 'third'} onValueChange={() => changeOption('third')} />
-        <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>기타</Text>
+        <BomCheckBox
+          value={option === 'third'}
+          onValueChange={() => changeOption('third')}
+          accessibilityLabel={`${ReportText.third} 체크박스, 이 체크박스를 누르면 신고 텍스트 입력 가능`}
+        />
+        <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>{ReportText.third}</Text>
       </View>
     </View>
   );

@@ -13,7 +13,13 @@ type IRequestItemProps = {
 
 export const RequestItem = ({ imgUrl, date, chat, onPress }: IRequestItemProps) => {
   return (
-    <TouchableOpacity activeOpacity={0.8} style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={styles.container}
+      onPress={onPress}
+      accessible
+      accessibilityLabel={`${getConvertDate(date)} 의뢰: ${chat}`}
+    >
       <Image source={{ uri: imgUrl }} style={styles.img} />
 
       <View style={[styles.box, Utils.borderColor(Colors.Red.Lighten300)]}>
