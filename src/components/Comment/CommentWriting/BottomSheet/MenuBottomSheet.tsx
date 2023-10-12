@@ -4,7 +4,7 @@ import { BottomSheet } from 'react-native-btr';
 import Toast from 'react-native-root-toast';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
-import { reportPost } from '../../../../api/axios';
+import { blockPost } from '../../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../../states';
 import { commentFont } from '../../styles';
 import { Colors } from '../../../renewal';
@@ -40,7 +40,7 @@ const MenuBottomSheet = ({ navigation, postId, visible, setVisible }: IMenuBotto
   };
 
   const handleReportPost = async () => {
-    await reportPost(postId, fcmToken, authToken);
+    await blockPost(postId, fcmToken, authToken);
     navigation.navigate('Home');
     showToastMessage('차단이 완료되었습니다.');
   };

@@ -1,5 +1,5 @@
 import { CommentServer } from './setting';
-import { ReturnPointListType } from './types';
+import { ReportImageType, ReportRequestType, ReturnPointListType } from './types';
 
 export const getPointList = async (fcmToken: string, token: string) => {
   const result = await CommentServer.get<ReturnPointListType>('/user/point', {
@@ -23,7 +23,7 @@ export const requestRefundPoint = async (
   return result.data;
 };
 
-export const reportPost = async (postId: string, fcmToken: string, token: string) => {
+export const blockPost = async (postId: string, fcmToken: string, token: string) => {
   const result = await CommentServer.post(
     `/user/post/${postId}`,
     { postId },
@@ -34,5 +34,36 @@ export const reportPost = async (postId: string, fcmToken: string, token: string
 
 export const reportUser = async (userId: string, fcmToken: string, token: string) => {
   const result = await CommentServer.post(`/user/report`, { userId }, { headers: { fcmToken, Authorization: token } });
+  return result.data;
+};
+
+export const getReportList = async (fcmToken: string, token: string) => {
+  const result = await CommentServer.post(`/user/report`, { headers: { fcmToken, Authorization: token } });
+  return result.data;
+};
+
+export const reportRequest = async (
+  postId: string,
+  type: string,
+  reason: string,
+  text: string,
+  userId: string | null,
+  fcmToken: string,
+  token: string
+) => {
+  const result = await CommentServer.post<ReportRequestType>(
+    `/report/post`,
+    { postId, type, reason, text, userId },
+    { headers: { fcmToken, Authorization: token } }
+  );
+  return result.data;
+};
+
+export const reportImage = async (postId: string, type: string, reason: string, fcmToken: string, token: string) => {
+  const result = await CommentServer.post<ReportImageType>(
+    `/report/message`,
+    { postId, type, reason },
+    { headers: { fcmToken, Authorization: token } }
+  );
   return result.data;
 };

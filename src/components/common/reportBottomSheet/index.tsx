@@ -1,11 +1,17 @@
 import { useRef, useState } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Platform } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../sigongan/styles';
 import { commentFont } from '../../Comment/styles';
 import { Colors } from '../../renewal';
 import QuestionList from './QuestionList';
 import ReportButton from './ReportButton';
+import { reportImage, reportRequest } from '../../../api/axios';
+import { useRecoilValue } from 'recoil';
+import { authTokenState, fcmTokenState } from '../../../states';
+import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-root-toast';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IData {
   [key: string]: {
@@ -47,20 +53,53 @@ interface IReportImageBottomSheetProps {
 }
 
 const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportImageBottomSheetProps) => {
-  const [reportInput, setReportInput] = useState<string>('');
-  const selectedNumber = useRef(0);
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const authToken = useRecoilValue(authTokenState);
+  const navigation = useNavigation();
+
+  const [reportInput, setReportInput] = useState('');
+  const [selectedText, setSelectedText] = useState('');
 
   const [selectQuestion, setSelectQuestion] = useState(questionData[category].questionList);
+  const [type, setType] = useState<string>('부적절한 사진');
+
+  const insets = useSafeAreaInsets();
+
+  const showToastMessage = (message: string, position: string) => {
+    Toast.show(message, {
+      duration: 1000,
+      animation: true,
+      position:
+        position === 'CENTER' ? Toast.positions.CENTER : Platform.OS === 'ios' ? insets.top : Toast.positions.TOP,
+    });
+  };
 
   const onClose = () => setVisible(false);
 
-  const handleReport = () => {
-    // TODO: 잘못된 사진 제보 API 연동.
+  const handleReportImage = async () => {
+    try {
+      await reportImage(postId, type, selectedText, fcmToken, authToken);
+      navigation.goBack();
+      showToastMessage('제보가 완료되었습니다.', 'TOP');
+    } catch (err) {
+      console.log('REPORT IMAGE ERROR:', err);
+    }
+  };
+
+  const handleReportRequest = async () => {
+    try {
+      // TODO: 부적절한 의뢰 신고하기
+      // await reportRequest();
+      navigation.goBack();
+      showToastMessage('신고가 완료되었습니다.', 'TOP');
+    } catch (err) {
+      console.log('REPORT REQUEST ERROR:', err);
+    }
   };
 
   const handleSelect = (id: number) => {
     const selected = selectQuestion.filter((question) => question.id === id);
-    selectedNumber.current = selected[0].id;
+    setSelectedText(selected[0].text);
 
     setSelectQuestion(
       selectQuestion.map((question) =>
@@ -100,7 +139,11 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
         </View>
         <View style={styles.footerContainer}>
           <ReportButton content="취소하기" type={0} handleClick={onClose} />
-          <ReportButton content={questionData[category].buttonText} type={1} handleClick={handleReport} />
+          <ReportButton
+            content={questionData[category].buttonText}
+            type={1}
+            handleClick={category === 'image' ? handleReportImage : handleReportRequest}
+          />
         </View>
       </View>
     </BottomSheet>
