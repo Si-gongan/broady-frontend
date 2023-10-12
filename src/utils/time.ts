@@ -74,3 +74,9 @@ export const delay = (milliseconds: number) => {
     setTimeout(resolve, milliseconds);
   });
 };
+
+export const getYYMMDD = (currentTime: Date) => {
+  const month = (currentTime.getMonth() + 1).toString().padStart(2, '0');
+  const date = currentTime.getDate().toString().padStart(2, '0');
+  return `${currentTime.getFullYear()}-${month}-${date}`;
+};
