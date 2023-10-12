@@ -67,3 +67,8 @@ export const reportImage = async (postId: string, type: string, reason: string, 
   );
   return result.data;
 };
+
+export const deleteUser = async (fcmToken: string, token: string) => {
+  const result = await CommentServer.delete(`/user`, { headers: { fcmToken, Authorization: token } });
+  return result.data;
+};
