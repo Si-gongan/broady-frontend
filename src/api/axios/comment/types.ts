@@ -140,3 +140,17 @@ export type ReturnPointListType = {
     }[];
   };
 };
+
+export type ReportRequestType = {
+  postId: string;
+  type: string;
+  reason: string;
+  text: string;
+  userId: string | null;
+};
+
+export type ReportImageType = {
+  postId: string;
+  type: string;
+  reason: string;
+};
