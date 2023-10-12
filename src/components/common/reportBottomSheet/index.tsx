@@ -6,7 +6,7 @@ import { commentFont } from '../../Comment/styles';
 import { Colors } from '../../renewal';
 import QuestionList from './QuestionList';
 import ReportButton from './ReportButton';
-import { reportImage } from '../../../api/axios';
+import { reportImage, reportRequest } from '../../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { useNavigation } from '@react-navigation/native';
@@ -76,13 +76,24 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
 
   const onClose = () => setVisible(false);
 
-  const handleReport = async () => {
+  const handleReportImage = async () => {
     try {
       await reportImage(postId, type, selectedText, fcmToken, authToken);
       navigation.goBack();
       showToastMessage('제보가 완료되었습니다.', 'TOP');
     } catch (err) {
       console.log('REPORT IMAGE ERROR:', err);
+    }
+  };
+
+  const handleReportRequest = async () => {
+    try {
+      // TODO: 부적절한 의뢰 신고하기
+      // await reportRequest();
+      navigation.goBack();
+      showToastMessage('신고가 완료되었습니다.', 'TOP');
+    } catch (err) {
+      console.log('REPORT REQUEST ERROR:', err);
     }
   };
 
@@ -128,7 +139,11 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
         </View>
         <View style={styles.footerContainer}>
           <ReportButton content="취소하기" type={0} handleClick={onClose} />
-          <ReportButton content={questionData[category].buttonText} type={1} handleClick={handleReport} />
+          <ReportButton
+            content={questionData[category].buttonText}
+            type={1}
+            handleClick={category === 'image' ? handleReportImage : handleReportRequest}
+          />
         </View>
       </View>
     </BottomSheet>
