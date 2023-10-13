@@ -47,7 +47,7 @@ export const MyPageScreen = () => {
               onPress={() => navigation.push('닉네임 수정')}
               accessible
               accessibilityLabel="닉네임 수정 버튼"
-              hitSlop={{ top: 15, bottom: 15 }}
+              hitSlop={{ top: 15, bottom: 15, right: 15, left: 15 }}
             >
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>닉네임 설정</Text>
 
@@ -68,6 +68,7 @@ export const MyPageScreen = () => {
               onPress={() => WebBrowser.openBrowserAsync(ONE_TO_ONE_QUESTION)}
               accessible
               accessibilityLabel="1:1 문의 버튼"
+              hitSlop={{ right: 15, left: 15 }}
             >
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>1:1 문의</Text>
 
@@ -80,6 +81,7 @@ export const MyPageScreen = () => {
               onPress={() => navigation.push('사용설명서')}
               accessible
               accessibilityLabel="사용설명서 버튼"
+              hitSlop={{ right: 15, left: 15 }}
             >
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>사용설명서</Text>
 
@@ -92,6 +94,7 @@ export const MyPageScreen = () => {
               onPress={() => navigation.push('자주 묻는 질문')}
               accessible
               accessibilityLabel="자주 묻는 질문 버튼"
+              hitSlop={{ right: 15, left: 15 }}
             >
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>자주 묻는 질문(FAQ)</Text>
 
@@ -104,6 +107,7 @@ export const MyPageScreen = () => {
               onPress={() => WebBrowser.openBrowserAsync(PRIVACY_POLICY)}
               accessible
               accessibilityLabel="개인정보처리방침 버튼"
+              hitSlop={{ right: 15, left: 15 }}
             >
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>개인정보처리방침</Text>
 
@@ -116,6 +120,7 @@ export const MyPageScreen = () => {
               onPress={() => WebBrowser.openBrowserAsync(TERMS_OF_USE)}
               accessible
               accessibilityLabel="서비스 이용약관 버튼"
+              hitSlop={{ right: 15, left: 15 }}
             >
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>서비스 이용약관</Text>
 
@@ -130,6 +135,7 @@ export const MyPageScreen = () => {
               onPress={logout}
               accessible
               accessibilityLabel="로그아웃 버튼"
+              hitSlop={{ right: 15, left: 15 }}
             >
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>로그아웃</Text>
 
