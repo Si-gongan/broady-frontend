@@ -34,7 +34,7 @@ const AnnounceScreen = ({ navigation }: any) => {
 
   const handleClickReportContent = (id: string) => {
     const selectedContent = announceList.filter((announce) => announce._id === id);
-    navigation.navigate('AnnounceContent', { announce: selectedContent });
+    navigation.navigate('AnnounceContent', { announce: selectedContent[0] });
   };
 
   useEffect(() => {
