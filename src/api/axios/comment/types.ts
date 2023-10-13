@@ -154,3 +154,23 @@ export type ReportImageType = {
   type: string;
   reason: string;
 };
+
+export type ReportListType = {
+  result: {
+    reports: {
+      _id: string;
+      reportedBy: string;
+      reportedAt: Date;
+      type: string;
+      reason: string;
+      reportText: string;
+      fcm: string;
+      userId: string;
+      postId: string;
+      isDone: boolean;
+      warningStatus: number | null;
+      warningDate: Date | null;
+      warningReason: string | null;
+    }[];
+  };
+};

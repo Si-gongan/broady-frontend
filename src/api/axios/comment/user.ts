@@ -1,5 +1,5 @@
 import { CommentServer } from './setting';
-import { ReportImageType, ReportRequestType, ReturnPointListType } from './types';
+import { ReportImageType, ReportListType, ReportRequestType, ReturnPointListType } from './types';
 
 export const getPointList = async (fcmToken: string, token: string) => {
   const result = await CommentServer.get<ReturnPointListType>('/user/point', {
@@ -38,8 +38,10 @@ export const reportUser = async (userId: string, fcmToken: string, token: string
 };
 
 export const getReportList = async (fcmToken: string, token: string) => {
-  const result = await CommentServer.post(`/user/report`, { headers: { fcmToken, Authorization: token } });
-  return result.data;
+  const result = await CommentServer.get<ReportListType>(`/user/report`, {
+    headers: { fcmToken, Authorization: token },
+  });
+  return result.data.result.reports;
 };
 
 export const reportRequest = async (
@@ -65,5 +67,10 @@ export const reportImage = async (postId: string, type: string, reason: string, 
     { postId, type, reason },
     { headers: { fcmToken, Authorization: token } }
   );
+  return result.data;
+};
+
+export const deleteUser = async (fcmToken: string, token: string) => {
+  const result = await CommentServer.delete(`/user`, { headers: { fcmToken, Authorization: token } });
   return result.data;
 };

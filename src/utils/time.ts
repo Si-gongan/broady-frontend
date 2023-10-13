@@ -74,3 +74,27 @@ export const delay = (milliseconds: number) => {
     setTimeout(resolve, milliseconds);
   });
 };
+
+export const getYYMMDD = (currentTime: Date) => {
+  const year = currentTime.getFullYear();
+  const month = (currentTime.getMonth() + 1).toString().padStart(2, '0');
+  const date = currentTime.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${date}`;
+};
+
+export const getYYMMDDHHMM = (currentTime: Date) => {
+  const year = currentTime.getFullYear();
+  const month = (currentTime.getMonth() + 1).toString().padStart(2, '0');
+  const date = currentTime.getDate().toString().padStart(2, '0');
+  const hour = currentTime.getUTCHours().toString().padStart(2, '0');
+  const minute = currentTime.getUTCMinutes().toString().padStart(2, '0');
+  return `${year}-${month}-${date} ${hour}:${minute}`;
+};
+
+export const getDateText = (currentTime: Date) => {
+  const month = (currentTime.getMonth() + 1).toString().padStart(2, '0');
+  const date = currentTime.getDate().toString().padStart(2, '0');
+  const hour = currentTime.getUTCHours().toString().padStart(2, '0');
+  const minute = currentTime.getUTCMinutes().toString().padStart(2, '0');
+  return `${month}월 ${date}일 ${hour}시 ${minute}분`;
+};
