@@ -28,10 +28,20 @@ const CustomerService = ({ isBlind }: CustomerServiceProps) => {
         <TouchableOpacity
           style={styles.touchContainer}
           onPress={() =>
+            WebBrowser.openBrowserAsync('https://sigongan.notion.site/FAQ-80538ba46ea1434b928ec077df6e475a?pvs=4')
+          }
+        >
+          <Text style={commentFont.BODY1}>사용설명서</Text>
+          <MaterialIcons name="arrow-forward-ios" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.touchContainer}
+          onPress={() =>
             WebBrowser.openBrowserAsync(
               isBlind
                 ? 'https://sigongan.notion.site/FAQ-c4257e39b7c844379f894da5e22e0795?pvs=4'
-                : 'https://sigongan.notion.site/FAQ-80538ba46ea1434b928ec077df6e475a?pvs=4'
+                : 'https://sigongan.notion.site/FAQ-4e26fc2f0cac4e76a93f82babba94f31?pvs=4'
             )
           }
         >
