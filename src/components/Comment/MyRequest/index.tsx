@@ -16,7 +16,8 @@ const MyRequest = ({ navigation }: any) => {
   const authToken = useRecoilValue(authTokenState);
 
   const [requestList, setRequestList] = useState<ICurrentRequest[]>([]);
-  const totalCompletedCount = useRef(0);
+
+  const [totalCompletedCount, setTotalCompletedCount] = useState(0);
   const todayCompletedCount = countTodayCompletedRequest(requestList);
 
   const isFocused = useIsFocused();
@@ -35,7 +36,8 @@ const MyRequest = ({ navigation }: any) => {
             .sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
 
           const sortedCompletedList = [...proceedList, ...completeList];
-          totalCompletedCount.current = completeList.length;
+
+          setTotalCompletedCount(completeList.length);
           setRequestList(sortedCompletedList);
         });
       } catch (error) {
@@ -47,10 +49,7 @@ const MyRequest = ({ navigation }: any) => {
   return (
     <View style={styles.mainContainer}>
       <Header isBack={false}>MY의뢰</Header>
-      <MyRequestInformation
-        totalCompletedCount={totalCompletedCount.current}
-        todayCompletedCount={todayCompletedCount}
-      />
+      <MyRequestInformation totalCompletedCount={totalCompletedCount} todayCompletedCount={todayCompletedCount} />
       <View style={styles.bodyContainer}>
         <RequestList requestList={requestList} setRequestList={setRequestList} navigation={navigation} />
       </View>
