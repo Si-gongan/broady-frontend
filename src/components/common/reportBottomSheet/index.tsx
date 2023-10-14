@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Platform, ScrollView } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import { SigonganColor, SigonganDesign, SigonganShadow } from '../../sigongan/styles';
 import { commentFont } from '../../Comment/styles';
@@ -12,6 +12,7 @@ import { authTokenState, fcmTokenState } from '../../../states';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-root-toast';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useKeyboard } from '../../../hooks';
 
 interface IData {
   [key: string]: {
@@ -62,6 +63,8 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
 
   const [selectQuestion, setSelectQuestion] = useState(questionData[category].questionList);
   const [type, setType] = useState<string>('부적절한 사진');
+
+  const { isKeyboardVisible, keyboardHeight } = useKeyboard();
 
   const insets = useSafeAreaInsets();
 
@@ -115,36 +118,38 @@ const ReportBottomSheet = ({ postId, category, visible, setVisible }: IReportIma
           <Text style={styles.titleText}>{questionData[category].title}</Text>
         </View>
         <View style={SigonganDesign.borderOpaque} />
-        <View style={styles.itemWrapper}>
-          <View style={styles.titleContainer}>
-            <Text style={[commentFont.SMALL_TITLE, styles.description]}>{questionData[category].text}</Text>
+        <ScrollView style={{ paddingBottom: isKeyboardVisible ? keyboardHeight : 0 }}>
+          <View style={styles.itemWrapper}>
+            <View style={styles.titleContainer}>
+              <Text style={[commentFont.SMALL_TITLE, styles.description]}>{questionData[category].text}</Text>
+            </View>
+            <QuestionList questionData={selectQuestion} handleSelect={handleSelect} />
           </View>
-          <QuestionList questionData={selectQuestion} handleSelect={handleSelect} />
-        </View>
-        <View style={styles.inputContainer}>
-          <View style={styles.inputLengthContainer}>
-            <Text style={commentFont.BODY2}>{reportInput.length} / 100</Text>
+          <View style={styles.inputContainer}>
+            <View style={styles.inputLengthContainer}>
+              <Text style={commentFont.BODY2}>{reportInput.length} / 100</Text>
+            </View>
+            <View style={styles.textContainer}>
+              <TextInput
+                placeholder="제보할 내용을 작성해주세요"
+                multiline
+                onChangeText={(text) => setReportInput(text)}
+                value={reportInput}
+                textAlignVertical="top"
+                style={styles.inputBox}
+                autoComplete="off"
+              />
+            </View>
           </View>
-          <View style={styles.textContainer}>
-            <TextInput
-              placeholder="제보할 내용을 작성해주세요"
-              multiline
-              onChangeText={(text) => setReportInput(text)}
-              value={reportInput}
-              textAlignVertical="top"
-              style={styles.inputBox}
-              autoComplete="off"
+          <View style={styles.footerContainer}>
+            <ReportButton content="취소하기" type={0} handleClick={onClose} />
+            <ReportButton
+              content={questionData[category].buttonText}
+              type={1}
+              handleClick={category === 'image' ? handleReportImage : handleReportRequest}
             />
           </View>
-        </View>
-        <View style={styles.footerContainer}>
-          <ReportButton content="취소하기" type={0} handleClick={onClose} />
-          <ReportButton
-            content={questionData[category].buttonText}
-            type={1}
-            handleClick={category === 'image' ? handleReportImage : handleReportRequest}
-          />
-        </View>
+        </ScrollView>
       </View>
     </BottomSheet>
   );
