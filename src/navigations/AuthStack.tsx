@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { AuthStackParamList } from '../types/types';
 import { NicknameScreen, EmailSignInScreen, EmailSignUpScreen, IntroScreen } from '../screens/auth';
+import OnboardingScreen from '../screens/Comment/OnboardingScreen';
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
@@ -19,6 +20,8 @@ export const AuthStack = () => {
       <Stack.Screen name="이메일 로그인" component={EmailSignInScreen} />
 
       <Stack.Screen name="닉네임 입력" component={NicknameScreen} />
+
+      <Stack.Screen name="해설자 온보딩" component={OnboardingScreen} />
     </Stack.Navigator>
   );
 };

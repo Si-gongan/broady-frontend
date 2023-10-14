@@ -25,15 +25,17 @@ const CustomerService = ({ isBlind }: CustomerServiceProps) => {
           <MaterialIcons name="arrow-forward-ios" />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.touchContainer}
-          onPress={() =>
-            WebBrowser.openBrowserAsync('https://sigongan.notion.site/FAQ-80538ba46ea1434b928ec077df6e475a?pvs=4')
-          }
-        >
-          <Text style={commentFont.BODY1}>사용설명서</Text>
-          <MaterialIcons name="arrow-forward-ios" />
-        </TouchableOpacity>
+        {!isBlind && (
+          <TouchableOpacity
+            style={styles.touchContainer}
+            onPress={() =>
+              WebBrowser.openBrowserAsync('https://sigongan.notion.site/FAQ-80538ba46ea1434b928ec077df6e475a?pvs=4')
+            }
+          >
+            <Text style={commentFont.BODY1}>사용설명서</Text>
+            <MaterialIcons name="arrow-forward-ios" />
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity
           style={styles.touchContainer}
