@@ -1,8 +1,8 @@
-import { View, Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, ScrollView, AccessibilityInfo, findNodeHandle } from 'react-native';
 import { BomButton, BomHeader, Colors, Fonts, PaddingHorizontal, Utils } from '../../components/renewal';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { SigonganStackParamList } from '../../navigations';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 type IKeyType = SigonganStackParamList['사용설명서 상세']['type'];
 
@@ -70,6 +70,8 @@ const INFO: IINFOType = {
 };
 
 export const ManualDetailScreen = () => {
+  const topTextRef = useRef<Text>(null);
+
   const {
     params: { type },
   } = useRoute<RouteProp<SigonganStackParamList, '사용설명서 상세'>>();
@@ -77,13 +79,23 @@ export const ManualDetailScreen = () => {
   const data = INFO[type];
   const [currentPage, setCurrentPage] = useState(0);
 
+  useEffect(() => {
+    const reactTag = findNodeHandle(topTextRef.current);
+
+    if (reactTag) {
+      AccessibilityInfo.setAccessibilityFocus(reactTag);
+    }
+  }, [currentPage]);
+
   return (
     <SafeAreaView style={styles.container}>
       <BomHeader text="사용설명서" isBottomBorder />
 
       <PaddingHorizontal value={20}>
         <View style={{ marginTop: 32 }}>
-          <Text style={[Fonts.Bold24, Utils.fontColor(Colors.Font.primary)]}>{data.title}</Text>
+          <Text style={[Fonts.Bold24, Utils.fontColor(Colors.Font.primary)]} ref={topTextRef}>
+            {data.title}
+          </Text>
         </View>
 
         <View style={{ marginTop: 21 }}>
