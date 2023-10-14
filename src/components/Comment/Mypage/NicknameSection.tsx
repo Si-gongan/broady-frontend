@@ -20,7 +20,10 @@ const NicknameSection = ({ navigation }: any) => {
     if (isFocused) {
       try {
         getMyRequestAll(fcmToken, authToken).then((requestList) => {
-          setTotalCompletedCount(requestList.length);
+          const completeList = [...requestList].filter(
+            (data) => data.isAvailable === false && data.isComplete === true
+          );
+          setTotalCompletedCount(completeList.length);
         });
       } catch (error) {
         console.log('getMyRequestAll API 오류:', error);
