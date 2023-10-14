@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Alert, Linking } from 'react-native';
 import { BomSwitch } from '../../common';
 import { Utils, Fonts, Colors } from '../../styles';
-import { ChangeAlarmStatus } from '../../../../api/axios';
+import { ChangeAlarmStatus, GetAlarmStatus } from '../../../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../../../states';
 import { getNotificationPermissions } from '../../../common/notifications';
@@ -11,6 +11,21 @@ export const AlarmSetting = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
 
   const [isChecked, setChecked] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      // const state = await getNotificationPermissions();
+      // setIsEnabled(state === 'granted');
+
+      try {
+        const state = await GetAlarmStatus(fcmToken);
+        setChecked(state.data.result.isAccepted);
+      } catch {
+        setChecked(false);
+      }
+    })();
+  }, []);
+
   const toggleSwitch = async () => {
     const newState = !isChecked;
 
