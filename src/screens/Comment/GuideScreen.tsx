@@ -2,9 +2,6 @@ import { StyleSheet, View, Text } from 'react-native';
 import Header from '../../components/common/Header';
 import PagerView from 'react-native-pager-view';
 import { WithLocalSvg } from 'react-native-svg';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { AuthStackParamList } from '../../navigations';
-import { useUserState } from '../../providers';
 import { commentFont } from '../../components/Comment/styles';
 import { Colors } from '../../components/renewal';
 import { useState } from 'react';
@@ -17,17 +14,12 @@ const IMAGE_SOURCE = [
   require('../../../assets/comment_5.svg'),
 ];
 
-const OnboardingScreen = () => {
-  const { loginToComment } = useUserState();
-  const {
-    params: { token, nickname },
-  } = useRoute<RouteProp<AuthStackParamList, '해설자 온보딩'>>();
-
+const GuideScreen = ({ navigation }: { navigation: any }) => {
   const [pageCount, setPageCount] = useState(0);
 
   const handleEndOnboarding = (index: number) => {
     setPageCount(index);
-    if (index === 5) loginToComment(token ?? '', nickname);
+    if (index === 5) navigation.navigate('Home');
   };
 
   return (
@@ -185,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingScreen;
+export default GuideScreen;

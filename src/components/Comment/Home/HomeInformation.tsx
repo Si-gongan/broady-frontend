@@ -1,5 +1,8 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useRecoilValue } from 'recoil';
+import { authTokenState, nicknameState } from '../../../states';
+import { getData, NICKNAME } from '../../common/async-storage';
 import { Colors } from '../../renewal';
 import { commentFont } from '../styles';
 
@@ -7,11 +10,18 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30;
 
 interface HomeInformationProps {
+  navigation: any;
   totalRequestCount: number;
   todayRequestCount: number;
 }
 
-const HomeInformation = ({ totalRequestCount, todayRequestCount }: HomeInformationProps) => {
+const HomeInformation = ({ navigation, totalRequestCount, todayRequestCount }: HomeInformationProps) => {
+  const token = useRecoilValue(authTokenState);
+  const nickname = getData(NICKNAME);
+
+  const handleMoveOnboarding = () => {
+    navigation.navigate('간편 가이드');
+  };
   return (
     <View style={styles.mainContainer}>
       <View style={styles.guideTextContainer}>
@@ -28,10 +38,10 @@ const HomeInformation = ({ totalRequestCount, todayRequestCount }: HomeInformati
           <Text style={commentFont.TITLE}>{todayRequestCount.toString().padStart(2, '0')}건</Text>
         </View>
       </View>
-      <View style={styles.guideContainer}>
+      <TouchableOpacity style={styles.guideContainer} onPress={handleMoveOnboarding}>
         <Text style={[commentFont.SMALL_TITLE, styles.guideText]}>봄자국 간편 가이드</Text>
         <Icon name="help-circle-outline" size={15}></Icon>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

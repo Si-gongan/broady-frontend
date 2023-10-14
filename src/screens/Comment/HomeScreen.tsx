@@ -36,7 +36,11 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       <Header isBack={false} type="home" handleClick={() => navigation.navigate('Announce')}>
         홈
       </Header>
-      <HomeInformation totalRequestCount={currentRequest.length} todayRequestCount={todayRequestCount} />
+      <HomeInformation
+        navigation={navigation}
+        totalRequestCount={currentRequest.length}
+        todayRequestCount={todayRequestCount}
+      />
       <View style={styles.bodyContainer}>
         {currentRequest.length > 0 ? (
           <RequestList requestList={currentRequest} navigation={navigation} />
