@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -63,16 +64,6 @@ export const EmailSignUpScreen = () => {
 
   // for term-of-use
   const [isChecked, setChecked] = useState(false);
-  const onCheckBoxClicked = async () => {
-    if (isChecked) {
-      setChecked(false);
-      return;
-    }
-
-    await WebBrowser.openBrowserAsync(TERMS_OF_USE);
-
-    setChecked((prev) => !prev);
-  };
 
   // for register
   const onSubmit = async (data: IRegisterForm) => {
@@ -184,15 +175,32 @@ export const EmailSignUpScreen = () => {
 
             <View style={styles.registerWrapper}>
               <View style={styles.checkWrapper}>
-                <BomCheckBox
-                  value={isChecked}
-                  onValueChange={onCheckBoxClicked}
-                  accessibilityLabel="이용약관 숙지 체크박스"
-                />
+                <BomCheckBox value={isChecked} onValueChange={setChecked} accessibilityLabel="이용약관 숙지 체크박스" />
 
-                <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}>
-                  이용약관을 숙지했으며, 이에 동의합니다.
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => WebBrowser.openBrowserAsync(TERMS_OF_USE)}
+                    accessible
+                    accessibilityLabel="이용약관, 이 버튼을 누르면 이용약관을 볼 수 있습니다."
+                    hitSlop={{ top: 5, bottom: 5, right: 10 }}
+                  >
+                    <Text
+                      style={[
+                        Fonts.Regular14,
+                        Utils.fontColor(Colors.Font.primary),
+                        { textDecorationLine: 'underline' },
+                        { marginBottom: 1 },
+                      ]}
+                    >
+                      이용약관
+                    </Text>
+                  </TouchableOpacity>
+
+                  <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}>
+                    을 숙지했으며, 이에 동의합니다.
+                  </Text>
+                </View>
               </View>
               <BomButton
                 text="회원가입"

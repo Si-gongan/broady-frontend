@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { View, SafeAreaView, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigations';
@@ -47,16 +56,6 @@ export const NicknameScreen = () => {
 
   // for term-of-use
   const [isChecked, setChecked] = useState(false);
-  const onCheckBoxClicked = async () => {
-    if (isChecked) {
-      setChecked(false);
-      return;
-    }
-
-    await WebBrowser.openBrowserAsync(TERMS_OF_USE);
-
-    setChecked((prev) => !prev);
-  };
 
   // submit nickname
   const onSubmit = async (data: INicknameForm) => {
@@ -123,13 +122,34 @@ export const NicknameScreen = () => {
                 <View style={styles.checkWrapper}>
                   <BomCheckBox
                     value={isChecked}
-                    onValueChange={onCheckBoxClicked}
+                    onValueChange={setChecked}
                     accessibilityLabel="이용약관 숙지 체크박스"
                   />
 
-                  <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}>
-                    이용약관을 숙지했으며, 이에 동의합니다.
-                  </Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={() => WebBrowser.openBrowserAsync(TERMS_OF_USE)}
+                      accessible
+                      accessibilityLabel="이용약관, 이 버튼을 누르면 이용약관을 볼 수 있습니다."
+                      hitSlop={{ top: 5, bottom: 5, right: 10 }}
+                    >
+                      <Text
+                        style={[
+                          Fonts.Regular14,
+                          Utils.fontColor(Colors.Font.primary),
+                          { textDecorationLine: 'underline' },
+                          { marginBottom: 1 },
+                        ]}
+                      >
+                        이용약관
+                      </Text>
+                    </TouchableOpacity>
+
+                    <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}>
+                      을 숙지했으며, 이에 동의합니다.
+                    </Text>
+                  </View>
                 </View>
               )}
 
