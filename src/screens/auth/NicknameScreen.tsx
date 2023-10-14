@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigations';
 
 import { useForm, Controller } from 'react-hook-form';
@@ -33,6 +33,7 @@ import {
 import { useLoading, useUserState } from '../../providers';
 
 import * as WebBrowser from 'expo-web-browser';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type INicknameForm = {
   nickname: string;
@@ -40,7 +41,7 @@ type INicknameForm = {
 
 export const NicknameScreen = () => {
   const fcmToken = useRecoilValue(fcmTokenState);
-
+  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
   const {
     params: { type, token },
   } = useRoute<RouteProp<AuthStackParamList, '닉네임 입력'>>();
@@ -74,7 +75,8 @@ export const NicknameScreen = () => {
 
         await changeNickname('Comment', nickname, fcmToken, token);
 
-        loginToComment(token ?? '', nickname);
+        // loginToComment(token ?? '', nickname);
+        navigation.push('해설자 온보딩', { token, nickname });
       } catch {
         Notice('이미 존재하는 닉네임입니다.');
       } finally {

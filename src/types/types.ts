@@ -5,6 +5,7 @@ export type AuthStackParamList = {
   '이메일 회원가입': undefined;
   '이메일 로그인': undefined;
   '닉네임 입력': { type: 'Sigongan' | 'Comment'; token?: string };
+  '해설자 온보딩': { token?: string; nickname: string };
 };
 
 export type CommentaryTabParamList = {

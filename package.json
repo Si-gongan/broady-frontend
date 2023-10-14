@@ -36,6 +36,7 @@
     "react-native-gesture-handler": "~2.9.0",
     "react-native-image-modal": "^1.0.16",
     "react-native-loading-spinner-overlay": "^3.0.1",
+    "react-native-pager-view": "6.1.2",
     "react-native-paper": "^5.10.0",
     "react-native-reanimated": "~2.14.4",
     "react-native-root-toast": "^3.4.1",
