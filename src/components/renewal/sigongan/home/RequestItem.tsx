@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Text, TouchableOpacity, Platform } from 'react-native';
 import { Colors, Fonts, Utils } from '../../styles';
 import { getConvertDate } from '../../utils';
 
@@ -25,7 +25,9 @@ export const RequestItem = ({ imgUrl, date, chat, onPress }: IRequestItemProps) 
       <View style={[styles.box, Utils.borderColor(Colors.Red.Lighten300)]}>
         <Text style={[Fonts.Regular12, Utils.fontColor(Colors.Blue.Lighten100)]}>{getConvertDate(date)}</Text>
 
-        <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}>{chat}</Text>
+        <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}>
+          {Platform.OS === 'android' ? chat.replace(/ /g, '\u00A0') : chat}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -46,6 +48,7 @@ const styles = StyleSheet.create({
   },
   box: {
     flex: 1,
+    height: 100,
 
     borderRadius: 12,
 
