@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Text, Image, TextInput } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  Image,
+  TextInput,
+  SafeAreaView,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -75,12 +85,12 @@ export const CommentRequestScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={-insets.bottom}
-    >
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={-insets.bottom}
+      >
         <BomHeader text="질문작성" isBottomBorder />
 
         <PaddingHorizontal value={20}>
@@ -120,10 +130,10 @@ export const CommentRequestScreen = () => {
             </View>
           </ScrollView>
         </PaddingHorizontal>
+      </KeyboardAvoidingView>
 
-        <ImageMethodPopup ref={ImageMethodPopupRef} />
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+      <ImageMethodPopup ref={ImageMethodPopupRef} />
+    </SafeAreaView>
   );
 };
 
@@ -154,6 +164,8 @@ const styles = StyleSheet.create({
 
     padding: 10,
     paddingTop: 10,
+
+    textAlignVertical: 'top',
 
     borderRadius: 12,
   },
