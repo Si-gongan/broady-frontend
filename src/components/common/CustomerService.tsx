@@ -17,9 +17,7 @@ const CustomerService = ({ isBlind }: CustomerServiceProps) => {
 
         <TouchableOpacity
           style={styles.touchContainer}
-          onPress={() =>
-            WebBrowser.openBrowserAsync(isBlind ? 'http://pf.kakao.com/_sAnVG' : 'https://open.kakao.com/o/gdtCWjwf')
-          }
+          onPress={() => WebBrowser.openBrowserAsync('http://pf.kakao.com/_pKUjG')}
         >
           <Text style={commentFont.BODY1}>1:1 문의</Text>
           <MaterialIcons name="arrow-forward-ios" />
