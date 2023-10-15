@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import { Colors, Fonts, Utils } from '../styles';
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Path } from 'react-native-svg';
@@ -23,7 +23,13 @@ export const BomHeader = ({ text, isBottomBorder, hideBackButton, rightIcon }: I
   const navigation = useNavigation();
 
   return (
-    <View style={[styles.container, isBottomBorder && Utils.borderBottomColor(Colors.Red.Lighten400)]}>
+    <View
+      style={[
+        styles.container,
+        isBottomBorder && Utils.borderBottomColor(Colors.Red.Lighten400),
+        { marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 },
+      ]}
+    >
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() => navigation.goBack()}
