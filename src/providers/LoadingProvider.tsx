@@ -20,8 +20,6 @@ export const LoadingProvider = ({ children }: { children: ReactNode }) => {
     setLoading(b);
 
     if (b) {
-      console.log('call!');
-
       await delay(500);
 
       const reactTag = findNodeHandle(loadingTextRef.current);
