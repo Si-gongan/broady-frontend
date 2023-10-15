@@ -24,6 +24,7 @@ import {
   Notice,
   delay,
   getDate,
+  getFormattedTime_Label,
 } from '../../components/renewal';
 
 type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
@@ -147,7 +148,7 @@ export const AIChatScreen = () => {
                       accessible
                       accessibilityLabel={`내가 전송한 ${item.isPhoto ? '사진' : '채팅'} ${
                         !item.isPhoto ? item.content : ''
-                      }`}
+                      }, ${getFormattedTime_Label(item.createdAt)}`}
                     >
                       <TimeViewer date={item.createdAt} />
 
@@ -159,7 +160,7 @@ export const AIChatScreen = () => {
                     key={i}
                     style={styles.anotherSpeechWrapper}
                     accessible
-                    accessibilityLabel={`AI의 답변 ${item.content}`}
+                    accessibilityLabel={`AI의 답변, ${item.content}, ${getFormattedTime_Label(item.createdAt)}`}
                   >
                     <RobotAvatar />
 

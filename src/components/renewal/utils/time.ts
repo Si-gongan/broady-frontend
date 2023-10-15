@@ -30,6 +30,19 @@ export const getFormattedTime = (target: string) => {
   }
 };
 
+export const getFormattedTime_Label = (target: string) => {
+  const realTime = new Date(target);
+
+  const hour = realTime.getUTCHours();
+  const min = realTime.getUTCMinutes();
+
+  if (hour < 12) {
+    return `오전 ${hour === 0 ? 12 : hour}시 ${min < 10 ? '0' + min : min}분`;
+  } else {
+    return `오후 ${hour === 12 ? hour : hour - 12}시 ${min < 10 ? '0' + min : min}분`;
+  }
+};
+
 export const getDayOfWeek = (date: Date) => {
   const week = ['일', '월', '화', '수', '목', '금', '토'];
 

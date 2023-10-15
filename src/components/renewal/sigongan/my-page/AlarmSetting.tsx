@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Alert, Linking } from 'react-native';
+import { Text, View, StyleSheet, Alert, Linking, Pressable } from 'react-native';
 import { BomSwitch } from '../../common';
 import { Utils, Fonts, Colors } from '../../styles';
 import { ChangeAlarmStatus, GetAlarmStatus } from '../../../../api/axios';
@@ -67,11 +67,17 @@ export const AlarmSetting = () => {
     <View style={[styles.borderWrapper, Utils.borderColor(Colors.Red.Lighten300)]}>
       <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Red.Lighten100)]}>앱 설정</Text>
 
-      <View style={[styles.rowWrapper, { marginTop: 10 }]}>
+      <Pressable
+        style={[styles.rowWrapper, { marginTop: 10 }]}
+        accessible
+        accessibilityLabel="알림 설정 토글"
+        accessibilityValue={{ text: isChecked ? '켜짐' : '꺼짐' }}
+        onPress={toggleSwitch}
+      >
         <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>알림 설정</Text>
 
         <BomSwitch value={isChecked} onChangeValue={toggleSwitch} />
-      </View>
+      </Pressable>
     </View>
   );
 };

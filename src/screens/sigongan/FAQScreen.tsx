@@ -21,6 +21,7 @@ export const FAQScreen = () => {
           onPress={() => setOption('first')}
           theme={option === 'first' ? 'secondary' : 'primary'}
           fixedWidth={100}
+          accessibilityLabel={`앱 이용에 대한 FAQ 보기 ${option === 'first' ? ', 선택 됨' : ''}`}
         />
 
         <BomButton
@@ -28,6 +29,7 @@ export const FAQScreen = () => {
           onPress={() => setOption('second')}
           theme={option === 'second' ? 'secondary' : 'primary'}
           fixedWidth={100}
+          accessibilityLabel={`질문/답변에 대한 FAQ 보기 ${option === 'second' ? ', 선택 됨' : ''}`}
         />
 
         <BomButton
@@ -35,6 +37,7 @@ export const FAQScreen = () => {
           onPress={() => setOption('third')}
           theme={option === 'third' ? 'secondary' : 'primary'}
           fixedWidth={100}
+          accessibilityLabel={`AI 해설에 대한 FAQ 보기 ${option === 'third' ? ', 선택 됨' : ''}`}
         />
       </View>
 

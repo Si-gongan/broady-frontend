@@ -30,7 +30,6 @@ export const AIInputBar = ({ value, onChangeText, isSubmitting, onImagePress, on
             style={[styles.input, Fonts.Regular14, Utils.fontColor(Colors.Font.primary)]}
             value={value}
             onChangeText={onChangeText}
-            placeholder="질문을 입력해주세요..."
             accessible
             accessibilityLabel="질문 입력 창"
           />

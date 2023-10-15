@@ -1,21 +1,35 @@
-import { createContext, useState, useMemo, useCallback, useContext } from 'react';
+import { createContext, useState, useMemo, useCallback, useContext, useRef } from 'react';
 import type { ReactNode } from 'react';
-import { StyleSheet, Text, View, Keyboard } from 'react-native';
-import { Colors, Fonts, Utils } from '../components/renewal';
+import { StyleSheet, Text, View, Keyboard, findNodeHandle, AccessibilityInfo } from 'react-native';
+import { Colors, Fonts, Utils, delay } from '../components/renewal';
 
 const LoadingContext = createContext<{
   isLoading: boolean;
-  changeLoading: (b: boolean) => void;
+  changeLoading: (b: boolean) => Promise<void>;
 } | null>(null);
 
 export const LoadingProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setLoading] = useState(false);
 
-  const changeLoading = useCallback((b: boolean) => {
+  const loadingTextRef = useRef<Text>(null);
+
+  const changeLoading = useCallback(async (b: boolean) => {
     // 추가 작업
     Keyboard.dismiss();
 
     setLoading(b);
+
+    if (b) {
+      console.log('call!');
+
+      await delay(500);
+
+      const reactTag = findNodeHandle(loadingTextRef.current);
+
+      if (reactTag) {
+        AccessibilityInfo.setAccessibilityFocus(reactTag);
+      }
+    }
   }, []);
 
   const context = useMemo(() => ({ isLoading, changeLoading }), [isLoading, changeLoading]);
@@ -27,7 +41,10 @@ export const LoadingProvider = ({ children }: { children: ReactNode }) => {
 
         {isLoading && (
           <View style={[styles.loadingContainer, Utils.backgroundColor('rgba(0, 0, 0, 0.7)')]}>
-            <Text style={[styles.loading, Fonts.Regular16, Utils.fontColor(Colors.None.Lighten400)]}>
+            <Text
+              style={[styles.loading, Fonts.Regular16, Utils.fontColor(Colors.None.Lighten400)]}
+              ref={loadingTextRef}
+            >
               불러오는 중...
             </Text>
           </View>

@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, forwardRef, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, findNodeHandle, AccessibilityInfo } from 'react-native';
 
 import { BottomSheet } from 'react-native-btr';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,6 +11,7 @@ import { Colors, Fonts, Utils } from '../../styles';
 
 import { BomButton } from '../../common';
 import { DeleteCheckPopup, IDeleteCheckPopupHandler } from './DeleteCheckPopup';
+import { delay } from '../../utils';
 
 export type ISettingPopupHandler = {
   open: () => void;
@@ -25,6 +26,8 @@ type ISettingPopupProps = {
 export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>(({ onDelete }, ref) => {
   const insets = useSafeAreaInsets();
 
+  const topButtonRef = useRef<TouchableOpacity>(null);
+
   const [visible, setVisible] = useState(false);
 
   const DeleteCheckPopupRef = useRef<IDeleteCheckPopupHandler>(null);
@@ -34,7 +37,17 @@ export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>
   useImperativeHandle(
     ref,
     () => ({
-      open: () => setVisible(true),
+      open: async () => {
+        setVisible(true);
+
+        await delay(500);
+
+        const reactTag = findNodeHandle(topButtonRef.current);
+
+        if (reactTag) {
+          AccessibilityInfo.setAccessibilityFocus(reactTag);
+        }
+      },
       close: () => setVisible(false),
     }),
     []
@@ -60,6 +73,7 @@ export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>
             }}
             accessible
             accessibilityLabel="질문 삭제하기 버튼"
+            ref={topButtonRef}
           >
             <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문 삭제하기</Text>
 

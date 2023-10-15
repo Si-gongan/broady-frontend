@@ -35,7 +35,7 @@ export const MyPageScreen = () => {
 
       <PaddingHorizontal value={20}>
         <ScrollView>
-          <View style={styles.textWrapper}>
+          <View style={styles.textWrapper} accessible accessibilityLabel={`${nickname}님 안녕하세요`}>
             <Text style={[Fonts.Bold20, Utils.fontColor(Colors.Red.Lighten100)]}>{nickname}님</Text>
             <Text style={[Fonts.Bold20, Utils.fontColor(Colors.Font.primary)]}>안녕하세요!</Text>
           </View>
@@ -67,7 +67,7 @@ export const MyPageScreen = () => {
               style={[styles.rowWrapper, { marginTop: 10 }]}
               onPress={() => WebBrowser.openBrowserAsync(ONE_TO_ONE_QUESTION)}
               accessible
-              accessibilityLabel="1:1 문의 버튼"
+              accessibilityLabel="1:1 문의버튼"
               hitSlop={{ right: 15, left: 15 }}
             >
               <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>1:1 문의</Text>

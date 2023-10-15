@@ -89,6 +89,7 @@ export const HomeScreen = () => {
             text="+ 해설자에게 질문하기"
             theme="secondary"
             onPress={() => ImageMethodPopupRef.current?.open()}
+            accessibilityLabel="해설자에게 질문하기 버튼"
           />
         </View>
 

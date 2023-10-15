@@ -10,6 +10,7 @@ type IBomButtonProps = {
   disabled?: boolean;
 
   fixedWidth?: number;
+  accessibilityLabel?: string;
 };
 
 const BomButtonColor = {
@@ -49,7 +50,14 @@ const BomButtonColor = {
   },
 };
 
-export const BomButton = ({ text, onPress, theme, disabled = false, fixedWidth }: IBomButtonProps) => {
+export const BomButton = ({
+  text,
+  onPress,
+  theme,
+  fixedWidth,
+  accessibilityLabel,
+  disabled = false,
+}: IBomButtonProps) => {
   const [isPress, setPress] = useState(false);
 
   const buttonState = disabled ? 'disabled' : isPress ? 'pressed' : 'def';
@@ -67,7 +75,7 @@ export const BomButton = ({ text, onPress, theme, disabled = false, fixedWidth }
         ]}
         disabled={disabled}
         accessible
-        accessibilityLabel={`${text} 버튼`}
+        accessibilityLabel={accessibilityLabel ? accessibilityLabel : `${text} 버튼`}
       >
         <Text style={[Fonts.Regular16, Utils.fontColor(BomButtonColor[theme]['font'][buttonState])]}>{text}</Text>
       </Pressable>

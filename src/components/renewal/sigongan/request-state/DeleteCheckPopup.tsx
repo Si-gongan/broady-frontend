@@ -1,5 +1,5 @@
-import { useState, useImperativeHandle, forwardRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { useState, useImperativeHandle, forwardRef, useRef } from 'react';
+import { View, Text, StyleSheet, findNodeHandle, AccessibilityInfo } from 'react-native';
 
 import { BottomSheet } from 'react-native-btr';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors, Fonts, Utils } from '../../styles';
 
 import { BomButton } from '../../common';
+import { delay } from '../../utils';
 
 export type IDeleteCheckPopupHandler = {
   open: () => void;
@@ -25,6 +26,8 @@ export const DeleteCheckPopup = forwardRef<IDeleteCheckPopupHandler, IDeleteChec
 
     const [visible, setVisible] = useState(false);
 
+    const topViewRef = useRef<View>(null);
+
     const onClose = () => {
       setVisible(false);
       onprevPopupClose();
@@ -33,7 +36,17 @@ export const DeleteCheckPopup = forwardRef<IDeleteCheckPopupHandler, IDeleteChec
     useImperativeHandle(
       ref,
       () => ({
-        open: () => setVisible(true),
+        open: async () => {
+          setVisible(true);
+
+          await delay(500);
+
+          const reactTag = findNodeHandle(topViewRef.current);
+
+          if (reactTag) {
+            AccessibilityInfo.setAccessibilityFocus(reactTag);
+          }
+        },
         close: () => setVisible(false),
       }),
       []
@@ -52,7 +65,12 @@ export const DeleteCheckPopup = forwardRef<IDeleteCheckPopupHandler, IDeleteChec
             <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문 삭제</Text>
           </View>
 
-          <View style={styles.textWrapper}>
+          <View
+            style={styles.textWrapper}
+            accessible
+            accessibilityLabel="질문을 삭제하시겠습니까? 대화 내용은 복구가 불가능합니다."
+            ref={topViewRef}
+          >
             <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>질문을 삭제하시겠습니까?</Text>
             <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>
               대화 내용은 복구가 불가능합니다.

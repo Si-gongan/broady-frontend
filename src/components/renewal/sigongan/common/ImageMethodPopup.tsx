@@ -1,5 +1,5 @@
-import { useState, useImperativeHandle, forwardRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useState, useImperativeHandle, forwardRef, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, findNodeHandle, AccessibilityInfo } from 'react-native';
 
 import { BottomSheet } from 'react-native-btr';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +11,7 @@ import Svg, { Path } from 'react-native-svg';
 import { PaddingHorizontal } from '../../design';
 import { Colors, Fonts, Utils } from '../../styles';
 import { BomButton } from '../../common';
+import { delay } from '../../utils';
 
 export type IImageMethodPopupHandler = {
   open: () => void;
@@ -23,9 +24,13 @@ type IImageMethodPopupProps = {
   };
 };
 
+const DELAY_TIME = 500;
+
 // eslint-disable-next-line
 export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, IImageMethodPopupProps>(({ aiChat }, ref) => {
   const insets = useSafeAreaInsets();
+
+  const topTextRef = useRef<Text>(null);
 
   const navigation = useNavigation<NativeStackNavigationProp<SigonganStackParamList>>();
 
@@ -36,7 +41,17 @@ export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, IImageMetho
   useImperativeHandle(
     ref,
     () => ({
-      open: () => setVisible(true),
+      open: async () => {
+        setVisible(true);
+
+        await delay(DELAY_TIME);
+
+        const reactTag = findNodeHandle(topTextRef.current);
+
+        if (reactTag) {
+          AccessibilityInfo.setAccessibilityFocus(reactTag);
+        }
+      },
       close: () => setVisible(false),
     }),
     []
@@ -87,7 +102,9 @@ export const ImageMethodPopup = forwardRef<IImageMethodPopupHandler, IImageMetho
           Utils.safePaddingBottom(insets.bottom),
         ]}
       >
-        <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>사진 선택</Text>
+        <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]} ref={topTextRef}>
+          사진 선택
+        </Text>
 
         <PaddingHorizontal value={30} noflex>
           <TouchableOpacity

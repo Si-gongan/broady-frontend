@@ -36,6 +36,7 @@ import {
   IReportPopupHandler,
   ReportPopup,
   Notice,
+  getFormattedTime_Label,
 } from '../../components/renewal';
 import { useLoading } from '../../providers';
 
@@ -179,7 +180,9 @@ export const RequestStateScreen = () => {
                       <View
                         style={isShowTimeViewer(chatList, i) && styles.mySpeechWrapper}
                         accessible
-                        accessibilityLabel={`나의 대화: ${user.text.trimEnd()}, ${getFormattedTime(user.createdAt)}`}
+                        accessibilityLabel={`나의 대화: ${user.text
+                          .trimEnd()
+                          .replace(/\?/g, '')}, ${getFormattedTime_Label(user.createdAt)}`}
                       >
                         {/* 다음 대화가 내가 아니면, 시간 표시를 넣음 */}
                         {isShowTimeViewer(chatList, i) && <TimeViewer date={user.createdAt} />}
@@ -196,7 +199,7 @@ export const RequestStateScreen = () => {
                         activeOpacity={0.8}
                         onLongPress={() => ReportPopupRef?.current?.open(user)}
                         accessible
-                        accessibilityLabel={`해설자의 대화: ${user.text.trimEnd()}, ${getFormattedTime(
+                        accessibilityLabel={`해설자의 대화: ${user.text.trimEnd()}, ${getFormattedTime_Label(
                           user.createdAt
                         )}`}
                       >
@@ -214,7 +217,7 @@ export const RequestStateScreen = () => {
                         <View
                           style={[styles.mySpeechWrapper, { marginTop: 12 }]}
                           accessible
-                          accessibilityLabel={`나의 대화: ${user.text}, ${getFormattedTime(
+                          accessibilityLabel={`나의 대화: ${user.text}, ${getFormattedTime_Label(
                             user.appreciatedDate ?? ''
                           )}`}
                         >
