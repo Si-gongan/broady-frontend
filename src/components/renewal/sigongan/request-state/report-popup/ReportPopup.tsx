@@ -1,4 +1,4 @@
-import { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
 import { BottomSheet } from 'react-native-btr';
@@ -39,9 +39,17 @@ export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({
   const [option, setOption] = useState<ReportOption>('none');
   const [text, setText] = useState('');
 
+  const scrollViewRef = useRef<ScrollView>(null);
+
   // const { changeLoading } = useLoading();
 
   const { isKeyboardVisible, keyboardHeight } = useKeyboard();
+
+  useEffect(() => {
+    if (isKeyboardVisible) {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }
+  }, [isKeyboardVisible]);
 
   const onClose = () => {
     setOption('none');
@@ -104,7 +112,7 @@ export const ReportPopup = forwardRef<IReportPopupHandler, IReportPopupProps>(({
           <Text style={[Fonts.Medium16, Utils.fontColor(Colors.Font.primary)]}>신고</Text>
         </View>
 
-        <ScrollView style={{ paddingBottom: isKeyboardVisible ? keyboardHeight : 0 }}>
+        <ScrollView style={{ paddingBottom: isKeyboardVisible ? keyboardHeight : 0 }} ref={scrollViewRef}>
           <PaddingHorizontal value={20} noflex>
             <View style={styles.textWrapper}>
               <Text style={[Fonts.Regular14, Utils.fontColor(Colors.Font.secondary)]}>해설 신고사유를 알려주세요.</Text>
