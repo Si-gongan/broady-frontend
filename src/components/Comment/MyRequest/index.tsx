@@ -25,7 +25,6 @@ const MyRequest = ({ navigation }: any) => {
   useEffect(() => {
     if (isFocused) {
       try {
-        console.log('MY의뢰');
         getMyRequestAll(fcmToken, authToken).then((res) => {
           const proceedList = [...res]
             .filter((data) => data.isAvailable === false && data.isComplete === false)

@@ -1,8 +1,10 @@
+import { useIsFocused } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useRecoilValue } from 'recoil';
-import { authTokenState, nicknameState } from '../../../states';
-import { getData, NICKNAME } from '../../common/async-storage';
+import { getRequestCounts } from '../../../api/axios';
+import { authTokenState, fcmTokenState } from '../../../states';
 import { Colors } from '../../renewal';
 import { commentFont } from '../styles';
 
@@ -11,17 +13,30 @@ const ITEM_WIDTH = (SCREEN_WIDTH * 0.9) / 2 - 30;
 
 interface HomeInformationProps {
   navigation: any;
-  totalRequestCount: number;
-  todayRequestCount: number;
 }
 
-const HomeInformation = ({ navigation, totalRequestCount, todayRequestCount }: HomeInformationProps) => {
-  const token = useRecoilValue(authTokenState);
-  const nickname = getData(NICKNAME);
+const HomeInformation = ({ navigation }: HomeInformationProps) => {
+  const fcmToken = useRecoilValue(fcmTokenState);
+  const authToken = useRecoilValue(authTokenState);
+
+  const [totalRequestCount, setTotalRequestCount] = useState(0);
+  const [todayRequestCount, setTodayRequestCount] = useState(0);
+
+  const isFocused = useIsFocused();
 
   const handleMoveOnboarding = () => {
     navigation.navigate('간편 가이드');
   };
+
+  useEffect(() => {
+    if (isFocused) {
+      getRequestCounts(fcmToken, authToken).then((data) => {
+        setTotalRequestCount(data.allPostsCnt);
+        setTodayRequestCount(data.todayPostsCnt);
+      });
+    }
+  }, [isFocused]);
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.guideTextContainer}>

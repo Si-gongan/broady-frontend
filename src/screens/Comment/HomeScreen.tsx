@@ -7,7 +7,6 @@ import HomeInformation from '../../components/Comment/Home/HomeInformation';
 import RequestList from '../../components/Comment/Home/RequestList';
 import { authTokenState, fcmTokenState } from '../../states';
 import { IRequest } from '../../types/request';
-import { getKoreanTime } from '../../utils/time';
 import { commentFont } from '../../components/Comment/styles';
 import Header from '../../components/common/Header';
 
@@ -16,13 +15,10 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const fcmToken = useRecoilValue(fcmTokenState);
   const authToken = useRecoilValue(authTokenState);
 
-  const todayRequestCount = countTodayRequest(currentRequest);
-
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
-      console.log('홈 화면');
       // 모든 의뢰목록 가져오기
       getRequestAll(fcmToken, authToken).then((data) => {
         const sortedRequestList = [...data].sort((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1));
@@ -36,29 +32,18 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       <Header isBack={false} type="home" handleClick={() => navigation.navigate('Announce')}>
         홈
       </Header>
-      <HomeInformation
-        navigation={navigation}
-        totalRequestCount={currentRequest.length}
-        todayRequestCount={todayRequestCount}
-      />
+      <HomeInformation navigation={navigation} />
       <View style={styles.bodyContainer}>
         {currentRequest.length > 0 ? (
           <RequestList requestList={currentRequest} navigation={navigation} />
         ) : (
-          <View style={{ flex: 1, justifyContent: 'center' }}>
+          <View style={styles.blankTextContainer}>
             <Text style={commentFont.BODY1}>등록된 의뢰가 아직 없습니다.</Text>
           </View>
         )}
       </View>
     </>
   );
-};
-
-const countTodayRequest = (requestList: IRequest[]) => {
-  const todayRequest = requestList.filter(
-    (request) => getKoreanTime(new Date()).getDay() === new Date(request.createdAt).getDay()
-  );
-  return todayRequest.length;
 };
 
 const styles = StyleSheet.create({
@@ -73,6 +58,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginBottom: 30,
+  },
+  blankTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 
