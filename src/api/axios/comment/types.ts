@@ -174,3 +174,10 @@ export type ReportListType = {
     }[];
   };
 };
+
+export type RequestCountType = {
+  result: {
+    allPostsCnt: number;
+    todayPostsCnt: number;
+  };
+};

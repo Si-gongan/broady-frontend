@@ -4,8 +4,16 @@ import {
   ProceedRequestReturnType,
   CompletedRequestReturnType,
   startCommentReturnType,
+  RequestCountType,
 } from '..';
 import { CommentServer } from './setting';
+
+export const getRequestCounts = async (fcmToken: string, token: string) => {
+  const result = await CommentServer.get<RequestCountType>('/post/accumulate', {
+    headers: { fcmToken, Authorization: token },
+  });
+  return result.data.result;
+};
 
 export const getRequestAll = async (fcmToken: string, token: string) => {
   const result = await CommentServer.get<RequestAllReturnType>('/post', {
