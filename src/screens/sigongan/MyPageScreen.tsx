@@ -128,7 +128,13 @@ export const MyPageScreen = () => {
             </TouchableOpacity>
           </View>
 
-          <View style={[styles.borderWrapper, Utils.borderColor(Colors.Red.Lighten300), { marginTop: 20 }]}>
+          <View
+            style={[
+              styles.borderWrapper,
+              Utils.borderColor(Colors.Red.Lighten300),
+              { marginTop: 20, marginBottom: 20 },
+            ]}
+          >
             <TouchableOpacity
               activeOpacity={0.8}
               style={[styles.rowWrapper]}
