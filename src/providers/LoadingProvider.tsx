@@ -20,11 +20,12 @@ export const LoadingProvider = ({ children }: { children: ReactNode }) => {
     setLoading(b);
 
     if (b) {
-      await delay(500);
+      await delay(1500);
 
       const reactTag = findNodeHandle(loadingTextRef.current);
 
       if (reactTag) {
+        AccessibilityInfo.announceForAccessibility('로딩 중입니다');
         AccessibilityInfo.setAccessibilityFocus(reactTag);
       }
     }
