@@ -58,7 +58,16 @@ const MyRequest = ({ navigation }: any) => {
 
 const countTodayCompletedRequest = (requestList: ICurrentRequest[]) => {
   const todayRequest = requestList.filter((request) => {
-    if (request.expiredAt) return getKoreanTime(new Date()).getTime() === new Date(request.expiredAt).getTime();
+    if (request.expiredAt) {
+      const currentTime = getKoreanTime(new Date());
+      const expiredTime = new Date(request.expiredAt);
+      if (
+        currentTime.getFullYear() === expiredTime.getFullYear() &&
+        currentTime.getMonth() === expiredTime.getMonth() &&
+        currentTime.getDate() === expiredTime.getDate()
+      )
+        return true;
+    }
   });
   return todayRequest.length;
 };
