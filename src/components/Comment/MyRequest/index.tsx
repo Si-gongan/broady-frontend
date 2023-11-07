@@ -1,8 +1,8 @@
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useRecoilValue } from 'recoil';
-import { getCompletedRequest, getMyRequestAll, getProceedRequest } from '../../../api/axios';
+import { getMyRequestAll } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import { getKoreanTime } from '../../../utils/time';
@@ -58,7 +58,7 @@ const MyRequest = ({ navigation }: any) => {
 
 const countTodayCompletedRequest = (requestList: ICurrentRequest[]) => {
   const todayRequest = requestList.filter((request) => {
-    if (request.expiredAt) return getKoreanTime(new Date()).getDate() === new Date(request.expiredAt).getDate();
+    if (request.expiredAt) return getKoreanTime(new Date()).getTime() === new Date(request.expiredAt).getTime();
   });
   return todayRequest.length;
 };
