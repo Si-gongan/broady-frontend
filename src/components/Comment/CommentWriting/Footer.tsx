@@ -21,7 +21,7 @@ const Footer = ({ id, request, setRequest, navigation }: IFooterProps) => {
   const authToken = useRecoilValue(authTokenState);
 
   const [commentTimer, setCommentTimer] = useState<number>(7);
-  const [status, setStatus] = useState<number>(-1); // -1: 해설전, 0: 해설중, 1: 해설완료
+  const [status, setStatus] = useState<number>(1); // -1: 해설전, 0: 해설중, 1: 해설완료
   const { isAvailable, isComplete } = request;
   const [isEndComment, setIsEndComment] = useState(false);
 
