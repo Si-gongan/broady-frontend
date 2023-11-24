@@ -46,6 +46,12 @@ export const PostImageQuestion = async (chatId: string | null, fileUri: string, 
   });
 };
 
+export const GetRequestType = async (messages: string[]) => {
+  return await AIServer.post('/requesttype', {
+    messages,
+  });
+};
+
 export const getCorrectText = async (text: string) => {
   const result = await AIServer.post('/correction', {
     text,
