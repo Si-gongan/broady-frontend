@@ -16,7 +16,14 @@ import { SigonganStackParamList } from '../../navigations';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../states';
 
-import { AddQuestion, DeleteQuestion, GetRequestList, IReqeustListItem } from '../../api/axios';
+import {
+  AddQuestion,
+  AddThanks,
+  DeleteQuestion,
+  GetRequestList,
+  GetRequestType,
+  IReqeustListItem,
+} from '../../api/axios';
 
 import { useKeyboard } from '../../hooks';
 import {
@@ -28,7 +35,6 @@ import {
   MySpeechBubble,
   PaddingHorizontal,
   TimeViewer,
-  getFormattedTime,
   getDate,
   NoticeError,
   ISettingPopupHandler,
@@ -94,6 +100,19 @@ export const RequestStateScreen = () => {
   //   }, [])
   // );
 
+  const getAppreciatedText = (item: IReqeustListItem) =>
+    item.responseUser
+      .filter((chat) => chat.appreciated)
+      .map((chat) => ({
+        text: chat.appreciatedText ?? '',
+        createdAt: chat.appreciatedDate ?? '',
+      }));
+
+  const getChatList = (item: IReqeustListItem) =>
+    [...item.requestedUser, ...item.responseUser, ...getAppreciatedText(item)]
+      .sort((a, b) => (new Date(a.createdAt) < new Date(b.createdAt) ? -1 : 1))
+      .map((chat) => chat.text);
+
   const addQuestion = async () => {
     if (text.length === 0) {
       Notice('질문을 입력해주세요.');
@@ -103,7 +122,15 @@ export const RequestStateScreen = () => {
     try {
       changeLoading(true);
 
-      await AddQuestion(item.id, text, fcmToken);
+      const res = await GetRequestType([...getChatList(item), text]);
+      const type = res.data.request_type;
+
+      if (type === 1) {
+        await AddThanks(item.id, item.responseUser[item.responseUser.length - 1].id, text, fcmToken);
+      } else {
+        await AddQuestion(item.id, text, fcmToken);
+      }
+
       refresh();
     } catch (e) {
       NoticeError();
