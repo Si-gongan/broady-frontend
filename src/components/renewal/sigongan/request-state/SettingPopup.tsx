@@ -1,6 +1,8 @@
 import { useState, useImperativeHandle, forwardRef, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, findNodeHandle, AccessibilityInfo } from 'react-native';
 
+import Share from 'react-native-share';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 import { BottomSheet } from 'react-native-btr';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -8,6 +10,7 @@ import Svg, { Path } from 'react-native-svg';
 
 import { PaddingHorizontal } from '../../design';
 import { Colors, Fonts, Utils } from '../../styles';
+import { GetRequestSummary } from '../../../../api/axios';
 
 import { BomButton } from '../../common';
 import { DeleteCheckPopup, IDeleteCheckPopupHandler } from './DeleteCheckPopup';
@@ -20,10 +23,13 @@ export type ISettingPopupHandler = {
 
 type ISettingPopupProps = {
   onDelete: () => void;
+  imgUrl: string;
+  chat: any;
+  answered: boolean;
 };
 
 // eslint-disable-next-line
-export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>(({ onDelete }, ref) => {
+export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>(({ onDelete, imgUrl, chat, answered }, ref) => {
   const insets = useSafeAreaInsets();
 
   const topButtonRef = useRef<TouchableOpacity>(null);
@@ -65,6 +71,62 @@ export const SettingPopup = forwardRef<ISettingPopupHandler, ISettingPopupProps>
         <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>메뉴</Text>
 
         <PaddingHorizontal value={30} noflex>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={[styles.button]}
+            onPress={async () => {
+              let summary = '[Broady]';
+              if (answered){
+                const response = await GetRequestSummary(chat);
+                summary += '\n';
+                summary += response.data.summary;
+              } else {
+                // nothing
+              }
+              ReactNativeBlobUtil.fetch(
+                'GET',
+                imgUrl
+              )
+                .then(res => {
+                  let status = res.info().status;
+                  if (status === 200) {
+                    let base64Str = res.base64();
+                    let options = {
+                      message: summary,
+                      url: `data:image/jpeg;base64,${base64Str}`,
+                    };
+                    Share.open(options)
+                      .then(r => {
+                        console.log(r);
+                      })
+                      .catch(e => {
+                        e && console.log(e);
+                      });
+                  } else {
+                    // handle other status codes
+                  }
+                })
+                // Something went wrong:
+                .catch(err => {
+                  // error handling
+                  console.log(err);
+                });
+
+            }}
+            accessible
+            accessibilityLabel="사진 공유하기 버튼"
+            ref={topButtonRef}
+          >
+            <Text style={[Fonts.Regular16, Utils.fontColor(Colors.Font.primary)]}>사진 공유하기</Text>
+
+            <Svg width="9" height="16" viewBox="0 0 9 16" fill="none">
+              <Path
+                d="M6.13379 7.9999L0.383789 2.2499L1.70107 0.932617L8.76835 7.9999L1.70107 15.0672L0.383789 13.7499L6.13379 7.9999Z"
+                fill={Colors.Font.primary}
+              />
+            </Svg>
+          </TouchableOpacity>
+
           <TouchableOpacity
             activeOpacity={0.8}
             style={[styles.button]}

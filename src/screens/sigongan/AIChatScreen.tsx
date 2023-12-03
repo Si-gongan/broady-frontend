@@ -51,7 +51,7 @@ export const AIChatScreen = () => {
     (async () => {
       try {
         const temp = await GetChatList(fcmToken);
-
+        console.log(temp);
         const prevData = temp.data.result.chat;
         if (prevData === null) {
           return;

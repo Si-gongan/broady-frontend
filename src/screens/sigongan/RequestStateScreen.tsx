@@ -263,7 +263,13 @@ export const RequestStateScreen = () => {
         <RequestInputBar value={text} onChangeText={setText} onPress={addQuestion} isSubmitting={isLoading} />
       </KeyboardAvoidingView>
 
-      <SettingPopup ref={SettingPopupRef} onDelete={onDelete} />
+      <SettingPopup 
+        ref={SettingPopupRef} 
+        onDelete={onDelete} 
+        imgUrl={process.env.EXPO_PUBLIC_AWS_BUCKET_BASE_URL + '/' + item.photo}
+        chat={getChatList(item)} 
+        answered={item.responseUser.length > 0}
+        />
       <ReportPopup ref={ReportPopupRef} item={item} />
     </SafeAreaView>
   );

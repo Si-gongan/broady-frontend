@@ -1,14 +1,19 @@
 import FormData from 'form-data';
 import { AIServer, Server } from '../setting';
 import { IGetChatListReturnType } from './types';
+import axios from 'axios';
 
 export const GetChatList = async (fcmToken: string) => {
-  return await Server.get<IGetChatListReturnType>('/aichat', {
-    headers: {
-      fcmToken,
-      authorization: 0,
-    },
-  });
+  return await axios.get(process.env.EXPO_PUBLIC_API_SERVER_URL + '/aichat', {headers: {
+    fcmToken,
+    authorization: 0,
+  }})
+  // const response = await Server.get<IGetChatListReturnType>('/aichat', {
+  //   headers: {
+  //     fcmToken,
+  //     authorization: 0,
+  //   },
+  // })
 };
 
 export const PostTextQuestion = async (chatId: string | null, text: string, fcmToken: string) => {
@@ -57,4 +62,10 @@ export const getCorrectText = async (text: string) => {
     text,
   });
   return result.data.correction;
+};
+
+export const GetRequestSummary = async (messages: string[]) => {
+  return await axios.post(process.env.EXPO_PUBLIC_AI_API_SERVER_URL + '/request-desc', {
+    messages,
+  });
 };
