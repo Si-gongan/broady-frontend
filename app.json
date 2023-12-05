@@ -14,6 +14,18 @@
     "assetBundlePatterns": ["**/*"],
     "plugins": [
       [
+        "expo-config-plugin-ios-share-extension",
+        {
+          "activationRules": {
+            "NSExtensionActivationSupportsText": true,
+            "NSExtensionActivationSupportsWebURLWithMaxCount": 1,
+            "NSExtensionActivationSupportsWebPageWithMaxCount": 1,
+            "NSExtensionActivationSupportsImageWithMaxCount": 1,
+            "NSExtensionActivationSupportsMovieWithMaxCount": 1
+          }
+        }
+      ],
+      [
         "expo-image-picker",
         {
           "cameraPermission": "해설자측에 사진 해설 의뢰, AI 해설 기능 이용을 위해 카메라 권한을 승인해주세요.",
