@@ -14,6 +14,21 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import { CommentServer } from './api/axios/comment/setting';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
+import ReceiveSharingIntent from 'react-native-receive-sharing-intent';
+
+ReceiveSharingIntent.getReceivedFiles(
+  (files: any) => {
+    // files returns as JSON Array example
+    //[{ filePath: null, text: null, weblink: null, mimeType: null, contentUri: null, fileName: null, extension: null }]
+    Alert.alert('성공');
+    console.log('success', files);
+  },
+  (error: any) => {
+    Alert.alert('실패');
+    console.log('error', error);
+  },
+  'ShareMedia' // share url protocol (must be unique to your app, suggest using your apple bundle id)
+);
 
 initializeNotifications();
 
