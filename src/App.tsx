@@ -14,6 +14,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import { CommentServer } from './api/axios/comment/setting';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
+import { useGetShare } from './hooks/useGetShare';
 
 initializeNotifications();
 
@@ -30,18 +31,12 @@ const Main = () => {
 
   useNotifications();
 
+  useGetShare();
+
   // TODO: splash screen
   if (!fontsLoaded) {
     return null;
   }
-
-  const navTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      background: 'white',
-    },
-  };
 
   // 토큰 만료 처리
   CommentServer.interceptors.response.use(
@@ -74,25 +69,33 @@ const Main = () => {
   );
 
   return (
-    <NavigationContainer theme={navTheme}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        {userState === 'unLogin' && <AuthStack />}
-        {userState === 'Sigongan' && <SigonganStack />}
-        {userState === 'Comment' && <CommentStack />}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      {userState === 'unLogin' && <AuthStack />}
+      {userState === 'Sigongan' && <SigonganStack />}
+      {userState === 'Comment' && <CommentStack />}
 
-        <StatusBar style="auto" />
-      </GestureHandlerRootView>
-    </NavigationContainer>
+      <StatusBar style="auto" />
+    </GestureHandlerRootView>
   );
 };
 
 export const App = () => {
+  const navTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: 'white',
+    },
+  };
+
   return (
     <RecoilRoot>
       <UserStateProvider>
         <LoadingProvider>
           <RootSiblingParent>
-            <Main />
+            <NavigationContainer theme={navTheme}>
+              <Main />
+            </NavigationContainer>
           </RootSiblingParent>
         </LoadingProvider>
       </UserStateProvider>
