@@ -47,7 +47,7 @@ export const useGetShare = () => {
 
         await delay(1500);
 
-        navigation.navigate('해설의뢰', { url: Platform.OS === 'ios' ? filePath : contentUri });
+        navigation.navigate('공유선택', { url: Platform.OS === 'ios' ? filePath : contentUri });
       },
       (error: any) => {
         1;

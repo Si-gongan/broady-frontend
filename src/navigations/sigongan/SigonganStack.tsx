@@ -8,6 +8,7 @@ import {
   ManualScreen,
   PutNicknameScreen,
   RequestStateScreen,
+  ShareSelectScreen,
 } from '../../screens/sigongan';
 import { SigonganMainTab } from './SigonganMainTab';
 
@@ -26,6 +27,8 @@ export const SigonganStack = () => {
       <Stack.Screen name="메인" component={SigonganMainTab} options={{ headerShown: false }} />
 
       <Stack.Screen name="해설의뢰" component={CommentRequestScreen} options={{ headerShown: false }} />
+
+      <Stack.Screen name="공유선택" component={ShareSelectScreen} options={{ headerShown: false }} />
 
       <Stack.Screen name="해설 진행현황" component={RequestStateScreen} options={{ headerShown: false }} />
 

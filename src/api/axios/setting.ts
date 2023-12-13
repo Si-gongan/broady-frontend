@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const Server = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_SERVER_URL,
-  timeout: 25000,
+  timeout: 50000,
   headers: {
     'Content-Type': 'application/json',
   },

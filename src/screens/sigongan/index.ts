@@ -8,3 +8,4 @@ export * from './PutNicknameScreen';
 export * from './FAQScreen';
 export * from './ManualScreen';
 export * from './ManualDetailScreen';
+export * from './ShareSelectScreen';

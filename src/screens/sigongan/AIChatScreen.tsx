@@ -26,16 +26,20 @@ import {
   getDate,
   getFormattedTime_Label,
 } from '../../components/renewal';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { SigonganMainTabParamList } from '../../navigations';
 
 type ChatListType = NonNullable<IGetChatListReturnType['result']['chat']>['chat'];
 
 const LOAD_DELAY = 500;
 
 export const AIChatScreen = () => {
+  const { params } = useRoute<RouteProp<SigonganMainTabParamList, 'AI 해설'>>();
+
   // api
   const fcmToken = useRecoilValue(fcmTokenState);
   const [chatList, setChatList] = useState<ChatListType>([]);
-  const chatId = useRef<string | null>(null);
+  const [chatId, setChatId] = useState<string | null>(null);
 
   // state
   const [text, setText] = useState('');
@@ -51,14 +55,13 @@ export const AIChatScreen = () => {
     (async () => {
       try {
         const temp = await GetChatList(fcmToken);
-        console.log(temp);
         const prevData = temp.data.result.chat;
         if (prevData === null) {
           return;
         }
 
         setChatList(prevData.chat);
-        chatId.current = prevData._id;
+        setChatId(prevData._id);
 
         // hard coding
         await delay(LOAD_DELAY);
@@ -68,6 +71,20 @@ export const AIChatScreen = () => {
       }
     })();
   }, []);
+
+  // share
+  useEffect(() => {
+    if (!chatId) return;
+
+    if (!params) return;
+
+    if (!params.url) return;
+
+    console.log('call');
+
+    const url = params.url;
+    onImageSubmit(url);
+  }, [params, chatId]);
 
   // keyboard animation
   useEffect(() => {
@@ -85,7 +102,7 @@ export const AIChatScreen = () => {
     try {
       changeLoading(true);
 
-      await PostTextQuestion(chatId.current, text, fcmToken);
+      await PostTextQuestion(chatId, text, fcmToken);
       await refresh();
     } catch {
       NoticeError();
@@ -96,12 +113,17 @@ export const AIChatScreen = () => {
   };
 
   const onImageSubmit = async (url: string) => {
+    console.log('image', chatId, url, fcmToken);
     try {
       changeLoading(true);
+      console.log('1');
 
-      await PostImageQuestion(chatId.current, url, fcmToken);
+      await PostImageQuestion(chatId, url, fcmToken);
+      console.log('2');
       await refresh();
-    } catch {
+      console.log('3');
+    } catch (e) {
+      console.log('error', e);
       NoticeError();
     } finally {
       changeLoading(false);
@@ -116,7 +138,7 @@ export const AIChatScreen = () => {
     }
 
     setChatList(newChatData.chat);
-    chatId.current = newChatData._id;
+    setChatId(newChatData._id);
 
     // hard coding
     await delay(LOAD_DELAY);

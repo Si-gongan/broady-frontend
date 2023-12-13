@@ -15,6 +15,7 @@ export type CommentaryTabParamList = {
 export type SigonganStackParamList = {
   메인: undefined;
   해설의뢰: { url?: string };
+  공유선택: { url?: string };
   '해설 진행현황': { item: IReqeustListItem };
   '닉네임 수정': undefined;
   '자주 묻는 질문': undefined;
@@ -24,6 +25,6 @@ export type SigonganStackParamList = {
 
 export type SigonganMainTabParamList = {
   홈: undefined;
-  'AI 해설': undefined;
+  'AI 해설': { url?: string | null };
   마이페이지: undefined;
 };
