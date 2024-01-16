@@ -1,7 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { SigonganDesign } from '../../../components/sigongan/styles';
 import { commentFont } from '../styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+const SigonganDesign = StyleSheet.create({
+  myPageGrid: {
+    borderWidth: 1,
+    borderColor: '#FAC4D2',
+
+    borderRadius: 10,
+    width: 347,
+  },
+});
 
 const Refund = ({ navigation, myPoint }: { navigation: any; myPoint: number }) => {
   return (

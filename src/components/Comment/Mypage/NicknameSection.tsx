@@ -1,12 +1,21 @@
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { authTokenState, fcmTokenState, nicknameState } from '../../../states';
-import { SigonganDesign } from '../../sigongan/styles';
 import { commentFont } from '../styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import { getMyRequestAll } from '../../../api/axios';
+
+const SigonganDesign = StyleSheet.create({
+  myPageGrid: {
+    borderWidth: 1,
+    borderColor: '#FAC4D2',
+
+    borderRadius: 10,
+    width: 347,
+  },
+});
 
 const NicknameSection = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);

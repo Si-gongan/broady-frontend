@@ -1,7 +1,16 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { SigonganDesign } from '../../sigongan/styles';
 import { commentFont } from '../styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+const SigonganDesign = StyleSheet.create({
+  myPageGrid: {
+    borderWidth: 1,
+    borderColor: '#FAC4D2',
+
+    borderRadius: 10,
+    width: 347,
+  },
+});
 
 const AlertSection = ({ navigation }: any) => {
   return (
