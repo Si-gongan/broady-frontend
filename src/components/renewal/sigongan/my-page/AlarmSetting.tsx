@@ -5,7 +5,7 @@ import { Utils, Fonts, Colors } from '../../styles';
 import { ChangeAlarmStatus, GetAlarmStatus } from '../../../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { fcmTokenState } from '../../../../states';
-import { getNotificationPermissions } from '../../../common/notifications';
+import { getNotificationPermissions } from '../../../../library';
 
 export const AlarmSetting = () => {
   const fcmToken = useRecoilValue(fcmTokenState);

@@ -5,7 +5,7 @@ import { RecoilRoot } from 'recoil';
 import { AuthStack, SigonganStack, CommentStack } from './navigations';
 import { LoadingProvider, UserStateProvider, useUserState } from './providers';
 
-import { initializeNotifications, useNotifications } from './components/common/notifications';
+import { initializeNotifications, useNotifications } from './library';
 import { StatusBar } from 'expo-status-bar';
 import { RootSiblingParent } from 'react-native-root-siblings';
 

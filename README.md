@@ -1,8 +1,8 @@
 # Bomjaguk_Frontend
 
+```
 npx expo prebuild --no-install
 
-```
 yarn
 cd ios
 pod install

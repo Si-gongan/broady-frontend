@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, findNodeHandle, Accessibility
 import { BottomSheet } from 'react-native-btr';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { pickImage, takePhoto } from '../../../common/media';
+import { pickImage, takePhoto } from '../../../../library';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SigonganStackParamList } from '../../../../navigations';
 import Svg, { Path } from 'react-native-svg';

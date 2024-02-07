@@ -1,7 +1,9 @@
 import { View, StyleSheet, SafeAreaView } from 'react-native';
+
+import { BomHeader } from '../../components/renewal';
+
 import AlertExtraQuestion from '../../components/Comment/Mypage/AlertExtraQuestion';
 import AlertNewRequest from '../../components/Comment/Mypage/AlertNewRequest';
-import { BomHeader, PaddingHorizontal } from '../../components/renewal';
 
 const AlertSettingScreen = () => {
   return (

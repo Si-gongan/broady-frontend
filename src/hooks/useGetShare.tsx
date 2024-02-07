@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import ReceiveSharingIntent from 'react-native-receive-sharing-intent';
-import { USER_STATE, getData } from '../components/common/async-storage';
+import { USER_STATE, getData } from '../library';
 import { Notice, delay } from '../components/renewal';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';

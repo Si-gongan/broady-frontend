@@ -1,7 +1,7 @@
 import { createContext, useState, useMemo, useCallback, useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
-import { AUTH_TOKEN, USER_STATE, getData, storeData, removeData, NICKNAME } from '../components/common/async-storage';
+import { AUTH_TOKEN, USER_STATE, getData, storeData, removeData, NICKNAME } from '../library';
 
 import { useRecoilState } from 'recoil';
 import { authTokenState, nicknameState } from '../states';

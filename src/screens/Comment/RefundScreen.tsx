@@ -18,7 +18,7 @@ import { authTokenState, fcmTokenState, myPointState } from '../../states';
 import { getPointList, requestRefundPoint } from '../../api/axios';
 import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
-import { ACCOUNT_HOLDER, ACCOUNT_NUMBER, getData, storeData } from '../../components/common/async-storage';
+import { ACCOUNT_HOLDER, ACCOUNT_NUMBER, getData, storeData } from '../../library';
 import { useIsFocused } from '@react-navigation/native';
 import { BomHeader, Colors, PaddingHorizontal } from '../../components/renewal';
 

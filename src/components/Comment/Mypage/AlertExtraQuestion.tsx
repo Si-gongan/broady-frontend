@@ -3,7 +3,7 @@ import { Alert, View, Text, Switch, StyleSheet, Linking } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { ChangeAlarmStatus, GetAlarmStatus } from '../../../api/axios';
 import { fcmTokenState } from '../../../states';
-import { getNotificationPermissions } from '../../common/notifications';
+import { getNotificationPermissions } from '../../../library';
 import { commentFont } from '../styles';
 import * as Notifications from 'expo-notifications';
 
