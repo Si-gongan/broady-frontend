@@ -80,8 +80,6 @@ export const AIChatScreen = () => {
 
     if (!params.url) return;
 
-    console.log('call');
-
     const url = params.url;
     onImageSubmit(url);
   }, [params, chatId]);
@@ -113,17 +111,12 @@ export const AIChatScreen = () => {
   };
 
   const onImageSubmit = async (url: string) => {
-    console.log('image', chatId, url, fcmToken);
     try {
       changeLoading(true);
-      console.log('1');
 
       await PostImageQuestion(chatId, url, fcmToken);
-      console.log('2');
       await refresh();
-      console.log('3');
     } catch (e) {
-      console.log('error', e);
       NoticeError();
     } finally {
       changeLoading(false);

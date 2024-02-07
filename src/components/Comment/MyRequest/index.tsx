@@ -1,15 +1,15 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getMyRequestAll } from '../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../states';
 import { ICurrentRequest } from '../../../types/request';
 import { getKoreanTime } from '../../../utils/time';
-import Header from '../../common/Header';
-import { Colors } from '../../renewal';
+import { BomHeader, Colors, PaddingHorizontal } from '../../renewal';
 import MyRequestInformation from './MyRequestInformation';
 import RequestList from './RequestList';
+import { CommentTabBar } from '../CommentTabBar';
 
 const MyRequest = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -46,13 +46,18 @@ const MyRequest = ({ navigation }: any) => {
   }, [isFocused]);
 
   return (
-    <View style={styles.mainContainer}>
-      <Header isBack={false}>MY의뢰</Header>
-      <MyRequestInformation totalCompletedCount={totalCompletedCount} todayCompletedCount={todayCompletedCount} />
-      <View style={styles.bodyContainer}>
-        <RequestList requestList={requestList} setRequestList={setRequestList} navigation={navigation} />
-      </View>
-    </View>
+    <SafeAreaView style={styles.mainContainer}>
+      <BomHeader text="MY 의뢰" hideBackButton isBottomBorder />
+
+      <PaddingHorizontal value={0}>
+        <MyRequestInformation totalCompletedCount={totalCompletedCount} todayCompletedCount={todayCompletedCount} />
+        <View style={styles.bodyContainer}>
+          <RequestList requestList={requestList} setRequestList={setRequestList} navigation={navigation} />
+        </View>
+      </PaddingHorizontal>
+
+      <CommentTabBar currentIndex={1} />
+    </SafeAreaView>
   );
 };
 

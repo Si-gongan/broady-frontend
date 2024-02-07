@@ -6,15 +6,7 @@ import { deleteUser } from '../../../api/axios';
 import { useRecoilValue } from 'recoil';
 import { authTokenState, fcmTokenState } from '../../../states';
 
-const SigonganDesign = StyleSheet.create({
-  myPageGrid: {
-    borderWidth: 1,
-    borderColor: '#FAC4D2',
-
-    borderRadius: 10,
-    width: 347,
-  },
-});
+import { SigonganDesign } from '../styles';
 
 const UserDeleteSection = () => {
   const { logout } = useUserState();

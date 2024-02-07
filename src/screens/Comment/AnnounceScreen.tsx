@@ -1,12 +1,12 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { getReportList } from '../../api/axios';
 import { commentFont } from '../../components/Comment/styles';
-import Header from '../../components/common/Header';
 import { authTokenState, fcmTokenState } from '../../states';
 import { getYYMMDD } from '../../utils/time';
+import { BomHeader } from '../../components/renewal';
 
 interface IAnnounce {
   _id: string;
@@ -46,9 +46,10 @@ const AnnounceScreen = ({ navigation }: any) => {
   }, [isFocused]);
 
   return (
-    <>
-      <Header isBack={true}>공지사항</Header>
-      <ScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <BomHeader text="공지사항" isBottomBorder />
+
+      <ScrollView style={{ flex: 1 }}>
         {announceList.length > 0 ? (
           announceList.map((announce) => (
             <TouchableOpacity
@@ -66,7 +67,7 @@ const AnnounceScreen = ({ navigation }: any) => {
           </View>
         )}
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 

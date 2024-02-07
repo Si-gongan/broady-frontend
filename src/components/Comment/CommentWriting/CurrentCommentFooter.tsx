@@ -97,31 +97,8 @@ const CurrentCommentFooter = ({
     });
   };
 
-  useEffect(() => {
-    const willShowSubscription = Keyboard.addListener('keyboardWillShow', () => {
-      //   setKeyboardStatus(true);
-    });
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      //   setKeyboardStatus(true);
-    });
-    const willHideSubscription = Keyboard.addListener('keyboardWillHide', () => {
-      //   setKeyboardStatus(false);
-    });
-
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      //   setKeyboardStatus(false);
-    });
-
-    return () => {
-      willShowSubscription.remove();
-      willHideSubscription.remove();
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
-
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <>
       <View style={styles.bottomContainer}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.AIBtn} onPress={() => handleClickAICorrectionBtn(text)}>
@@ -171,7 +148,7 @@ const CurrentCommentFooter = ({
           setVisible={setIsStopComment}
         />
       )}
-    </KeyboardAvoidingView>
+    </>
   );
 };
 

@@ -1,17 +1,17 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { StyleSheet, ScrollView, View, SafeAreaView } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getPointList } from '../../api/axios/comment/user';
 import AlertSection from '../../components/Comment/Mypage/AlertSection';
 import NicknameSection from '../../components/Comment/Mypage/NicknameSection';
 import Refund from '../../components/Comment/Mypage/Refund';
 import UserDeleteSection from '../../components/Comment/Mypage/UserDeleteSection';
-import CustomerService from '../../components/common/CustomerService';
-import Header from '../../components/common/Header';
-import { Colors } from '../../components/renewal';
+import CustomerService from '../../components/Comment/Mypage/CustomerService';
+import { BomHeader, Colors, PaddingHorizontal } from '../../components/renewal';
 import { authTokenState, fcmTokenState, myPointState } from '../../states';
 import { IPoint } from '../../types/user';
+import { CommentTabBar } from '../../components/Comment/CommentTabBar';
 
 const MyPageScreen = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);
@@ -33,16 +33,21 @@ const MyPageScreen = ({ navigation }: any) => {
   }, [pointList]);
 
   return (
-    <>
-      <Header isBack={false}>마이페이지</Header>
-      <ScrollView contentContainerStyle={styles.container}>
-        <NicknameSection navigation={navigation} />
-        <Refund myPoint={myPoint} navigation={navigation} />
-        <AlertSection navigation={navigation} />
-        <CustomerService isBlind={false} />
-        <UserDeleteSection />
-      </ScrollView>
-    </>
+    <SafeAreaView style={{ flex: 1 }}>
+      <BomHeader text="마이페이지" isBottomBorder />
+
+      <PaddingHorizontal value={0}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <NicknameSection navigation={navigation} />
+          <Refund myPoint={myPoint} navigation={navigation} />
+          <AlertSection navigation={navigation} />
+          <CustomerService />
+          <UserDeleteSection />
+        </ScrollView>
+      </PaddingHorizontal>
+
+      <CommentTabBar currentIndex={2} />
+    </SafeAreaView>
   );
 };
 

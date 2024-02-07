@@ -9,8 +9,8 @@ import {
   Alert,
   ScrollView,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
-import Header from '../../components/common/Header';
 import { commentFont } from '../../components/Comment/styles';
 import RefundPointList from '../../components/Comment/Mypage/RefundPointList';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -20,7 +20,7 @@ import { IPoint } from '../../types/user';
 import { Keyboard } from 'react-native';
 import { ACCOUNT_HOLDER, ACCOUNT_NUMBER, getData, storeData } from '../../components/common/async-storage';
 import { useIsFocused } from '@react-navigation/native';
-import { Colors } from '../../components/renewal';
+import { BomHeader, Colors, PaddingHorizontal } from '../../components/renewal';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -89,73 +89,76 @@ const RefundScreen = () => {
   }, [isFocused]);
 
   return (
-    <View style={styles.refundContainer}>
-      <ScrollView scrollEnabled={false}>
-        <Header isBack={true}>환급 신청</Header>
-        <View style={styles.refundPointHeader}>
-          <Text style={commentFont.TITLE}>포인트 환급 : {myPoint} P</Text>
-        </View>
-        <View style={styles.refundBodyContainer}>
-          <View style={styles.inputContainer}>
-            <Text style={commentFont.BODY1}>입금 받을 계좌</Text>
-            <TextInput
-              placeholder="ex) 우리 1234-567-8910"
-              placeholderTextColor="#5E5E5E"
-              onChangeText={(text) => setAccountNumberInput(text)}
-              value={accountNumberInput}
-              style={styles.inputBox}
-            />
+    <SafeAreaView style={{ flex: 1 }}>
+      <BomHeader text="환급 신청" isBottomBorder />
+
+      <PaddingHorizontal value={0}>
+        <ScrollView scrollEnabled={false}>
+          <View style={styles.refundPointHeader}>
+            <Text style={commentFont.TITLE}>포인트 환급 : {myPoint} P</Text>
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={commentFont.BODY1}>예금주명</Text>
-            <TextInput
-              placeholder="홍길동"
-              placeholderTextColor="#5E5E5E"
-              onChangeText={(text) => setAccountHolder(text)}
-              value={accountHolder}
-              style={styles.inputBox}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={commentFont.BODY1}>신청 포인트 입력 ( 500P 부터 환급 가능 )</Text>
-            <TextInput
-              placeholder="신청 포인트 입력"
-              placeholderTextColor="#5E5E5E"
-              keyboardType="decimal-pad"
-              onChangeText={(text) => handleChangeInput(text)}
-              value={refundPoint}
-              style={styles.inputBox}
-              inputMode="decimal"
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.refundBtn,
-              isRefunded ? { backgroundColor: Colors.Red.Default } : { backgroundColor: Colors.Red.Lighten300 },
-            ]}
-            activeOpacity={0.6}
-            onPress={onClickRefundButton}
-            disabled={!isRefunded}
-          >
-            <Text style={{ color: 'white', fontSize: 16 }}>환급 신청</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.refundPointContainer}>
-          <View style={{ margin: 10 }}>
-            <Text style={commentFont.TITLE}>포인트 내역</Text>
-          </View>
-          {isLoading ? (
-            <ActivityIndicator size="small" color="gray" />
-          ) : pointList.length === 0 ? (
-            <View style={styles.loadingPointList}>
-              <Text style={{ color: 'gray' }}>포인트 내역이 존재하지 않습니다. 해설을 진행해주세요!</Text>
+          <View style={styles.refundBodyContainer}>
+            <View style={styles.inputContainer}>
+              <Text style={commentFont.BODY1}>입금 받을 계좌</Text>
+              <TextInput
+                placeholder="ex) 우리 1234-567-8910"
+                placeholderTextColor="#5E5E5E"
+                onChangeText={(text) => setAccountNumberInput(text)}
+                value={accountNumberInput}
+                style={styles.inputBox}
+              />
             </View>
-          ) : (
-            <RefundPointList pointList={pointList} />
-          )}
-        </View>
-      </ScrollView>
-    </View>
+            <View style={styles.inputContainer}>
+              <Text style={commentFont.BODY1}>예금주명</Text>
+              <TextInput
+                placeholder="홍길동"
+                placeholderTextColor="#5E5E5E"
+                onChangeText={(text) => setAccountHolder(text)}
+                value={accountHolder}
+                style={styles.inputBox}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={commentFont.BODY1}>신청 포인트 입력 ( 500P 부터 환급 가능 )</Text>
+              <TextInput
+                placeholder="신청 포인트 입력"
+                placeholderTextColor="#5E5E5E"
+                keyboardType="decimal-pad"
+                onChangeText={(text) => handleChangeInput(text)}
+                value={refundPoint}
+                style={styles.inputBox}
+                inputMode="decimal"
+              />
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.refundBtn,
+                isRefunded ? { backgroundColor: Colors.Red.Default } : { backgroundColor: Colors.Red.Lighten300 },
+              ]}
+              activeOpacity={0.6}
+              onPress={onClickRefundButton}
+              disabled={!isRefunded}
+            >
+              <Text style={{ color: 'white', fontSize: 16 }}>환급 신청</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.refundPointContainer}>
+            <View style={{ margin: 10 }}>
+              <Text style={commentFont.TITLE}>포인트 내역</Text>
+            </View>
+            {isLoading ? (
+              <ActivityIndicator size="small" color="gray" />
+            ) : pointList.length === 0 ? (
+              <View style={styles.loadingPointList}>
+                <Text style={{ color: 'gray' }}>포인트 내역이 존재하지 않습니다. 해설을 진행해주세요!</Text>
+              </View>
+            ) : (
+              <RefundPointList pointList={pointList} />
+            )}
+          </View>
+        </ScrollView>
+      </PaddingHorizontal>
+    </SafeAreaView>
   );
 };
 

@@ -7,15 +7,7 @@ import { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import { getMyRequestAll } from '../../../api/axios';
 
-const SigonganDesign = StyleSheet.create({
-  myPageGrid: {
-    borderWidth: 1,
-    borderColor: '#FAC4D2',
-
-    borderRadius: 10,
-    width: 347,
-  },
-});
+import { SigonganDesign } from '../styles';
 
 const NicknameSection = ({ navigation }: any) => {
   const fcmToken = useRecoilValue(fcmTokenState);

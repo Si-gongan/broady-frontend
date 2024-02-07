@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Colors } from '../../renewal';
-import { commentFont } from '../../Comment/styles';
+import { Colors } from '../../../renewal';
+import { commentFont } from '../../../Comment/styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface IQuestionListProps {

@@ -1,6 +1,6 @@
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Colors } from '../../renewal';
-import { commentFont } from '../../Comment/styles';
+import { Colors } from '../../../renewal';
+import { commentFont } from '../../../Comment/styles';
 
 interface IReportButtonProps {
   content: string;

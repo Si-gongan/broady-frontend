@@ -1,12 +1,11 @@
-import { StyleSheet, View, Text } from 'react-native';
-import Header from '../../components/common/Header';
+import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { WithLocalSvg } from 'react-native-svg';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigations';
 import { useUserState } from '../../providers';
 import { commentFont } from '../../components/Comment/styles';
-import { Colors } from '../../components/renewal';
+import { BomHeader, Colors } from '../../components/renewal';
 import { useState } from 'react';
 
 const IMAGE_SOURCE = [
@@ -31,8 +30,8 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Header isBack={false}>봄자국 간편 가이드</Header>
+    <SafeAreaView style={{ flex: 1 }}>
+      <BomHeader text="봄자국 간편 가이드" hideBackButton isBottomBorder />
 
       <PagerView
         style={styles.viewPager}
@@ -130,7 +129,7 @@ const OnboardingScreen = () => {
         </View>
         <View></View>
       </PagerView>
-    </View>
+    </SafeAreaView>
   );
 };
 

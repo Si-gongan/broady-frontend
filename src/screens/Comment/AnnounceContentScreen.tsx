@@ -1,14 +1,15 @@
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
-import Header from '../../components/common/Header';
+import { ScrollView, StyleSheet, View, Text, SafeAreaView } from 'react-native';
 import { getDateText, getYYMMDDHHMM } from '../../utils/time';
+import { BomHeader } from '../../components/renewal';
 
 const AnnounceScreen = ({ route }: any) => {
   const { type, reportedAt, reason }: { type: string; reportedAt: Date; reason: string } = route.params.announce;
 
   return (
-    <View style={{ flex: 1 }}>
-      <Header isBack={true}>공지사항</Header>
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={{ marginTop: 25 }}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <BomHeader text="공지사항 상세" isBottomBorder />
+
+      <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={{ flex: 1, marginTop: 25 }}>
         <View style={styles.mainTextContainer}>
           <Text style={styles.mainText}>{type}</Text>
         </View>
@@ -26,7 +27,7 @@ const AnnounceScreen = ({ route }: any) => {
           </Text>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

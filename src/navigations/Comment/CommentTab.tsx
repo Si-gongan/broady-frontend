@@ -9,7 +9,16 @@ const Tab = createBottomTabNavigator();
 
 export const CommentTab = () => {
   return (
-    <Tab.Navigator screenOptions={{ tabBarActiveTintColor: Colors.Red.Default }}>
+    <Tab.Navigator
+      sceneContainerStyle={{ backgroundColor: 'white' }}
+      screenOptions={{
+        headerShown: false,
+
+        tabBarStyle: {
+          display: 'none',
+        },
+      }}
+    >
       <Tab.Screen
         name="홈"
         component={HomeScreen}
@@ -19,7 +28,7 @@ export const CommentTab = () => {
         }}
       />
       <Tab.Screen
-        name="MY의뢰"
+        name="MY 의뢰"
         component={MyRequest}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="text-box" color={color} size={size} />,

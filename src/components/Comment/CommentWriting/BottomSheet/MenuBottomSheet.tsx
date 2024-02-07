@@ -8,7 +8,7 @@ import { blockPost } from '../../../../api/axios';
 import { authTokenState, fcmTokenState } from '../../../../states';
 import { commentFont } from '../../styles';
 import { Colors } from '../../../renewal';
-import ReportBottomSheet from '../../../common/reportBottomSheet';
+import ReportBottomSheet from '../reportBottomSheet';
 import MenuButton from './MenuButton';
 
 interface IMenuBottomSheetProps {

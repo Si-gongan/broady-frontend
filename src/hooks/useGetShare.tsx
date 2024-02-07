@@ -33,7 +33,6 @@ export const useGetShare = () => {
         }
 
         const file = files[0];
-        console.log('file', file);
 
         if (file === undefined) {
           return;
@@ -42,15 +41,17 @@ export const useGetShare = () => {
         const { contentUri, filePath } = file;
 
         if (!imageType.reduce((acc, cur) => acc || filePath.includes(cur), false)) {
+          Notice('올바른 파일 형식이 아닙니다.');
           return;
         }
 
+        // hard coding
         await delay(1500);
 
         navigation.navigate('공유선택', { url: Platform.OS === 'ios' ? filePath : contentUri });
       },
-      (error: any) => {
-        1;
+      (error: unknown) => {
+        error;
       },
       'com.sigongan.bomjaguk'
     );

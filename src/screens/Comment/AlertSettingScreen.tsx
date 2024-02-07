@@ -1,18 +1,19 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import AlertExtraQuestion from '../../components/Comment/Mypage/AlertExtraQuestion';
 import AlertNewRequest from '../../components/Comment/Mypage/AlertNewRequest';
-import Header from '../../components/common/Header';
+import { BomHeader, PaddingHorizontal } from '../../components/renewal';
 
 const AlertSettingScreen = () => {
   return (
-    <View>
-      <Header isBack={true}>알림 설정</Header>
+    <SafeAreaView>
+      <BomHeader text="알림 설정" isBottomBorder />
+
       <View style={styles.bodyContainer}>
         <AlertExtraQuestion />
         <View style={styles.divisionLine} />
         <AlertNewRequest />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,24 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
-import { commentFont } from '../Comment/styles';
+import { commentFont } from '../../Comment/styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const SigonganDesign = StyleSheet.create({
-  myPageGrid: {
-    borderWidth: 1,
-    borderColor: '#FAC4D2',
+import { SigonganDesign } from '../../Comment/styles';
 
-    borderRadius: 10,
-    width: 347,
-  },
-});
-
-interface CustomerServiceProps {
-  isBlind: boolean;
-}
-
-const CustomerService = ({ isBlind }: CustomerServiceProps) => {
+const CustomerService = () => {
   return (
     <>
       <View style={[SigonganDesign.myPageGrid, styles.customerService]}>
@@ -32,26 +20,20 @@ const CustomerService = ({ isBlind }: CustomerServiceProps) => {
           <MaterialIcons name="arrow-forward-ios" />
         </TouchableOpacity>
 
-        {!isBlind && (
-          <TouchableOpacity
-            style={styles.touchContainer}
-            onPress={() =>
-              WebBrowser.openBrowserAsync('https://sigongan.notion.site/FAQ-80538ba46ea1434b928ec077df6e475a?pvs=4')
-            }
-          >
-            <Text style={commentFont.BODY1}>사용설명서</Text>
-            <MaterialIcons name="arrow-forward-ios" />
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.touchContainer}
+          onPress={() =>
+            WebBrowser.openBrowserAsync('https://sigongan.notion.site/FAQ-80538ba46ea1434b928ec077df6e475a?pvs=4')
+          }
+        >
+          <Text style={commentFont.BODY1}>사용설명서</Text>
+          <MaterialIcons name="arrow-forward-ios" />
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.touchContainer}
           onPress={() =>
-            WebBrowser.openBrowserAsync(
-              isBlind
-                ? 'https://sigongan.notion.site/FAQ-c4257e39b7c844379f894da5e22e0795?pvs=4'
-                : 'https://sigongan.notion.site/FAQ-4e26fc2f0cac4e76a93f82babba94f31?pvs=4'
-            )
+            WebBrowser.openBrowserAsync('https://sigongan.notion.site/FAQ-4e26fc2f0cac4e76a93f82babba94f31?pvs=4')
           }
         >
           <Text style={commentFont.BODY1}>자주 묻는 질문 (FAQ)</Text>

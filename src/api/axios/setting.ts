@@ -10,7 +10,7 @@ export const Server = axios.create({
 
 export const AIServer = axios.create({
   baseURL: process.env.EXPO_PUBLIC_AI_API_SERVER_URL,
-  timeout: 25000,
+  timeout: 50000,
   headers: {
     'Content-Type': 'application/json',
   },
