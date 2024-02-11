@@ -6,9 +6,27 @@ import { StatusBar } from 'expo-status-bar';
 
 import { UserStateProvider, useUserState } from './providers';
 import { AuthStack, CommentStack, SigonganStack } from './navigations';
+import { useCommentAuth, useGetShare, useNotifications, useFont } from './hooks';
+import { initializeNotifications } from './library';
+
+initializeNotifications();
 
 const Main = () => {
+  // fcm 세팅 훅
+  useNotifications();
+
+  // 외부 -> 내부 공유 리시버
+  useGetShare();
+
+  // 401 에러시 자동 로그아웃 훅
+  useCommentAuth();
+
+  const fontLoaded = useFont();
   const { userState } = useUserState();
+
+  if (!fontLoaded) {
+    // TODO: 폰트 불러오는 중
+  }
 
   return (
     <>
