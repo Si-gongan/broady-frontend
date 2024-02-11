@@ -1,120 +1,73 @@
-import { createContext, useState, useMemo, useCallback, useContext, useEffect } from 'react';
-import type { ReactNode } from 'react';
-
-import { AUTH_TOKEN, USER_STATE, getData, storeData, removeData, NICKNAME } from '../library';
-
+import { createContext, useState, useMemo, useCallback, useContext, useEffect, type ReactNode } from 'react';
 import { useRecoilState } from 'recoil';
-import { authTokenState, nicknameState } from '../states';
-import { delay } from '../components/renewal';
-import { CheckNickname, PutNickname } from '../api/axios';
+
+import { authTokenState } from '../states';
+import { AUTH_TOKEN_KEY, USER_STATE_KEY, delay, getData, removeData, storeData } from '../library';
 
 /**
  * @description
  * unLogin: 로그인 되지 않은 상태
  * Sigongan: 시각장애인
  * Comment: 해설가
- *
- * 이름 고민 필요할듯
  */
 type UserState = 'unLogin' | 'Sigongan' | 'Comment';
 
 const UserStateContext = createContext<{
   userState: UserState;
-  changeUserState: (userState: UserState) => void;
-  loginToComment: (token: string, nickname: string | null) => Promise<void>;
-  loginToSigongan: (nickname: string) => void;
-  changeNickname: (type: UserState, nickname: string, fcmToken?: string, authToken?: string) => Promise<void>;
+  loginToComment: (authToken: string) => Promise<void>;
+  loginToSigongan: () => void;
   logout: () => void;
 } | null>(null);
 
 export const UserStateProvider = ({ children }: { children: ReactNode }) => {
   const [userState, setUserState] = useState<UserState>('unLogin');
-
   const [, setAuthToken] = useRecoilState(authTokenState);
-  const [, setNickname] = useRecoilState(nicknameState);
 
+  // initial load
   useEffect(() => {
     (async () => {
-      const prevUserState = await getData(USER_STATE);
+      const prevUserState = await getData(USER_STATE_KEY);
 
       if (prevUserState === 'Comment') {
-        const authToken = await getData(AUTH_TOKEN);
-        const nickname = await getData(NICKNAME);
+        const authToken = await getData(AUTH_TOKEN_KEY);
 
         setAuthToken(authToken ?? '');
-        setNickname(nickname ?? '');
         setUserState('Comment');
       }
 
       if (prevUserState === 'Sigongan') {
-        const nickname = await getData(NICKNAME);
-
-        setNickname(nickname ?? '');
         setUserState('Sigongan');
       }
     })();
   }, []);
 
-  const changeUserState = useCallback((userState: UserState) => {
-    setUserState(userState);
-  }, []);
+  const loginToComment = useCallback(async (authToken: string) => {
+    storeData(AUTH_TOKEN_KEY, authToken);
+    setAuthToken(authToken);
 
-  const loginToComment = useCallback(async (token: string, nickname: string | null) => {
-    storeData(AUTH_TOKEN, token);
-    setAuthToken(token);
-
-    storeData(NICKNAME, nickname ?? '');
-    setNickname(nickname ?? '');
-
+    // 가끔 토큰이 늦게 들어가서 401 에러가 발생하는 경우가 있어서 0.5초 지연
     await delay(500);
 
-    storeData(USER_STATE, 'Comment');
+    storeData(USER_STATE_KEY, 'Comment');
     setUserState('Comment');
   }, []);
 
-  const loginToSigongan = useCallback((nickname: string) => {
-    storeData(NICKNAME, nickname);
-    setNickname(nickname);
-
-    storeData(USER_STATE, 'Sigongan');
+  const loginToSigongan = useCallback(() => {
+    storeData(USER_STATE_KEY, 'Sigongan');
     setUserState('Sigongan');
   }, []);
 
-  const changeNickname = useCallback(
-    async (type: UserState, nickname: string, fcmToken?: string, authToken?: string) => {
-      if (type === 'Sigongan') {
-        storeData(NICKNAME, nickname);
-        setNickname(nickname);
-        return;
-      }
-
-      if (type === 'Comment') {
-        await CheckNickname(nickname, fcmToken ?? '');
-        await PutNickname(nickname, fcmToken ?? '', authToken ?? '');
-
-        storeData(NICKNAME, nickname);
-        setNickname(nickname);
-
-        return;
-      }
-    },
-    []
-  );
-
   const logout = useCallback(() => {
-    removeData(USER_STATE);
+    removeData(USER_STATE_KEY);
     setUserState('unLogin');
 
-    removeData(AUTH_TOKEN);
+    removeData(AUTH_TOKEN_KEY);
     setAuthToken('');
-
-    removeData(NICKNAME);
-    setNickname('');
   }, []);
 
   const context = useMemo(
-    () => ({ userState, changeUserState, loginToComment, loginToSigongan, changeNickname, logout }),
-    [userState, changeUserState, loginToComment, loginToSigongan, changeNickname, logout]
+    () => ({ userState, loginToComment, loginToSigongan, logout }),
+    [userState, loginToComment, loginToSigongan, logout]
   );
 
   return <UserStateContext.Provider value={context}>{children}</UserStateContext.Provider>;

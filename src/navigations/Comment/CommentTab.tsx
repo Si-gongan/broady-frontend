@@ -1,11 +1,14 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MyRequest from '../../components/Comment/MyRequest';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import HomeScreen from '../../screens/Comment/HomeScreen';
-import MyPageScreen from '../../screens/Comment/MyPageScreen';
-import { Colors } from '../../components/renewal';
 
-const Tab = createBottomTabNavigator();
+import {
+  CommentExcellentCommentaryScreen,
+  CommentHomeScreen,
+  CommentMyRequestScreen,
+  CommentMypageScreen,
+} from '../../screens';
+import type { CommentTabParamList } from './types';
+
+const Tab = createBottomTabNavigator<CommentTabParamList>();
 
 export const CommentTab = () => {
   return (
@@ -19,32 +22,10 @@ export const CommentTab = () => {
         },
       }}
     >
-      <Tab.Screen
-        name="홈"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="home-variant" color={color} size={size} />,
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="MY 의뢰"
-        component={MyRequest}
-        options={{
-          tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="text-box" color={color} size={size} />,
-          headerStyle: { shadowOpacity: 0 },
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="마이페이지"
-        component={MyPageScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="account" color={color} size={size} />,
-          headerStyle: { shadowOpacity: 0 },
-          headerShown: false,
-        }}
-      />
+      <Tab.Screen name="홈" component={CommentHomeScreen} />
+      <Tab.Screen name="우수해설" component={CommentExcellentCommentaryScreen} />
+      <Tab.Screen name="MY의뢰" component={CommentMyRequestScreen} />
+      <Tab.Screen name="마이페이지" component={CommentMypageScreen} />
     </Tab.Navigator>
   );
 };

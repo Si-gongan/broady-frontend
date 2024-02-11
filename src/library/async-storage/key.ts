@@ -1,8 +1,3 @@
 // for auth
-export const USER_STATE = 'USER_STATE';
-export const AUTH_TOKEN = 'AUTH_TOKEN';
-export const NICKNAME = 'NICKNAME';
-
-// for comment
-export const ACCOUNT_NUMBER = 'ACCOUNT_NUMBER';
-export const ACCOUNT_HOLDER = 'ACCOUNT_HOLDER';
+export const USER_STATE_KEY = 'USER_STATE_RENEWAL';
+export const AUTH_TOKEN_KEY = 'AUTH_TOKEN_RENEWAL';

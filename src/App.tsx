@@ -1,69 +1,37 @@
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native';
 import { RecoilRoot } from 'recoil';
-
-import { AuthStack, SigonganStack, CommentStack } from './navigations';
-import { LoadingProvider, UserStateProvider, useUserState } from './providers';
-
-import { initializeNotifications, useNotifications } from './library';
 import { StatusBar } from 'expo-status-bar';
-import { RootSiblingParent } from 'react-native-root-siblings';
 
-import { useGetShare, useCommentAuth, useFont } from './hooks';
-
-// fcm 초기화
-initializeNotifications();
+import { UserStateProvider, useUserState } from './providers';
+import { AuthStack, CommentStack, SigonganStack } from './navigations';
 
 const Main = () => {
-  // fcm 세팅
-  useNotifications();
-
-  // 외부->내부 공유
-  useGetShare();
-
-  // 401 에러 관리 (해설자)
-  useCommentAuth();
-
   const { userState } = useUserState();
 
-  const fontsLoaded = useFont();
-
-  // TODO: splash screen
-  if (!fontsLoaded) {
-    return null;
-  }
-
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <>
       {userState === 'unLogin' && <AuthStack />}
       {userState === 'Sigongan' && <SigonganStack />}
       {userState === 'Comment' && <CommentStack />}
-
-      <StatusBar style="auto" />
-    </GestureHandlerRootView>
+    </>
   );
 };
 
 export const App = () => {
-  const navTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      background: 'white',
-    },
-  };
-
   return (
     <RecoilRoot>
-      <UserStateProvider>
-        <LoadingProvider>
-          <RootSiblingParent>
-            <NavigationContainer theme={navTheme}>
+      <NavigationContainer>
+        <UserStateProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 }}>
               <Main />
-            </NavigationContainer>
-          </RootSiblingParent>
-        </LoadingProvider>
-      </UserStateProvider>
+              <StatusBar style="auto" />
+            </SafeAreaView>
+          </GestureHandlerRootView>
+        </UserStateProvider>
+      </NavigationContainer>
     </RecoilRoot>
   );
 };
