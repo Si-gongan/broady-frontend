@@ -1,3 +1,5 @@
+export type ThemeType = typeof THEME;
+
 export const THEME = {
   COLOR: {
     ORANGE: '#F26716',

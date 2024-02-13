@@ -1,14 +1,16 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import { RecoilRoot } from 'recoil';
 import { StatusBar } from 'expo-status-bar';
-
 import { UserStateProvider, useUserState } from './providers';
 import { AuthStack, SigonganStack } from './navigations';
 import { useCommentAuth, useGetShare, useNotifications, useFont } from './hooks';
 import { initializeNotifications } from './library';
 import { CommentStack } from './navigations/comment';
+import { THEME } from './constants/theme';
+import { useFonts } from 'expo-font';
+import { customFontsToLoad } from './config/customFonts';
 
 initializeNotifications();
 
@@ -22,11 +24,16 @@ const Main = () => {
   // 401 에러시 자동 로그아웃 훅
   useCommentAuth();
 
-  const fontLoaded = useFont();
   const { userState } = useUserState();
 
-  if (!fontLoaded) {
-    // TODO: 폰트 불러오는 중
+  const [fontsLoaded] = useFonts(customFontsToLoad);
+
+  if (!fontsLoaded) {
+    return (
+      <View>
+        <StatusBar style="auto" />
+      </View>
+    );
   }
 
   return (
@@ -41,16 +48,18 @@ const Main = () => {
 export const App = () => {
   return (
     <RecoilRoot>
-      <NavigationContainer>
-        <UserStateProvider>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <SafeAreaView style={{ flex: 1 }}>
-              <Main />
-              <StatusBar style="auto" />
-            </SafeAreaView>
-          </GestureHandlerRootView>
-        </UserStateProvider>
-      </NavigationContainer>
+      <ThemeProvider value={THEME}>
+        <NavigationContainer>
+          <UserStateProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <SafeAreaView style={{ flex: 1 }}>
+                <Main />
+                <StatusBar style="auto" />
+              </SafeAreaView>
+            </GestureHandlerRootView>
+          </UserStateProvider>
+        </NavigationContainer>
+      </ThemeProvider>
     </RecoilRoot>
   );
 };

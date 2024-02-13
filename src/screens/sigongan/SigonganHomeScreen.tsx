@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { Header, SigonganTabBar } from '../../components';
+import { SigonganTabBar } from '../../components';
 import { useUserState } from '../../providers';
 
 export const SigonganHomeScreen = () => {
@@ -7,8 +7,6 @@ export const SigonganHomeScreen = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Header />
-
       <View style={{ flex: 1 }}>
         <Text>SigonganHomeScreen</Text>
         <Text onPress={logout}>로그아웃</Text>

@@ -1,8 +1,11 @@
-import { View, Text } from 'react-native';
-import { Header } from '../../components';
+import { View, Text, Image } from 'react-native';
 
 import { useAuthNavigation } from '../../hooks/navigations';
 import { useUserState } from '../../providers';
+import BroadyTextInput from '@/components/common/BroadyTextInput';
+import BroadyButton from '@/components/common/BroadyButton';
+import React from 'react';
+import { THEME } from '@/constants/theme';
 
 export const AuthInitialScreen = () => {
   const authNavigation = useAuthNavigation();
@@ -10,11 +13,12 @@ export const AuthInitialScreen = () => {
   const { loginToComment, loginToSigongan, logout } = useUserState();
 
   return (
-    <View>
-      <Header />
-
+    <View
+      style={{
+        padding: THEME.SPACING.MARGIN.h3,
+      }}
+    >
       <Text>AuthInitialScreen</Text>
-
       <Text onPress={() => authNavigation.push('broadyEmailLogin')}>이메일 로그인 화면 이동</Text>
 
       <Text onPress={() => loginToSigongan()}>시각장애인 플로우 이동</Text>
@@ -22,6 +26,16 @@ export const AuthInitialScreen = () => {
       <Text onPress={() => loginToComment('authToken')}>해설자 플로우 이동</Text>
 
       <Text onPress={() => logout()}>로그아웃</Text>
+
+      <BroadyTextInput variant="Border" onChangeText={() => {}} text="dfdf"></BroadyTextInput>
+      <BroadyTextInput variant="gray" onChangeText={() => {}} text="dfdf"></BroadyTextInput>
+      <BroadyButton variant="primary" text="다음" />
+      <BroadyButton variant="secondary" text="안녕하세요" />
+      <BroadyButton variant="borderButton" text="안녕하세요" />
+      <BroadyButton variant="darkButton" text="고객 센터 연결하기" />
+      {/* <InputWithText inputText="dfdf" text="아이디" /> */}
+      {/* <InputWithText inputText="dfdf" text="비밀번호" /> */}
+      {/* <InputWithText variant="gray" inputText="dfdf" text="입력하세요" /> */}
     </View>
   );
 };
