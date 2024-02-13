@@ -305,7 +305,7 @@ PODS:
   - React-jsinspector (0.71.14)
   - React-logger (0.71.14):
     - glog
-  - react-native-blob-util (0.19.6):
+  - react-native-blob-util (0.19.4):
     - React-Core
   - react-native-pager-view (6.1.2):
     - React-Core
@@ -679,7 +679,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 94cfc1788637ceaf8841ef1f69b10cc0d62baadc
   React-jsinspector: 7bf923954b4e035f494b01ac16633963412660d7
   React-logger: 655ff5db8bd922acfbe76a4983ffab048916343e
-  react-native-blob-util: d8fa1a7f726867907a8e43163fdd8b441d4489ea
+  react-native-blob-util: 30a6c9fd067aadf9177e61a998f2c7efb670598d
   react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-receive-sharing-intent: 62ab28c50e6ae56d32b9e841d7452091312a0bc7
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
@@ -707,4 +707,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 937dfb8f62491d0f315e1c5ba3187e875b6d681b
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.2

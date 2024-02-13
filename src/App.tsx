@@ -5,9 +5,10 @@ import { RecoilRoot } from 'recoil';
 import { StatusBar } from 'expo-status-bar';
 
 import { UserStateProvider, useUserState } from './providers';
-import { AuthStack, CommentStack, SigonganStack } from './navigations';
+import { AuthStack, SigonganStack } from './navigations';
 import { useCommentAuth, useGetShare, useNotifications, useFont } from './hooks';
 import { initializeNotifications } from './library';
+import { CommentStack } from './navigations/comment';
 
 initializeNotifications();
 
