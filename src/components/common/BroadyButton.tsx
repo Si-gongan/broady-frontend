@@ -1,9 +1,9 @@
-import { View, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import Typography from "./Typography";
-import { THEME } from "@/constants/theme";
+import { View, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import Typography from './Typography';
+import { THEME } from '@/constants/theme';
 
-type ButtonTheme = "primary" | "secondary" | "darkButton" | "borderButton";
+type ButtonTheme = 'primary' | 'secondary' | 'darkButton' | 'borderButton';
 
 const ButtonColor = {
   primary: {
@@ -13,13 +13,13 @@ const ButtonColor = {
       disabled: THEME.COLOR.ORANGE,
     },
     border: {
-      def: "transparent",
-      pressed: "transparent",
-      disabled: "transparent",
+      def: 'transparent',
+      pressed: 'transparent',
+      disabled: 'transparent',
     },
     font: {
-      size: "body_lg",
-      weight: "bold",
+      size: 'body_lg',
+      weight: 'bold',
       def: THEME.COLOR.WHITE,
     },
   },
@@ -30,30 +30,30 @@ const ButtonColor = {
       disabled: THEME.COLOR.GRAY_50,
     },
     border: {
-      def: "transparent",
-      pressed: "transparent",
-      disabled: "transparent",
+      def: 'transparent',
+      pressed: 'transparent',
+      disabled: 'transparent',
     },
     font: {
-      size: "body_lg",
-      weight: "bold",
+      size: 'body_lg',
+      weight: 'bold',
       def: THEME.COLOR.GRAY_500,
     },
   },
   darkButton: {
     background: {
-      def: THEME.COLOR.FONT_MAIN,
-      pressed: THEME.COLOR.FONT_MAIN,
-      disabled: THEME.COLOR.FONT_MAIN,
+      def: THEME.COLOR.FONT.TITLE,
+      pressed: THEME.COLOR.FONT.TITLE,
+      disabled: THEME.COLOR.FONT.TITLE,
     },
     border: {
-      def: "transparent",
-      pressed: "transparent",
-      disabled: "transparent",
+      def: 'transparent',
+      pressed: 'transparent',
+      disabled: 'transparent',
     },
     font: {
-      size: "body_md",
-      weight: "regular",
+      size: 'body_md',
+      weight: 'regular',
       def: THEME.COLOR.WHITE,
     },
   },
@@ -69,8 +69,8 @@ const ButtonColor = {
       disabled: THEME.COLOR.BD_1,
     },
     font: {
-      size: "body_md",
-      weight: "regular",
+      size: 'body_md',
+      weight: 'regular',
       def: THEME.COLOR.BD_1,
     },
   },
@@ -123,16 +123,16 @@ const BroadyButton = ({
 }) => {
   const [isPress, setPress] = useState(false);
 
-  const buttonState = disabled ? "disabled" : isPress ? "pressed" : "def";
+  const buttonState = disabled ? 'disabled' : isPress ? 'pressed' : 'def';
 
   return (
     <View
       style={[
         {
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: fixedWidth ?? "100%",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: fixedWidth ?? '100%',
         },
       ]}
     >
@@ -141,36 +141,32 @@ const BroadyButton = ({
         onPressIn={() => setPress(true)}
         onPressOut={() => setPress(false)}
         style={{
-          backgroundColor: ButtonColor[variant]["background"][buttonState],
+          backgroundColor: ButtonColor[variant]['background'][buttonState],
           ...{
             borderWidth: 1,
-            borderColor: ButtonColor[variant]["border"][buttonState],
+            borderColor: ButtonColor[variant]['border'][buttonState],
           },
-          width: "100%",
+          width: '100%',
           ...{
-            borderRadius: radiusVariant
-              ? ButtonRadius[radiusVariant]
-              : ButtonRadius[variant],
+            borderRadius: radiusVariant ? ButtonRadius[radiusVariant] : ButtonRadius[variant],
           },
           paddingVertical: paddingVariant
-            ? ButtonPadding[paddingVariant]["paddingVertical"]
-            : ButtonPadding[variant]["paddingVertical"],
+            ? ButtonPadding[paddingVariant]['paddingVertical']
+            : ButtonPadding[variant]['paddingVertical'],
           paddingHorizontal: paddingVariant
-            ? ButtonPadding[paddingVariant]["paddingHorizontal"]
-            : ButtonPadding[variant]["paddingHorizontal"],
-          justifyContent: "center",
-          alignItems: "center",
+            ? ButtonPadding[paddingVariant]['paddingHorizontal']
+            : ButtonPadding[variant]['paddingHorizontal'],
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
         disabled={disabled}
         accessible
-        accessibilityLabel={
-          accessibilityLabel ? accessibilityLabel : `${text} 버튼`
-        }
+        accessibilityLabel={accessibilityLabel ? accessibilityLabel : `${text} 버튼`}
       >
         <Typography
-          size={ButtonColor[variant]["font"]["size"]}
-          color={ButtonColor[variant]["font"]["def"]}
-          weight={ButtonColor[variant]["font"]["weight"]}
+          size={ButtonColor[variant]['font']['size']}
+          color={ButtonColor[variant]['font']['def']}
+          weight={ButtonColor[variant]['font']['weight']}
         >
           {text}
         </Typography>

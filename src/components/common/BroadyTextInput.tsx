@@ -1,21 +1,21 @@
-import { TextInput, View } from "react-native";
-import React from "react";
-import { THEME } from "@/constants/theme";
+import { TextInput, View } from 'react-native';
+import React from 'react';
+import { THEME } from '@/constants/theme';
 
-export type TextInputType = "Border" | "gray";
-export type TextInputPaddingType = "Border" | "gray" | "small";
+export type TextInputType = 'Border' | 'gray';
+export type TextInputPaddingType = 'Border' | 'gray' | 'small';
 
 const TextInputStyle = {
   Border: {
     backgroundColor: THEME.COLOR.WHITE,
     borderRadius: THEME.STYLES.RADIUS.md,
-    borderColor: THEME.COLOR.FONT_MAIN,
+    borderColor: THEME.COLOR.FONT.TITLE,
     borderWidth: 1,
     padding: 10,
   },
   gray: {
     backgroundColor: THEME.COLOR.BACKGROUND,
-    borderColor: "transparent",
+    borderColor: 'transparent',
     borderRadius: THEME.STYLES.RADIUS.md,
     padding: 10,
   },
@@ -39,7 +39,7 @@ const TextInputPadding = {
 export default function BroadyTextInput({
   variant,
   paddingVariant,
-  placeholder = "",
+  placeholder = '',
   text,
   onChangeText,
   fixedWidth,
@@ -54,7 +54,7 @@ export default function BroadyTextInput({
   return (
     <View
       style={{
-        width: fixedWidth ?? "100%",
+        width: fixedWidth ?? '100%',
         ...TextInputStyle[variant],
         ...TextInputPadding[paddingVariant ?? variant],
       }}

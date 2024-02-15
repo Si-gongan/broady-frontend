@@ -6,7 +6,8 @@ import {
   CommentMyRequestScreen,
   CommentMypageScreen,
 } from '../../screens';
-import type { CommentTabParamList } from './types';
+import { SCREENS } from '@/constants/screens';
+import { CommentTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<CommentTabParamList>();
 
@@ -22,10 +23,10 @@ export const CommentTab = () => {
         },
       }}
     >
-      <Tab.Screen name="홈" component={CommentHomeScreen} />
-      <Tab.Screen name="우수해설" component={CommentExcellentCommentaryScreen} />
-      <Tab.Screen name="MY의뢰" component={CommentMyRequestScreen} />
-      <Tab.Screen name="마이페이지" component={CommentMypageScreen} />
+      <Tab.Screen name={SCREENS.COMMENTSTACK.COMMENTTAB.해설자홈} component={CommentHomeScreen} />
+      <Tab.Screen name={SCREENS.COMMENTSTACK.COMMENTTAB.우수해설} component={CommentExcellentCommentaryScreen} />
+      <Tab.Screen name={SCREENS.COMMENTSTACK.COMMENTTAB.MY의뢰} component={CommentMyRequestScreen} />
+      <Tab.Screen name={SCREENS.COMMENTSTACK.COMMENTTAB.마이페이지} component={CommentMypageScreen} />
     </Tab.Navigator>
   );
 };

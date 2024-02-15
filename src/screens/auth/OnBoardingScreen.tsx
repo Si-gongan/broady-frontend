@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-export default function Header() {
+export default function OnBoardingScreen() {
   return (
     <View>
-      <Text>Header</Text>
+      <Text>OnBoardingScreen</Text>
     </View>
   );
 }

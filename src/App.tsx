@@ -1,4 +1,4 @@
-import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView, View } from 'react-native';
 import { RecoilRoot } from 'recoil';
@@ -11,6 +11,7 @@ import { CommentStack } from './navigations/comment';
 import { THEME } from './constants/theme';
 import { useFonts } from 'expo-font';
 import { customFontsToLoad } from './config/customFonts';
+import { ThemeProvider } from 'styled-components/native';
 
 initializeNotifications();
 
@@ -48,7 +49,7 @@ const Main = () => {
 export const App = () => {
   return (
     <RecoilRoot>
-      <ThemeProvider value={THEME}>
+      <ThemeProvider theme={THEME}>
         <NavigationContainer>
           <UserStateProvider>
             <GestureHandlerRootView style={{ flex: 1 }}>

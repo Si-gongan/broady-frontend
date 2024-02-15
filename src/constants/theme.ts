@@ -4,12 +4,16 @@ export const THEME = {
   COLOR: {
     ORANGE: '#F26716',
     WHITE: '#FFFFFF',
-    CONTENT: '#000000',
+
+    FONT: {
+      TITLE: '#565656',
+      CONTENT: '#000000',
+      WARN: 'D23928',
+    },
     GRAY_50: '#F1F1F1',
     GRAY_500: '#808080',
     BD_1: '#565656',
     BD_2: '#C6C6C6',
-    FONT_MAIN: '#565656',
     BACKGROUND: '#E8E8E8',
   },
   FONT: {

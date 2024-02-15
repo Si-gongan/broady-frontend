@@ -7,6 +7,7 @@ import {
 } from '../../screens/auth';
 import type { AuthStackParamList } from './types';
 import { SCREENS } from '../../constants/screens';
+import OnBoardingScreen from '@/screens/auth/OnBoardingScreen';
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
@@ -24,6 +25,7 @@ export const AuthStack = () => {
       <Stack.Screen name={SCREENS.AUTHSTACK.이메일로그인} component={AuthEmailSignInScreen} />
       <Stack.Screen name={SCREENS.AUTHSTACK.이메일회원가입} component={AuthEmailSignUpScreen} />
       <Stack.Screen name={SCREENS.AUTHSTACK.닉네임설정} component={AuthNicknameSetUpScreen} />
+      <Stack.Screen name={SCREENS.AUTHSTACK.온보딩} component={OnBoardingScreen} />
     </Stack.Navigator>
   );
 };
