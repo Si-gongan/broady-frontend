@@ -1,14 +1,13 @@
-import { View, Text, SafeAreaView } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import React, { useEffect } from 'react';
-import PageHeader from '@/components/common/PageHeader';
 import { GET_MARGIN, THEME } from '@/constants/theme';
 import Typography from '@/components/common/Typography';
 import Margin from '@/components/common/Margin';
 import { useUserState } from '@/providers';
 import { useRecoilValue } from 'recoil';
 import { useAuthNavigation } from '@/hooks';
-import { authTokenState, loginFromState } from '@/states';
-import { AUTH_TOKEN_KEY, USER_STATE_KEY, storeData } from '@/library';
+import { loginFromState } from '@/states';
+import { USER_STATE_KEY, storeData } from '@/library';
 
 export default function OnBoardingScreen() {
   const loginFrom = useRecoilValue(loginFromState);
@@ -18,13 +17,7 @@ export default function OnBoardingScreen() {
   const authToken = useRecoilValue(authTokenState);
 
   useEffect(() => {
-    if (!authToken) {
-      navigation.navigate('IntroScreen');
-    }
-
     setTimeout(() => {
-      storeData(AUTH_TOKEN_KEY, authToken);
-
       if (loginFrom === 'Comment') {
         storeData(USER_STATE_KEY, 'Comment');
         setUserState('Comment');

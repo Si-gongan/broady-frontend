@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import Typography from './Typography';
 import { THEME } from '@/constants/theme';
@@ -110,6 +110,7 @@ const BroadyButton = ({
   accessibilityLabel,
   paddingVariant,
   radiusVariant,
+  isActive = false,
   disabled = false,
 }: {
   text: string;
@@ -120,10 +121,9 @@ const BroadyButton = ({
   fixedWidth?: number;
   accessibilityLabel?: string;
   disabled?: boolean;
+  isActive?: boolean;
 }) => {
-  const [isPress, setPress] = useState(false);
-
-  const buttonState = disabled ? 'disabled' : isPress ? 'pressed' : 'def';
+  const buttonState = disabled ? 'disabled' : isActive ? 'pressed' : 'def';
 
   return (
     <View
@@ -138,8 +138,6 @@ const BroadyButton = ({
     >
       <TouchableOpacity
         onPress={onPress}
-        onPressIn={() => setPress(true)}
-        onPressOut={() => setPress(false)}
         style={{
           backgroundColor: ButtonColor[variant]['background'][buttonState],
           ...{
@@ -163,13 +161,23 @@ const BroadyButton = ({
         accessible
         accessibilityLabel={accessibilityLabel ? accessibilityLabel : `${text} 버튼`}
       >
-        <Typography
-          size={ButtonColor[variant]['font']['size']}
-          color={ButtonColor[variant]['font']['def']}
-          weight={ButtonColor[variant]['font']['weight']}
-        >
-          {text}
-        </Typography>
+        {disabled ? (
+          <View
+            style={{
+              top: 1.5,
+            }}
+          >
+            <ActivityIndicator size="small" color={THEME.COLOR.FONT.CONTENT} />
+          </View>
+        ) : (
+          <Typography
+            size={ButtonColor[variant]['font']['size']}
+            color={ButtonColor[variant]['font']['def']}
+            weight={ButtonColor[variant]['font']['weight']}
+          >
+            {text}
+          </Typography>
+        )}
       </TouchableOpacity>
     </View>
   );

@@ -1,24 +1,11 @@
-import { THEME } from "@/constants/theme";
-import React from "react";
-import { TextStyle } from "react-native";
-import styled from "styled-components/native";
+import { THEME } from '@/constants/theme';
+import React from 'react';
+import { TextStyle } from 'react-native';
+import styled from 'styled-components/native';
 
-export type TypoSize =
-  | "body_sm"
-  | "body_md"
-  | "body_lg"
-  | "body_xl"
-  | "h1"
-  | "h2"
-  | "h3";
+export type TypoSize = 'body_sm' | 'body_md' | 'body_lg' | 'body_xl' | 'h1' | 'h2' | 'h3';
 
-export type WeightStyles =
-  | "light"
-  | "regular"
-  | "medium"
-  | "bold"
-  | "semibold"
-  | "extraBold";
+export type WeightStyles = 'thin' | 'extraLight' | 'light' | 'regular' | 'medium' | 'bold' | 'semibold' | 'extraBold';
 
 const $sizeStyles = {
   body_sm: { fontSize: THEME.FONT.SIZE.body_sm },
@@ -31,12 +18,14 @@ const $sizeStyles = {
 };
 
 const $weightStyles = {
-  light: { fontFamily: "light" },
-  regular: { fontFamily: "regular" },
-  medium: { fontFamily: "medium" },
-  bold: { fontFamily: "bold" },
-  semibold: { fontFamily: "semibold" },
-  extraBold: { fontFamily: "extraBold" },
+  thin: { fontFamily: 'thin' },
+  extraLight: { fontFamily: 'extraLight' },
+  light: { fontFamily: 'light' },
+  regular: { fontFamily: 'regular' },
+  medium: { fontFamily: 'medium' },
+  bold: { fontFamily: 'bold' },
+  semibold: { fontFamily: 'semibold' },
+  extraBold: { fontFamily: 'extraBold' },
 };
 
 const TextStyling = styled.Text<{
@@ -46,8 +35,7 @@ const TextStyling = styled.Text<{
 }>`
   font-size: ${({ size }) => $sizeStyles[size].fontSize}px;
   font-family: ${({ weight }) => $weightStyles[weight].fontFamily};
-  color: ${(props) =>
-    props.color === "default" ? props.theme.text : props.color};
+  color: ${(props) => (props.color === 'default' ? props.theme.COLOR.FONT.CONTENT : props.color)};
   font-weight: 400;
 `;
 
@@ -59,13 +47,7 @@ interface TextProps {
   styles?: TextStyle;
 }
 
-const Typography = ({
-  children,
-  size = "body_md",
-  weight = "regular",
-  color = "default",
-  styles,
-}: TextProps) => {
+const Typography = ({ children, size = 'body_md', weight = 'regular', color = 'default', styles }: TextProps) => {
   return (
     <TextStyling size={size} weight={weight} color={color} style={styles}>
       {children}

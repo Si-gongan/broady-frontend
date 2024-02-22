@@ -12,6 +12,7 @@ import { THEME } from './constants/theme';
 import { useFonts } from 'expo-font';
 import { customFontsToLoad } from './config/customFonts';
 import { ThemeProvider } from 'styled-components/native';
+import Toast from 'react-native-toast-message';
 
 initializeNotifications();
 
@@ -53,10 +54,9 @@ export const App = () => {
         <NavigationContainer>
           <UserStateProvider>
             <GestureHandlerRootView style={{ flex: 1 }}>
-              <SafeAreaView style={{ flex: 1 }}>
-                <Main />
-                <StatusBar style="auto" />
-              </SafeAreaView>
+              <Main />
+              <StatusBar style="auto" />
+              <Toast position="top" />
             </GestureHandlerRootView>
           </UserStateProvider>
         </NavigationContainer>

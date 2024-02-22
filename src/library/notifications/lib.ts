@@ -31,7 +31,9 @@ export async function registerForPushNotificationsAsync() {
       projectId: Constants.expoConfig?.extra?.eas?.projectId,
     });
   } else {
-    alert('Must use physical device for Push Notifications');
+    console.log('Must use physical device for Push Notifications');
+
+    // alert('Must use physical device for Push Notifications');
   }
 
   if (Platform.OS === 'android') {

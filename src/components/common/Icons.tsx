@@ -7,6 +7,7 @@ import {
   FontAwesome,
   AntDesign,
 } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
 
 export type IconProps = {
   type: 'material' | 'ionicons' | 'feather' | 'entypo' | 'materialIcons' | 'fontAwesome' | 'AntDesign';
@@ -33,7 +34,11 @@ const Icons: React.FC<IconProps> = ({ type = 'material', name, size = 20, color 
   else if (type === 'AntDesign') IconComponent = AntDesign;
   else return null;
 
-  return <IconComponent name={name} size={size} color={color} />;
+  return (
+    <TouchableOpacity onPress={onPress ? onPress : undefined} disabled={!onPress} hitSlop={hitSlop}>
+      <IconComponent name={name} size={size} color={color} />
+    </TouchableOpacity>
+  );
 };
 
 export default Icons;

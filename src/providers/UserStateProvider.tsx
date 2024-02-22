@@ -14,8 +14,8 @@ type UserState = 'unLogin' | 'Sigongan' | 'Comment';
 
 const UserStateContext = createContext<{
   userState: UserState;
-  loginToComment: (authToken: string) => Promise<void>;
-  loginToSigongan: () => void;
+  setUserState: React.Dispatch<React.SetStateAction<UserState>>;
+  login: (authToken: string, userState: UserState) => void;
   logout: () => void;
 } | null>(null);
 
@@ -28,33 +28,38 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
     (async () => {
       const prevUserState = await getData(USER_STATE_KEY);
 
-      if (prevUserState === 'Comment') {
-        const authToken = await getData(AUTH_TOKEN_KEY);
+      const authToken = await getData(AUTH_TOKEN_KEY);
 
-        setAuthToken(authToken ?? '');
-        setUserState('Comment');
+      setAuthToken(authToken ?? '');
+
+      if (prevUserState !== 'Comment' && prevUserState !== 'Sigongan') {
+        setUserState('unLogin');
+        return;
       }
 
-      if (prevUserState === 'Sigongan') {
-        setUserState('Sigongan');
-      }
+      setUserState(prevUserState);
     })();
   }, []);
 
-  const loginToComment = useCallback(async (authToken: string) => {
-    storeData(AUTH_TOKEN_KEY, authToken);
+  // const loginToComment = useCallback(async (authToken: string) => {
+  //   storeData(AUTH_TOKEN_KEY, authToken);
+  //   setAuthToken(authToken);
+
+  //   // 가끔 토큰이 늦게 들어가서 401 에러가 발생하는 경우가 있어서 0.5초 지연
+  //   await delay(500);
+
+  //   storeData(USER_STATE_KEY, 'Comment');
+  //   setUserState('Comment');
+  // }, []);
+
+  // const loginToSigongan = useCallback(() => {
+  //   storeData(USER_STATE_KEY, 'Sigongan');
+  //   setUserState('Sigongan');
+  // }, []);
+
+  const login = useCallback(async (authToken: string, userState: UserState) => {
+    // storeData(AUTH_TOKEN_KEY, authToken);
     setAuthToken(authToken);
-
-    // 가끔 토큰이 늦게 들어가서 401 에러가 발생하는 경우가 있어서 0.5초 지연
-    await delay(500);
-
-    storeData(USER_STATE_KEY, 'Comment');
-    setUserState('Comment');
-  }, []);
-
-  const loginToSigongan = useCallback(() => {
-    storeData(USER_STATE_KEY, 'Sigongan');
-    setUserState('Sigongan');
   }, []);
 
   const logout = useCallback(() => {
@@ -65,10 +70,7 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
     setAuthToken('');
   }, []);
 
-  const context = useMemo(
-    () => ({ userState, loginToComment, loginToSigongan, logout }),
-    [userState, loginToComment, loginToSigongan, logout]
-  );
+  const context = useMemo(() => ({ userState, setUserState, login, logout }), [userState, login, logout, setUserState]);
 
   return <UserStateContext.Provider value={context}>{children}</UserStateContext.Provider>;
 };
