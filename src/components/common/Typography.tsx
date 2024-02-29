@@ -28,7 +28,7 @@ const $weightStyles = {
   extraBold: { fontFamily: 'extraBold' },
 };
 
-const TextStyling = styled.Text<{
+export const TextStyling = styled.Text<{
   size: TypoSize;
   weight: WeightStyles;
   color: string;
@@ -37,6 +37,7 @@ const TextStyling = styled.Text<{
   font-family: ${({ weight }) => $weightStyles[weight].fontFamily};
   color: ${(props) => (props.color === 'default' ? props.theme.COLOR.FONT.CONTENT : props.color)};
   font-weight: 400;
+  line-height: 22px;
 `;
 
 interface TextProps {
@@ -45,11 +46,19 @@ interface TextProps {
   weight?: WeightStyles;
   color?: string;
   styles?: TextStyle;
+  numberOfLines?: number;
 }
 
-const Typography = ({ children, size = 'body_md', weight = 'regular', color = 'default', styles }: TextProps) => {
+const Typography = ({
+  children,
+  size = 'body_md',
+  weight = 'regular',
+  color = 'default',
+  styles,
+  numberOfLines,
+}: TextProps) => {
   return (
-    <TextStyling size={size} weight={weight} color={color} style={styles}>
+    <TextStyling size={size} weight={weight} color={color} style={styles} {...(numberOfLines ? { numberOfLines } : {})}>
       {children}
     </TextStyling>
   );

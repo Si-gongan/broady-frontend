@@ -9,8 +9,10 @@ import {
 } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 
+export type IconType = 'material' | 'ionicons' | 'feather' | 'entypo' | 'materialIcons' | 'fontAwesome' | 'AntDesign';
+
 export type IconProps = {
-  type: 'material' | 'ionicons' | 'feather' | 'entypo' | 'materialIcons' | 'fontAwesome' | 'AntDesign';
+  type: IconType;
   name: string;
   size?: number;
   color?: string;

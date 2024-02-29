@@ -1,5 +1,4 @@
 import { View, Text } from 'react-native';
-import { SigonganTabBar } from '../../components';
 
 export const SigonganMypageScreen = () => {
   return (
@@ -7,8 +6,6 @@ export const SigonganMypageScreen = () => {
       <View style={{ flex: 1 }}>
         <Text>SigonganMypageScreen</Text>
       </View>
-
-      <SigonganTabBar />
     </View>
   );
 };

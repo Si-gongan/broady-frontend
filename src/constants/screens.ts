@@ -13,7 +13,7 @@ export const SCREENS = {
       브로디마이페이지: 'MyPage' as const,
     },
     브로디메인탭: 'MainTab' as const,
-    브로디대화방: 'ChatScreen' as const,
+    브로디대화방: 'Post' as const,
   },
   COMMENTSTACK: {
     COMMENTTAB: {

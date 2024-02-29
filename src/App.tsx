@@ -13,6 +13,7 @@ import { useFonts } from 'expo-font';
 import { customFontsToLoad } from './config/customFonts';
 import { ThemeProvider } from 'styled-components/native';
 import Toast from 'react-native-toast-message';
+import { toastConfig } from './config/toast';
 
 initializeNotifications();
 
@@ -56,7 +57,7 @@ export const App = () => {
             <GestureHandlerRootView style={{ flex: 1 }}>
               <Main />
               <StatusBar style="auto" />
-              <Toast position="top" />
+              <Toast position="bottom" config={toastConfig} />
             </GestureHandlerRootView>
           </UserStateProvider>
         </NavigationContainer>

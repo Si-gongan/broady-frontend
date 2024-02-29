@@ -6,7 +6,7 @@ import Typography from './Typography';
 import { useNavigation } from '@react-navigation/native';
 
 const Container = styled.View<{ notchTop: number }>`
-  padding: ${(props) => props.notchTop + GET_MARGIN('h4')}px ${GET_MARGIN('h3')}px ${GET_MARGIN('h4')}px;
+  padding: ${(props) => props.notchTop + GET_MARGIN('h4')}px ${GET_MARGIN('h3')}px ${GET_MARGIN('h3')}px;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;

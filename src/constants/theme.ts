@@ -7,6 +7,9 @@ export const THEME = {
     FONT: {
       TITLE: '#565656',
       CONTENT: '#000000',
+      CONTENTDIM: '#B3B3B3',
+      SUB_CONTENT: '#838383',
+      SUB_CONTENTDIM: '#666666',
       WARN: '#D23928',
     },
     GRAY_ICON: '#777777',
@@ -14,6 +17,10 @@ export const THEME = {
     GRAY_500: '#808080',
     BD_1: '#565656',
     BD_2: '#C6C6C6',
+    BD_3: '#E8E8E8',
+    BD_4: '#4D4D4D',
+    BD_5: '#DADADA',
+    BLACK: '#000000',
     BACKGROUND: '#E8E8E8',
     BACKGROUND_ORANGE: '#FFF2E6',
   },
@@ -33,6 +40,7 @@ export const THEME = {
   },
   STYLES: {
     RADIUS: {
+      xl: 20,
       lg: 16,
       md: 12,
       sm: 8,

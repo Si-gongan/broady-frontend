@@ -67,6 +67,7 @@ export default function BroadyTextInput({
         ...TextInputStyle[variant],
         ...TextInputPadding[paddingVariant ?? variant],
         position: 'relative',
+        flex: 1,
       }}
     >
       <TextInput
