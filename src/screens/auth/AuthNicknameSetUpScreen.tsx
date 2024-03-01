@@ -13,7 +13,7 @@ import { showErrorToast } from '@/library/toast/toast';
 import { SigonganUserState, authTokenState, loginFromState } from '@/states';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { View, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Platform, TextInput } from 'react-native';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 export const AuthNicknameSetUpScreen = () => {
@@ -65,10 +65,12 @@ export const AuthNicknameSetUpScreen = () => {
         <FlexBox styles={{ flex: 1 }} justifyContent="space-between" alignItems="stretch" direction="column">
           <ContentsWrapper>
             <Margin margin={GET_MARGIN('layout_xl')} />
-            <AuthInput
+            {/* <AuthInput
               initialType="email"
               inputText={nickname}
               onChangeText={(text) => {
+                console.log('text', text);
+
                 setNicknameError('');
                 setNickname(text);
               }}
@@ -76,7 +78,22 @@ export const AuthNicknameSetUpScreen = () => {
               label="활동할 닉네임을 작성해주세요."
               placeholder="닉네임 입력"
               variant="Border"
-            ></AuthInput>
+            ></AuthInput> */}
+            <TextInput
+              onChangeText={(text) => {
+                console.log('text', text);
+
+                setNicknameError('');
+                setNickname(text);
+              }}
+              value={nickname}
+              style={{
+                padding: 20,
+                borderColor: 'black',
+                borderWidth: 1,
+                borderRadius: 10,
+              }}
+            ></TextInput>
           </ContentsWrapper>
           <ContentsWrapper>
             <BroadyButton variant="primary" text="시작하기" onPress={onPressChangeButton}></BroadyButton>

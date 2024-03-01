@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import Typography from './Typography';
 import { THEME } from '@/constants/theme';
 
-type ButtonTheme = 'primary' | 'secondary' | 'darkButton' | 'borderButton';
+type ButtonTheme = 'primary' | 'secondary' | 'grey' | 'darkButton' | 'borderButton';
 
 const ButtonColor = {
   primary: {
     background: {
-      def: THEME.COLOR.ORANGE,
-      pressed: THEME.COLOR.ORANGE,
-      disabled: THEME.COLOR.ORANGE,
+      def: THEME.COLOR.MINT_2,
+      pressed: THEME.COLOR.MINT_2,
+      disabled: THEME.COLOR.MINT_2,
     },
     border: {
       def: 'transparent',
@@ -24,6 +24,23 @@ const ButtonColor = {
     },
   },
   secondary: {
+    background: {
+      def: THEME.COLOR.MINT,
+      pressed: THEME.COLOR.MINT,
+      disabled: THEME.COLOR.MINT,
+    },
+    border: {
+      def: 'transparent',
+      pressed: 'transparent',
+      disabled: 'transparent',
+    },
+    font: {
+      size: 'body_lg',
+      weight: 'bold',
+      def: THEME.COLOR.GRAY_500,
+    },
+  },
+  grey: {
     background: {
       def: THEME.COLOR.GRAY_50,
       pressed: THEME.COLOR.GRAY_50,
@@ -85,6 +102,10 @@ const ButtonPadding = {
     paddingHorizontal: THEME.SPACING.PADDING.P2,
     paddingVertical: THEME.SPACING.PADDING.P3,
   },
+  grey: {
+    paddingHorizontal: THEME.SPACING.PADDING.P2,
+    paddingVertical: THEME.SPACING.PADDING.P3,
+  },
   darkButton: {
     paddingHorizontal: THEME.SPACING.PADDING.P3,
     paddingVertical: THEME.SPACING.PADDING.P4,
@@ -98,6 +119,7 @@ const ButtonPadding = {
 const ButtonRadius = {
   primary: THEME.STYLES.RADIUS.lg,
   secondary: THEME.STYLES.RADIUS.lg,
+  grey: THEME.STYLES.RADIUS.lg,
   darkButton: THEME.STYLES.RADIUS.md,
   borderButton: THEME.STYLES.RADIUS.md,
 } as const;

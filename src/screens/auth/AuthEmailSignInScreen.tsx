@@ -2,6 +2,7 @@ import { CommonErrorResponse } from '@/@types/response';
 import { ICommentLoginReturnType, ISigonganLoginReturnType, LoginToComment, LoginToSigongan } from '@/axios';
 import AuthInput from '@/components/auth/AuthInput';
 import BroadyButton from '@/components/common/BroadyButton';
+import BroadyTextInput from '@/components/common/BroadyTextInput';
 import ContentsWrapper, { CenteredContentsWrapper } from '@/components/common/ContentsWrapper';
 import FlexBox from '@/components/common/FlexBox';
 import Margin from '@/components/common/Margin';
@@ -123,38 +124,31 @@ export const AuthEmailSignInScreen = () => {
                   아직 브로디 회원이 아니신가요?
                 </Typography>
               </CenteredContentsWrapper>
-              <Margin margin={GET_MARGIN('h3')}></Margin>
-              <BroadyButton
-                variant="secondary"
-                text="회원가입"
-                onPress={() => authNavigation.push('broadyEmailRegister')}
-              />
+              <Margin margin={GET_MARGIN('h4')}></Margin>
+              <BroadyButton variant="grey" text="회원가입" onPress={() => authNavigation.push('broadyEmailRegister')} />
               <Margin margin={GET_MARGIN('layout_lg')}></Margin>
-              <AuthInput
-                inputText={form.email}
+              <BroadyTextInput
+                variant="gray"
                 initialType="email"
+                text={form.email}
                 placeholder="이메일"
                 onChangeText={(value) => {
                   onChangeText('email', value);
                 }}
-                errorMessage={form.emailError}
-                label="이메일"
-              ></AuthInput>
-              <Margin margin={GET_MARGIN('layout_md')}></Margin>
-              <AuthInput
-                inputText={form.password}
+              ></BroadyTextInput>
+              <BroadyTextInput
+                text={form.password}
+                variant="gray"
                 initialType="password"
                 placeholder="패스워드"
                 onChangeText={(value) => {
                   onChangeText('password', value);
                 }}
-                errorMessage={form.passwordError}
-                label="패스워드"
-              ></AuthInput>
+              ></BroadyTextInput>
+              <BroadyButton variant="grey" text="로그인" onPress={onSubmit} />
             </ContentsWrapper>
             <ContentsWrapper>
               <Margin margin={150}></Margin>
-              <BroadyButton variant="secondary" text="로그인" onPress={onSubmit} />
               <Margin margin={GET_MARGIN('layout_sm')}></Margin>
             </ContentsWrapper>
           </FlexBox>
