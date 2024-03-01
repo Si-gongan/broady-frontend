@@ -7,11 +7,9 @@ const limit = 10;
 
 export const usePostLists = () => {
   const [syncPostList, setSyncPostList] = useRecoilState(syncPostListAtom);
-  const [selectedPostItem, setSelectedPostItem] = useRecoilState(selectedPostIdAtom);
+  const [selectedPostId, setSelectedPostId] = useRecoilState(selectedPostIdAtom);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  // 화면이 다시 mount
 
   const getPostList = async () => {
     setIsLoading(true);
@@ -28,13 +26,21 @@ export const usePostLists = () => {
 
   const postList = syncPostList;
 
-  const selectedPost = syncPostList.find((post) => post.id === selectedPostItem);
+  const selectedPost = syncPostList.find((post) => post.id === selectedPostId);
+
+  const currentRoomState = {
+    isBlocked: selectedPost?.isBlocked || false,
+    isPaused: selectedPost?.isPaused || false,
+    isComplete: selectedPost?.isComplete || false,
+    isPinned: selectedPost?.isPinned || false,
+  };
 
   return {
-    selectedPostItem,
-    setSelectedPostItem,
+    selectedPostId,
+    setSelectedPostId,
     getPostList,
     selectedPost,
     postList,
+    currentRoomState,
   };
 };

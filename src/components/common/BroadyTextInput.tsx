@@ -43,6 +43,7 @@ export default function BroadyTextInput({
   paddingVariant,
   placeholder = '',
   text,
+  borderColor,
   onChangeText,
   maxLength,
   fixedWidth,
@@ -53,6 +54,7 @@ export default function BroadyTextInput({
   maxLength?: number;
   variant: TextInputVariantType;
   paddingVariant?: TextInputPaddingType;
+  borderColor?: string;
   text: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
@@ -68,10 +70,11 @@ export default function BroadyTextInput({
         ...TextInputPadding[paddingVariant ?? variant],
         position: 'relative',
         flex: 1,
+        ...(borderColor && { borderColor }),
       }}
     >
       <TextInput
-        // value={text}
+        value={text}
         secureTextEntry={isSecure ? true : false}
         placeholder={placeholder}
         placeholderTextColor={'#5E5E5E'}

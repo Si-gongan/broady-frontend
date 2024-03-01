@@ -24,7 +24,7 @@ const TabItemBox = styled.TouchableOpacity`
 `;
 
 const TabBarText = styled(Text)<{ active?: boolean }>`
-  color: ${({ active, theme }) => (active ? theme.COLOR.FONT.CONTENT : theme.COLOR.FONT.CONTENTDIM)};
+  color: ${({ active, theme }) => (active ? theme.COLOR.MINT_2 : theme.COLOR.FONT.CONTENTDIM)};
 `;
 
 function TabBarItem({
@@ -42,12 +42,12 @@ function TabBarItem({
 }) {
   const theme = useTheme();
 
-  const color = isActive ? theme.COLOR.FONT.CONTENT : theme.COLOR.FONT.CONTENTDIM;
+  const color = isActive ? theme.COLOR.MINT_2 : theme.COLOR.FONT.CONTENTDIM;
 
   return (
     <TabItemBox onPress={onPress}>
       <Icons name={iconName} size={24} type={iconType} color={color} />
-      <TabBarText>{text}</TabBarText>
+      <TabBarText active={isActive}>{text}</TabBarText>
     </TabItemBox>
   );
 }

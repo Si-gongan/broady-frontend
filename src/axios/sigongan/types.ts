@@ -54,3 +54,10 @@ export type IPostReturnType = {
     totalPages: number; // 총 페이지 수 (limit, page 있을 때 사용)
   };
 };
+
+export type IPostRegisterReturnType = {
+  code: number;
+  result: {
+    post: IPost;
+  };
+};

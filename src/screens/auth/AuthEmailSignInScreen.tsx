@@ -131,7 +131,7 @@ export const AuthEmailSignInScreen = () => {
               />
               <Margin margin={GET_MARGIN('layout_lg')}></Margin>
               <AuthInput
-                inputText=""
+                inputText={form.email}
                 initialType="email"
                 placeholder="이메일"
                 onChangeText={(value) => {
@@ -142,7 +142,7 @@ export const AuthEmailSignInScreen = () => {
               ></AuthInput>
               <Margin margin={GET_MARGIN('layout_md')}></Margin>
               <AuthInput
-                inputText=""
+                inputText={form.password}
                 initialType="password"
                 placeholder="패스워드"
                 onChangeText={(value) => {

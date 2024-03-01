@@ -1,3 +1,5 @@
+import { IChat } from './chat';
+
 export interface IPost {
   id: string; // 글 고유 id
   writerEmail: string;
@@ -13,15 +15,7 @@ export interface IPost {
     commentaryEmail: string | ''; // 현재 작성중인 해설자의 이메일 (없으면 "")
     expiredAt: Date; // 해설자의 작성 기한
   };
-  chat: {
-    id: string;
-    type: 'sigongan' | 'comment' | 'admin';
-    email: string;
-    text: string;
-    createdAt: Date;
-    isReported: boolean | undefined;
-    reason: string | undefined;
-  }[];
+  chat: IChat[];
   createdAt: Date;
   updatedAt: Date;
 }

@@ -3,7 +3,7 @@ import ContentsWrapper from '@/components/common/ContentsWrapper';
 import FlexBox from '@/components/common/FlexBox';
 import Margin from '@/components/common/Margin';
 import Typography from '@/components/common/Typography';
-import ChatListItem from '@/components/sigongan/ChatListItem';
+import PostListItem from '@/components/sigongan/PostListItem';
 import SearchBar from '@/components/sigongan/SearchBar';
 import { GET_MARGIN } from '@/constants/theme';
 import { useSearchKeyword } from '@/hooks/useSearchKeyword';
@@ -24,12 +24,12 @@ export const SigonganHomeScreen = () => {
 
   const { searchKeyword, onChangeSearchKeyword, onPressSearch, onPressDelete } = useSearchKeyword();
 
-  const { postList, setSelectedPostItem, getPostList } = usePostLists();
+  const { postList, getPostList, setSelectedPostId } = usePostLists();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const onPressChatListItem = (id: string | null) => {
-    setSelectedPostItem(id);
+  const onPressPostListItem = (id: string | null) => {
+    setSelectedPostId(id);
     navigation.navigate('Post');
   };
 
@@ -113,7 +113,7 @@ export const SigonganHomeScreen = () => {
         ) : (
           <ScrollView>
             {postList.map((item, index) => (
-              <ChatListItem
+              <PostListItem
                 key={index}
                 imageSrc={item.photo}
                 mainText={item.title}
@@ -121,7 +121,7 @@ export const SigonganHomeScreen = () => {
                 time={item.updatedAt}
                 unreadPostCount={item.unreadPostCount}
                 onPress={() => {
-                  onPressChatListItem(item.id);
+                  onPressPostListItem(item.id);
                 }}
               />
             ))}

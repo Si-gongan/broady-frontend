@@ -7,15 +7,18 @@ import { SCREENS } from '@/constants/screens';
 
 const TabItemProps = {
   [SCREENS.MAINSTACK.MAINTAB.브로디홈]: {
+    iconType: 'material',
     iconName: 'home',
     text: '홈',
   },
   [SCREENS.MAINSTACK.MAINTAB.찜한해설]: {
+    iconType: 'material',
     iconName: 'bookmark',
     text: '찜한해설',
   },
   [SCREENS.MAINSTACK.MAINTAB.브로디마이페이지]: {
-    iconName: 'bookmark',
+    iconType: 'fontAwesome',
+    iconName: 'user',
     text: '마이페이지',
   },
 };
@@ -60,8 +63,9 @@ export default function SigonganTabBar({ state, descriptors, navigation }: Botto
         return (
           <TabBar.Item
             onPress={onPress}
+            isActive={isFocused}
             iconName={TabItemProps[name].iconName}
-            iconType="material"
+            iconType={TabItemProps[name].iconType}
             text={TabItemProps[name].text}
           />
         );

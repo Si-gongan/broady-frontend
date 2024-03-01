@@ -12,6 +12,7 @@ export const takePhoto = async () => {
   const imageData = await ImagePicker.launchCameraAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
     quality: IMAGE_QUALITY,
+    base64: true,
   });
   return imageData;
 };
@@ -26,6 +27,7 @@ export const pickImage = async () => {
   const imageData = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
     quality: IMAGE_QUALITY,
+    base64: true,
   });
   return imageData;
 };

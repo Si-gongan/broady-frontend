@@ -1,7 +1,5 @@
-import FormData from 'form-data';
-
 import { SigonganServer } from './setting';
-import { IPostReturnType } from './types';
+import { IPostRegisterReturnType, IPostReturnType } from './types';
 // import type { IAlarmStatusReturnType, IRequestListReturnType } from './types';
 
 // export const GetRequestList = async (fcmToken: string) => {
@@ -23,6 +21,25 @@ export const getPostListApi = async ({ page, limit, search }: { page?: number; l
       },
     }
   );
+};
+
+// {
+// 	file: FormData,
+// 	text: string, // 질문 내용
+// 	deletePostId?: string // 제보 받아서 새로운 글을 작성한다면, 그 제보 받은 글 id (지우고 새로 업로드 해야해서)
+// }
+
+// {
+// 	authorization: 'Bearer [token]',
+// 	'Content-Type': 'application/json'
+// }
+
+export const registerPostApi = async (text: string, file: FormData, deletePostId?: string) => {
+  return await SigonganServer.post<IPostRegisterReturnType>('/sigongan-user/post', {
+    file,
+    text,
+    deletePostId,
+  });
 };
 
 // export const RegisterRequest = async (text: string, fileUri: string, fcmToken: string) => {
