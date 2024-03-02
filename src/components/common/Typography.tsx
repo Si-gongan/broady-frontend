@@ -32,12 +32,14 @@ export const TextStyling = styled.Text<{
   size: TypoSize;
   weight: WeightStyles;
   color: string;
+  decoration: string;
 }>`
   font-size: ${({ size }) => $sizeStyles[size].fontSize}px;
   font-family: ${({ weight }) => $weightStyles[weight].fontFamily};
   color: ${(props) => (props.color === 'default' ? props.theme.COLOR.FONT.CONTENT : props.color)};
   font-weight: 400;
-  line-height: 22px;
+  text-decoration: ${(props) => props.decoration};
+  text-decoration-color: ${(props) => (props.color === 'default' ? props.theme.COLOR.FONT.CONTENT : props.color)};
 `;
 
 interface TextProps {
@@ -47,6 +49,7 @@ interface TextProps {
   color?: string;
   styles?: TextStyle;
   numberOfLines?: number;
+  textDecorations?: string;
 }
 
 const Typography = ({
@@ -56,9 +59,17 @@ const Typography = ({
   color = 'default',
   styles,
   numberOfLines,
+  textDecorations,
 }: TextProps) => {
   return (
-    <TextStyling size={size} weight={weight} color={color} style={styles} {...(numberOfLines ? { numberOfLines } : {})}>
+    <TextStyling
+      decoration={textDecorations ? textDecorations : 'none'}
+      size={size}
+      weight={weight}
+      color={color}
+      style={styles}
+      {...(numberOfLines ? { numberOfLines } : {})}
+    >
       {children}
     </TextStyling>
   );

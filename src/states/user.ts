@@ -1,4 +1,4 @@
-import { ISigonganUser, TloginFromState } from '@/@types/user';
+import { ICommentUser, ISigonganUser, TloginFromState } from '@/@types/user';
 import { atom } from 'recoil';
 
 // for auth
@@ -19,5 +19,10 @@ export const loginFromState = atom<TloginFromState>({
 
 export const SigonganUserState = atom<ISigonganUser | null>({
   key: `SigonganUserState${Math.random()}`,
+  default: null,
+});
+
+export const CommentUserState = atom<ICommentUser | null>({
+  key: `CommentUserState${Math.random()}`,
   default: null,
 });

@@ -15,6 +15,7 @@ export const THEME = {
     GRAY_ICON: '#777777',
     GRAY_50: '#F1F1F1',
     GRAY_500: '#808080',
+    GRAY_700: '#4D4D4D',
     GRAY_CHAT: '#F9F9F9',
     MINT: '#DDF2F2',
     MINT_2: '#56BFBF',

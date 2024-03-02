@@ -96,15 +96,15 @@ const ButtonColor = {
 const ButtonPadding = {
   primary: {
     paddingHorizontal: THEME.SPACING.PADDING.P2,
-    paddingVertical: THEME.SPACING.PADDING.P3,
+    paddingVertical: THEME.SPACING.PADDING.P3 + 2,
   },
   secondary: {
     paddingHorizontal: THEME.SPACING.PADDING.P2,
-    paddingVertical: THEME.SPACING.PADDING.P3,
+    paddingVertical: THEME.SPACING.PADDING.P3 + 2,
   },
   grey: {
     paddingHorizontal: THEME.SPACING.PADDING.P2,
-    paddingVertical: THEME.SPACING.PADDING.P3,
+    paddingVertical: THEME.SPACING.PADDING.P3 + 2,
   },
   darkButton: {
     paddingHorizontal: THEME.SPACING.PADDING.P3,

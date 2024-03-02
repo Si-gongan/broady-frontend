@@ -10,6 +10,7 @@ import PageHeader from '@/components/common/PageHeader';
 import { GET_MARGIN } from '@/constants/theme';
 import { useAuthNavigation } from '@/hooks';
 import { showErrorToast } from '@/library/toast/toast';
+import { useUserState } from '@/providers';
 import { SigonganUserState, authTokenState, loginFromState } from '@/states';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
@@ -18,23 +19,33 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 export const AuthNicknameSetUpScreen = () => {
   const navigation = useAuthNavigation();
-  const [nickname, setNickname] = useState('');
+  const [nicknameInput, setNicknameInput] = useState('');
   const [nicknameError, setNicknameError] = useState('');
+  const loginFrom = useRecoilValue(loginFromState);
+
+  const { setCurrentUser } = useUserState();
 
   const token = useRecoilValue(authTokenState);
 
   const onPressChangeButton = async () => {
-    if (nickname === '') {
+    if (nicknameInput === '') {
       setNicknameError('닉네임을 입력해주세요.');
       return;
     }
     try {
       const {
         result: { isPossible },
-      } = (await CheckNickname(nickname, token)).data;
+      } = (await CheckNickname(nicknameInput, token)).data;
 
       if (isPossible) {
-        const response = await SetNickname(nickname, token);
+        const response = await SetNickname(nicknameInput, token);
+
+        if (loginFrom === 'Comment') {
+          setCurrentUser(response.data.result.commentUser);
+        } else {
+          setCurrentUser(response.data.result.sigonganUser);
+        }
+
         navigation.navigate('onBoarding');
       } else {
         setNicknameError('이미 사용중인 닉네임입니다.');
@@ -65,35 +76,20 @@ export const AuthNicknameSetUpScreen = () => {
         <FlexBox styles={{ flex: 1 }} justifyContent="space-between" alignItems="stretch" direction="column">
           <ContentsWrapper>
             <Margin margin={GET_MARGIN('layout_xl')} />
-            {/* <AuthInput
+            <AuthInput
               initialType="email"
-              inputText={nickname}
+              inputText={nicknameInput}
               onChangeText={(text) => {
                 console.log('text', text);
 
                 setNicknameError('');
-                setNickname(text);
+                setNicknameInput(text);
               }}
               errorMessage={nicknameError}
               label="활동할 닉네임을 작성해주세요."
               placeholder="닉네임 입력"
               variant="Border"
-            ></AuthInput> */}
-            <TextInput
-              onChangeText={(text) => {
-                console.log('text', text);
-
-                setNicknameError('');
-                setNickname(text);
-              }}
-              value={nickname}
-              style={{
-                padding: 20,
-                borderColor: 'black',
-                borderWidth: 1,
-                borderRadius: 10,
-              }}
-            ></TextInput>
+            ></AuthInput>
           </ContentsWrapper>
           <ContentsWrapper>
             <BroadyButton variant="primary" text="시작하기" onPress={onPressChangeButton}></BroadyButton>

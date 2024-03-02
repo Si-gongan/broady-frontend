@@ -10,6 +10,7 @@ import AuthInput from '@/components/auth/AuthInput';
 import Margin from '@/components/common/Margin';
 import { useSetRecoilState } from 'recoil';
 import { loginFromState } from '@/states';
+import Typography from '@/components/common/Typography';
 
 const Container = styled.View`
   flex: 1;

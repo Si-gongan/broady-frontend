@@ -19,17 +19,18 @@ const TextInputStyle = {
     backgroundColor: THEME.COLOR.BACKGROUND,
     borderColor: 'transparent',
     borderRadius: THEME.STYLES.RADIUS.sm,
+    borderWidth: 1,
     padding: 10,
   },
 };
 
 const TextInputPadding = {
   Border: {
-    paddingVertical: THEME.SPACING.PADDING.P4,
-    paddingHorizontal: THEME.SPACING.PADDING.P5,
+    paddingVertical: THEME.SPACING.PADDING.P3,
+    paddingHorizontal: THEME.SPACING.PADDING.P3,
   },
   gray: {
-    paddingVertical: THEME.SPACING.PADDING.P4,
+    paddingVertical: THEME.SPACING.PADDING.P3,
     paddingHorizontal: THEME.SPACING.PADDING.P3,
   },
   small: {
@@ -48,6 +49,7 @@ export default function BroadyTextInput({
   maxLength,
   fixedWidth,
   initialType,
+  onFocus,
 }: {
   initialType: 'password' | 'text' | 'email';
   fixedWidth?: number;
@@ -58,6 +60,7 @@ export default function BroadyTextInput({
   text: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
+  onFocus?: () => void;
 }) {
   const initialSecure = initialType === 'password' ? true : false;
   const [isSecure, setIsSecure] = React.useState(initialSecure);
@@ -69,11 +72,11 @@ export default function BroadyTextInput({
         ...TextInputStyle[variant],
         ...TextInputPadding[paddingVariant ?? variant],
         position: 'relative',
-        flex: 1,
         ...(borderColor && { borderColor }),
       }}
     >
       <TextInput
+        {...(onFocus && { onFocus })}
         value={text}
         secureTextEntry={isSecure ? true : false}
         placeholder={placeholder}
@@ -96,7 +99,7 @@ export default function BroadyTextInput({
           }}
           onPress={() => setIsSecure(!isSecure)}
         >
-          <Image source={require('@/../assets/images/eyes.png')} />
+          <Image source={require('@/../assets/images/auth/eyes.png')} />
         </Pressable>
       )}
     </View>

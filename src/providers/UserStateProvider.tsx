@@ -1,8 +1,9 @@
 import { createContext, useState, useMemo, useCallback, useContext, useEffect, type ReactNode } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { authTokenState } from '../states';
+import { CommentUserState, SigonganUserState, authTokenState, loginFromState } from '../states';
 import { AUTH_TOKEN_KEY, USER_STATE_KEY, delay, getData, removeData, storeData } from '../library';
+import { ICommentUser, ISigonganUser } from '@/@types/user';
 
 /**
  * @description
@@ -17,11 +18,31 @@ const UserStateContext = createContext<{
   setUserState: React.Dispatch<React.SetStateAction<UserState>>;
   login: (authToken: string, userState: UserState) => void;
   logout: () => void;
+  currentUser: ICommentUser | ISigonganUser | null;
+  setCurrentUser: (user: ICommentUser | ISigonganUser) => void;
 } | null>(null);
 
 export const UserStateProvider = ({ children }: { children: ReactNode }) => {
   const [userState, setUserState] = useState<UserState>('unLogin');
   const [, setAuthToken] = useRecoilState(authTokenState);
+  const loginFrom = useRecoilValue(loginFromState);
+
+  const [sigonganUser, setSigonganUser] = useRecoilState(SigonganUserState);
+  const [commentUser, setCommentUser] = useRecoilState(CommentUserState);
+
+  const currentUser = loginFrom === 'Comment' ? commentUser : sigonganUser;
+
+  const setCurrentUser = (user: ISigonganUser | ICommentUser) => {
+    if (loginFrom === 'Comment') {
+      let commentUser = user as ICommentUser;
+
+      setCommentUser(commentUser);
+    } else if (loginFrom === 'Sigongan') {
+      let sigonganUser = user as ISigonganUser;
+
+      setSigonganUser(sigonganUser);
+    }
+  };
 
   // initial load
   useEffect(() => {
@@ -70,7 +91,10 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
     setAuthToken('');
   }, []);
 
-  const context = useMemo(() => ({ userState, setUserState, login, logout }), [userState, login, logout, setUserState]);
+  const context = useMemo(
+    () => ({ userState, currentUser, setUserState, login, logout, setCurrentUser }),
+    [userState, currentUser, login, logout, setUserState, setCurrentUser]
+  );
 
   return <UserStateContext.Provider value={context}>{children}</UserStateContext.Provider>;
 };

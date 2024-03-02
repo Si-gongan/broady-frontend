@@ -13,17 +13,20 @@ import { useAuthNavigation } from '@/hooks';
 import { emailValidator, passwordValidator } from '@/library/auth/validator';
 import { showErrorToast } from '@/library/toast/toast';
 import { useUserState } from '@/providers';
-import { SigonganUserState, fcmTokenState, loginFromState } from '@/states';
+import { CommentUserState, SigonganUserState, fcmTokenState, loginFromState } from '@/states';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useTheme } from 'styled-components/native';
 
 export const AuthEmailSignInScreen = () => {
   const authNavigation = useAuthNavigation();
   const fcmToken = useRecoilValue(fcmTokenState);
-  const { login } = useUserState();
+  const { login, setCurrentUser } = useUserState();
   const loginFrom = useRecoilValue(loginFromState);
+
+  const theme = useTheme();
 
   const [form, setForm] = useState({
     email: '',
@@ -36,12 +39,15 @@ export const AuthEmailSignInScreen = () => {
     let hasError = false;
 
     if (emailValidator(form.email) !== '') {
-      setForm((prev) => ({ ...prev, emailError: emailValidator(form.email) }));
+      showErrorToast(emailValidator(form.email));
+
+      // setForm((prev) => ({ ...prev, emailError: emailValidator(form.email) }));
       hasError = true;
     }
 
     if (passwordValidator(form.password) !== '') {
-      setForm((prev) => ({ ...prev, passwordError: passwordValidator(form.password) }));
+      showErrorToast(passwordValidator(form.password));
+      // setForm((prev) => ({ ...prev, passwordError: passwordValidator(form.password) }));
       hasError = true;
     }
 
@@ -56,11 +62,14 @@ export const AuthEmailSignInScreen = () => {
         const {
           result: {
             commentUser: { createdAt, email, nickname },
+            commentUser,
             token,
           },
         } = res.data as ICommentLoginReturnType;
 
         login(token, 'Comment');
+
+        setCurrentUser(commentUser);
 
         if (!nickname) {
           authNavigation.navigate('nickname');
@@ -75,6 +84,8 @@ export const AuthEmailSignInScreen = () => {
         } = res.data as ISigonganLoginReturnType;
 
         login(token, 'Sigongan');
+
+        setCurrentUser(sigonganUser);
 
         if (!sigonganUser.nickname) {
           authNavigation.navigate('nickname');
@@ -107,53 +118,48 @@ export const AuthEmailSignInScreen = () => {
       }}
     >
       <PageHeader title="이메일로 로그인하기" />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <ScrollView
-          style={{
-            flex: 1,
-          }}
-          contentContainerStyle={{
-            flexGrow: 1,
-          }}
-        >
-          <FlexBox styles={{ flex: 1 }} direction="column" justifyContent="space-between">
-            <ContentsWrapper>
-              <Margin margin={20}></Margin>
-              <CenteredContentsWrapper>
-                <Typography size="body_md" weight="light">
-                  아직 브로디 회원이 아니신가요?
-                </Typography>
-              </CenteredContentsWrapper>
-              <Margin margin={GET_MARGIN('h4')}></Margin>
-              <BroadyButton variant="grey" text="회원가입" onPress={() => authNavigation.push('broadyEmailRegister')} />
-              <Margin margin={GET_MARGIN('layout_lg')}></Margin>
-              <BroadyTextInput
-                variant="gray"
-                initialType="email"
-                text={form.email}
-                placeholder="이메일"
-                onChangeText={(value) => {
-                  onChangeText('email', value);
-                }}
-              ></BroadyTextInput>
-              <BroadyTextInput
-                text={form.password}
-                variant="gray"
-                initialType="password"
-                placeholder="패스워드"
-                onChangeText={(value) => {
-                  onChangeText('password', value);
-                }}
-              ></BroadyTextInput>
-              <BroadyButton variant="grey" text="로그인" onPress={onSubmit} />
-            </ContentsWrapper>
-            <ContentsWrapper>
-              <Margin margin={150}></Margin>
-              <Margin margin={GET_MARGIN('layout_sm')}></Margin>
-            </ContentsWrapper>
+      <FlexBox
+        direction="column"
+        justifyContent="center"
+        styles={{
+          flex: 1,
+        }}
+      >
+        <ContentsWrapper>
+          <FlexBox direction="column" gap={GET_MARGIN('h3') - 5}>
+            <BroadyTextInput
+              variant="gray"
+              initialType="email"
+              text={form.email}
+              placeholder="이메일"
+              onChangeText={(value) => {
+                onChangeText('email', value);
+              }}
+            ></BroadyTextInput>
+            <BroadyTextInput
+              text={form.password}
+              variant="gray"
+              initialType="password"
+              placeholder="패스워드"
+              onChangeText={(value) => {
+                onChangeText('password', value);
+              }}
+            ></BroadyTextInput>
+            <BroadyButton variant="grey" text="로그인" onPress={onSubmit} />
           </FlexBox>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </ContentsWrapper>
+      </FlexBox>
+
+      <ContentsWrapper>
+        <CenteredContentsWrapper>
+          <Typography size="body_md" weight="light" color={theme.COLOR.GRAY_700} textDecorations="underline">
+            아직 브로디 회원이 아니신가요?
+          </Typography>
+        </CenteredContentsWrapper>
+        <Margin margin={GET_MARGIN('h4')}></Margin>
+        <BroadyButton variant="grey" text="회원가입" onPress={() => authNavigation.push('broadyEmailRegister')} />
+      </ContentsWrapper>
+
       <Margin margin={GET_MARGIN('layout_xl')}></Margin>
     </View>
   );

@@ -55,7 +55,7 @@ export const AuthEmailSignUpScreen = () => {
   const authNavigation = useAuthNavigation();
   const fcmToken = useRecoilValue(fcmTokenState);
   const loginFrom = useRecoilValue(loginFromState);
-  const { login } = useUserState();
+  const { login, setCurrentUser } = useUserState();
 
   const [form, setForm] = useState({
     email: '',
@@ -102,10 +102,13 @@ export const AuthEmailSignUpScreen = () => {
           result: {
             token,
             commentUser: { nickname },
+            commentUser,
           },
         } = res.data;
 
         login(token, 'Comment');
+
+        setCurrentUser(commentUser);
 
         if (!nickname) {
           authNavigation.navigate('nickname');
@@ -118,11 +121,14 @@ export const AuthEmailSignUpScreen = () => {
         const {
           result: {
             sigonganUser: { nickname },
+            sigonganUser,
             token,
           },
         } = res.data;
 
         login(token, 'Sigongan');
+
+        setCurrentUser(sigonganUser);
 
         if (!nickname) {
           authNavigation.navigate('nickname');
@@ -160,80 +166,70 @@ export const AuthEmailSignUpScreen = () => {
       }}
     >
       <PageHeader title="이메일로 회원가입하기" />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <ScrollView
-          style={{
-            flex: 1,
-          }}
-          contentContainerStyle={{
-            flexGrow: 1,
-          }}
-        >
-          <FlexBox
-            styles={{
-              flex: 1,
-            }}
-            justifyContent="space-between"
-            direction="column"
-          >
-            <ContentsWrapper>
-              <Margin margin={GET_MARGIN('layout_lg')}></Margin>
-              <AuthInput
-                inputText={form.email}
-                onChangeText={(text) => {
-                  onChangeText('email', text);
-                }}
-                initialType="email"
-                label="이메일"
-                placeholder="이메일을 입력해주세요"
-                errorMessage={form.emailError}
-              />
-              <Margin margin={GET_MARGIN('layout_lg')}></Margin>
-              <AuthInput
-                inputText={form.password}
-                onChangeText={(text) => {
-                  onChangeText('password', text);
-                }}
-                initialType="password"
-                label="비밀번호"
-                placeholder="비밀번호를 입력해주세요"
-                errorMessage={form.passwordError}
-              />
-              <Margin margin={GET_MARGIN('layout_sm')}></Margin>
-              <AuthInput
-                inputText={form.passwordConfirm}
-                onChangeText={(text) => {
-                  onChangeText('passwordConfirm', text);
-                }}
-                initialType="password"
-                label="비밀번호 확인"
-                placeholder="비밀번호를 다시 입력해주세요"
-                errorMessage={form.passwordConfirmError}
-              />
-            </ContentsWrapper>
-            <Margin margin={GET_MARGIN('layout_xl') + 100}></Margin>
-            <ContentsWrapper>
-              <CheckBoxForm
-                onPress={() => {
-                  onCheck('isAgreeFirst');
-                }}
-                text="이용약관을 숙지하였으며 동의합니다."
-                checked={form.isAgreeFirst}
-              />
-              <CheckBoxForm
-                onPress={() => {
-                  onCheck('isAgreeSecond');
-                }}
-                text="개인정보 처리방침 동의"
-                checked={form.isAgreeSecond}
-              />
-              <Margin margin={GET_MARGIN('h3')} />
-              <BroadyButton text="다음" variant="primary" onPress={onSubmit} />
-              <Margin margin={GET_MARGIN('layout_sm')}></Margin>
-            </ContentsWrapper>
+
+      <FlexBox
+        direction="column"
+        justifyContent="space-between"
+        styles={{
+          flex: 1,
+        }}
+      >
+        <View></View>
+        <ContentsWrapper>
+          <FlexBox direction="column" gap={GET_MARGIN('h3') + 10}>
+            <AuthInput
+              inputText={form.email}
+              onChangeText={(text) => {
+                onChangeText('email', text);
+              }}
+              initialType="email"
+              label="이메일"
+              placeholder="이메일을 입력해주세요"
+              errorMessage={form.emailError}
+            />
+            <AuthInput
+              inputText={form.password}
+              onChangeText={(text) => {
+                onChangeText('password', text);
+              }}
+              initialType="password"
+              label="비밀번호"
+              placeholder="비밀번호를 입력해주세요"
+              errorMessage={form.passwordError}
+            />
+            <AuthInput
+              inputText={form.passwordConfirm}
+              onChangeText={(text) => {
+                onChangeText('passwordConfirm', text);
+              }}
+              initialType="password"
+              label="비밀번호 확인"
+              placeholder="비밀번호를 다시 입력해주세요"
+              errorMessage={form.passwordConfirmError}
+            />
           </FlexBox>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </ContentsWrapper>
+        <ContentsWrapper>
+          <CheckBoxForm
+            onPress={() => {
+              onCheck('isAgreeFirst');
+            }}
+            text="이용약관을 숙지하였으며 동의합니다."
+            checked={form.isAgreeFirst}
+          />
+          <CheckBoxForm
+            onPress={() => {
+              onCheck('isAgreeSecond');
+            }}
+            text="개인정보 처리방침 동의"
+            checked={form.isAgreeSecond}
+          />
+          <Margin margin={GET_MARGIN('h3')} />
+        </ContentsWrapper>
+      </FlexBox>
+      <ContentsWrapper>
+        <BroadyButton text="다음" variant="primary" onPress={onSubmit} />
+      </ContentsWrapper>
       <Margin margin={GET_MARGIN('layout_xl')} />
     </View>
   );

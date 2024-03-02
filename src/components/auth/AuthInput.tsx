@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import React from 'react';
 import BroadyTextInput, { TextInputType, TextInputVariantType } from '../common/BroadyTextInput';
 import FlexBox from '../common/FlexBox';
@@ -29,6 +29,15 @@ export default function AuthInput({
   initialType: TextInputType;
   onChangeText: (text: string) => void;
 }) {
+  const [isFocused, setIsFocused] = React.useState(false);
+
+  const currentVariant: TextInputVariantType = inputText ? 'Border' : isFocused ? 'Border' : variant;
+  const borderColor = errorMessage
+    ? THEME.COLOR.FONT.WARN
+    : currentVariant === 'Border'
+    ? THEME.COLOR.FONT.TITLE
+    : THEME.COLOR.BACKGROUND;
+
   return (
     <View>
       <FlexBox
@@ -42,22 +51,37 @@ export default function AuthInput({
         <Typography size="body_md" color={labelColor}>
           {label}
         </Typography>
-        {errorMessage && (
-          <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(300)}>
-            <Typography size="body_sm" color={THEME.COLOR.FONT.WARN}>
-              {errorMessage}
-            </Typography>
-          </Animated.View>
-        )}
       </FlexBox>
       <Margin margin={margin} />
       <BroadyTextInput
+        onFocus={() => {
+          setIsFocused(true);
+        }}
         initialType={initialType}
-        variant={variant}
+        variant={currentVariant}
         onChangeText={onChangeText}
         text={inputText}
         placeholder={placeholder}
+        borderColor={borderColor}
       ></BroadyTextInput>
+      {errorMessage && (
+        <Animated.View
+          entering={FadeIn.duration(300)}
+          exiting={FadeOut.duration(300)}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            position: 'absolute',
+            bottom: -25,
+          }}
+        >
+          <Image source={require('@/../assets/images/warning.png')} style={{ width: 20, height: 20 }} />
+          <Typography size="body_sm" color={THEME.COLOR.FONT.WARN}>
+            {errorMessage}
+          </Typography>
+        </Animated.View>
+      )}
     </View>
   );
 }
