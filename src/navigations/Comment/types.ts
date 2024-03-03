@@ -9,4 +9,7 @@ export type CommentTabParamList = {
 
 export type CommentStackParamList = {
   [SCREENS.COMMENTSTACK.해설자메인탭]: undefined;
+  [SCREENS.COMMENTSTACK.해설자대화방]: {
+    url: string;
+  };
 };

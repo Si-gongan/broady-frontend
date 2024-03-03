@@ -23,5 +23,6 @@ export const SCREENS = {
       마이페이지: 'MyPage' as const,
     },
     해설자메인탭: 'CommentTab' as const,
+    해설자대화방: 'Post' as const,
   },
 };
