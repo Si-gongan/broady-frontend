@@ -1,5 +1,4 @@
 import { View, Text } from 'react-native';
-import { CommentTabBar } from '../../components';
 
 export const CommentMypageScreen = () => {
   return (
@@ -7,8 +6,6 @@ export const CommentMypageScreen = () => {
       <View style={{ flex: 1 }}>
         <Text>CommentMypageScreen</Text>
       </View>
-
-      <CommentTabBar />
     </View>
   );
 };

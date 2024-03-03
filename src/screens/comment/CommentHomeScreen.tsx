@@ -11,7 +11,6 @@ export const CommentHomeScreen = () => {
         <Text>CommentHomeScreen</Text>
         <Text onPress={logout}>로그아웃</Text>
       </View>
-      <CommentTabBar />
     </SafeAreaView>
   );
 };

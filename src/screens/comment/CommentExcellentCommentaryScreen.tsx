@@ -7,8 +7,6 @@ export const CommentExcellentCommentaryScreen = () => {
       <View style={{ flex: 1 }}>
         <Text>CommentExcellentCommentaryScreen</Text>
       </View>
-
-      <CommentTabBar />
     </View>
   );
 };

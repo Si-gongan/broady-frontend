@@ -1,22 +1,63 @@
-import { View, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
-import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import type { CommentTabParamList } from '../../navigations';
-import { THEME } from '@/constants/theme';
+import TabBar from '@/components/common/TabBar';
 import { SCREENS } from '@/constants/screens';
+import { IconType } from '../common/Icons';
 
-export const CommentTabBar = () => {
-  const navigation = useNavigation<BottomTabNavigationProp<CommentTabParamList>>();
+const TabItemProps = {
+  [SCREENS.COMMENTSTACK.COMMENTTAB.해설자홈]: {
+    iconType: 'material',
+    iconName: 'home',
+    text: '홈',
+  },
+  [SCREENS.COMMENTSTACK.COMMENTTAB.우수해설]: {
+    iconType: 'material',
+    iconName: 'bookmark',
+    text: '우수해설',
+  },
+  [SCREENS.COMMENTSTACK.COMMENTTAB.MY의뢰]: {
+    iconType: 'fontAwesome',
+    iconName: 'calendar',
+    text: 'MY의뢰',
+  },
+  [SCREENS.COMMENTSTACK.COMMENTTAB.마이페이지]: {
+    iconType: 'fontAwesome',
+    iconName: 'user',
+    text: '마이페이지',
+  },
+};
 
+export const CommentTabBar = ({ state, navigation }: BottomTabBarProps) => {
   return (
-    <View>
-      <Text>CommentTabBar</Text>
+    <TabBar>
+      {state.routes.map((route, index) => {
+        const name = route.name as keyof typeof TabItemProps;
+        const isFocused = state.index === index;
 
-      <Text onPress={() => navigation.navigate(SCREENS.COMMENTSTACK.COMMENTTAB.해설자홈)}>홈 이동</Text>
-      <Text onPress={() => navigation.navigate(SCREENS.COMMENTSTACK.COMMENTTAB.우수해설)}>우수해설 이동</Text>
-      <Text onPress={() => navigation.navigate(SCREENS.COMMENTSTACK.COMMENTTAB.MY의뢰)}>MY의뢰 이동</Text>
-      <Text onPress={() => navigation.navigate(SCREENS.COMMENTSTACK.COMMENTTAB.MY의뢰)}>마이페이지 이동</Text>
-    </View>
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name, route.params);
+          }
+        };
+
+        return (
+          <TabBar.Item
+            onPress={onPress}
+            isActive={isFocused}
+            iconName={TabItemProps[name].iconName}
+            iconType={TabItemProps[name].iconType as IconType}
+            text={TabItemProps[name].text}
+            key={index}
+          />
+        );
+      })}
+    </TabBar>
   );
 };
