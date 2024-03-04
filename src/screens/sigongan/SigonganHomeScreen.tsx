@@ -1,77 +1,62 @@
+import { readPostApi } from '@/axios';
 import BroadyButton from '@/components/common/BroadyButton';
 import ContentsWrapper from '@/components/common/ContentsWrapper';
 import FlexBox from '@/components/common/FlexBox';
 import Margin from '@/components/common/Margin';
 import Typography from '@/components/common/Typography';
+import ImagePickerModal from '@/components/sigongan/ImagePickerModal';
 import PostListItem from '@/components/sigongan/PostListItem';
 import SearchBar from '@/components/sigongan/SearchBar';
 import { GET_MARGIN } from '@/constants/theme';
-import { useSearchKeyword } from '@/hooks/useSearchKeyword';
-import { SafeAreaView, ScrollView, View } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import { useSigonganNavigation } from '@/hooks';
 import { usePostLists } from '@/hooks/usePostLists';
-import { useState } from 'react';
-import Modal from 'react-native-modal';
-import BottomModal from '@/components/common/BottomModal';
-import { pickImage, takePhoto } from '@/library';
-import ImagePickerModal from '@/components/sigongan/ImagePickerModal';
-import { showErrorToast } from '@/library/toast/toast';
+import { useSearchKeyword } from '@/hooks/useSearchKeyword';
+import { logError } from '@/library/axios';
+import { authTokenState } from '@/states';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
+import { SafeAreaView, ScrollView, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { useTheme } from 'styled-components/native';
 
 export const SigonganHomeScreen = () => {
   const navigation = useSigonganNavigation();
   const theme = useTheme();
+  const token = useRecoilValue(authTokenState);
 
   const { searchKeyword, onChangeSearchKeyword, onPressSearch, onPressDelete } = useSearchKeyword();
 
-  const { postList, getPostList, setSelectedPostId } = usePostLists();
+  const { postList, getInitialPostList, setSelectedPostId } = usePostLists();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const onPressPostListItem = (id: string | null) => {
+  const onPressPostListItem = async (id: string | null) => {
+    if (!id) return;
+
     setSelectedPostId(id);
+
     navigation.navigate('Post');
+
+    try {
+      await readPostApi(id, token);
+    } catch (error) {
+      logError(error);
+    }
   };
 
   const toggleImageUploadModal = () => {
     setIsModalVisible(true);
   };
 
-  const onPressTakePhoto = async () => {
-    const result = await takePhoto();
-
-    if (result?.canceled) {
-      return;
-    }
-
-    setIsModalVisible(false);
-
-    const url = result?.assets[0].uri;
-
-    // if (aiChat) {
-    //   aiChat.onImageSubmit(url ?? '');
-    // } else {
-    //   navigation.navigate('해설의뢰', { url });
-    // }
+  const onFocusEffect = async () => {
+    await getInitialPostList();
   };
 
-  const onPressPickImage = async () => {
-    const result = await pickImage();
-
-    if (result?.canceled) {
-      return;
-    }
-
-    setIsModalVisible(false);
-
-    const url = result?.assets[0].uri;
-
-    // if (aiChat) {
-    //   aiChat.onImageSubmit(url ?? '');
-    // } else {
-    //   navigation.navigate('해설의뢰', { url });
-    // }
-  };
+  useFocusEffect(
+    useCallback(() => {
+      onFocusEffect();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

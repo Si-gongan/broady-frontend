@@ -1,7 +1,9 @@
+import { IPost } from '@/@types/post';
 import { getPostListApi } from '@/axios';
-import { selectedPostIdAtom, syncPostListAtom } from '@/states';
+import { logError } from '@/library/axios';
+import { authTokenState, selectedPostIdAtom, syncPostListAtom } from '@/states';
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 const limit = 10;
 
@@ -10,13 +12,36 @@ export const usePostLists = () => {
   const [selectedPostId, setSelectedPostId] = useRecoilState(selectedPostIdAtom);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const token = useRecoilValue(authTokenState);
 
-  const getPostList = async () => {
+  const postList = syncPostList;
+
+  const selectedPost = syncPostList.find((post) => post.id === selectedPostId);
+
+  const getInitialPostList = async () => {
     setIsLoading(true);
 
     try {
-      const response = await getPostListApi({ page: 1, limit: limit, search: searchKeyword });
+      const response = await getPostListApi({ page: 1, limit: limit, search: searchKeyword, token });
       setSyncPostList([...response.data.result.posts]);
+    } catch (error) {
+      logError(error);
+    }
+
+    setIsLoading(false);
+  };
+
+  const getMorePostList = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await getPostListApi({
+        page: 2,
+        limit: limit,
+        search: searchKeyword,
+        token,
+      });
+      setSyncPostList([...syncPostList, ...response.data.result.posts]);
     } catch (error) {
       console.error(error);
     }
@@ -24,9 +49,16 @@ export const usePostLists = () => {
     setIsLoading(false);
   };
 
-  const postList = syncPostList;
-
-  const selectedPost = syncPostList.find((post) => post.id === selectedPostId);
+  const updateSelectedPost = (key: keyof IPost, value: any) => {
+    setSyncPostList(
+      syncPostList.map((post) => {
+        if (post.id === selectedPostId) {
+          post[key] = value;
+        }
+        return post;
+      })
+    );
+  };
 
   const currentRoomState = {
     isBlocked: selectedPost?.isBlocked || false,
@@ -37,8 +69,10 @@ export const usePostLists = () => {
 
   return {
     selectedPostId,
+    getInitialPostList,
+    updateSelectedPost,
+    setSyncPostList,
     setSelectedPostId,
-    getPostList,
     selectedPost,
     postList,
     currentRoomState,

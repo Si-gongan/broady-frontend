@@ -10,7 +10,7 @@ const Box = styled.Pressable`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: ${({ theme }) => theme.SPACING.MARGIN.h4 + 5};
+  gap: ${({ theme }) => theme.SPACING.MARGIN.h4 + 5 + 'px'};
   padding: 20px;
   background-color: white;
   border-bottom-width: 1px;
@@ -28,7 +28,7 @@ const Contents = styled.View`
   flex: 1;
   display: flex;
   flex-direction: row;
-  gap: ${({ theme }) => theme.SPACING.MARGIN.h4};
+  gap: ${({ theme }) => theme.SPACING.MARGIN.h4 + 'px'};
 `;
 
 const MainContents = styled.View`
@@ -68,17 +68,19 @@ export default function ChatListItem({
   imageSrc: string;
   subText: string;
   mainText: string;
-  time: Date;
+  time: IsoString;
   unreadPostCount: number;
 }) {
   const theme = useTheme();
 
   const formattedTime = formatTimeToDDMMDD(time);
 
+  const imagePath = process.env.EXPO_PUBLIC_S3_BUCKET_URL + '/' + imageSrc;
+
   return (
     <Box onPress={onPress}>
       <ImageBox>
-        <Image source={{ uri: imageSrc }} style={{ width: 65, height: 65, borderRadius: 8 }} />
+        <Image source={{ uri: imagePath }} style={{ width: 65, height: 65, borderRadius: 8 }} />
       </ImageBox>
       <Contents>
         <MainContents>

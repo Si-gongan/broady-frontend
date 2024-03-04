@@ -40,7 +40,6 @@ const PageHeader = ({
       size={35}
       color={headerLeftColor}
       onPress={() => {
-        console.log('navigation.goBack()');
         navigation.goBack();
       }}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

@@ -1,4 +1,4 @@
-import { registerPostApi } from '@/axios';
+import { addAditionalRequestApi, changePinStatusApi, registerPostApi } from '@/axios';
 import BroadyButton from '@/components/common/BroadyButton';
 import BroadyTextInput from '@/components/common/BroadyTextInput';
 import FlexBox from '@/components/common/FlexBox';
@@ -6,20 +6,28 @@ import Icons from '@/components/common/Icons';
 import Margin from '@/components/common/Margin';
 import PageHeader from '@/components/common/PageHeader';
 import Typography from '@/components/common/Typography';
-import ChatItem from '@/components/sigongan/ChatItem';
 import ChatList from '@/components/sigongan/ChatList';
 import ChatSendModal from '@/components/sigongan/ChatSendModal';
 import ImagePickerModal from '@/components/sigongan/ImagePickerModal';
+import PostMenuModal from '@/components/sigongan/PostMenuModal';
+import { GET_MARGIN } from '@/constants/theme';
 import { useModal } from '@/hooks/useModal';
 import { usePostLists } from '@/hooks/usePostLists';
 import { SigonganStackParamList } from '@/navigations';
+import { authTokenState } from '@/states';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react';
+import { AxiosError } from 'axios';
+import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
-import Modal from 'react-native-modal';
-import { set } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRecoilValue } from 'recoil';
 import styled, { useTheme } from 'styled-components/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Shadow } from 'react-native-shadow-2';
+import PostSummaryModal from '@/components/sigongan/PostSummaryModal';
+import { logError } from '@/library/axios';
+import { showCheckToast } from '@/library/toast/toast';
+import { from } from 'form-data';
 
 const ImageBox = styled.View`
   aspect-ratio: 1;
@@ -40,12 +48,59 @@ const PostWrapper = styled.View`
 `;
 
 const InputBox = styled.View`
-  width: 100%;
   padding: ${({ theme }) => theme.SPACING.PADDING.P5 + 2}px ${({ theme }) => theme.SPACING.PADDING.P3}px
     ${({ theme }) => theme.SPACING.PADDING.P5}px;
   background-color: ${({ theme }) => theme.COLOR.WHITE};
   border-top-width: 1px;
   border-top-color: ${({ theme }) => theme.COLOR.BD_5};
+`;
+
+const InputBoxMock = styled.View`
+  padding: ${({ theme }) => theme.SPACING.PADDING.P5 + 2}px ${({ theme }) => theme.SPACING.PADDING.P3}px
+    ${({ theme }) => theme.SPACING.PADDING.P5}px;
+  background-color: ${({ theme }) => theme.COLOR.WHITE};
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.COLOR.BD_5};
+  border-radius: ${({ theme }) => theme.STYLES.RADIUS.md}px;
+`;
+
+const PinButton = styled.TouchableOpacity`
+  padding: ${({ theme }) => theme.SPACING.PADDING.P6}px ${({ theme }) => theme.SPACING.PADDING.P4}px;
+  border-radius: ${({ theme }) => theme.STYLES.RADIUS.md + 5}px;
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.COLOR.BD_6};
+`;
+
+const SummaryBox = styled.Pressable`
+  position: absolute;
+  top: 20px;
+  z-index: 10;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.COLOR.WHITE};
+  border-radius: ${({ theme }) => theme.STYLES.RADIUS.lg}px;
+`;
+
+const SummaryInnerBox = styled.View`
+  padding: ${({ theme }) => theme.SPACING.PADDING.P6}px ${({ theme }) => theme.SPACING.PADDING.P4}px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`;
+
+const AISummaryIcon = styled.View`
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 `;
 
 const ICON_SOURCE = {
@@ -56,30 +111,53 @@ const ICON_SOURCE = {
 type Props = NativeStackScreenProps<SigonganStackParamList, 'Post'>;
 
 export default function SigonganPostScreen({ route, navigation }: Props) {
-  const url = route.params?.url;
+  const localUploadUrl = route.params?.assets?.uri;
+  const fromDeletedPostId = route.params?.fromDeletedPostId;
+
+  useEffect(() => {
+    return () => {
+      if (deletedPostId.current) {
+        deletedPostId.current = undefined;
+      }
+    };
+  }, []);
 
   const theme = useTheme();
   const { bottom } = useSafeAreaInsets();
   const {
     selectedPost,
+    getInitialPostList,
+    setSelectedPostId,
+    updateSelectedPost,
+    setSyncPostList,
     currentRoomState: { isBlocked, isComplete, isPaused, isPinned },
   } = usePostLists();
 
-  const [input, setInput] = React.useState('');
-  const [sendLoading, setSendLoading] = React.useState(false);
-  const [hasSendFirstRequest, setHasSendFirstRequest] = React.useState(false);
-  const [chatList, setChatList] = React.useState(selectedPost?.chat || []);
-
+  const token = useRecoilValue(authTokenState);
   const scrollViewRef = React.useRef<ScrollView>(null);
 
-  const isNewRoom = selectedPost ? false : hasSendFirstRequest ? false : true;
-
-  const { isModalVisible, openModal: openImagePickerModal, setIsModalVisible } = useModal();
+  const { isModalVisible: isImagePickerModalVisible, openModal: openImagePickerModal, setIsModalVisible } = useModal();
   const { isModalVisible: isSendModalVisible, openModal: openSendModal, closeModal: closeSendModal } = useModal();
+  const { isModalVisible: isMenuModalVisible, openModal: openMenuModal, closeModal: closeMenuModal } = useModal();
+  const {
+    isModalVisible: isSummaryModalVisible,
+    openModal: openSummaryModal,
+    closeModal: closeSummaryModal,
+  } = useModal();
 
-  const imageSource = input ? ICON_SOURCE.SEND_FILL : ICON_SOURCE.SEND;
+  const deletedPostId = useRef<string | undefined>(undefined);
+  const [input, setInput] = React.useState('');
+  const [sendLoading, setSendLoading] = React.useState(false);
 
-  // 문제는 방이 없을때는. chatList가 없다. 그렇다면? chatLIst를 따로 뺀다.
+  const chatList = selectedPost?.chat || [];
+  const imageUrl = selectedPost ? process.env.EXPO_PUBLIC_S3_BUCKET_URL + '/' + selectedPost?.photo : localUploadUrl;
+
+  const isWaitingForResponse = selectedPost ? !isComplete && selectedPost.chat.length > 0 : false;
+  const showSelectImageAgain = selectedPost ? false : true;
+  const showPinnedButton = selectedPost ? (!isPinned && isComplete ? true : false) : false;
+  const showSummaryButton = selectedPost ? (isComplete ? true : false) : false;
+
+  const sendIcon = input ? ICON_SOURCE.SEND_FILL : ICON_SOURCE.SEND;
 
   const onPressSendIcon = () => {
     if (input) {
@@ -87,41 +165,52 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     }
   };
 
-  const onPressSendToComment = async () => {
-    // api 요청을 보낸다. 그리고 성공하면, 해당 텍스트를 렌더링한다.
+  const onPressMenuIcon = () => {
+    openMenuModal();
+  };
 
-    setHasSendFirstRequest(true);
+  const onPressSendToComment = async () => {
     setSendLoading(true);
     closeSendModal();
 
-    try {
-      let form = new FormData();
-      let deletedPostId = isPaused ? selectedPost?.id : undefined;
+    if (!isComplete) {
+      try {
+        if (!localUploadUrl) throw new Error('localUploadUrl is not defined');
 
-      const response = await registerPostApi(input, form, deletedPostId);
+        const response = await registerPostApi(input, localUploadUrl, fromDeletedPostId, token);
 
-      setChatList((prev) => {
-        return [
-          ...prev,
-          {
-            id: '1',
-            text: input,
-            email: '',
-            isReported: false,
-            reason: '',
-            type: 'sigongan',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        ];
-      });
+        await getInitialPostList();
+        setSelectedPostId(response.data.result.post.id);
 
-      scrollViewRef.current?.scrollToEnd({ animated: true });
+        scrollViewRef.current?.scrollToEnd({ animated: true });
 
-      setSendLoading(false);
-      setInput('');
-    } catch (e) {
-      setHasSendFirstRequest(false);
+        setSendLoading(false);
+        setInput('');
+      } catch (e) {
+        logError(e);
+      }
+    }
+    // 이 경우에는 추가질문이다.
+    else if (isComplete && selectedPost?.id) {
+      try {
+        const response = await addAditionalRequestApi(selectedPost?.id, input, token);
+
+        setSyncPostList((prev) => {
+          return prev.map((post) => {
+            if (post.id === selectedPost?.id) {
+              return response.data.result.post;
+            }
+            return post;
+          });
+        });
+
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+
+        setSendLoading(false);
+        setInput('');
+      } catch (e) {
+        logError(e);
+      }
     }
   };
 
@@ -131,17 +220,60 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      setHasSendFirstRequest(true);
       setSendLoading(false);
     } catch (e) {}
   };
 
+  // 이거는 신고먹었을때.
   const onPressConnectToCustomerService = () => {
     // 고객센터 연결하기
   };
 
   const onPressSelectPhotoAgain = () => {
     // 사진 다시 선택하기
+    // 이 deletedPostId를 imagePicker에게 넘겨줘야함.
+
+    deletedPostId.current = selectedPost?.id;
+
+    openImagePickerModal();
+  };
+
+  const onPressPinButton = async () => {
+    if (selectedPost?.id) {
+      try {
+        const response = await changePinStatusApi(selectedPost?.id, true, token);
+        updateSelectedPost('isPinned', true);
+
+        showCheckToast(
+          '찜한 해설에 저장되었어요!',
+          <Pressable onPress={onPressPinCancleButton}>
+            <Typography size="body_lg" weight="semibold" color={theme.COLOR.WHITE}>
+              취소
+            </Typography>
+          </Pressable>
+        );
+      } catch (e) {
+        logError(e);
+      }
+    }
+  };
+
+  const onPressPinCancleButton = async () => {
+    if (selectedPost?.id) {
+      try {
+        const response = await changePinStatusApi(selectedPost?.id, false, token);
+        updateSelectedPost('isPinned', false);
+
+        showCheckToast('찜한 해설에서 삭제되었어요!', null);
+      } catch (e) {
+        logError(e);
+      }
+    }
+  };
+
+  const onPressSummaryButton = () => {
+    // 해설 전체 요약하기
+    openSummaryModal();
   };
 
   return (
@@ -150,8 +282,32 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
         flex: 1,
       }}
     >
-      <PageHeader title="시공간" headerRight={<Icons type="materialIcons" name="menu" size={30}></Icons>} />
+      <PageHeader
+        title="시공간"
+        headerRight={<Icons type="materialIcons" name="menu" size={30} onPress={onPressMenuIcon}></Icons>}
+      />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        {showSummaryButton && (
+          <SummaryBox onPress={onPressSummaryButton}>
+            <SummaryInnerBox>
+              <LinearGradient
+                colors={['#FFFFFF00', '#389F9F']}
+                style={{
+                  borderRadius: 20,
+                }}
+              >
+                <AISummaryIcon>
+                  <Typography size="body_md" weight="semibold" color={theme.COLOR.FONT.CONTENT}>
+                    Ai
+                  </Typography>
+                </AISummaryIcon>
+              </LinearGradient>
+              <Typography size="body_md" weight="semibold" color={theme.COLOR.FONT.CONTENT}>
+                해설 전체 요약하기
+              </Typography>
+            </SummaryInnerBox>
+          </SummaryBox>
+        )}
         <MainContents
           ref={scrollViewRef}
           onContentSizeChange={() => {
@@ -164,7 +320,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
               <ImageBox>
                 <Image
                   resizeMode="cover"
-                  source={{ uri: url }}
+                  source={{ uri: imageUrl }}
                   style={{
                     aspectRatio: 1,
                     width: '100%',
@@ -173,8 +329,8 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
                   }}
                 />
               </ImageBox>
-              {isNewRoom && (
-                <BroadyButton onPress={openImagePickerModal} variant="secondary" text="사진 다시 선택하기" />
+              {showSelectImageAgain && (
+                <BroadyButton onPress={openImagePickerModal} variant="grey" text="사진 다시 선택하기" />
               )}
             </FlexBox>
             <Margin margin={20} />
@@ -198,25 +354,58 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
           </PostWrapper>
         ) : (
           <InputBox>
+            {showPinnedButton && (
+              <>
+                <FlexBox>
+                  <PinButton onPress={onPressPinButton}>
+                    <Typography size="body_md" weight="semibold" color={theme.COLOR.FONT.SUB_CONTENTDIM}>
+                      해설 찜하기
+                    </Typography>
+                  </PinButton>
+                </FlexBox>
+                <Margin margin={GET_MARGIN('h4') + 5} />
+              </>
+            )}
             <FlexBox direction="row" alignItems="center" gap={10}>
-              <BroadyTextInput
-                placeholder="내용을 입력해주세요"
-                variant="Border"
-                paddingVariant="small"
-                borderColor={theme.COLOR.BD_5}
-                text={input}
-                onChangeText={setInput}
-                initialType="text"
-              />
-              <Pressable onPress={onPressSendIcon}>
-                <Image source={imageSource} style={{ width: 30, height: 30 }} />
-              </Pressable>
+              {!isWaitingForResponse ? (
+                <>
+                  <View style={{ flex: 1 }}>
+                    <BroadyTextInput
+                      placeholder="내용을 입력해주세요"
+                      variant="Border"
+                      paddingVariant="small"
+                      borderColor={theme.COLOR.BD_5}
+                      text={input}
+                      onChangeText={setInput}
+                      initialType="text"
+                    />
+                  </View>
+                  <Pressable onPress={onPressSendIcon}>
+                    <Image source={sendIcon} style={{ width: 30, height: 30 }} />
+                  </Pressable>
+                </>
+              ) : (
+                <>
+                  <View style={{ flex: 1 }}>
+                    <InputBoxMock>
+                      <Typography size="body_md" color={theme.COLOR.FONT.SUB_CONTENT}>
+                        답변을 기다리고 있어요.
+                      </Typography>
+                    </InputBoxMock>
+                  </View>
+                  <Image source={ICON_SOURCE.SEND} style={{ width: 30, height: 30 }} />
+                </>
+              )}
             </FlexBox>
           </InputBox>
         )}
       </KeyboardAvoidingView>
       <Margin margin={bottom} />
-      <ImagePickerModal isVisible={isModalVisible} setIsVisible={setIsModalVisible} />
+      <ImagePickerModal
+        deletedPostId={deletedPostId.current}
+        isVisible={isImagePickerModalVisible}
+        setIsVisible={setIsModalVisible}
+      />
       <ChatSendModal
         onPressSendToComment={onPressSendToComment}
         onPressSendToAI={onPressSendToAI}
@@ -225,6 +414,8 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
         input={input}
         setInput={setInput}
       />
+      <PostMenuModal isVisible={isMenuModalVisible} setIsVisible={closeMenuModal} />
+      <PostSummaryModal isVisible={isSummaryModalVisible} setIsVisible={closeSummaryModal} />
     </View>
   );
 }

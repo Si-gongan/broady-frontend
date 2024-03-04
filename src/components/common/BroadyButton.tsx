@@ -59,9 +59,9 @@ const ButtonColor = {
   },
   darkButton: {
     background: {
-      def: THEME.COLOR.FONT.TITLE,
-      pressed: THEME.COLOR.FONT.TITLE,
-      disabled: THEME.COLOR.FONT.TITLE,
+      def: THEME.COLOR.BLACK_2,
+      pressed: THEME.COLOR.BLACK_2,
+      disabled: THEME.COLOR.BLACK_2,
     },
     border: {
       def: 'transparent',
@@ -69,8 +69,8 @@ const ButtonColor = {
       disabled: 'transparent',
     },
     font: {
-      size: 'body_md',
-      weight: 'regular',
+      size: 'body_lg',
+      weight: 'bold',
       def: THEME.COLOR.WHITE,
     },
   },
@@ -107,8 +107,8 @@ const ButtonPadding = {
     paddingVertical: THEME.SPACING.PADDING.P3 + 2,
   },
   darkButton: {
-    paddingHorizontal: THEME.SPACING.PADDING.P3,
-    paddingVertical: THEME.SPACING.PADDING.P4,
+    paddingHorizontal: THEME.SPACING.PADDING.P2,
+    paddingVertical: THEME.SPACING.PADDING.P3 + 2,
   },
   borderButton: {
     paddingHorizontal: THEME.SPACING.PADDING.P3,
@@ -132,6 +132,7 @@ const BroadyButton = ({
   accessibilityLabel,
   paddingVariant,
   radiusVariant,
+  flex,
   isActive = false,
   disabled = false,
 }: {
@@ -141,6 +142,7 @@ const BroadyButton = ({
   paddingVariant?: ButtonTheme;
   radiusVariant?: ButtonTheme;
   fixedWidth?: number;
+  flex?: number;
   accessibilityLabel?: string;
   disabled?: boolean;
   isActive?: boolean;
@@ -155,6 +157,7 @@ const BroadyButton = ({
           justifyContent: 'center',
           alignItems: 'center',
           width: fixedWidth ?? '100%',
+          ...(flex && { flex: flex }),
         },
       ]}
     >

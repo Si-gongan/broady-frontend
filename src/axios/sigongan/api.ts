@@ -1,157 +1,129 @@
 import { SigonganServer } from './setting';
 import { IPostRegisterReturnType, IPostReturnType } from './types';
-// import type { IAlarmStatusReturnType, IRequestListReturnType } from './types';
 
-// export const GetRequestList = async (fcmToken: string) => {
-//   return await SigonganServer.get<IRequestListReturnType>('/post/user', {
-//     headers: {
-//       fcmToken,
-//       authorization: 0,
-//     },
-//   });
-// };
-
-export const getPostListApi = async ({ page, limit, search }: { page?: number; limit?: number; search?: string }) => {
+export const getPostListApi = async ({
+  page,
+  limit,
+  search,
+  token,
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  token: string;
+}) => {
   return await SigonganServer.get<IPostReturnType>(
     `/sigongan-user/post?${page && `page=${page}`}${limit && `&limit=${limit}`}${search && `&search=${search}`}
   }`,
     {
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
       },
     }
   );
 };
 
-// {
-// 	file: FormData,
-// 	text: string, // 질문 내용
-// 	deletePostId?: string // 제보 받아서 새로운 글을 작성한다면, 그 제보 받은 글 id (지우고 새로 업로드 해야해서)
-// }
+export const registerPostApi = async (input: string, url: string, deletedPostId: string | undefined, token: string) => {
+  let form = new FormData();
 
-// {
-// 	authorization: 'Bearer [token]',
-// 	'Content-Type': 'application/json'
-// }
+  const filename = url.split('/').pop() || '';
+  const match = /\.(\w+)$/.exec(filename ?? '');
+  const type = match ? `image/${match[1]}` : 'image';
 
-export const registerPostApi = async (text: string, file: FormData, deletePostId?: string) => {
-  return await SigonganServer.post<IPostRegisterReturnType>('/sigongan-user/post', {
-    file,
-    text,
-    deletePostId,
+  form.append('file', { uri: url, name: filename, type });
+  form.append('text', input);
+  if (deletedPostId !== undefined) {
+    console.log('should delete post id: ', deletedPostId);
+
+    form.append('deletePostId', deletedPostId);
+  }
+
+  return await SigonganServer.post<IPostRegisterReturnType>('/sigongan-user/post', form, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      authorization: `Bearer ${token}`,
+    },
   });
 };
 
-// export const RegisterRequest = async (text: string, fileUri: string, fcmToken: string) => {
-//   const localUri = fileUri;
-//   const filename = localUri.split('/').pop();
-//   const match = /\.(\w+)$/.exec(filename ?? '');
-//   const type = match ? `image/${match[1]}` : `image`;
+export const readPostApi = async (postId: string, token: string) => {
+  return await SigonganServer.get(`/sigongan-user/post/read?postId=${postId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  });
+};
 
-//   const formData = new FormData();
-//   formData.append('file', { uri: fileUri, name: filename, type });
-//   formData.append('text', text);
+export const deletePostApi = async (postId: string, token: string) => {
+  return await SigonganServer.delete(`/sigongan-user/post?postId=${postId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  });
+};
 
-//   return await SigonganServer.post('/post/user', formData, {
-//     headers: {
-//       'Content-Type': 'multipart/form-data',
-//       fcmToken,
-//       authorization: 0,
-//     },
-//   });
-// };
+export const addAditionalRequestApi = async (postId: string, chat: string, token: string) => {
+  return await SigonganServer.post(
+    `/sigongan-user/post/chat`,
+    {
+      postId,
+      chat,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
 
-// export const AddQuestion = async (postId: string, text: string, fcmToken: string) => {
-//   return await SigonganServer.put(
-//     '/post/user',
-//     {
-//       postId,
-//       text,
-//     },
-//     {
-//       headers: {
-//         fcmToken,
-//         authorization: 0,
-//       },
-//     }
-//   );
-// };
+export const changePinStatusApi = async (postId: string, isPinned: boolean, token: string) => {
+  return await SigonganServer.post(
+    `/sigongan-user/post/pin`,
+    {
+      isPinned,
+      postId,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
 
-// export const DeleteQuestion = async (postId: string, fcmToken: string) => {
-//   return await SigonganServer.delete('/post', {
-//     data: {
-//       postId,
-//     },
-//     headers: {
-//       fcmToken,
-//       authorization: 0,
-//     },
-//   });
-// };
+export const getPinnedPostListApi = async (limit: number, page: number, token: string) => {
+  return await SigonganServer.get(
+    `/sigongan-user/post/pin
+  ?${page && `page=${page}`}${limit && `&limit=${limit}`}
+  `,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
 
-// export const AddThanks = async (postId: string, answerId: string, text: string, fcmToken: string) => {
-//   return await SigonganServer.post(
-//     '/post/appreciate',
-//     {
-//       postId,
-//       answerId,
-//       text,
-//     },
-//     {
-//       headers: {
-//         fcmToken,
-//         authorization: 0,
-//       },
-//     }
-//   );
-// };
-
-// export const GetAlarmStatus = async (fcmToken: string) => {
-//   return await SigonganServer.get<IAlarmStatusReturnType>('/user/status', {
-//     headers: {
-//       fcmToken,
-//       authorization: 0,
-//     },
-//   });
-// };
-
-// export const ChangeAlarmStatus = async (isAccepted: boolean, fcmToken: string) => {
-//   return await SigonganServer.put(
-//     '/user/status',
-//     {
-//       isAccepted,
-//     },
-//     {
-//       headers: {
-//         fcmToken,
-//         authorization: 0,
-//       },
-//     }
-//   );
-// };
-
-// export const ReportPost = async (
-//   postId: string,
-//   type: string,
-//   reason: string,
-//   text: string,
-//   userId: string | null,
-//   fcmToken: string
-// ) => {
-//   return await SigonganServer.post(
-//     '/report/post',
-//     {
-//       postId,
-//       type,
-//       reason,
-//       text,
-//       userId,
-//     },
-//     {
-//       headers: {
-//         fcmToken,
-//         authorization: 0,
-//       },
-//     }
-//   );
-// };
+export const reportCommentApi = async (postId: string, chatId: string, reason: string, token: string) => {
+  return await SigonganServer.post(
+    `/report/to-comment`,
+    {
+      chatId,
+      postId,
+      reason,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};

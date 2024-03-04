@@ -37,8 +37,6 @@ export default function SigonganTabBar({ state, descriptors, navigation }: Botto
 
         const name = route.name as keyof typeof TabItemProps;
 
-        console.log('name', name);
-
         const isFocused = state.index === index;
 
         const onPress = () => {

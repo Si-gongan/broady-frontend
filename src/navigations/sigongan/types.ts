@@ -1,4 +1,5 @@
 import { SCREENS } from '@/constants/screens';
+import { ImagePickerAsset } from 'expo-image-picker';
 
 export type SigonganTabParamList = {
   [SCREENS.MAINSTACK.MAINTAB.브로디홈]: undefined;
@@ -9,6 +10,7 @@ export type SigonganTabParamList = {
 export type SigonganStackParamList = {
   [SCREENS.MAINSTACK.브로디메인탭]: undefined;
   [SCREENS.MAINSTACK.브로디대화방]: {
-    url: string;
+    assets?: ImagePickerAsset;
+    fromDeletedPostId?: string;
   };
 };

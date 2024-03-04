@@ -1,11 +1,16 @@
+import { IsoString } from '@/@types/date';
+
 export const delay = (milliseconds: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, milliseconds);
   });
 };
 
-export const formatTimeToDDMMDD = (date: Date) => {
+export const formatTimeToDDMMDD = (input: IsoString) => {
   // 날짜 객체를 이용해 시간을 가져옴
+
+  const date = new Date(input);
+
   let hours = date.getHours();
   let minutes: string | number = date.getMinutes();
 

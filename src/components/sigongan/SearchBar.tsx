@@ -10,7 +10,7 @@ const Box = styled.View<{
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: ${({ theme }) => theme.SPACING.MARGIN.h4 + 5};
+  gap: ${({ theme }) => theme.SPACING.MARGIN.h4 + 5 + 'px'};
   background-color: ${({ theme, hasText }) => (hasText ? theme.COLOR.WHITE : theme.COLOR.GRAY_50)};
   border-width: 1px;
   border-color: ${({ theme, hasText }) => (hasText ? theme.COLOR.BD_4 : 'transparent')};
