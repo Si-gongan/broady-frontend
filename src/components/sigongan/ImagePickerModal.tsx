@@ -60,8 +60,6 @@ export default function ImagePickerModal({
   };
 
   const onPressPickImage = async () => {
-    console.log(' pick image');
-
     try {
       const result = await pickImage();
 

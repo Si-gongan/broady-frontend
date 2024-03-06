@@ -78,6 +78,7 @@ export default function BroadyTextInput({
       <TextInput
         {...(onFocus && { onFocus })}
         value={text}
+        autoComplete={'off'}
         secureTextEntry={isSecure ? true : false}
         placeholder={placeholder}
         placeholderTextColor={'#5E5E5E'}

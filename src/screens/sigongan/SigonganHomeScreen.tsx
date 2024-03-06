@@ -14,8 +14,9 @@ import { useSearchKeyword } from '@/hooks/useSearchKeyword';
 import { logError } from '@/library/axios';
 import { authTokenState } from '@/states';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useState } from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, SafeAreaView, ScrollView, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from 'styled-components/native';
 
@@ -24,9 +25,17 @@ export const SigonganHomeScreen = () => {
   const theme = useTheme();
   const token = useRecoilValue(authTokenState);
 
-  const { searchKeyword, onChangeSearchKeyword, onPressSearch, onPressDelete } = useSearchKeyword();
-
-  const { postList, getInitialPostList, setSelectedPostId } = usePostLists();
+  const {
+    postList,
+    getInitialPostList,
+    setSelectedPostId,
+    getMorePostList,
+    onDeleteSearchKeyword,
+    isFetching,
+    searchKeyword,
+    onChangeSearchKeyword,
+    resetPage,
+  } = usePostLists();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -35,7 +44,10 @@ export const SigonganHomeScreen = () => {
 
     setSelectedPostId(id);
 
-    navigation.navigate('Post');
+    navigation.navigate('Post', {
+      assets: undefined,
+      fromDeletedPostId: undefined,
+    });
 
     try {
       await readPostApi(id, token);
@@ -54,9 +66,20 @@ export const SigonganHomeScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
+      resetPage();
       onFocusEffect();
     }, [])
   );
+
+  useEffect(() => {
+    return () => {
+      resetPage();
+    };
+  }, []);
+
+  const onReachBottom = () => {
+    getMorePostList();
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -70,10 +93,12 @@ export const SigonganHomeScreen = () => {
               text="새로운 사진 해설 받기"
             ></BroadyButton>
             <SearchBar
-              onPressSearch={onPressSearch}
-              onPressDelete={onPressDelete}
+              onPressSearch={() => {}}
+              onPressDelete={onDeleteSearchKeyword}
               text={searchKeyword}
-              onChangeText={onChangeSearchKeyword}
+              onChangeText={(text) => {
+                onChangeSearchKeyword(text);
+              }}
               placeholder="검색어를 입력해주세요."
             />
           </FlexBox>
@@ -88,29 +113,50 @@ export const SigonganHomeScreen = () => {
               alignItems: 'center',
             }}
           >
-            <Typography size="body_lg" weight="semibold" color={theme.COLOR.GRAY_500}>
-              아직 해설받은 사진이 없어요.
-            </Typography>
-            <Typography size="body_lg" weight="semibold" color={theme.COLOR.GRAY_500}>
-              궁금한 사진을 질문해 보세요!
-            </Typography>
+            {isFetching ? (
+              <ActivityIndicator size="large" />
+            ) : searchKeyword ? (
+              <>
+                <Typography size="body_lg" weight="semibold" color={theme.COLOR.GRAY_500}>
+                  검색결과에 일치하는 해설이 없어요
+                </Typography>
+              </>
+            ) : (
+              <>
+                <Typography size="body_lg" weight="semibold" color={theme.COLOR.GRAY_500}>
+                  아직 해설받은 사진이 없어요.
+                </Typography>
+                <Typography size="body_lg" weight="semibold" color={theme.COLOR.GRAY_500}>
+                  궁금한 사진을 질문해 보세요!
+                </Typography>
+              </>
+            )}
           </FlexBox>
         ) : (
-          <ScrollView>
-            {postList.map((item, index) => (
-              <PostListItem
-                key={index}
-                imageSrc={item.photo}
-                mainText={item.title}
-                subText={item.lastChat}
-                time={item.updatedAt}
-                unreadPostCount={item.unreadPostCount}
-                onPress={() => {
-                  onPressPostListItem(item.id);
-                }}
-              />
-            ))}
-          </ScrollView>
+          <>
+            <FlatList
+              data={postList}
+              renderItem={({ item }) => (
+                <PostListItem
+                  imageSrc={item.photo}
+                  mainText={item.title}
+                  subText={item.lastChat}
+                  time={item.updatedAt}
+                  unreadPostCount={item.unreadPostCount}
+                  onPress={() => {
+                    onPressPostListItem(item.id);
+                  }}
+                />
+              )}
+              style={{
+                flex: 1,
+              }}
+              keyExtractor={(item) => item.id + Math.random()}
+              onEndReached={onReachBottom}
+            ></FlatList>
+            <Margin margin={GET_MARGIN('h3')} />
+            {isFetching && <ActivityIndicator size="large" />}
+          </>
         )}
       </View>
       <ImagePickerModal isVisible={isModalVisible} setIsVisible={setIsModalVisible} />

@@ -14,7 +14,7 @@ const Box = styled.View<{
   background-color: ${({ theme, hasText }) => (hasText ? theme.COLOR.WHITE : theme.COLOR.GRAY_50)};
   border-width: 1px;
   border-color: ${({ theme, hasText }) => (hasText ? theme.COLOR.BD_4 : 'transparent')};
-  padding: 10px 15px 10px 20px;
+  padding: 10px 50px 10px 20px;
   border-radius: 25px;
 `;
 
@@ -46,13 +46,14 @@ export default function SearchBar({
 }) {
   return (
     <Box hasText={text.length > 0}>
+      <Icons type="ionicons" name="search" size={20} color="black" onPress={onPressSearch} />
+
       <SearchInput placeholder={placeholder} onChangeText={onChangeText} value={text}></SearchInput>
-      {/* {text.length > 0 && (
+      {text.length > 0 && (
         <DeleteBtn onPress={onPressDelete}>
           <Icons type="ionicons" name="close" size={20} color="white" />
         </DeleteBtn>
-      )} */}
-      <Icons type="ionicons" name="search" size={20} color="black" onPress={onPressSearch} />
+      )}
     </Box>
   );
 }

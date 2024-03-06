@@ -1,4 +1,11 @@
-import { addAditionalRequestApi, changePinStatusApi, registerPostApi } from '@/axios';
+import {
+  SendTarget,
+  addAditionalRequestApi,
+  changePinStatusApi,
+  registerPostApi,
+  requestImageToAiApi,
+  summaryPostApi,
+} from '@/axios';
 import BroadyButton from '@/components/common/BroadyButton';
 import BroadyTextInput from '@/components/common/BroadyTextInput';
 import FlexBox from '@/components/common/FlexBox';
@@ -10,24 +17,21 @@ import ChatList from '@/components/sigongan/ChatList';
 import ChatSendModal from '@/components/sigongan/ChatSendModal';
 import ImagePickerModal from '@/components/sigongan/ImagePickerModal';
 import PostMenuModal from '@/components/sigongan/PostMenuModal';
+import PostSummaryModal from '@/components/sigongan/PostSummaryModal';
 import { GET_MARGIN } from '@/constants/theme';
 import { useModal } from '@/hooks/useModal';
 import { usePostLists } from '@/hooks/usePostLists';
+import { logError } from '@/library/axios';
+import { showCheckToast, showErrorToast } from '@/library/toast/toast';
 import { SigonganStackParamList } from '@/navigations';
 import { authTokenState } from '@/states';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AxiosError } from 'axios';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
 import styled, { useTheme } from 'styled-components/native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Shadow } from 'react-native-shadow-2';
-import PostSummaryModal from '@/components/sigongan/PostSummaryModal';
-import { logError } from '@/library/axios';
-import { showCheckToast } from '@/library/toast/toast';
-import { from } from 'form-data';
 
 const ImageBox = styled.View`
   aspect-ratio: 1;
@@ -145,19 +149,29 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     closeModal: closeSummaryModal,
   } = useModal();
 
+  // 이거는 이미지를 다시 선택했을때, 기존의 post id를 등록하기 위함.
   const deletedPostId = useRef<string | undefined>(undefined);
   const [input, setInput] = React.useState('');
   const [sendLoading, setSendLoading] = React.useState(false);
+  const [summary, setSummary] = React.useState('');
+  const [summaryLoading, setSummaryLoading] = React.useState(false);
 
   const chatList = selectedPost?.chat || [];
   const imageUrl = selectedPost ? process.env.EXPO_PUBLIC_S3_BUCKET_URL + '/' + selectedPost?.photo : localUploadUrl;
 
-  const isWaitingForResponse = selectedPost ? !isComplete && selectedPost.chat.length > 0 : false;
-  const showSelectImageAgain = selectedPost ? false : true;
+  const [hasSendFirstRequest, setHasSendFirstRequest] = React.useState(
+    selectedPost ? selectedPost.chat.length > 0 : false
+  );
+
+  const isWaitingForResponse = selectedPost ? !isComplete && selectedPost.chat.length > 0 : hasSendFirstRequest;
+  const showSelectImageAgain = selectedPost ? false : !hasSendFirstRequest;
   const showPinnedButton = selectedPost ? (!isPinned && isComplete ? true : false) : false;
   const showSummaryButton = selectedPost ? (isComplete ? true : false) : false;
+  const pageTitle = selectedPost ? selectedPost.title : hasSendFirstRequest ? '시공간' : '사진 선택';
 
   const sendIcon = input ? ICON_SOURCE.SEND_FILL : ICON_SOURCE.SEND;
+
+  // FIXME 전송을 눌렀을때, 바로 사진이 안보이고 기다리고 있어요 라고 되어야 하는데.
 
   const onPressSendIcon = () => {
     if (input) {
@@ -169,23 +183,43 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     openMenuModal();
   };
 
-  const onPressSendToComment = async () => {
+  const afterSendMessage = () => {
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+    setSendLoading(false);
+  };
+
+  const onPressSendRequest = async (target: SendTarget) => {
     setSendLoading(true);
+    setInput('');
     closeSendModal();
+    updateSelectedPost('isComplete', false);
+
+    if (target === 'ai') {
+      console.log('ai로 보내기', new Date().toLocaleString());
+
+      updateSelectedPost('chat', [
+        ...chatList,
+        {
+          id: 'temp' + Date.now(),
+          text: input,
+          time: new Date().toISOString(),
+          type: 'sigongan',
+        },
+      ]);
+    }
 
     if (!isComplete) {
+      setHasSendFirstRequest(true);
+
       try {
         if (!localUploadUrl) throw new Error('localUploadUrl is not defined');
 
-        const response = await registerPostApi(input, localUploadUrl, fromDeletedPostId, token);
+        const response = await registerPostApi(input, localUploadUrl, fromDeletedPostId, target, token);
 
         await getInitialPostList();
         setSelectedPostId(response.data.result.post.id);
 
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-
-        setSendLoading(false);
-        setInput('');
+        afterSendMessage();
       } catch (e) {
         logError(e);
       }
@@ -193,7 +227,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     // 이 경우에는 추가질문이다.
     else if (isComplete && selectedPost?.id) {
       try {
-        const response = await addAditionalRequestApi(selectedPost?.id, input, token);
+        const response = await addAditionalRequestApi(target, selectedPost?.id, input, token);
 
         setSyncPostList((prev) => {
           return prev.map((post) => {
@@ -204,44 +238,26 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
           });
         });
 
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-
-        setSendLoading(false);
-        setInput('');
+        afterSendMessage();
       } catch (e) {
         logError(e);
       }
     }
   };
 
-  const onPressSendToAI = async () => {
-    // api 요청을 보낸다. 그리고 성공하면, 해당 텍스트를 렌더링한다.
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      setSendLoading(false);
-    } catch (e) {}
-  };
-
   // 이거는 신고먹었을때.
-  const onPressConnectToCustomerService = () => {
-    // 고객센터 연결하기
-  };
+  const onPressConnectToCustomerService = () => {};
 
   const onPressSelectPhotoAgain = () => {
-    // 사진 다시 선택하기
-    // 이 deletedPostId를 imagePicker에게 넘겨줘야함.
-
     deletedPostId.current = selectedPost?.id;
 
     openImagePickerModal();
   };
 
   const onPressPinButton = async () => {
-    if (selectedPost?.id) {
+    if (selectedPost?.id && !isPinned) {
       try {
-        const response = await changePinStatusApi(selectedPost?.id, true, token);
+        await changePinStatusApi(selectedPost?.id, true, token);
         updateSelectedPost('isPinned', true);
 
         showCheckToast(
@@ -261,7 +277,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   const onPressPinCancleButton = async () => {
     if (selectedPost?.id) {
       try {
-        const response = await changePinStatusApi(selectedPost?.id, false, token);
+        await changePinStatusApi(selectedPost?.id, false, token);
         updateSelectedPost('isPinned', false);
 
         showCheckToast('찜한 해설에서 삭제되었어요!', null);
@@ -271,9 +287,35 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     }
   };
 
-  const onPressSummaryButton = () => {
-    // 해설 전체 요약하기
+  const onPressSummaryButton = async () => {
     openSummaryModal();
+
+    if (summaryLoading) return;
+
+    setSummaryLoading(true);
+
+    try {
+      if (!selectedPost?.id) throw new Error('selectedPostId is not defined');
+
+      const response = await summaryPostApi(selectedPost?.id, token);
+
+      setSummary(response.data.result.summary);
+    } catch (e) {
+      logError(e);
+    } finally {
+      setSummaryLoading(false);
+    }
+  };
+
+  const onPressPinPostOnSummary = async () => {
+    if (isPinned) {
+      showErrorToast('이미 찜한 해설입니다.');
+      return;
+    } else {
+      await onPressPinButton();
+    }
+
+    closeSummaryModal();
   };
 
   return (
@@ -283,7 +325,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
       }}
     >
       <PageHeader
-        title="시공간"
+        title={pageTitle}
         headerRight={<Icons type="materialIcons" name="menu" size={30} onPress={onPressMenuIcon}></Icons>}
       />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
@@ -407,15 +449,25 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
         setIsVisible={setIsModalVisible}
       />
       <ChatSendModal
-        onPressSendToComment={onPressSendToComment}
-        onPressSendToAI={onPressSendToAI}
+        onPressSendToComment={() => {
+          onPressSendRequest('comment');
+        }}
+        onPressSendToAI={() => {
+          onPressSendRequest('ai');
+        }}
         isSendModalVisible={isSendModalVisible}
         closeSendModal={closeSendModal}
         input={input}
         setInput={setInput}
       />
       <PostMenuModal isVisible={isMenuModalVisible} setIsVisible={closeMenuModal} />
-      <PostSummaryModal isVisible={isSummaryModalVisible} setIsVisible={closeSummaryModal} />
+      <PostSummaryModal
+        isVisible={isSummaryModalVisible}
+        setIsVisible={closeSummaryModal}
+        summary={summary}
+        isSummaryLoading={summaryLoading}
+        onPressPinPostOnSummary={onPressPinPostOnSummary}
+      />
     </View>
   );
 }

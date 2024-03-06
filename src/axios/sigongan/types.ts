@@ -61,3 +61,22 @@ export type IPostRegisterReturnType = {
     post: IPost;
   };
 };
+
+export type IRequestImageToAiReturnType = {
+  code: number;
+  result: {
+    chat: {
+      role: 'user' | 'assistant';
+      type: 'text' | 'image';
+      content: string; // image면 url(도메인을 직접 붙여야 함)
+      createdAt: Date;
+    }[];
+  };
+};
+
+export type IRequestAdditionalReturnType = {
+  statusCode: number;
+  result: {
+    post: IPost;
+  };
+};

@@ -4,6 +4,7 @@ import styled, { useTheme } from 'styled-components/native';
 import Typography from '../common/Typography';
 import Margin from '../common/Margin';
 import { IChat } from '@/@types/chat';
+import { formatTimeToDDMMDD } from '@/library';
 
 const MyChatBox = styled.View`
   display: flex;
@@ -13,7 +14,7 @@ const MyChatBox = styled.View`
 `;
 
 const ChatContent = styled.View<{ backgroundColor: string }>`
-  max-width: 80%;
+  max-width: 75%;
   background-color: ${({ backgroundColor }) => backgroundColor};
   padding: ${({ theme }) => theme.SPACING.PADDING.P3}px;
   border-top-right-radius: ${({ theme }) => theme.STYLES.RADIUS.md}px;
@@ -37,13 +38,13 @@ const CommentChatBox = styled.View`
 
 const AdminChatBox = styled.View``;
 
-export const MyChat = ({ text, backgroundColor }: { text: string; backgroundColor: string }) => {
+export const MyChat = ({ text, backgroundColor, time }: { text: string; backgroundColor: string; time: string }) => {
   const theme = useTheme();
 
   return (
     <MyChatBox>
       <Typography size="body_sm" color={theme.COLOR.FONT.SUB_CONTENT}>
-        오전 21:00
+        {time}
       </Typography>
       <Margin direction="horizontal" margin={5} />
       <ChatContent backgroundColor={backgroundColor}>
@@ -57,10 +58,12 @@ export const CommentChat = ({
   text,
   title,
   backgroundColor,
+  time,
 }: {
   text: string;
   title?: string;
   backgroundColor: string;
+  time: string;
 }) => {
   const theme = useTheme();
 
@@ -76,7 +79,7 @@ export const CommentChat = ({
         </Typography>
       )}
       <Typography size="body_sm" color={theme.COLOR.FONT.SUB_CONTENT}>
-        오전 21:00
+        {time}
       </Typography>
     </CommentChatBox>
   );
@@ -85,18 +88,20 @@ export const CommentChat = ({
 export const AdminChat = ({
   text,
   title,
+  time,
   backgroundColor,
 }: {
   text: string;
   backgroundColor: string;
   title?: string;
+  time: string;
 }) => {
   const theme = useTheme();
 
   return (
     <AdminChatBox>
       <Typography size="body_sm" color={theme.COLOR.FONT.SUB_CONTENT}>
-        오전 21:00
+        {time}
       </Typography>
       <Margin direction="horizontal" margin={5} />
       <ChatContentForComment backgroundColor={backgroundColor}>
@@ -113,11 +118,13 @@ export default function ChatItem({ chat }: { chat: IChat }) {
   const backgroundColor =
     type === 'sigongan' ? theme.COLOR.MINT : type === 'comment' ? theme.COLOR.GRAY_CHAT : theme.COLOR.GRAY_CHAT;
 
+  const time = formatTimeToDDMMDD(chat.createdAt);
+
   return type === 'sigongan' ? (
-    <MyChat text={text} backgroundColor={backgroundColor} />
-  ) : type === 'comment' ? (
-    <CommentChat text={text} backgroundColor={backgroundColor} />
+    <MyChat time={time} text={text} backgroundColor={backgroundColor} />
+  ) : type === 'comment' || type === 'ai' ? (
+    <CommentChat time={time} text={text} backgroundColor={backgroundColor} />
   ) : (
-    <AdminChat text={text} backgroundColor={backgroundColor} />
+    <AdminChat time={time} text={text} backgroundColor={backgroundColor} />
   );
 }

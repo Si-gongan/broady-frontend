@@ -1,5 +1,13 @@
+import { getImageMetaData } from '@/library/media/getImageMetaData';
 import { SigonganServer } from './setting';
-import { IPostRegisterReturnType, IPostReturnType } from './types';
+import {
+  IPostRegisterReturnType,
+  IPostReturnType,
+  IRequestAdditionalReturnType,
+  IRequestImageToAiReturnType,
+} from './types';
+
+export type SendTarget = 'ai' | 'comment';
 
 export const getPostListApi = async ({
   page,
@@ -12,27 +20,33 @@ export const getPostListApi = async ({
   search?: string;
   token: string;
 }) => {
-  return await SigonganServer.get<IPostReturnType>(
-    `/sigongan-user/post?${page && `page=${page}`}${limit && `&limit=${limit}`}${search && `&search=${search}`}
-  }`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const queryString = `/sigongan-user/post${page ? `?page=${page}` : ''}${limit ? `&limit=${limit}` : ''}${
+    search ? `&search=${search}` : ''
+  }`;
+
+  return await SigonganServer.get<IPostReturnType>(queryString, {
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  });
 };
 
-export const registerPostApi = async (input: string, url: string, deletedPostId: string | undefined, token: string) => {
+export const registerPostApi = async (
+  input: string,
+  url: string,
+  deletedPostId: string | undefined,
+  target: SendTarget,
+  token: string
+) => {
   let form = new FormData();
 
-  const filename = url.split('/').pop() || '';
-  const match = /\.(\w+)$/.exec(filename ?? '');
-  const type = match ? `image/${match[1]}` : 'image';
+  const { name, type } = getImageMetaData(url);
 
-  form.append('file', { uri: url, name: filename, type });
+  form.append('file', { uri: url, name, type });
   form.append('text', input);
+  form.append('target', target);
+
   if (deletedPostId !== undefined) {
     console.log('should delete post id: ', deletedPostId);
 
@@ -65,10 +79,11 @@ export const deletePostApi = async (postId: string, token: string) => {
   });
 };
 
-export const addAditionalRequestApi = async (postId: string, chat: string, token: string) => {
-  return await SigonganServer.post(
+export const addAditionalRequestApi = async (target: SendTarget, postId: string, chat: string, token: string) => {
+  return await SigonganServer.post<IRequestAdditionalReturnType>(
     `/sigongan-user/post/chat`,
     {
+      target,
       postId,
       chat,
     },
@@ -126,4 +141,18 @@ export const reportCommentApi = async (postId: string, chatId: string, reason: s
       },
     }
   );
+};
+
+export const summaryPostApi = async (postId: string, token: string) => {
+  return await SigonganServer.get<{
+    statusCode: number;
+    result: {
+      summary: string;
+    };
+  }>(`/sigongan-user/post/summary?postId=${postId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  });
 };
