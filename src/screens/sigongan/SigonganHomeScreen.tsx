@@ -32,6 +32,7 @@ export const SigonganHomeScreen = () => {
     getMorePostList,
     onDeleteSearchKeyword,
     isFetching,
+    isHomeFocused,
     searchKeyword,
     onChangeSearchKeyword,
     resetPage,

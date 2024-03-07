@@ -25,6 +25,7 @@ export const THEME = {
     BD_4: '#4D4D4D',
     BD_5: '#DADADA',
     BD_6: '#999999',
+    ALERT_RED: '#DE1135',
     BLACK: '#000000',
     BLACK_2: '#333333',
     BACKGROUND: '#E8E8E8',

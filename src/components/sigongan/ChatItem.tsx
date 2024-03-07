@@ -5,6 +5,8 @@ import Typography from '../common/Typography';
 import Margin from '../common/Margin';
 import { IChat } from '@/@types/chat';
 import { formatTimeToDDMMDD } from '@/library';
+import { useSetRecoilState } from 'recoil';
+import { reportModalState } from '@/states/reportModal';
 
 const MyChatBox = styled.View`
   display: flex;
@@ -29,7 +31,7 @@ const ChatContentForComment = styled(ChatContent)`
   border-bottom-right-radius: ${({ theme }) => theme.STYLES.RADIUS.md}px;
 `;
 
-const CommentChatBox = styled.View`
+const CommentChatBox = styled.Pressable`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -55,20 +57,32 @@ export const MyChat = ({ text, backgroundColor, time }: { text: string; backgrou
 };
 
 export const CommentChat = ({
+  id,
   text,
   title,
   backgroundColor,
   time,
+  type,
+  onPressChat,
 }: {
+  id: string;
   text: string;
   title?: string;
   backgroundColor: string;
   time: string;
+  type: string;
+  onPressChat: (id: string) => void;
 }) => {
   const theme = useTheme();
 
   return (
-    <CommentChatBox>
+    <CommentChatBox
+      onPress={() => {
+        if (type === 'comment') {
+          onPressChat(id);
+        }
+      }}
+    >
       <ChatContentForComment backgroundColor={backgroundColor}>
         <Typography>{text}</Typography>
       </ChatContentForComment>
@@ -111,7 +125,13 @@ export const AdminChat = ({
   );
 };
 
-export default function ChatItem({ chat }: { chat: IChat }) {
+export default function ChatItem({
+  chat,
+  onPressCommentChat,
+}: {
+  chat: IChat;
+  onPressCommentChat: (id: string) => void;
+}) {
   const { type, text } = chat;
 
   const theme = useTheme();
@@ -123,7 +143,14 @@ export default function ChatItem({ chat }: { chat: IChat }) {
   return type === 'sigongan' ? (
     <MyChat time={time} text={text} backgroundColor={backgroundColor} />
   ) : type === 'comment' || type === 'ai' ? (
-    <CommentChat time={time} text={text} backgroundColor={backgroundColor} />
+    <CommentChat
+      onPressChat={onPressCommentChat}
+      type={type}
+      id={chat.id}
+      time={time}
+      text={text}
+      backgroundColor={backgroundColor}
+    />
   ) : (
     <AdminChat time={time} text={text} backgroundColor={backgroundColor} />
   );

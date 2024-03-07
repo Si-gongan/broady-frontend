@@ -13,6 +13,7 @@ export const usePostLists = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const isHomeFocused = useRef(false);
   const hasNextPage = useRef(true);
   const page = useRef(1);
   const isMounted = useRef(false);
@@ -74,7 +75,7 @@ export const usePostLists = () => {
     }
   };
 
-  const debounceOnChangeKeyword = () => {
+  const debounceGetMorePostList = () => {
     page.current = 0;
 
     setIsFetching(true);
@@ -100,28 +101,35 @@ export const usePostLists = () => {
     setSearchKeyword(keyword);
   };
 
+  const resetPage = () => {
+    page.current = 1;
+    isHomeFocused.current = true;
+    onChangeSearchKeyword('');
+  };
+
+  useEffect(() => {
+    console.log('postlist use effect');
+
+    // 처음 focused 되었을때는 실행되지 않도록 한다.
+    if (isHomeFocused.current) {
+      isHomeFocused.current = false;
+      return;
+    }
+
+    if (!isMounted.current) {
+      isMounted.current = true;
+      return;
+    }
+
+    debounceGetMorePostList();
+  }, [searchKeyword]);
+
   const currentRoomState = {
     isBlocked: selectedPost?.isBlocked || false,
     isPaused: selectedPost?.isPaused || false,
     isComplete: selectedPost?.isComplete || false,
     isPinned: selectedPost?.isPinned || false,
   };
-
-  const resetPage = () => {
-    page.current = 1;
-    onChangeSearchKeyword('');
-  };
-
-  useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-      return;
-    }
-
-    // 마운트되었을때만 실행
-    // debounce로 중복호출 방지.
-    debounceOnChangeKeyword();
-  }, [searchKeyword]);
 
   return {
     selectedPostId,
@@ -132,6 +140,7 @@ export const usePostLists = () => {
     setSyncPostList,
     setSelectedPostId,
     onDeleteSearchKeyword,
+    isHomeFocused,
     resetPage,
     searchKeyword,
     onChangeSearchKeyword,

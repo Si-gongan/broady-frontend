@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Typography from './Typography';
 import { THEME } from '@/constants/theme';
 
-type ButtonTheme = 'primary' | 'secondary' | 'grey' | 'darkButton' | 'borderButton';
+type ButtonTheme = 'primary' | 'secondary' | 'grey' | 'darkButton' | 'borderButton' | 'alert';
 
 const ButtonColor = {
   primary: {
@@ -57,6 +57,23 @@ const ButtonColor = {
       def: THEME.COLOR.GRAY_500,
     },
   },
+  alert: {
+    background: {
+      def: THEME.COLOR.ALERT_RED,
+      pressed: THEME.COLOR.ALERT_RED,
+      disabled: THEME.COLOR.ALERT_RED,
+    },
+    border: {
+      def: 'transparent',
+      pressed: 'transparent',
+      disabled: 'transparent',
+    },
+    font: {
+      size: 'body_lg',
+      weight: 'bold',
+      def: THEME.COLOR.WHITE,
+    },
+  },
   darkButton: {
     background: {
       def: THEME.COLOR.BLACK_2,
@@ -106,6 +123,10 @@ const ButtonPadding = {
     paddingHorizontal: THEME.SPACING.PADDING.P2,
     paddingVertical: THEME.SPACING.PADDING.P3 + 2,
   },
+  alert: {
+    paddingHorizontal: THEME.SPACING.PADDING.P2,
+    paddingVertical: THEME.SPACING.PADDING.P3 + 2,
+  },
   darkButton: {
     paddingHorizontal: THEME.SPACING.PADDING.P2,
     paddingVertical: THEME.SPACING.PADDING.P3 + 2,
@@ -120,6 +141,7 @@ const ButtonRadius = {
   primary: THEME.STYLES.RADIUS.lg,
   secondary: THEME.STYLES.RADIUS.lg,
   grey: THEME.STYLES.RADIUS.lg,
+  alert: THEME.STYLES.RADIUS.lg,
   darkButton: THEME.STYLES.RADIUS.md,
   borderButton: THEME.STYLES.RADIUS.md,
 } as const;
@@ -128,6 +150,7 @@ const BroadyButton = ({
   text,
   onPress,
   variant,
+  isLoading = false,
   fixedWidth,
   accessibilityLabel,
   paddingVariant,
@@ -137,6 +160,7 @@ const BroadyButton = ({
   disabled = false,
 }: {
   text: string;
+  isLoading?: boolean;
   onPress: () => void;
   variant: ButtonTheme;
   paddingVariant?: ButtonTheme;
@@ -186,7 +210,7 @@ const BroadyButton = ({
         accessible
         accessibilityLabel={accessibilityLabel ? accessibilityLabel : `${text} 버튼`}
       >
-        {disabled ? (
+        {disabled || isLoading ? (
           <View
             style={{
               top: 1.5,

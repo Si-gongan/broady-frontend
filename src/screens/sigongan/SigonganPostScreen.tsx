@@ -3,7 +3,7 @@ import {
   addAditionalRequestApi,
   changePinStatusApi,
   registerPostApi,
-  requestImageToAiApi,
+  reportCommentApi,
   summaryPostApi,
 } from '@/axios';
 import BroadyButton from '@/components/common/BroadyButton';
@@ -16,11 +16,14 @@ import Typography from '@/components/common/Typography';
 import ChatList from '@/components/sigongan/ChatList';
 import ChatSendModal from '@/components/sigongan/ChatSendModal';
 import ImagePickerModal from '@/components/sigongan/ImagePickerModal';
+import PostChatReportModal from '@/components/sigongan/PostChatReportModal';
 import PostMenuModal from '@/components/sigongan/PostMenuModal';
+import PostReportCompleteModal from '@/components/sigongan/PostReportCompleteModal';
 import PostSummaryModal from '@/components/sigongan/PostSummaryModal';
 import { GET_MARGIN } from '@/constants/theme';
 import { useModal } from '@/hooks/useModal';
 import { usePostLists } from '@/hooks/usePostLists';
+import { delay } from '@/library';
 import { logError } from '@/library/axios';
 import { showCheckToast, showErrorToast } from '@/library/toast/toast';
 import { SigonganStackParamList } from '@/navigations';
@@ -42,7 +45,9 @@ const ImageBox = styled.View`
   background-color: ${({ theme }) => theme.COLOR.GRAY_50};
 `;
 
-const MainContents = styled.ScrollView`
+const MainContents = styled.ScrollView<{
+  ref: React.RefObject<any>;
+}>`
   padding-bottom: ${({ theme }) => theme.SPACING.MARGIN.h2}px;
 `;
 
@@ -123,6 +128,9 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
       if (deletedPostId.current) {
         deletedPostId.current = undefined;
       }
+      if (selectedReportChatId.current) {
+        selectedReportChatId.current = undefined;
+      }
     };
   }, []);
 
@@ -148,6 +156,12 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     openModal: openSummaryModal,
     closeModal: closeSummaryModal,
   } = useModal();
+  const { isModalVisible: isReportModalVisible, openModal: openReportModal, closeModal: closeReportModal } = useModal();
+  const {
+    isModalVisible: isReportCompleteModalVisible,
+    openModal: openReportCompleteModal,
+    closeModal: closeReportCompleteModal,
+  } = useModal();
 
   // 이거는 이미지를 다시 선택했을때, 기존의 post id를 등록하기 위함.
   const deletedPostId = useRef<string | undefined>(undefined);
@@ -155,6 +169,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   const [sendLoading, setSendLoading] = React.useState(false);
   const [summary, setSummary] = React.useState('');
   const [summaryLoading, setSummaryLoading] = React.useState(false);
+  const selectedReportChatId = useRef<string | undefined>(undefined);
 
   const chatList = selectedPost?.chat || [];
   const imageUrl = selectedPost ? process.env.EXPO_PUBLIC_S3_BUCKET_URL + '/' + selectedPost?.photo : localUploadUrl;
@@ -254,6 +269,13 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     openImagePickerModal();
   };
 
+  const onPressCommentChat = (id: string) => {
+    console.log('onPressCommentChat', id);
+
+    selectedReportChatId.current = id;
+    openReportModal();
+  };
+
   const onPressPinButton = async () => {
     if (selectedPost?.id && !isPinned) {
       try {
@@ -318,6 +340,30 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     closeSummaryModal();
   };
 
+  const reportChat = async (reason: string) => {
+    try {
+      if (!selectedPost?.id || !selectedReportChatId.current)
+        throw new Error('selectedPostId or selectedReportChatId is not defined');
+
+      await reportCommentApi(selectedPost?.id, selectedReportChatId.current, reason, token);
+    } catch (e) {
+      logError(e);
+    }
+  };
+
+  const afterReport = async () => {
+    console.log('afterReport');
+
+    closeReportModal();
+    await delay(500);
+    openReportCompleteModal();
+  };
+
+  const requestAgain = async () => {
+    await delay(100);
+    openImagePickerModal();
+  };
+
   return (
     <View
       style={{
@@ -376,7 +422,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
               )}
             </FlexBox>
             <Margin margin={20} />
-            <ChatList chatList={chatList} />
+            <ChatList onPressCommentChat={onPressCommentChat} chatList={chatList} />
             {sendLoading && (
               <>
                 <Margin margin={30} />
@@ -467,6 +513,17 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
         summary={summary}
         isSummaryLoading={summaryLoading}
         onPressPinPostOnSummary={onPressPinPostOnSummary}
+      />
+      <PostChatReportModal
+        isVisible={isReportModalVisible}
+        setIsVisible={closeReportModal}
+        reportChat={reportChat}
+        afterReport={afterReport}
+      />
+      <PostReportCompleteModal
+        requestAgain={requestAgain}
+        isVisible={isReportCompleteModalVisible}
+        setIsVisible={closeReportCompleteModal}
       />
     </View>
   );
