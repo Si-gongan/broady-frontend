@@ -60,6 +60,7 @@ export default function SigonganTabBar({ state, descriptors, navigation }: Botto
 
         return (
           <TabBar.Item
+            key={name}
             onPress={onPress}
             isActive={isFocused}
             iconName={TabItemProps[name].iconName}

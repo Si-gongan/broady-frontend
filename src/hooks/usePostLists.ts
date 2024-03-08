@@ -5,7 +5,7 @@ import { authTokenState, selectedPostIdAtom, syncPostListAtom } from '@/states';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-const limit = 5;
+const limit = 10;
 
 export const usePostLists = () => {
   const [syncPostList, setSyncPostList] = useRecoilState(syncPostListAtom);

@@ -14,6 +14,7 @@ export const SCREENS = {
     },
     브로디메인탭: 'MainTab' as const,
     브로디대화방: 'Post' as const,
+    브로디자주묻는질문: 'Faq' as const,
   },
   COMMENTSTACK: {
     COMMENTTAB: {

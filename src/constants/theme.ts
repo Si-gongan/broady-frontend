@@ -29,6 +29,7 @@ export const THEME = {
     BLACK: '#000000',
     BLACK_2: '#333333',
     BACKGROUND: '#E8E8E8',
+    BACKGROUND_2: '#F5F5F5',
     BACKGROUND_ORANGE: '#FFF2E6',
   },
   FONT: {
