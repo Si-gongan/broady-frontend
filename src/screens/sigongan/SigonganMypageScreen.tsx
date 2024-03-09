@@ -74,10 +74,9 @@ export const SigonganMypageScreen = () => {
   const theme = useTheme();
 
   const userInfo = useRecoilValue(SigonganUserState);
+  const { logout } = useUserState();
 
   const sigonganNavigation = useSigonganNavigation();
-
-  const { logout } = useUserState();
 
   const nickname = userInfo?.nickname || '';
 

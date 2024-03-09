@@ -69,7 +69,7 @@ export const AuthEmailSignInScreen = () => {
 
         login(token, 'Comment');
 
-        setCurrentUser(commentUser);
+        setCurrentUser(commentUser, 'Comment');
 
         if (!nickname) {
           authNavigation.navigate('nickname');
@@ -85,7 +85,7 @@ export const AuthEmailSignInScreen = () => {
 
         login(token, 'Sigongan');
 
-        setCurrentUser(sigonganUser);
+        setCurrentUser(sigonganUser, 'Sigongan');
 
         if (!sigonganUser.nickname) {
           authNavigation.navigate('nickname');

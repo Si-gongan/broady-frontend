@@ -5,9 +5,19 @@ import {
   IPostReturnType,
   IRequestAdditionalReturnType,
   IRequestImageToAiReturnType,
+  IUserInfoReturnType,
 } from './types';
 
 export type SendTarget = 'ai' | 'comment';
+
+export const sigonganUserInfoApi = async (token: string) => {
+  return await SigonganServer.get<IUserInfoReturnType>('/sigongan-user/info', {
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  });
+};
 
 export const getPostListApi = async ({
   page,

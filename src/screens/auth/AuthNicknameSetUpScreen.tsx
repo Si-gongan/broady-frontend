@@ -2,7 +2,6 @@ import { CommonErrorResponse } from '@/@types/response';
 import { CheckNickname, SetNickname } from '@/axios';
 import AuthInput from '@/components/auth/AuthInput';
 import BroadyButton from '@/components/common/BroadyButton';
-import BroadyTextInput from '@/components/common/BroadyTextInput';
 import ContentsWrapper from '@/components/common/ContentsWrapper';
 import FlexBox from '@/components/common/FlexBox';
 import Margin from '@/components/common/Margin';
@@ -11,19 +10,18 @@ import { GET_MARGIN } from '@/constants/theme';
 import { useAuthNavigation } from '@/hooks';
 import { showErrorToast } from '@/library/toast/toast';
 import { useUserState } from '@/providers';
-import { SigonganUserState, authTokenState, loginFromState } from '@/states';
+import { authTokenState, loginFromState } from '@/states';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { View, Text, KeyboardAvoidingView, Platform, TextInput } from 'react-native';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
 
 export const AuthNicknameSetUpScreen = () => {
   const navigation = useAuthNavigation();
-  const [nicknameInput, setNicknameInput] = useState('');
+  const { setCurrentUser, currentUser } = useUserState();
+  const [nicknameInput, setNicknameInput] = useState(currentUser?.nickname ?? '');
   const [nicknameError, setNicknameError] = useState('');
   const loginFrom = useRecoilValue(loginFromState);
-
-  const { setCurrentUser } = useUserState();
 
   const token = useRecoilValue(authTokenState);
 
@@ -41,9 +39,9 @@ export const AuthNicknameSetUpScreen = () => {
         const response = await SetNickname(nicknameInput, token);
 
         if (loginFrom === 'Comment') {
-          setCurrentUser(response.data.result.commentUser);
+          setCurrentUser(response.data.result.commentUser, 'Comment');
         } else {
-          setCurrentUser(response.data.result.sigonganUser);
+          setCurrentUser(response.data.result.sigonganUser, 'Sigongan');
         }
 
         navigation.navigate('onBoarding');
@@ -52,8 +50,6 @@ export const AuthNicknameSetUpScreen = () => {
         return;
       }
     } catch (e) {
-      console.log(e.response.data);
-
       if (e instanceof AxiosError) {
         const {
           result: { errorCode },

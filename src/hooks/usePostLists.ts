@@ -108,8 +108,6 @@ export const usePostLists = () => {
   };
 
   useEffect(() => {
-    console.log('postlist use effect');
-
     // 처음 focused 되었을때는 실행되지 않도록 한다.
     if (isHomeFocused.current) {
       isHomeFocused.current = false;

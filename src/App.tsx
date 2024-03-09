@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView, View } from 'react-native';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil';
 import { StatusBar } from 'expo-status-bar';
 import { UserStateProvider, useUserState } from './providers';
 import { AuthStack, SigonganStack } from './navigations';
@@ -14,6 +14,10 @@ import { customFontsToLoad } from './config/customFonts';
 import { ThemeProvider } from 'styled-components/native';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from './config/toast';
+import { useEffect } from 'react';
+import { sigonganUserInfoApi } from './axios';
+import { authTokenState, loginFromState } from './states';
+import { logError } from './library/axios';
 
 initializeNotifications();
 
@@ -27,9 +31,31 @@ const Main = () => {
   // 401 에러시 자동 로그아웃 훅
   useCommentAuth();
 
-  const { userState } = useUserState();
+  const { userState, setCurrentUser } = useUserState();
 
   const [fontsLoaded] = useFonts(customFontsToLoad);
+
+  const token = useRecoilValue(authTokenState);
+  const setLoginFromState = useSetRecoilState(loginFromState);
+
+  useEffect(() => {
+    if (!token || userState == 'unLogin') {
+      console.log('unLogin', userState, token);
+      return;
+    }
+
+    if (userState == 'Sigongan') {
+      sigonganUserInfoApi(token)
+        .then((res) => {
+          setCurrentUser(res.data.result.sigonganUser, 'Sigongan');
+        })
+        .catch((err) => {
+          logError(err);
+        });
+    } else if (userState == 'Comment') {
+      console.log('comment user info api');
+    }
+  }, [userState, token]);
 
   if (!fontsLoaded) {
     return (

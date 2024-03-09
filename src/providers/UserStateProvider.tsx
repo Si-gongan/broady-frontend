@@ -19,7 +19,7 @@ const UserStateContext = createContext<{
   login: (authToken: string, userState: UserState) => void;
   logout: () => void;
   currentUser: ICommentUser | ISigonganUser | null;
-  setCurrentUser: (user: ICommentUser | ISigonganUser) => void;
+  setCurrentUser: (user: ICommentUser | ISigonganUser, loginFrom: 'Sigongan' | 'Comment') => void;
 } | null>(null);
 
 export const UserStateProvider = ({ children }: { children: ReactNode }) => {
@@ -32,7 +32,7 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
 
   const currentUser = loginFrom === 'Comment' ? commentUser : sigonganUser;
 
-  const setCurrentUser = (user: ISigonganUser | ICommentUser) => {
+  const setCurrentUser = (user: ISigonganUser | ICommentUser, loginFrom: 'Comment' | 'Sigongan') => {
     if (loginFrom === 'Comment') {
       let commentUser = user as ICommentUser;
 
