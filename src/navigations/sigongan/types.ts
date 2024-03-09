@@ -13,6 +13,6 @@ export type SigonganStackParamList = {
     assets?: ImagePickerAsset;
     fromDeletedPostId?: string;
   };
-  [SCREENS.AUTHSTACK.닉네임설정]: undefined;
+  [SCREENS.MAINSTACK.브로디닉네임설정]: undefined;
   [SCREENS.MAINSTACK.브로디자주묻는질문]: undefined;
 };

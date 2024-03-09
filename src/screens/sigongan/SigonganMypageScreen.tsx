@@ -81,7 +81,7 @@ export const SigonganMypageScreen = () => {
   const nickname = userInfo?.nickname || '';
 
   const onPressChangeNickname = () => {
-    sigonganNavigation.navigate('nickname');
+    sigonganNavigation.navigate('MyPageNickname');
   };
 
   const onPressLogout = () => {

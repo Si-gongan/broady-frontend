@@ -6,23 +6,31 @@ import ContentsWrapper from '@/components/common/ContentsWrapper';
 import FlexBox from '@/components/common/FlexBox';
 import Margin from '@/components/common/Margin';
 import PageHeader from '@/components/common/PageHeader';
+import { SCREENS } from '@/constants/screens';
 import { GET_MARGIN } from '@/constants/theme';
 import { useAuthNavigation } from '@/hooks';
 import { showErrorToast } from '@/library/toast/toast';
+import { AuthStackParamList } from '@/navigations';
 import { useUserState } from '@/providers';
 import { authTokenState, loginFromState } from '@/states';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 
-export const AuthNicknameSetUpScreen = () => {
+export const AuthNicknameSetUpScreen = ({ route }) => {
+  const fromMyPage = route.name == SCREENS.MAINSTACK.브로디닉네임설정;
+
+  console.log('fromMyPage', fromMyPage);
+
   const navigation = useAuthNavigation();
   const { setCurrentUser, currentUser } = useUserState();
   const [nicknameInput, setNicknameInput] = useState(currentUser?.nickname ?? '');
   const [nicknameError, setNicknameError] = useState('');
   const loginFrom = useRecoilValue(loginFromState);
 
+  const ButtonText = fromMyPage ? '설정 완료하기' : '시작하기';
   const token = useRecoilValue(authTokenState);
 
   const onPressChangeButton = async () => {
@@ -88,7 +96,7 @@ export const AuthNicknameSetUpScreen = () => {
             ></AuthInput>
           </ContentsWrapper>
           <ContentsWrapper>
-            <BroadyButton variant="primary" text="시작하기" onPress={onPressChangeButton}></BroadyButton>
+            <BroadyButton variant="primary" text={ButtonText} onPress={onPressChangeButton}></BroadyButton>
             <Margin margin={GET_MARGIN('layout_sm')} />
           </ContentsWrapper>
         </FlexBox>

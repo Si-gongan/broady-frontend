@@ -26,7 +26,7 @@ export const SigonganStack = () => {
       />
       <Stack.Group>
         <Stack.Screen
-          name={SCREENS.AUTHSTACK.닉네임설정}
+          name={SCREENS.MAINSTACK.브로디닉네임설정}
           component={AuthNicknameSetUpScreen}
           options={{ headerShown: false }}
         />
