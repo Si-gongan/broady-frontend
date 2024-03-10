@@ -149,6 +149,8 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   const token = useRecoilValue(authTokenState);
   const scrollViewRef = React.useRef<ScrollView>(null);
 
+  console.log('selectedPost', selectedPost?.id, selectedPost?.isBlocked, selectedPost?.isPaused);
+
   const { isModalVisible: isImagePickerModalVisible, openModal: openImagePickerModal, setIsModalVisible } = useModal();
   const { isModalVisible: isSendModalVisible, openModal: openSendModal, closeModal: closeSendModal } = useModal();
   const { isModalVisible: isMenuModalVisible, openModal: openMenuModal, closeModal: closeMenuModal } = useModal();
@@ -182,7 +184,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   const isWaitingForResponse = selectedPost ? !isComplete && selectedPost.chat.length > 0 : hasSendFirstRequest;
   const showSelectImageAgain = selectedPost ? false : !hasSendFirstRequest;
   const showPinnedButton = selectedPost ? (!isPinned && isComplete ? true : false) : false;
-  const showSummaryButton = selectedPost ? (isComplete ? true : false) : false;
+  const showSummaryButton = selectedPost ? selectedPost.chat.length >= 2 : false;
   const pageTitle = selectedPost ? selectedPost.title : hasSendFirstRequest ? '시공간' : '사진 선택';
 
   const sendIcon = input ? ICON_SOURCE.SEND_FILL : ICON_SOURCE.SEND;

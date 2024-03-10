@@ -26,7 +26,7 @@ export default function ChatSendModal({
   const navigation = useSigonganNavigation();
 
   return (
-    <CenteredModal>
+    <CenteredModal isVisible={isSendModalVisible} closeModal={closeSendModal}>
       <CenteredModal.TextBox>
         <Typography size="body_xl" weight="medium" color={theme.COLOR.FONT.CONTENT}>
           질문하기

@@ -40,7 +40,6 @@ const Main = () => {
 
   useEffect(() => {
     if (!token || userState == 'unLogin') {
-      console.log('unLogin', userState, token);
       return;
     }
 
