@@ -35,6 +35,7 @@ import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, Sc
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
 import styled, { useTheme } from 'styled-components/native';
+import { Shadow } from 'react-native-shadow-2';
 
 const ImageBox = styled.View`
   aspect-ratio: 1;
@@ -377,23 +378,31 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         {showSummaryButton && (
           <SummaryBox onPress={onPressSummaryButton}>
-            <SummaryInnerBox>
-              <LinearGradient
-                colors={['#FFFFFF00', '#389F9F']}
-                style={{
-                  borderRadius: 20,
-                }}
-              >
-                <AISummaryIcon>
-                  <Typography size="body_md" weight="semibold" color={theme.COLOR.FONT.CONTENT}>
-                    Ai
-                  </Typography>
-                </AISummaryIcon>
-              </LinearGradient>
-              <Typography size="body_md" weight="semibold" color={theme.COLOR.FONT.CONTENT}>
-                해설 전체 요약하기
-              </Typography>
-            </SummaryInnerBox>
+            <Shadow
+              distance={10}
+              style={{
+                borderRadius: 20,
+              }}
+            >
+              <SummaryInnerBox>
+                <LinearGradient
+                  colors={['#389F9F', '#FFFFFF00']}
+                  style={{
+                    borderRadius: 20,
+                    backgroundColor: theme.COLOR.MINT_2,
+                  }}
+                >
+                  <AISummaryIcon>
+                    <Typography size="body_md" weight="semibold" color={theme.COLOR.WHITE}>
+                      AI
+                    </Typography>
+                  </AISummaryIcon>
+                </LinearGradient>
+                <Typography size="body_lg" weight="semibold" color={theme.COLOR.FONT.CONTENT}>
+                  해설 전체 요약하기
+                </Typography>
+              </SummaryInnerBox>
+            </Shadow>
           </SummaryBox>
         )}
         <MainContents
