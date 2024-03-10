@@ -52,6 +52,10 @@ export const AuthNicknameSetUpScreen = ({ route }) => {
           setCurrentUser(response.data.result.sigonganUser, 'Sigongan');
         }
 
+        if (fromMyPage) {
+          navigation.goBack();
+          return;
+        }
         navigation.navigate('onBoarding');
       } else {
         setNicknameError('이미 사용중인 닉네임입니다.');

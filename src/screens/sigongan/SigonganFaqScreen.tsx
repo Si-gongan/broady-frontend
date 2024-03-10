@@ -120,6 +120,8 @@ export default function SigonganFaqScreen() {
 
   const { bottom } = useSafeAreaInsets();
 
+  const filteredFaq = FaqData.filter((item) => item.type === selectedMenu);
+
   return (
     <View
       style={{
@@ -148,9 +150,15 @@ export default function SigonganFaqScreen() {
         <Margin margin={GET_MARGIN('h1')} />
         <ScrollView>
           <FlexBox direction="column" gap={GET_MARGIN('h3')}>
-            {FaqData.filter((item) => item.type == selectedMenu).map((faq, index) => (
-              <FaqItem key={index} title={faq.title} description={faq.description} />
-            ))}
+            {filteredFaq.length === 0 ? (
+              <CenteredContentsWrapper>
+                <Typography size="body_lg" color={theme.COLOR.GRAY_700}>
+                  해당 카테고리에 대한 질문이 없습니다.
+                </Typography>
+              </CenteredContentsWrapper>
+            ) : (
+              filteredFaq.map((faq, index) => <FaqItem key={index} title={faq.title} description={faq.description} />)
+            )}
           </FlexBox>
         </ScrollView>
         <Margin margin={bottom} />
