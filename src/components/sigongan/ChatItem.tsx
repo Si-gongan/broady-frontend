@@ -38,7 +38,12 @@ const CommentChatBox = styled.Pressable`
   align-items: flex-end;
 `;
 
-const AdminChatBox = styled.View``;
+const AdminChatBox = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+`;
 
 export const MyChat = ({ text, backgroundColor, time }: { text: string; backgroundColor: string; time: string }) => {
   const theme = useTheme();
@@ -114,13 +119,13 @@ export const AdminChat = ({
 
   return (
     <AdminChatBox>
-      <Typography size="body_sm" color={theme.COLOR.FONT.SUB_CONTENT}>
-        {time}
-      </Typography>
-      <Margin direction="horizontal" margin={5} />
       <ChatContentForComment backgroundColor={backgroundColor}>
         <Typography>{text}</Typography>
       </ChatContentForComment>
+      <Margin direction="horizontal" margin={5} />
+      <Typography size="body_sm" color={theme.COLOR.FONT.SUB_CONTENT}>
+        {time}
+      </Typography>
     </AdminChatBox>
   );
 };
