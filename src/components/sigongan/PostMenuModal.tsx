@@ -94,7 +94,7 @@ export default function PostMenuModal({
       }
     }
 
-    navigation.navigate('MainTab', { screen: SCREENS.MAINSTACK.MAINTAB.브로디홈 });
+    navigation.navigate('MainTab');
   };
 
   const onPressBackToMenu = () => {

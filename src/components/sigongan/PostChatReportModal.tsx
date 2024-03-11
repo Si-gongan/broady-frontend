@@ -44,7 +44,7 @@ export default function PostChatReportModal({
   afterReport?: () => void;
 }) {
   const [reason, setReason] = useState('');
-  const [checkIndex, setCheckIndex] = useState(null);
+  const [checkIndex, setCheckIndex] = useState<number | null>(null);
   const [isReportLoading, setIsReportLoading] = useState(false);
 
   const theme = useTheme();
@@ -54,9 +54,6 @@ export default function PostChatReportModal({
     setReason('');
     setCheckIndex(null);
   };
-
-  // reason은 enum.1 이거나, enum.2 이거나, 아니면 사용자 직접입력이거나.
-  //
 
   const textInputBorder = checkIndex === 2 ? theme.COLOR.MINT_2 : undefined;
 
@@ -130,6 +127,7 @@ export default function PostChatReportModal({
               {reason.length.toString()} / 100
             </Typography>
             <BroadyTextInput
+              initialType="text"
               variant="Border"
               text={reason}
               onChangeText={onChangeReason}

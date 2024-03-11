@@ -206,6 +206,27 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     setSendLoading(false);
   };
 
+  const addAdditionalRequest = async (target: SendTarget, message: string) => {
+    if (!selectedPost?.id) return;
+
+    try {
+      const response = await addAditionalRequestApi(target, selectedPost?.id, message, token);
+
+      setSyncPostList((prev) => {
+        return prev.map((post) => {
+          if (post.id === selectedPost?.id) {
+            return response.data.result.post;
+          }
+          return post;
+        });
+      });
+
+      afterSendMessage();
+    } catch (e) {
+      logError(e);
+    }
+  };
+
   const onPressSendRequest = async (target: SendTarget) => {
     setSendLoading(true);
     setInput('');
@@ -244,22 +265,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     }
     // 이 경우에는 추가질문이다.
     else if (isComplete && selectedPost?.id) {
-      try {
-        const response = await addAditionalRequestApi(target, selectedPost?.id, input, token);
-
-        setSyncPostList((prev) => {
-          return prev.map((post) => {
-            if (post.id === selectedPost?.id) {
-              return response.data.result.post;
-            }
-            return post;
-          });
-        });
-
-        afterSendMessage();
-      } catch (e) {
-        logError(e);
-      }
+      addAdditionalRequest(target, input);
     }
   };
 
@@ -355,16 +361,23 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   };
 
   const afterReport = async () => {
-    console.log('afterReport');
-
     closeReportModal();
     await delay(500);
     openReportCompleteModal();
   };
 
   const requestAgain = async () => {
-    await delay(100);
-    openImagePickerModal();
+    // 마지막 작성자 chat을 지우고,
+
+    const lastRequest = chatList.filter((chat) => chat.type === 'sigongan').pop();
+
+    let updatedChatList = chatList.filter((chat) => chat.id !== selectedReportChatId.current);
+
+    updateSelectedPost('chat', updatedChatList);
+
+    if (!lastRequest) return;
+
+    await addAdditionalRequest('comment', lastRequest.text);
   };
 
   return (
