@@ -11,6 +11,7 @@ import { CommentUserState } from '@/states';
 import Typography from '@/components/common/Typography';
 import { getPostAvailable } from '@/axios';
 import { useEffect, useState } from 'react';
+import { useTheme } from '@react-navigation/native';
 
 export const CommentHomeScreen = () => {
   const navigation = useCommentNavigation();
@@ -36,15 +37,15 @@ export const CommentHomeScreen = () => {
       <View style={{ flex: 1 }}>
         <Margin margin={GET_MARGIN('h1')} />
         <ContentsWrapper>
-          <View style={{ backgroundColor: THEME.COLOR.MINT_2, borderRadius: THEME.STYLES.RADIUS.lg, paddingVertical: THEME.SPACING.PADDING.P3, paddingHorizontal: THEME.SPACING.PADDING.P2 }}>
-              <Text style={{ color: THEME.COLOR.WHITE, fontSize: 22, fontWeight: "800" }}>
+          <FlexBox direction="column" styles={{ backgroundColor: THEME.COLOR.MINT_2, borderRadius: THEME.STYLES.RADIUS.lg, paddingVertical: THEME.SPACING.PADDING.P3, paddingHorizontal: THEME.SPACING.PADDING.P2 }}>
+              <Typography size="body_xl" weight="bold" color={THEME.COLOR.WHITE}>
                 세상을 넓게,{'\n'}새로운 시야 브로디
-              </Text>
-              <Margin margin={THEME.SPACING.MARGIN.h4} />
+              </Typography>
+              <Margin margin={GET_MARGIN('h4')} />
               <Typography size="body_lg" weight="medium" color={THEME.COLOR.WHITE}>
                   반가워요, {nickname} 님!
               </Typography>
-          </View>
+          </FlexBox>
           <Margin margin={GET_MARGIN('h5')} />
 
           {posts.length === 0 && (
