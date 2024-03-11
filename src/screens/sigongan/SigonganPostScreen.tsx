@@ -181,6 +181,9 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     selectedPost ? selectedPost.chat.length > 0 : false
   );
 
+  console.log('selectedPost', Boolean(selectedPost));
+  console.log('hasSendFirstRequest', hasSendFirstRequest);
+
   const isWaitingForResponse = selectedPost ? !isComplete && selectedPost.chat.length > 0 : hasSendFirstRequest;
   const showSelectImageAgain = selectedPost ? false : !hasSendFirstRequest;
   const showPinnedButton = selectedPost ? (!isPinned && isComplete ? true : false) : false;
@@ -227,6 +230,9 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     }
   };
 
+  console.log(selectedPost?.chat[0].createdAt);
+  console.log(new Date().toISOString());
+
   const onPressSendRequest = async (target: SendTarget) => {
     setSendLoading(true);
     setInput('');
@@ -242,6 +248,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
           id: 'temp' + Date.now(),
           text: input,
           time: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
           type: 'sigongan',
         },
       ]);
@@ -368,7 +375,6 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
 
   const requestAgain = async () => {
     // 마지막 작성자 chat을 지우고,
-
     const lastRequest = chatList.filter((chat) => chat.type === 'sigongan').pop();
 
     let updatedChatList = chatList.filter((chat) => chat.id !== selectedReportChatId.current);
