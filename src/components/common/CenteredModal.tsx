@@ -6,10 +6,10 @@ import BroadyButton from './BroadyButton';
 import Margin from './Margin';
 import Modal from 'react-native-modal';
 
-const ModalBox = styled.View`
+const ModalBox = styled.View<{ noPadding?: boolean }>`
   margin: 0 auto;
   width: 90%;
-  padding: ${({ theme }) => theme.SPACING.PADDING.P4}px;
+  padding: ${({ theme, noPadding }) => (noPadding ? 0 : theme.SPACING.PADDING.P4)}px;
   background-color: white;
   border-radius: ${({ theme }) => theme.STYLES.RADIUS.md}px;
 `;
@@ -27,14 +27,16 @@ export default function CenteredModal({
   isVisible,
   closeModal,
   children,
+  noPadding,
 }: {
   isVisible: boolean;
   children: React.ReactNode;
   closeModal: () => void;
+  noPadding?: boolean;
 }) {
   return (
     <Modal animationIn={'fadeIn'} animationOut={'fadeOut'} isVisible={isVisible} onBackdropPress={closeModal}>
-      <ModalBox>{children}</ModalBox>
+      <ModalBox noPadding={noPadding}>{children}</ModalBox>
     </Modal>
   );
 }

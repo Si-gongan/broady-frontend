@@ -1,8 +1,14 @@
+import CenteredModal from '@/components/common/CenteredModal';
+import { CenteredContentsWrapper } from '@/components/common/ContentsWrapper';
+import Divider from '@/components/common/Divider';
 import FlexBox from '@/components/common/FlexBox';
 import Icons from '@/components/common/Icons';
+import Margin from '@/components/common/Margin';
 import PageHeader from '@/components/common/PageHeader';
 import Typography from '@/components/common/Typography';
+import { GET_MARGIN } from '@/constants/theme';
 import { useAuthNavigation, useSigonganNavigation } from '@/hooks';
+import { useModal } from '@/hooks/useModal';
 import { useUserState } from '@/providers';
 import { SigonganUserState } from '@/states';
 import { useNavigation } from '@react-navigation/native';
@@ -70,6 +76,16 @@ const NavigationItem = ({
   );
 };
 
+const ModalBtn = styled.Pressable`
+  flex: 1;
+  padding-top: ${({ theme }) => theme.SPACING.PADDING.P3 + 5 + 'px'};
+  padding-bottom: ${({ theme }) => theme.SPACING.PADDING.P3 + 5 + 'px'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-width: 0.2px;
+`;
+
 export const SigonganMypageScreen = () => {
   const theme = useTheme();
 
@@ -84,9 +100,23 @@ export const SigonganMypageScreen = () => {
     sigonganNavigation.navigate('MyPageNickname');
   };
 
+  const { isModalVisible: isLogoutModalVisible, setIsModalVisible: setIsLogoutModalVisible } = useModal();
+  const { isModalVisible: isWithdrawalModalVisible, setIsModalVisible: setIsWithdrawalModalVisible } = useModal();
+
   const onPressLogout = () => {
+    setIsLogoutModalVisible(true);
+  };
+
+  const handleLogout = () => {
+    setIsLogoutModalVisible(false);
     logout();
   };
+
+  const onPressWithdrawal = () => {
+    setIsWithdrawalModalVisible(true);
+  };
+
+  const handleWithdrawal = () => {};
 
   const onPressFrequentlyAskedQuestions = () => {
     sigonganNavigation.navigate('Faq');
@@ -134,11 +164,72 @@ export const SigonganMypageScreen = () => {
           <Section>
             <SectionContent>
               <NavigationItem isShowArrow={false} title="로그아웃" onPress={onPressLogout} />
-              <NavigationItem isShowArrow={false} title="회원 탈퇴" onPress={() => {}} />
+              <NavigationItem isShowArrow={false} title="회원 탈퇴" onPress={onPressWithdrawal} />
             </SectionContent>
           </Section>
         </FlexBox>
       </ScrollView>
+      <CenteredModal noPadding isVisible={isLogoutModalVisible} closeModal={() => setIsLogoutModalVisible(false)}>
+        <CenteredContentsWrapper>
+          <Margin margin={GET_MARGIN('h1')} />
+          <Typography size="body_xl" weight="bold">
+            브로디
+          </Typography>
+          <Margin margin={GET_MARGIN('h3')} />
+          <Typography size="body_lg" weight="light">
+            로그아웃 하시겠습니까?
+          </Typography>
+          <Margin margin={GET_MARGIN('h2')} />
+        </CenteredContentsWrapper>
+        <FlexBox>
+          <ModalBtn onPress={handleLogout}>
+            <Typography size="body_xl" weight="regular">
+              로그아웃하기
+            </Typography>
+          </ModalBtn>
+          <Divider width={1} color={theme.COLOR.GRAY_500} direction="vertical" />
+          <ModalBtn onPress={() => setIsLogoutModalVisible(false)}>
+            <Typography size="body_xl" weight="regular">
+              취소
+            </Typography>
+          </ModalBtn>
+        </FlexBox>
+      </CenteredModal>
+      <CenteredModal
+        noPadding
+        isVisible={isWithdrawalModalVisible}
+        closeModal={() => setIsWithdrawalModalVisible(false)}
+      >
+        <CenteredContentsWrapper>
+          <Margin margin={GET_MARGIN('h1')} />
+          <Typography size="body_xl" weight="bold">
+            브로디
+          </Typography>
+          <Margin margin={GET_MARGIN('h3')} />
+          <CenteredContentsWrapper>
+            <Typography size="body_lg" weight="light">
+              회원 탈퇴 하시겠습니까?
+            </Typography>
+            <Typography size="body_lg" weight="light">
+              탈퇴 후에는 질문 내용을 보실 수 없어요.
+            </Typography>
+          </CenteredContentsWrapper>
+          <Margin margin={GET_MARGIN('h2')} />
+        </CenteredContentsWrapper>
+        <FlexBox>
+          <ModalBtn onPress={handleWithdrawal}>
+            <Typography size="body_xl" weight="regular">
+              탈퇴하기
+            </Typography>
+          </ModalBtn>
+          <Divider width={1} color={theme.COLOR.GRAY_500} direction="vertical" />
+          <ModalBtn onPress={() => setIsWithdrawalModalVisible(false)}>
+            <Typography size="body_xl" weight="regular">
+              취소
+            </Typography>
+          </ModalBtn>
+        </FlexBox>
+      </CenteredModal>
     </View>
   );
 };
