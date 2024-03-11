@@ -20,3 +20,11 @@ export const showErrorToast = (message: string) => {
     text1: message,
   });
 };
+
+export const showCheckToast = (message: string, component: React.ReactNode) => {
+  Toast.show({
+    type: 'check',
+    text1: message,
+    text2: component,
+  });
+};

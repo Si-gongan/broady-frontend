@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Typography from './Typography';
 import { THEME } from '@/constants/theme';
 
-type ButtonTheme = 'primary' | 'secondary' | 'grey' | 'darkButton' | 'borderButton';
+type ButtonTheme = 'primary' | 'secondary' | 'grey' | 'darkButton' | 'borderButton' | 'alert';
 
 const ButtonColor = {
   primary: {
@@ -57,11 +57,11 @@ const ButtonColor = {
       def: THEME.COLOR.GRAY_500,
     },
   },
-  darkButton: {
+  alert: {
     background: {
-      def: THEME.COLOR.FONT.TITLE,
-      pressed: THEME.COLOR.FONT.TITLE,
-      disabled: THEME.COLOR.FONT.TITLE,
+      def: THEME.COLOR.ALERT_RED,
+      pressed: THEME.COLOR.ALERT_RED,
+      disabled: THEME.COLOR.ALERT_RED,
     },
     border: {
       def: 'transparent',
@@ -69,8 +69,25 @@ const ButtonColor = {
       disabled: 'transparent',
     },
     font: {
-      size: 'body_md',
-      weight: 'regular',
+      size: 'body_lg',
+      weight: 'bold',
+      def: THEME.COLOR.WHITE,
+    },
+  },
+  darkButton: {
+    background: {
+      def: THEME.COLOR.BLACK_2,
+      pressed: THEME.COLOR.BLACK_2,
+      disabled: THEME.COLOR.BLACK_2,
+    },
+    border: {
+      def: 'transparent',
+      pressed: 'transparent',
+      disabled: 'transparent',
+    },
+    font: {
+      size: 'body_lg',
+      weight: 'bold',
       def: THEME.COLOR.WHITE,
     },
   },
@@ -106,9 +123,13 @@ const ButtonPadding = {
     paddingHorizontal: THEME.SPACING.PADDING.P2,
     paddingVertical: THEME.SPACING.PADDING.P3 + 2,
   },
+  alert: {
+    paddingHorizontal: THEME.SPACING.PADDING.P2,
+    paddingVertical: THEME.SPACING.PADDING.P3 + 2,
+  },
   darkButton: {
-    paddingHorizontal: THEME.SPACING.PADDING.P3,
-    paddingVertical: THEME.SPACING.PADDING.P4,
+    paddingHorizontal: THEME.SPACING.PADDING.P2,
+    paddingVertical: THEME.SPACING.PADDING.P3 + 2,
   },
   borderButton: {
     paddingHorizontal: THEME.SPACING.PADDING.P3,
@@ -120,6 +141,7 @@ const ButtonRadius = {
   primary: THEME.STYLES.RADIUS.lg,
   secondary: THEME.STYLES.RADIUS.lg,
   grey: THEME.STYLES.RADIUS.lg,
+  alert: THEME.STYLES.RADIUS.lg,
   darkButton: THEME.STYLES.RADIUS.md,
   borderButton: THEME.STYLES.RADIUS.md,
 } as const;
@@ -128,19 +150,23 @@ const BroadyButton = ({
   text,
   onPress,
   variant,
+  isLoading = false,
   fixedWidth,
   accessibilityLabel,
   paddingVariant,
   radiusVariant,
+  flex,
   isActive = false,
   disabled = false,
 }: {
   text: string;
+  isLoading?: boolean;
   onPress: () => void;
   variant: ButtonTheme;
   paddingVariant?: ButtonTheme;
   radiusVariant?: ButtonTheme;
   fixedWidth?: number;
+  flex?: number;
   accessibilityLabel?: string;
   disabled?: boolean;
   isActive?: boolean;
@@ -155,6 +181,7 @@ const BroadyButton = ({
           justifyContent: 'center',
           alignItems: 'center',
           width: fixedWidth ?? '100%',
+          ...(flex && { flex: flex }),
         },
       ]}
     >
@@ -183,7 +210,7 @@ const BroadyButton = ({
         accessible
         accessibilityLabel={accessibilityLabel ? accessibilityLabel : `${text} 버튼`}
       >
-        {disabled ? (
+        {disabled || isLoading ? (
           <View
             style={{
               top: 1.5,

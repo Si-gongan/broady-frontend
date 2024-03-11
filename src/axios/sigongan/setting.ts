@@ -13,10 +13,10 @@ export const SigonganServer = axios.create({
 // Server Setting
 SigonganServer.interceptors.request.use(
   (config) => {
-    const accessToken = useRecoilValue(authTokenState); // Recoil 상태 가져오기
-    if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
-    }
+    // const accessToken = useRecoilValue(authTokenState); // Recoil 상태 가져오기
+    // if (accessToken) {
+    //   config.headers['Authorization'] = `Bearer ${accessToken}`;
+    // }
     return config;
   },
   (error) => {

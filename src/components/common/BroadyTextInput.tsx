@@ -50,6 +50,7 @@ export default function BroadyTextInput({
   fixedWidth,
   initialType,
   onFocus,
+  multiline,
 }: {
   initialType: 'password' | 'text' | 'email';
   fixedWidth?: number;
@@ -61,6 +62,7 @@ export default function BroadyTextInput({
   onChangeText: (text: string) => void;
   placeholder?: string;
   onFocus?: () => void;
+  multiline?: boolean;
 }) {
   const initialSecure = initialType === 'password' ? true : false;
   const [isSecure, setIsSecure] = React.useState(initialSecure);
@@ -78,11 +80,13 @@ export default function BroadyTextInput({
       <TextInput
         {...(onFocus && { onFocus })}
         value={text}
+        autoComplete={'off'}
         secureTextEntry={isSecure ? true : false}
         placeholder={placeholder}
         placeholderTextColor={'#5E5E5E'}
         onChangeText={onChangeText}
         maxLength={maxLength}
+        multiline={multiline}
         style={{
           width: initialSecure ? '90%' : '100%',
           fontSize: THEME.FONT.SIZE.body_md,

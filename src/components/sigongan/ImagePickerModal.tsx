@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { GET_MARGIN } from '@/constants/theme';
 import { useTheme } from 'styled-components/native';
@@ -9,22 +9,26 @@ import FlexBox from '../common/FlexBox';
 import BroadyButton from '../common/BroadyButton';
 import Margin from '../common/Margin';
 import { pickImage, takePhoto } from '@/library';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { showErrorToast } from '@/library/toast/toast';
 import { useSigonganNavigation } from '@/hooks';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from '@/config/toast';
+import { usePostLists } from '@/hooks/usePostLists';
 
 export default function ImagePickerModal({
   isVisible,
   setIsVisible,
+  deletedPostId,
 }: {
   isVisible: boolean;
   setIsVisible: (isVisible: boolean) => void;
+  deletedPostId?: string;
 }) {
   const theme = useTheme();
 
   const navigation = useSigonganNavigation();
+
+  const { setSelectedPostId } = usePostLists();
 
   const onPressTakePhoto = async () => {
     try {
@@ -37,6 +41,13 @@ export default function ImagePickerModal({
       setIsVisible(false);
 
       const url = result?.assets[0].uri;
+
+      if (!url) {
+        return;
+      }
+
+      setSelectedPostId(null);
+      navigation.navigate('Post', { assets: result?.assets[0], fromDeletedPostId: deletedPostId });
     } catch (e) {
       showErrorToast('사진을 가져오는데 실패했습니다.');
     }
@@ -64,7 +75,8 @@ export default function ImagePickerModal({
         return;
       }
 
-      navigation.navigate('Post', { url });
+      setSelectedPostId(null);
+      navigation.navigate('Post', { assets: result?.assets[0], fromDeletedPostId: deletedPostId });
     } catch (e) {
       showErrorToast('사진을 가져오는데 실패했습니다.');
     }
@@ -92,7 +104,7 @@ export default function ImagePickerModal({
             </Typography>
           </TouchableOpacity>
           <BroadyButton
-            variant="secondary"
+            variant="grey"
             text="취소"
             onPress={() => {
               setIsVisible(false);
