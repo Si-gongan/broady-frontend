@@ -36,6 +36,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
 import styled, { useTheme } from 'styled-components/native';
 import { Shadow } from 'react-native-shadow-2';
+import Share from 'react-native-share';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 const ImageBox = styled.View`
   aspect-ratio: 1;
@@ -167,11 +169,13 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   } = useModal();
 
   // 이거는 이미지를 다시 선택했을때, 기존의 post id를 등록하기 위함.
+
   const deletedPostId = useRef<string | undefined>(undefined);
   const [input, setInput] = React.useState('');
   const [sendLoading, setSendLoading] = React.useState(false);
   const [summary, setSummary] = React.useState('');
   const [summaryLoading, setSummaryLoading] = React.useState(false);
+
   const selectedReportChatId = useRef<string | undefined>(undefined);
 
   const chatList = selectedPost?.chat || [];
@@ -206,6 +210,55 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     setSendLoading(false);
   };
 
+  const sharePicture = async () => {
+    let result = '[Broady]';
+
+    if (showSummaryButton) {
+      if (summary) {
+        result += '\n';
+        result += summary;
+      } else {
+        try {
+          if (!selectedPost?.id) throw new Error('selectedPostId is not defined');
+
+          const response = await summaryPostApi(selectedPost?.id, token);
+
+          result += '\n';
+          result += response.data.result.summary;
+        } catch (e) {
+          logError(e);
+          showErrorToast('요약을 불러오는데 실패했어요.');
+        }
+      }
+    }
+
+    try {
+      if (!imageUrl) throw new Error('imageUrl is not defined');
+
+      const res = await ReactNativeBlobUtil.fetch('GET', imageUrl);
+
+      const status = res.info().status;
+
+      if (status !== 200) {
+        throw new Error('이미지를 불러오는데 실패했습니다.');
+      }
+
+      const base64Str = res.base64();
+      const options = {
+        message: result,
+        url: `data:image/jpeg;base64,${base64Str}`,
+      };
+
+      Share.open(options);
+    } catch (e) {
+      logError(e);
+
+      showErrorToast('공유에 실패했어요.');
+    } finally {
+      // changeLoading(false);
+    }
+  };
+
   const addAdditionalRequest = async (target: SendTarget, message: string) => {
     if (!selectedPost?.id) return;
 
@@ -234,8 +287,6 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     updateSelectedPost('isComplete', false);
 
     if (target === 'ai') {
-      console.log('ai로 보내기', new Date().toLocaleString());
-
       updateSelectedPost('chat', [
         ...chatList,
         {
@@ -280,8 +331,6 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   };
 
   const onPressCommentChat = (id: string) => {
-    console.log('onPressCommentChat', id);
-
     selectedReportChatId.current = id;
     openReportModal();
   };
@@ -524,7 +573,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
         input={input}
         setInput={setInput}
       />
-      <PostMenuModal isVisible={isMenuModalVisible} setIsVisible={closeMenuModal} />
+      <PostMenuModal isVisible={isMenuModalVisible} setIsVisible={closeMenuModal} sharePhoto={sharePicture} />
       <PostSummaryModal
         isVisible={isSummaryModalVisible}
         setIsVisible={closeSummaryModal}

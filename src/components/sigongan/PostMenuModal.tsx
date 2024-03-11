@@ -23,9 +23,11 @@ import { logError } from '@/library/axios';
 export default function PostMenuModal({
   isVisible,
   setIsVisible,
+  sharePhoto,
 }: {
   isVisible: boolean;
   setIsVisible: (isVisible: boolean) => void;
+  sharePhoto: () => Promise<void>;
 }) {
   const [isDeletePressed, setIsDeletePressed] = useState(false);
 
@@ -37,46 +39,10 @@ export default function PostMenuModal({
 
   const headerText = isDeletePressed ? '삭제하기' : '메뉴';
 
-  const onPressSharePhoto = () => {
-    setIsVisible(false);
+  const onPressSharePhoto = async () => {
+    await sharePhoto();
+    // setIsVisible(false);
   };
-
-  // const onShare = async () => {
-  //   let summary = '[Broady]';
-  //   if (answered) {
-  //     try {
-  //       const response = await GetRequestSummary(chat);
-  //       summary += '\n';
-  //       summary += response.data.summary;
-  //     } catch {
-  //       return NoticeError();
-  //     }
-  //   }
-
-  //   try {
-  //     changeLoading(true);
-
-  //     const res = await ReactNativeBlobUtil.fetch('GET', imgUrl);
-
-  //     const status = res.info().status;
-
-  //     if (status !== 200) {
-  //       throw new Error('이미지를 불러오는데 실패했습니다.');
-  //     }
-
-  //     const base64Str = res.base64();
-  //     const options = {
-  //       message: summary,
-  //       url: `data:image/jpeg;base64,${base64Str}`,
-  //     };
-
-  //     Share.open(options);
-  //   } catch {
-  //     NoticeError();
-  //   } finally {
-  //     changeLoading(false);
-  //   }
-  // };
 
   const onPressDeletePostFirst = () => {
     setIsDeletePressed(true);
