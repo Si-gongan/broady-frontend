@@ -181,9 +181,6 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     selectedPost ? selectedPost.chat.length > 0 : false
   );
 
-  console.log('selectedPost', Boolean(selectedPost));
-  console.log('hasSendFirstRequest', hasSendFirstRequest);
-
   const isWaitingForResponse = selectedPost ? !isComplete && selectedPost.chat.length > 0 : hasSendFirstRequest;
   const showSelectImageAgain = selectedPost ? false : !hasSendFirstRequest;
   const showPinnedButton = selectedPost ? (!isPinned && isComplete ? true : false) : false;
@@ -229,9 +226,6 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
       logError(e);
     }
   };
-
-  console.log(selectedPost?.chat[0].createdAt);
-  console.log(new Date().toISOString());
 
   const onPressSendRequest = async (target: SendTarget) => {
     setSendLoading(true);
@@ -297,7 +291,6 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
       try {
         await changePinStatusApi(selectedPost?.id, true, token);
         updateSelectedPost('isPinned', true);
-
         showCheckToast(
           '찜한 해설에 저장되었어요!',
           <Pressable onPress={onPressPinCancleButton}>
@@ -309,6 +302,8 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
       } catch (e) {
         logError(e);
       }
+    } else {
+      showErrorToast('이미 찜한 해설입니다.');
     }
   };
 
@@ -346,14 +341,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   };
 
   const onPressPinPostOnSummary = async () => {
-    if (isPinned) {
-      showErrorToast('이미 찜한 해설입니다.');
-      return;
-    } else {
-      await onPressPinButton();
-    }
-
-    closeSummaryModal();
+    await onPressPinButton();
   };
 
   const reportChat = async (reason: string) => {
