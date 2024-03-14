@@ -18,7 +18,7 @@ const TabItemProps = {
   },
   [SCREENS.COMMENTSTACK.COMMENTTAB.MY의뢰]: {
     iconType: 'fontAwesome',
-    iconName: 'calendar',
+    iconName: 'file-text',
     text: 'MY의뢰',
   },
   [SCREENS.COMMENTSTACK.COMMENTTAB.마이페이지]: {
