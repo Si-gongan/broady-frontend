@@ -35,7 +35,7 @@ export const PostListItem = ({ post, onPress }: { post: IPost; onPress: (post: I
                         </View>
                         <Typography size="body_md" color={theme.COLOR.BLACK}>포인트 : 50P</Typography>
                     </View>
-                    <Image source={require("../../../assets/images/arrow-right-bg.png")} style={{ width: 22, height: 22 }} />
+                    <Image source={require("../../../assets/images/comment/arrow-right-bg.png")} style={{ width: 22, height: 22 }} />
                 </View>
                 <Image source={{ uri: imageSrc }} style={{ width: '100%', height: 200, borderRadius: theme.STYLES.RADIUS.lg }} />
             </Pressable>

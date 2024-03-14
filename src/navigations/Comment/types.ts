@@ -13,4 +13,11 @@ export type CommentStackParamList = {
   [SCREENS.COMMENTSTACK.해설자대화방]: {
     post?: IPost;
   }
+  [SCREENS.COMMENTSTACK.해설자닉네임설정]: undefined;
+  [SCREENS.COMMENTSTACK.해설자설정]: undefined;
+  [SCREENS.COMMENTSTACK.해설자알림설정]: undefined;
+  [SCREENS.COMMENTSTACK.해설자기부]: undefined;
+  [SCREENS.COMMENTSTACK.해설자환급]: undefined;
 };
+
+
