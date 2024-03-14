@@ -25,3 +25,16 @@ export interface IPost {
   createdAt: IsoString;
   updatedAt: IsoString;
 }
+
+export interface challengePost {
+  id: string;
+  title: string;
+  photo: string;
+  createdAt: IsoString;
+  comments: {
+    email: string;
+    text: string;
+    isBest: boolean;
+    createdAt: IsoString;
+  }[];
+}

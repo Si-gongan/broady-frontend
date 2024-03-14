@@ -7,16 +7,23 @@ import FlexBox from '@/components/common/FlexBox';
 import { useCommentNavigation } from '@/hooks';
 import { useRecoilValue } from 'recoil';
 import Typography from '@/components/common/Typography';
-import { getPostAvailableApi, getPostTodayCompleteApi } from '@/axios';
+import { getPostAvailableApi, getPostTodayChallengeApi, getPostTodayCompleteApi } from '@/axios';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components/native';
-import { IPost } from '@/@types/post';
-import { PostListItem } from '@/components/comment/PostListItem';
+import { IPost, challengePost } from '@/@types/post';
+import { ChallengePostItem, PostListItem } from '@/components/comment/PostListItem';
 
 type PostListType = {
   result: {
     posts: IPost[];
   };
+};
+
+type ChallengePostType = {
+  result: {
+    challengePost: challengePost | null;
+    isAlreadyCommented: boolean;
+  }
 };
 
 // TODO: 무한스크롤 구현
@@ -25,29 +32,44 @@ export const CommentHomeScreen = () => {
   const userInfo = useRecoilValue(CommentUserState);
   const theme = useTheme();
   const token = useRecoilValue(authTokenState);
-
+  
+  const [todayChallengePost, setTodayChallengePost] = useState<ChallengePostType>({ result: { challengePost: null, isAlreadyCommented: false } });
   const [availablePostList, setAvailablePostList] = useState<PostListType>({ result: { posts: [] } });
   const [todayCompletePostList, setTodayCompletePostList] = useState<PostListType>({ result: { posts: [] } });
 
   useEffect(() => {
-    if (selected === "해설 가능 의뢰") availablePosts();
-    else todayCompletePosts();
+    if (selected === "해설 가능 의뢰") {
+      getChallengePost();
+      getAvailablePosts();
+    }
+    else {
+      getChallengePost();
+      getCompletePosts();
+    }
   }, []);
 
-  const availablePosts = async () => {
+  const getChallengePost = async () => {
+    try {
+      const res = await getPostTodayChallengeApi({ token: token });
+      console.log(res.data.result)
+      setTodayChallengePost(res.data as unknown as ChallengePostType);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAvailablePosts = async () => {
     try {
       const res = await getPostAvailableApi({ limit: 10, page: 1, token: token });
-      console.log(res.data.result.posts);
       setAvailablePostList(res.data as PostListType);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const todayCompletePosts = async () => {
+  const getCompletePosts = async () => {
     try {
       const res = await getPostTodayCompleteApi({ limit: 10, page: 1, token: token });
-      console.log(res.data.result.posts);
       setTodayCompletePostList(res.data as PostListType);
     } catch (error) {
       console.log(error);
@@ -60,6 +82,14 @@ export const CommentHomeScreen = () => {
     if (!post) return;
 
     navigation.navigate('Post', {
+      post: post,
+    });
+  };
+
+  const onPressChallengePostItem = async (post: challengePost) => {
+    if (!post) return;
+
+    navigation.navigate('ChallengePost', {
       post: post,
     });
   };
@@ -88,7 +118,6 @@ export const CommentHomeScreen = () => {
               총 {availablePostList.result.posts.length.toString()}개
             </Typography>
           </FlexBox>
-          <Margin margin={GET_MARGIN('h3')} />
 
           <FlexBox alignItems="center" justifyContent='space-between'>
             <Pressable onPress={() => setSelected('해설 가능 의뢰')} style={selected === "해설 가능 의뢰" ? { backgroundColor: theme.COLOR.WHITE, width:"50%", paddingVertical: 6, borderRadius: theme.STYLES.RADIUS.xl } : { width:"50%", paddingVertical: 6, borderRadius: theme.STYLES.RADIUS.xl}}>
@@ -114,6 +143,8 @@ export const CommentHomeScreen = () => {
               </>
             ) : (
               <ScrollView style={{ flex: 1 }}>
+                {todayChallengePost.result.challengePost && !todayChallengePost.result.isAlreadyCommented
+                  && <ChallengePostItem post={todayChallengePost.result.challengePost} onPress={(post: challengePost | null) => onPressChallengePostItem(post as challengePost)} />}
                 {availablePostList.result.posts.map((post, index) => (
                   <PostListItem key={index} post={post} onPress={(post: IPost | null) => onPressPostListItem(post as IPost)} />
                 ))}
@@ -129,6 +160,8 @@ export const CommentHomeScreen = () => {
               </>
             ) : (
               <ScrollView style={{ flex: 1 }}>
+                {todayChallengePost.result.challengePost && todayChallengePost.result.isAlreadyCommented
+                  && <ChallengePostItem post={todayChallengePost.result.challengePost} onPress={(post: challengePost | null) => onPressChallengePostItem(post as challengePost)} />}
                 {todayCompletePostList.result.posts.map((post, index) => (
                   <PostListItem key={index} post={post} onPress={(post: IPost | null) => onPressPostListItem(post as IPost)} />
                 ))}
