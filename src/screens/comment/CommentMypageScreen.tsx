@@ -72,7 +72,7 @@ export const CommentMypageScreen = () => {
         <Margin margin={GET_MARGIN('h1')} />
         <ContentsWrapper flex={1}>
           <TopNavigation title="마이페이지" isButton={true} />
-          <Margin margin={GET_MARGIN('h6')} />
+          <Margin margin={GET_MARGIN('h3')} />
 
           <Typography size="body_xl" weight="bold">나의 정보</Typography>
           <Pressable onPress={onPressNickname} style={{ flexDirection: "row", alignItems: "center", gap: 20, marginTop: GET_MARGIN('h5') * 2 }}>

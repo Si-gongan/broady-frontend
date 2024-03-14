@@ -16,7 +16,7 @@ export const TopNavigation = ({ title, isButton }: { title: string, isButton: bo
     }
 
     return (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 56 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Pressable onPress={goBack}>
                 <Image source={require('../../../assets/images/comment/chevron-right.png')} style={{ width: 28, height: 28 }} />
             </Pressable>
