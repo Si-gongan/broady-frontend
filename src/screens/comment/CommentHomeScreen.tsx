@@ -135,7 +135,6 @@ export const CommentHomeScreen = () => {
               </ScrollView>
             )
           )}
-
         </ContentsWrapper>
       </View>
     </SafeAreaView>
