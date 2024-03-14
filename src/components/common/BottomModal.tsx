@@ -35,20 +35,25 @@ export default function BottomModal({
   setIsModalVisible,
   children,
   headerText,
+  onBackdropPress,
 }: {
   isModalVisible: boolean;
   setIsModalVisible: (arg: boolean) => void;
   children: React.ReactNode;
   headerText?: string;
+  onBackdropPress?: () => void;
 }) {
   const { bottom } = useSafeAreaInsets();
+
+  const onBackdropPressHandler = () => {
+    setIsModalVisible(false);
+    onBackdropPress && onBackdropPress();
+  };
 
   return (
     <Modal
       isVisible={isModalVisible}
-      onBackdropPress={() => {
-        setIsModalVisible(false);
-      }}
+      onBackdropPress={onBackdropPressHandler}
       style={{
         // justifyContent: 'flex-end',
         margin: 0,

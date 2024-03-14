@@ -2,29 +2,35 @@ import { CommonErrorResponse } from '@/@types/response';
 import { CheckNickname, SetNickname } from '@/axios';
 import AuthInput from '@/components/auth/AuthInput';
 import BroadyButton from '@/components/common/BroadyButton';
-import BroadyTextInput from '@/components/common/BroadyTextInput';
 import ContentsWrapper from '@/components/common/ContentsWrapper';
 import FlexBox from '@/components/common/FlexBox';
 import Margin from '@/components/common/Margin';
 import PageHeader from '@/components/common/PageHeader';
+import { SCREENS } from '@/constants/screens';
 import { GET_MARGIN } from '@/constants/theme';
 import { useAuthNavigation } from '@/hooks';
 import { showErrorToast } from '@/library/toast/toast';
+import { AuthStackParamList } from '@/navigations';
 import { useUserState } from '@/providers';
-import { SigonganUserState, authTokenState, loginFromState } from '@/states';
+import { authTokenState, loginFromState } from '@/states';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { View, Text, KeyboardAvoidingView, Platform, TextInput } from 'react-native';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
 
-export const AuthNicknameSetUpScreen = () => {
+export const AuthNicknameSetUpScreen = ({ route }) => {
+  const fromMyPage = route.name == SCREENS.MAINSTACK.브로디닉네임설정;
+
+  console.log('fromMyPage', fromMyPage);
+
   const navigation = useAuthNavigation();
-  const [nicknameInput, setNicknameInput] = useState('');
+  const { setCurrentUser, currentUser } = useUserState();
+  const [nicknameInput, setNicknameInput] = useState(currentUser?.nickname ?? '');
   const [nicknameError, setNicknameError] = useState('');
   const loginFrom = useRecoilValue(loginFromState);
 
-  const { setCurrentUser } = useUserState();
-
+  const ButtonText = fromMyPage ? '설정 완료하기' : '시작하기';
   const token = useRecoilValue(authTokenState);
 
   const onPressChangeButton = async () => {
@@ -41,19 +47,21 @@ export const AuthNicknameSetUpScreen = () => {
         const response = await SetNickname(nicknameInput, token);
 
         if (loginFrom === 'Comment') {
-          setCurrentUser(response.data.result.commentUser);
+          setCurrentUser(response.data.result.commentUser, 'Comment');
         } else {
-          setCurrentUser(response.data.result.sigonganUser);
+          setCurrentUser(response.data.result.sigonganUser, 'Sigongan');
         }
 
+        if (fromMyPage) {
+          navigation.goBack();
+          return;
+        }
         navigation.navigate('onBoarding');
       } else {
         setNicknameError('이미 사용중인 닉네임입니다.');
         return;
       }
     } catch (e) {
-      console.log(e.response.data);
-
       if (e instanceof AxiosError) {
         const {
           result: { errorCode },
@@ -92,7 +100,7 @@ export const AuthNicknameSetUpScreen = () => {
             ></AuthInput>
           </ContentsWrapper>
           <ContentsWrapper>
-            <BroadyButton variant="primary" text="시작하기" onPress={onPressChangeButton}></BroadyButton>
+            <BroadyButton variant="primary" text={ButtonText} onPress={onPressChangeButton}></BroadyButton>
             <Margin margin={GET_MARGIN('layout_sm')} />
           </ContentsWrapper>
         </FlexBox>

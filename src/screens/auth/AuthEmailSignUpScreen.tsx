@@ -8,6 +8,7 @@ import {
 import AuthInput from '@/components/auth/AuthInput';
 import CheckBox from '@/components/auth/CheckBox';
 import BroadyButton from '@/components/common/BroadyButton';
+import CheckBoxForm from '@/components/common/CheckBoxForm';
 import ContentsWrapper from '@/components/common/ContentsWrapper';
 import FlexBox from '@/components/common/FlexBox';
 import Icons from '@/components/common/Icons';
@@ -24,32 +25,6 @@ import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { View, KeyboardAvoidingView, Platform, ScrollView, Pressable } from 'react-native';
 import { useRecoilValue } from 'recoil';
-
-const CheckBoxForm = ({ onPress, text, checked }: { onPress?: () => void; text: string; checked: boolean }) => {
-  return (
-    <FlexBox
-      alignItems="center"
-      styles={{
-        paddingVertical: GET_PADDING('P5'),
-      }}
-    >
-      <Pressable onPress={onPress}>
-        <CheckBox checked={checked} />
-      </Pressable>
-      <Margin direction="horizontal" margin={GET_MARGIN('h3')} />
-      <View
-        style={{
-          flex: 1,
-        }}
-      >
-        <Typography size="body_md" color={THEME.COLOR.FONT.CONTENT}>
-          {text}
-        </Typography>
-      </View>
-      <Icons type="material" name="chevron-right" size={24} color="black" onPress={onPress} />
-    </FlexBox>
-  );
-};
 
 export const AuthEmailSignUpScreen = () => {
   const authNavigation = useAuthNavigation();
@@ -108,7 +83,7 @@ export const AuthEmailSignUpScreen = () => {
 
         login(token, 'Comment');
 
-        setCurrentUser(commentUser);
+        setCurrentUser(commentUser, 'Comment');
 
         if (!nickname) {
           authNavigation.navigate('nickname');
@@ -128,7 +103,7 @@ export const AuthEmailSignUpScreen = () => {
 
         login(token, 'Sigongan');
 
-        setCurrentUser(sigonganUser);
+        setCurrentUser(sigonganUser, 'Sigongan');
 
         if (!nickname) {
           authNavigation.navigate('nickname');

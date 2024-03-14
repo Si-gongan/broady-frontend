@@ -37,8 +37,6 @@ export default function SigonganTabBar({ state, descriptors, navigation }: Botto
 
         const name = route.name as keyof typeof TabItemProps;
 
-        console.log('name', name);
-
         const isFocused = state.index === index;
 
         const onPress = () => {
@@ -62,6 +60,7 @@ export default function SigonganTabBar({ state, descriptors, navigation }: Botto
 
         return (
           <TabBar.Item
+            key={name}
             onPress={onPress}
             isActive={isFocused}
             iconName={TabItemProps[name].iconName}

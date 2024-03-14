@@ -7,14 +7,20 @@ import { IChat } from '@/@types/chat';
 const Box = styled.View`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.SPACING.MARGIN.h4};
+  gap: ${({ theme }) => theme.SPACING.MARGIN.h3 + 'px'};
 `;
 
-export default function ChatList({ chatList }: { chatList: IChat[] }) {
+export default function ChatList({
+  chatList,
+  onPressCommentChat,
+}: {
+  chatList: IChat[];
+  onPressCommentChat: (id: string) => void;
+}) {
   return (
     <Box>
       {chatList.map((chat, index) => (
-        <ChatItem key={index} chat={chat} />
+        <ChatItem onPressCommentChat={onPressCommentChat} key={index} chat={chat} />
       ))}
     </Box>
   );

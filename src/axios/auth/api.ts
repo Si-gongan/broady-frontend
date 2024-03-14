@@ -1,3 +1,4 @@
+import { ICommentUser, ISigonganUser } from '@/@types/user';
 import { AuthServer } from './setting';
 import { ICommentRegisterReturnType, ISigonganRegisterReturnType } from './types';
 
@@ -39,6 +40,13 @@ export const CheckNickname = async (nickname: string, token: string) => {
 export const SetNickname = async (nickname: string, token: string) => {
   return await AuthServer.put<{
     statusCode: number;
+    result:
+      | {
+          sigonganUser: ISigonganUser;
+        }
+      | {
+          commentUser: ICommentUser;
+        };
   }>(
     '/nickname',
     { nickname },
