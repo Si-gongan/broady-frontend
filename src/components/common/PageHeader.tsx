@@ -20,10 +20,12 @@ const Blank = styled.View`
 
 const PageHeader = ({
   headerLeftShown = true,
+  headerLeft,
   headerRight,
   title,
 }: {
   headerLeftShown?: boolean;
+  headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
   title?: string;
 }) => {
@@ -48,7 +50,7 @@ const PageHeader = ({
 
   return (
     <Container notchTop={NOTCH_TOP}>
-      {headerLeftShown ? <HeaderLeft /> : <Blank />}
+      {headerLeftShown ? headerLeft ? headerLeft : <HeaderLeft /> : <Blank />}
       {title && (
         <Typography size="body_xl" weight="regular">
           {title}
