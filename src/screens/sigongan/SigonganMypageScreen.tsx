@@ -1,3 +1,4 @@
+import { changeAlarmStatusApi, resignUserApi } from '@/axios';
 import CenteredModal from '@/components/common/CenteredModal';
 import { CenteredContentsWrapper } from '@/components/common/ContentsWrapper';
 import Divider from '@/components/common/Divider';
@@ -9,11 +10,12 @@ import Typography from '@/components/common/Typography';
 import { GET_MARGIN } from '@/constants/theme';
 import { useAuthNavigation, useSigonganNavigation } from '@/hooks';
 import { useModal } from '@/hooks/useModal';
+import { logError } from '@/library/axios';
 import { useUserState } from '@/providers';
-import { SigonganUserState } from '@/states';
+import { SigonganUserState, authTokenState } from '@/states';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, ScrollView, Pressable, Switch } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { View, Text, ScrollView, Pressable, Switch, SwitchChangeEvent } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { useTheme } from 'styled-components/native';
 
 const Section = styled.View`
@@ -89,15 +91,35 @@ const ModalBtn = styled.Pressable`
 export const SigonganMypageScreen = () => {
   const theme = useTheme();
 
-  const userInfo = useRecoilValue(SigonganUserState);
+  const [userInfo, setUserInfo] = useRecoilState(SigonganUserState);
   const { logout } = useUserState();
 
   const sigonganNavigation = useSigonganNavigation();
+  const token = useRecoilValue(authTokenState);
 
   const nickname = userInfo?.nickname || '';
 
   const onPressChangeNickname = () => {
     sigonganNavigation.navigate('MyPageNickname');
+  };
+
+  const switchValue = userInfo?.isAcceptNotification;
+
+  const onChangeSwitch = async (event: SwitchChangeEvent) => {
+    if (userInfo === null || !token) return;
+
+    const changeToValue = event.nativeEvent.value;
+
+    try {
+      await changeAlarmStatusApi(changeToValue, token);
+
+      setUserInfo({
+        ...userInfo,
+        isAcceptNotification: changeToValue,
+      });
+    } catch (e) {
+      logError(e);
+    }
   };
 
   const { isModalVisible: isLogoutModalVisible, setIsModalVisible: setIsLogoutModalVisible } = useModal();
@@ -116,7 +138,17 @@ export const SigonganMypageScreen = () => {
     setIsWithdrawalModalVisible(true);
   };
 
-  const handleWithdrawal = () => {};
+  const handleWithdrawal = async () => {
+    setIsWithdrawalModalVisible(false);
+
+    try {
+      await resignUserApi(token);
+
+      logout();
+    } catch (e) {
+      logError(e);
+    }
+  };
 
   const onPressFrequentlyAskedQuestions = () => {
     sigonganNavigation.navigate('Faq');
@@ -146,7 +178,7 @@ export const SigonganMypageScreen = () => {
                       알림을 설정하고 관리합니다.
                     </Typography>
                   </FlexBox>
-                  <Switch></Switch>
+                  <Switch value={switchValue} onChange={onChangeSwitch}></Switch>
                 </FlexBox>
               </MenuBox>
             </SectionContent>
