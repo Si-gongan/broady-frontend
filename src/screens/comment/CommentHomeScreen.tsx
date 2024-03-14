@@ -7,16 +7,23 @@ import FlexBox from '@/components/common/FlexBox';
 import { useCommentNavigation } from '@/hooks';
 import { useRecoilValue } from 'recoil';
 import Typography from '@/components/common/Typography';
-import { getPostAvailableApi, getPostTodayCompleteApi } from '@/axios';
+import { getPostAvailableApi, getPostTodayChallengeApi, getPostTodayCompleteApi } from '@/axios';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components/native';
-import { IPost } from '@/@types/post';
-import { PostListItem } from '@/components/comment/PostListItem';
+import { IPost, challengePost } from '@/@types/post';
+import { ChallengePostItem, PostListItem } from '@/components/comment/PostListItem';
 
 type PostListType = {
   result: {
     posts: IPost[];
   };
+};
+
+type ChallengePostType = {
+  result: {
+    challengePost: challengePost | null;
+    isAlreadyCommented: boolean;
+  }
 };
 
 // TODO: 무한스크롤 구현
@@ -25,16 +32,33 @@ export const CommentHomeScreen = () => {
   const userInfo = useRecoilValue(CommentUserState);
   const theme = useTheme();
   const token = useRecoilValue(authTokenState);
-
+  
+  const [todayChallengePost, setTodayChallengePost] = useState<ChallengePostType>({ result: { challengePost: null, isAlreadyCommented: false } });
   const [availablePostList, setAvailablePostList] = useState<PostListType>({ result: { posts: [] } });
   const [todayCompletePostList, setTodayCompletePostList] = useState<PostListType>({ result: { posts: [] } });
 
   useEffect(() => {
-    if (selected === "해설 가능 의뢰") availablePosts();
-    else todayCompletePosts();
+    if (selected === "해설 가능 의뢰") {
+      getChallengePost();
+      getAvailablePosts();
+    }
+    else {
+      getChallengePost();
+      getCompletePosts();
+    }
   }, []);
 
-  const availablePosts = async () => {
+  const getChallengePost = async () => {
+    try {
+      const res = await getPostTodayChallengeApi({ token: token });
+      console.log(res.data.result)
+      setTodayChallengePost(res.data as unknown as ChallengePostType);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAvailablePosts = async () => {
     try {
       const res = await getPostAvailableApi({ limit: 10, page: 1, token: token });
       setAvailablePostList(res.data as PostListType);
@@ -43,7 +67,7 @@ export const CommentHomeScreen = () => {
     }
   };
 
-  const todayCompletePosts = async () => {
+  const getCompletePosts = async () => {
     try {
       const res = await getPostTodayCompleteApi({ limit: 10, page: 1, token: token });
       setTodayCompletePostList(res.data as PostListType);
@@ -58,6 +82,14 @@ export const CommentHomeScreen = () => {
     if (!post) return;
 
     navigation.navigate('Post', {
+      post: post,
+    });
+  };
+
+  const onPressChallengePostItem = async (post: challengePost) => {
+    if (!post) return;
+
+    navigation.navigate('ChallengePost', {
       post: post,
     });
   };
@@ -111,8 +143,9 @@ export const CommentHomeScreen = () => {
               </>
             ) : (
               <ScrollView style={{ flex: 1 }}>
+                {todayChallengePost.result.challengePost && !todayChallengePost.result.isAlreadyCommented
+                  && <ChallengePostItem post={todayChallengePost.result.challengePost} onPress={(post: challengePost | null) => onPressChallengePostItem(post as challengePost)} />}
                 {availablePostList.result.posts.map((post, index) => (
-                  console.log(post),
                   <PostListItem key={index} post={post} onPress={(post: IPost | null) => onPressPostListItem(post as IPost)} />
                 ))}
               </ScrollView>
@@ -127,8 +160,9 @@ export const CommentHomeScreen = () => {
               </>
             ) : (
               <ScrollView style={{ flex: 1 }}>
+                {todayChallengePost.result.challengePost && todayChallengePost.result.isAlreadyCommented
+                  && <ChallengePostItem post={todayChallengePost.result.challengePost} onPress={(post: challengePost | null) => onPressChallengePostItem(post as challengePost)} />}
                 {todayCompletePostList.result.posts.map((post, index) => (
-                  console.log(post),
                   <PostListItem key={index} post={post} onPress={(post: IPost | null) => onPressPostListItem(post as IPost)} />
                 ))}
               </ScrollView>

@@ -9,6 +9,7 @@ import { CommentSettingScreen } from '@/screens/comment/CommentSettingScreen';
 import { CommentAlarmSettingScreen } from '@/screens/comment/CommentAlarmSettingScreen';
 import { CommentDonationScreen } from '@/screens/comment/CommentDonationScreen';
 import { CommentRefundScreen } from '@/screens/comment/CommentRefundScreen';
+import CommentChallengePostScreen from '@/screens/comment/CommentChallengePostScreen';
 
 const Stack = createNativeStackNavigator<CommentStackParamList>();
 
@@ -23,7 +24,8 @@ export const CommentStack = () => {
       }}
     >
       <Stack.Screen name={SCREENS.COMMENTSTACK.해설자메인탭} component={CommentTab} options={{ headerShown: false }} />
-      <Stack.Screen name={SCREENS.COMMENTSTACK.해설자대화방} component={CommentPostScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={SCREENS.COMMENTSTACK.해설자일반해설방} component={CommentPostScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={SCREENS.COMMENTSTACK.해설자도전해설방} component={CommentChallengePostScreen} options={{ headerShown: false }} />
       <Stack.Screen name={SCREENS.COMMENTSTACK.해설자닉네임설정} component={CommentNicknameSettingScreen} options={{ headerShown: false }} />
       <Stack.Screen name={SCREENS.COMMENTSTACK.해설자설정} component={CommentSettingScreen} options={{ headerShown: false }} />
       <Stack.Screen name={SCREENS.COMMENTSTACK.해설자알림설정} component={CommentAlarmSettingScreen} options={{ headerShown: false }} />

@@ -31,6 +31,15 @@ export const getPostAvailableApi = async ({ limit, page, token }: { limit: numbe
     );
 };
 
+export const getPostTodayChallengeApi = async ({ token }: { token: string }) => {
+    return await CommentServer.get<PostListType>('/challenge-post/today', {
+        headers: {
+            authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+    });
+};
+
 export const getPostTodayCompleteApi = async ({ limit, page, token }: { limit: number; page: number; token: string }) => {
     return await CommentServer.get<PostListType>(
         `/comment-user/post/today-complete?${page && `page=${page}`}${limit && `&limit=${limit}`}`,

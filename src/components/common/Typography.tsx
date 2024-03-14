@@ -3,7 +3,7 @@ import React from 'react';
 import { TextStyle } from 'react-native';
 import styled from 'styled-components/native';
 
-export type TypoSize = 'body_sm' | 'body_md' | 'body_lg' | 'body_xl' | 'h1' | 'h2' | 'h3';
+export type TypoSize = 'body_sm' | 'body_md' | 'body_lg' | 'body_xl' | 'body_xxl' | 'h1' | 'h2' | 'h3' | 'text_md' | 'text_sm';
 
 export type WeightStyles = 'thin' | 'extraLight' | 'light' | 'regular' | 'medium' | 'bold' | 'semibold' | 'extraBold';
 
@@ -12,9 +12,12 @@ const $sizeStyles = {
   body_md: { fontSize: THEME.FONT.SIZE.body_md },
   body_lg: { fontSize: THEME.FONT.SIZE.body_lg },
   body_xl: { fontSize: THEME.FONT.SIZE.body_xl },
+  body_xxl: { fontSize: THEME.FONT.SIZE.body_xxl },
   h1: { fontSize: THEME.FONT.SIZE.h1 },
   h2: { fontSize: THEME.FONT.SIZE.h2 },
   h3: { fontSize: THEME.FONT.SIZE.h3 },
+  text_md: { fontSize: THEME.FONT.SIZE.text_md },
+  text_sm: { fontSize: THEME.FONT.SIZE.text_sm },
 };
 
 const $weightStyles = {
