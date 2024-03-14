@@ -14,6 +14,8 @@ import { useSigonganNavigation } from '@/hooks';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from '@/config/toast';
 import { usePostLists } from '@/hooks/usePostLists';
+import { CommonActions, StackActions } from '@react-navigation/native';
+import { SCREENS } from '@/constants/screens';
 
 export default function ImagePickerModal({
   isVisible,
@@ -47,16 +49,15 @@ export default function ImagePickerModal({
       }
 
       setSelectedPostId(null);
-      navigation.navigate('Post', { assets: result?.assets[0], fromDeletedPostId: deletedPostId });
+
+      if (!deletedPostId) {
+        navigation.navigate('Post', { assets: result?.assets[0], fromDeletedPostId: undefined });
+      } else {
+        navigation.push('Post', { assets: result?.assets[0], fromDeletedPostId: deletedPostId });
+      }
     } catch (e) {
       showErrorToast('사진을 가져오는데 실패했습니다.');
     }
-
-    // if (aiChat) {
-    //   aiChat.onImageSubmit(url ?? '');
-    // } else {
-    //   navigation.navigate('해설의뢰', { url });
-    // }
   };
 
   const onPressPickImage = async () => {
@@ -76,16 +77,15 @@ export default function ImagePickerModal({
       }
 
       setSelectedPostId(null);
-      navigation.navigate('Post', { assets: result?.assets[0], fromDeletedPostId: deletedPostId });
+
+      if (!deletedPostId) {
+        navigation.navigate('Post', { assets: result?.assets[0], fromDeletedPostId: undefined });
+      } else {
+        navigation.push('Post', { assets: result?.assets[0], fromDeletedPostId: deletedPostId });
+      }
     } catch (e) {
       showErrorToast('사진을 가져오는데 실패했습니다.');
     }
-
-    // if (aiChat) {
-    //   aiChat.onImageSubmit(url ?? '');
-    // } else {
-    //   navigation.navigate('해설의뢰', { url });
-    // }
   };
 
   return (

@@ -166,3 +166,27 @@ export const summaryPostApi = async (postId: string, token: string) => {
     },
   });
 };
+
+export const changeAlarmStatusApi = async (isAcceptNotification: boolean, token: string) => {
+  return await SigonganServer.put(
+    `/sigongan-user/alarm`,
+    {
+      isAcceptNotification,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const resignUserApi = async (token: string) => {
+  return await SigonganServer.delete(`/sigongan-user`, {
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  });
+};
