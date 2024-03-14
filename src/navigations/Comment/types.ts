@@ -1,3 +1,4 @@
+import { IPost } from '@/@types/post';
 import { SCREENS } from '@/constants/screens';
 
 export type CommentTabParamList = {
@@ -10,6 +11,13 @@ export type CommentTabParamList = {
 export type CommentStackParamList = {
   [SCREENS.COMMENTSTACK.해설자메인탭]: undefined;
   [SCREENS.COMMENTSTACK.해설자대화방]: {
-    postId?: string;
+    post?: IPost;
   }
+  [SCREENS.COMMENTSTACK.해설자닉네임설정]: undefined;
+  [SCREENS.COMMENTSTACK.해설자설정]: undefined;
+  [SCREENS.COMMENTSTACK.해설자알림설정]: undefined;
+  [SCREENS.COMMENTSTACK.해설자기부]: undefined;
+  [SCREENS.COMMENTSTACK.해설자환급]: undefined;
 };
+
+

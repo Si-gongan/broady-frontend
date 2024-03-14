@@ -24,7 +24,12 @@ export const SCREENS = {
       MY의뢰: 'MyRequest' as const,
       마이페이지: 'MyPage' as const,
     },
+    해설자설정: 'MyPageSetting' as const,
+    해설자알림설정: 'MyPageAlarmSetting' as const,
+    해설자기부: 'MyPageDonation' as const,
+    해설자환급: 'MyPageRefund' as const,
     해설자메인탭: 'CommentTab' as const,
     해설자대화방: 'Post' as const,
+    해설자닉네임설정: 'MyPageNicknameSetting' as const,
   },
 };

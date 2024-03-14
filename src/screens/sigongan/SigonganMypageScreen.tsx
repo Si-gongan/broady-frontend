@@ -1,13 +1,21 @@
+import { changeAlarmStatusApi, resignUserApi } from '@/axios';
+import CenteredModal from '@/components/common/CenteredModal';
+import { CenteredContentsWrapper } from '@/components/common/ContentsWrapper';
+import Divider from '@/components/common/Divider';
 import FlexBox from '@/components/common/FlexBox';
 import Icons from '@/components/common/Icons';
+import Margin from '@/components/common/Margin';
 import PageHeader from '@/components/common/PageHeader';
 import Typography from '@/components/common/Typography';
+import { GET_MARGIN } from '@/constants/theme';
 import { useAuthNavigation, useSigonganNavigation } from '@/hooks';
+import { useModal } from '@/hooks/useModal';
+import { logError } from '@/library/axios';
 import { useUserState } from '@/providers';
-import { SigonganUserState } from '@/states';
+import { SigonganUserState, authTokenState } from '@/states';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, ScrollView, Pressable, Switch } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { View, Text, ScrollView, Pressable, Switch, SwitchChangeEvent } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { useTheme } from 'styled-components/native';
 
 const Section = styled.View`
@@ -70,13 +78,24 @@ const NavigationItem = ({
   );
 };
 
+const ModalBtn = styled.Pressable`
+  flex: 1;
+  padding-top: ${({ theme }) => theme.SPACING.PADDING.P3 + 5 + 'px'};
+  padding-bottom: ${({ theme }) => theme.SPACING.PADDING.P3 + 5 + 'px'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-width: 0.2px;
+`;
+
 export const SigonganMypageScreen = () => {
   const theme = useTheme();
 
-  const userInfo = useRecoilValue(SigonganUserState);
+  const [userInfo, setUserInfo] = useRecoilState(SigonganUserState);
   const { logout } = useUserState();
 
   const sigonganNavigation = useSigonganNavigation();
+  const token = useRecoilValue(authTokenState);
 
   const nickname = userInfo?.nickname || '';
 
@@ -84,8 +103,51 @@ export const SigonganMypageScreen = () => {
     sigonganNavigation.navigate('MyPageNickname');
   };
 
+  const switchValue = userInfo?.isAcceptNotification;
+
+  const onChangeSwitch = async (event: SwitchChangeEvent) => {
+    if (userInfo === null || !token) return;
+
+    const changeToValue = event.nativeEvent.value;
+
+    try {
+      await changeAlarmStatusApi(changeToValue, token);
+
+      setUserInfo({
+        ...userInfo,
+        isAcceptNotification: changeToValue,
+      });
+    } catch (e) {
+      logError(e);
+    }
+  };
+
+  const { isModalVisible: isLogoutModalVisible, setIsModalVisible: setIsLogoutModalVisible } = useModal();
+  const { isModalVisible: isWithdrawalModalVisible, setIsModalVisible: setIsWithdrawalModalVisible } = useModal();
+
   const onPressLogout = () => {
+    setIsLogoutModalVisible(true);
+  };
+
+  const handleLogout = () => {
+    setIsLogoutModalVisible(false);
     logout();
+  };
+
+  const onPressWithdrawal = () => {
+    setIsWithdrawalModalVisible(true);
+  };
+
+  const handleWithdrawal = async () => {
+    setIsWithdrawalModalVisible(false);
+
+    try {
+      await resignUserApi(token);
+
+      logout();
+    } catch (e) {
+      logError(e);
+    }
   };
 
   const onPressFrequentlyAskedQuestions = () => {
@@ -116,7 +178,7 @@ export const SigonganMypageScreen = () => {
                       알림을 설정하고 관리합니다.
                     </Typography>
                   </FlexBox>
-                  <Switch></Switch>
+                  <Switch value={switchValue} onChange={onChangeSwitch}></Switch>
                 </FlexBox>
               </MenuBox>
             </SectionContent>
@@ -134,11 +196,72 @@ export const SigonganMypageScreen = () => {
           <Section>
             <SectionContent>
               <NavigationItem isShowArrow={false} title="로그아웃" onPress={onPressLogout} />
-              <NavigationItem isShowArrow={false} title="회원 탈퇴" onPress={() => {}} />
+              <NavigationItem isShowArrow={false} title="회원 탈퇴" onPress={onPressWithdrawal} />
             </SectionContent>
           </Section>
         </FlexBox>
       </ScrollView>
+      <CenteredModal noPadding isVisible={isLogoutModalVisible} closeModal={() => setIsLogoutModalVisible(false)}>
+        <CenteredContentsWrapper>
+          <Margin margin={GET_MARGIN('h1')} />
+          <Typography size="body_xl" weight="bold">
+            브로디
+          </Typography>
+          <Margin margin={GET_MARGIN('h3')} />
+          <Typography size="body_lg" weight="light">
+            로그아웃 하시겠습니까?
+          </Typography>
+          <Margin margin={GET_MARGIN('h2')} />
+        </CenteredContentsWrapper>
+        <FlexBox>
+          <ModalBtn onPress={handleLogout}>
+            <Typography size="body_xl" weight="regular">
+              로그아웃하기
+            </Typography>
+          </ModalBtn>
+          <Divider width={1} color={theme.COLOR.GRAY_500} direction="vertical" />
+          <ModalBtn onPress={() => setIsLogoutModalVisible(false)}>
+            <Typography size="body_xl" weight="regular">
+              취소
+            </Typography>
+          </ModalBtn>
+        </FlexBox>
+      </CenteredModal>
+      <CenteredModal
+        noPadding
+        isVisible={isWithdrawalModalVisible}
+        closeModal={() => setIsWithdrawalModalVisible(false)}
+      >
+        <CenteredContentsWrapper>
+          <Margin margin={GET_MARGIN('h1')} />
+          <Typography size="body_xl" weight="bold">
+            브로디
+          </Typography>
+          <Margin margin={GET_MARGIN('h3')} />
+          <CenteredContentsWrapper>
+            <Typography size="body_lg" weight="light">
+              회원 탈퇴 하시겠습니까?
+            </Typography>
+            <Typography size="body_lg" weight="light">
+              탈퇴 후에는 질문 내용을 보실 수 없어요.
+            </Typography>
+          </CenteredContentsWrapper>
+          <Margin margin={GET_MARGIN('h2')} />
+        </CenteredContentsWrapper>
+        <FlexBox>
+          <ModalBtn onPress={handleWithdrawal}>
+            <Typography size="body_xl" weight="regular">
+              탈퇴하기
+            </Typography>
+          </ModalBtn>
+          <Divider width={1} color={theme.COLOR.GRAY_500} direction="vertical" />
+          <ModalBtn onPress={() => setIsWithdrawalModalVisible(false)}>
+            <Typography size="body_xl" weight="regular">
+              취소
+            </Typography>
+          </ModalBtn>
+        </FlexBox>
+      </CenteredModal>
     </View>
   );
 };

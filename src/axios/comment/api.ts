@@ -10,6 +10,15 @@ export const getCommentUserInfoApi = async (token: string) => {
     });
 };
 
+export const getCommentUserPointApi = async (token: string) => {
+    return await CommentServer.get('/comment-user/point', {
+        headers: {
+            authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    });
+};
+
 export const getPostAvailableApi = async ({ limit, page, token }: { limit: number; page: number; token: string }) => {
     return await CommentServer.get<PostListType>(
         `/comment-user/post/available?${page && `page=${page}`}${limit && `&limit=${limit}`}`,

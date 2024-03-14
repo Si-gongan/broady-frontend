@@ -122,11 +122,18 @@ const ICON_SOURCE = {
 
 type Props = NativeStackScreenProps<SigonganStackParamList, 'Post'>;
 
+// fromDeletedPostId는, 메시지 보낼때 실제로 지울 이전의 post id.
+// deletedPostId는, 이미지 다시 선택했을때 그걸 등록해서, imagePickerModal에게 보내주려고.
+
 export default function SigonganPostScreen({ route, navigation }: Props) {
   const localUploadUrl = route.params?.assets?.uri;
   const fromDeletedPostId = route.params?.fromDeletedPostId;
 
   useEffect(() => {
+    if (fromDeletedPostId) {
+      deletedPostId.current = fromDeletedPostId;
+    }
+
     return () => {
       if (deletedPostId.current) {
         deletedPostId.current = undefined;
@@ -151,7 +158,8 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   const token = useRecoilValue(authTokenState);
   const scrollViewRef = React.useRef<ScrollView>(null);
 
-  console.log('selectedPost', selectedPost?.id, selectedPost?.isBlocked, selectedPost?.isPaused);
+  // console.log('selectedPost', selectedPost?.id);
+  // console.log('fromDeletedPostId', fromDeletedPostId);
 
   const { isModalVisible: isImagePickerModalVisible, openModal: openImagePickerModal, setIsModalVisible } = useModal();
   const { isModalVisible: isSendModalVisible, openModal: openSendModal, closeModal: closeSendModal } = useModal();
@@ -325,7 +333,11 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
   const onPressConnectToCustomerService = () => {};
 
   const onPressSelectPhotoAgain = () => {
-    deletedPostId.current = selectedPost?.id;
+    // 두가지 상황.
+
+    if (selectedPost?.id) {
+      deletedPostId.current = selectedPost?.id;
+    }
 
     openImagePickerModal();
   };
@@ -423,6 +435,14 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     await addAdditionalRequest('comment', lastRequest.text);
   };
 
+  const onPressGoBackHeader = () => {
+    if (fromDeletedPostId) {
+      navigation.navigate('MainTab');
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <View
       style={{
@@ -431,6 +451,16 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     >
       <PageHeader
         title={pageTitle}
+        headerLeft={
+          <Icons
+            type="feather"
+            name="chevron-left"
+            size={35}
+            color={theme.COLOR.GRAY_ICON}
+            onPress={onPressGoBackHeader}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          />
+        }
         headerRight={<Icons type="materialIcons" name="menu" size={30} onPress={onPressMenuIcon}></Icons>}
       />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
