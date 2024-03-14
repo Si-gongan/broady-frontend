@@ -19,14 +19,14 @@ const processingBadge = ({ isComplete }: { isComplete: boolean }) => {
     }
 }
 
-export const PostListItem = ({ post, onPress }: { post: IPost; onPress: (id: string | null) => void }) => {
+export const PostListItem = ({ post, onPress }: { post: IPost; onPress: (post: IPost | null) => void }) => {
     const theme = useTheme();
 
     const imageSrc = process.env.EXPO_PUBLIC_S3_BUCKET_URL + "/" + post.photo;
     
     return (
         <>
-            <Pressable onPress={() => onPress(post.id)} style={{ flex: 1, flexDirection: 'column', backgroundColor: theme.COLOR.WHITE, paddingHorizontal: GET_PADDING('P4'), paddingVertical: GET_PADDING('P2'), gap: 10, borderRadius: theme.STYLES.RADIUS.lg }}>
+            <Pressable onPress={() => onPress(post)} style={{ flex: 1, flexDirection: 'column', backgroundColor: theme.COLOR.WHITE, paddingHorizontal: GET_PADDING('P4'), paddingVertical: GET_PADDING('P2'), gap: 10, borderRadius: theme.STYLES.RADIUS.lg }}>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: "space-between", alignItems: "center" }}>
                     <View style={{ flex: 1, flexDirection: 'column', gap: 10 }}>
                         <View style={{ flex: 1, flexDirection: 'row', gap: 8 }}>

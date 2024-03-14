@@ -56,11 +56,11 @@ export const CommentHomeScreen = () => {
 
   const [selected, setSelected] = useState("해설 가능 의뢰");
 
-  const onPressPostListItem = async (id: string | null) => {
-    if (!id) return;
+  const onPressPostListItem = async (post: IPost) => {
+    if (!post) return;
 
     navigation.navigate('Post', {
-      postId: id,
+      post: post,
     });
   };
 
@@ -115,7 +115,7 @@ export const CommentHomeScreen = () => {
             ) : (
               <ScrollView style={{ flex: 1 }}>
                 {availablePostList.result.posts.map((post, index) => (
-                  <PostListItem key={index} post={post} onPress={onPressPostListItem} />
+                  <PostListItem key={index} post={post} onPress={(post: IPost | null) => onPressPostListItem(post as IPost)} />
                 ))}
               </ScrollView>
             )
@@ -130,7 +130,7 @@ export const CommentHomeScreen = () => {
             ) : (
               <ScrollView style={{ flex: 1 }}>
                 {todayCompletePostList.result.posts.map((post, index) => (
-                  <PostListItem key={index} post={post} onPress={onPressPostListItem} />
+                  <PostListItem key={index} post={post} onPress={(post: IPost | null) => onPressPostListItem(post as IPost)} />
                 ))}
               </ScrollView>
             )
