@@ -15,7 +15,7 @@ import { ThemeProvider } from 'styled-components/native';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from './config/toast';
 import { useEffect } from 'react';
-import { sigonganUserInfoApi } from './axios';
+import { getCommentUserInfoApi, sigonganUserInfoApi } from './axios';
 import { authTokenState, loginFromState } from './states';
 import { logError } from './library/axios';
 
@@ -52,7 +52,13 @@ const Main = () => {
           logError(err);
         });
     } else if (userState == 'Comment') {
-      console.log('comment user info api');
+      getCommentUserInfoApi(token)
+        .then((res) => {
+          setCurrentUser(res.data.result.commentUser, 'Comment');
+        })
+        .catch((err) => {
+          logError(err);
+        });
     }
   }, [userState, token]);
 

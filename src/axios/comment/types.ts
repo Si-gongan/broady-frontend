@@ -1,6 +1,6 @@
 import { IPost } from "@/@types/post";
 
-export type AvailablePostType = {
+export type PostListType = {
   statusCode: 200;
   result: {
     posts: IPost[];
