@@ -37,7 +37,6 @@ export const CommentHomeScreen = () => {
   const availablePosts = async () => {
     try {
       const res = await getPostAvailableApi({ limit: 10, page: 1, token: token });
-      console.log(res.data.result.posts);
       setAvailablePostList(res.data as PostListType);
     } catch (error) {
       console.log(error);
@@ -47,7 +46,6 @@ export const CommentHomeScreen = () => {
   const todayCompletePosts = async () => {
     try {
       const res = await getPostTodayCompleteApi({ limit: 10, page: 1, token: token });
-      console.log(res.data.result.posts);
       setTodayCompletePostList(res.data as PostListType);
     } catch (error) {
       console.log(error);
@@ -88,7 +86,6 @@ export const CommentHomeScreen = () => {
               총 {availablePostList.result.posts.length.toString()}개
             </Typography>
           </FlexBox>
-          <Margin margin={GET_MARGIN('h3')} />
 
           <FlexBox alignItems="center" justifyContent='space-between'>
             <Pressable onPress={() => setSelected('해설 가능 의뢰')} style={selected === "해설 가능 의뢰" ? { backgroundColor: theme.COLOR.WHITE, width:"50%", paddingVertical: 6, borderRadius: theme.STYLES.RADIUS.xl } : { width:"50%", paddingVertical: 6, borderRadius: theme.STYLES.RADIUS.xl}}>
@@ -115,6 +112,7 @@ export const CommentHomeScreen = () => {
             ) : (
               <ScrollView style={{ flex: 1 }}>
                 {availablePostList.result.posts.map((post, index) => (
+                  console.log(post),
                   <PostListItem key={index} post={post} onPress={(post: IPost | null) => onPressPostListItem(post as IPost)} />
                 ))}
               </ScrollView>
@@ -130,6 +128,7 @@ export const CommentHomeScreen = () => {
             ) : (
               <ScrollView style={{ flex: 1 }}>
                 {todayCompletePostList.result.posts.map((post, index) => (
+                  console.log(post),
                   <PostListItem key={index} post={post} onPress={(post: IPost | null) => onPressPostListItem(post as IPost)} />
                 ))}
               </ScrollView>

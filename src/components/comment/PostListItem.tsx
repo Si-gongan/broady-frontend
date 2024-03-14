@@ -4,19 +4,29 @@ import Typography from "../common/Typography";
 import { useTheme } from 'styled-components/native';
 import Margin from "../common/Margin";
 import { GET_MARGIN, GET_PADDING } from "@/constants/theme";
-import Icons from "../common/Icons";
 
-
-const processingBadge = ({ isComplete }: { isComplete: boolean }) => {
+const processingBadge = ({ post }: { post: IPost }) => {
     const theme = useTheme();
 
-    if (!isComplete) {
-        return (
+    const now = new Date();
+
+    return (
+        post.isComplete ? (
             <View style={{ borderRadius: theme.STYLES.RADIUS.sm, borderColor: theme.COLOR.MINT_2, borderWidth: 1, backgroundColor: theme.COLOR.WHITE, paddingHorizontal: GET_PADDING('P5') / 2, paddingVertical: GET_PADDING('P5') / 4 }}>
-                <Typography size="body_sm" weight="medium" color={theme.COLOR.MINT_2}>진행중</Typography>
+                <Typography size="body_sm" weight="medium" color={theme.COLOR.MINT_2}>완료</Typography>
             </View>
-        );
-    }
+        ) : (
+            post.availabilityState.expiredAt.toString() < now.toString() ? (
+                <View style={{ borderRadius: theme.STYLES.RADIUS.sm, borderColor: theme.COLOR.MINT_2, borderWidth: 1, backgroundColor: theme.COLOR.WHITE, paddingHorizontal: GET_PADDING('P5') / 2, paddingVertical: GET_PADDING('P5') / 4 }}>
+                    <Typography size="body_sm" weight="medium" color={theme.COLOR.MINT_2}>대기중</Typography>
+                </View>
+            ) : (
+                <View style={{ borderRadius: theme.STYLES.RADIUS.sm, borderColor: theme.COLOR.MINT_2, borderWidth: 1, backgroundColor: theme.COLOR.WHITE, paddingHorizontal: GET_PADDING('P5') / 2, paddingVertical: GET_PADDING('P5') / 4 }}>
+                    <Typography size="body_sm" weight="medium" color={theme.COLOR.MINT_2}>진행중</Typography>
+                </View>
+            )
+        )
+    );
 }
 
 export const PostListItem = ({ post, onPress }: { post: IPost; onPress: (post: IPost | null) => void }) => {
@@ -31,7 +41,7 @@ export const PostListItem = ({ post, onPress }: { post: IPost; onPress: (post: I
                     <View style={{ flex: 1, flexDirection: 'column', gap: 10 }}>
                         <View style={{ flex: 1, flexDirection: 'row', gap: 8 }}>
                             <Typography size="body_xl" weight="bold" color={theme.COLOR.GRAY_ICON}>{post.title}</Typography>
-                            {processingBadge({ isComplete: post.isComplete })}
+                            {processingBadge({ post })}
                         </View>
                         <Typography size="body_md" color={theme.COLOR.BLACK}>포인트 : 50P</Typography>
                     </View>
