@@ -19,7 +19,7 @@ type PostListType = {
   };
 };
 
-// TODO: 무한 스크롤 구현
+// TODO: 무한스크롤 구현
 export const CommentHomeScreen = () => {
   const navigation = useCommentNavigation();
   const userInfo = useRecoilValue(CommentUserState);
