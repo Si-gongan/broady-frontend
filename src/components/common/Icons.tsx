@@ -23,9 +23,22 @@ export type IconProps = {
     left?: number;
     right?: number;
   };
+  accessible?: boolean;
+  accessibilityLabel?: string;
+  noAccessiblityLabel?: boolean;
 };
 
-const Icons: React.FC<IconProps> = ({ type = 'material', name, size = 20, color = 'black', onPress, hitSlop }) => {
+const Icons: React.FC<IconProps> = ({
+  type = 'material',
+  name,
+  size = 20,
+  color = 'black',
+  onPress,
+  hitSlop,
+  accessibilityLabel,
+  noAccessiblityLabel,
+  accessible = true,
+}) => {
   let IconComponent: any;
   if (type === 'material') IconComponent = MaterialCommunityIcons;
   else if (type === 'ionicons') IconComponent = Ionicons;
@@ -37,7 +50,13 @@ const Icons: React.FC<IconProps> = ({ type = 'material', name, size = 20, color 
   else return null;
 
   return (
-    <TouchableOpacity onPress={onPress ? onPress : undefined} disabled={!onPress} hitSlop={hitSlop}>
+    <TouchableOpacity
+      onPress={onPress ? onPress : undefined}
+      disabled={!onPress}
+      hitSlop={hitSlop}
+      accessible={accessible}
+      accessibilityLabel={noAccessiblityLabel ? undefined : accessibilityLabel ? accessibilityLabel : `${name} 아이콘`}
+    >
       <IconComponent name={name} size={size} color={color} />
     </TouchableOpacity>
   );

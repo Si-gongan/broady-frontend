@@ -8,6 +8,7 @@ const FlexBox = ({
   children,
   gap,
   styles,
+  accessible = false,
 }: {
   direction?: 'row' | 'column';
   justifyContent?: 'center' | 'flex-start' | 'flex-end' | 'space-between';
@@ -16,6 +17,7 @@ const FlexBox = ({
   children: React.ReactNode;
   padding?: number;
   styles?: any;
+  accessible?: boolean;
 }) => {
   return (
     <View
@@ -26,6 +28,7 @@ const FlexBox = ({
         ...(gap ? { gap } : {}),
         ...styles,
       }}
+      accessible={accessible}
     >
       {children}
     </View>

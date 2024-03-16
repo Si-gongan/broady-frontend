@@ -51,6 +51,8 @@ export default function BroadyTextInput({
   initialType,
   onFocus,
   multiline,
+  name,
+  accessibilityLabel,
 }: {
   initialType: 'password' | 'text' | 'email';
   fixedWidth?: number;
@@ -63,6 +65,8 @@ export default function BroadyTextInput({
   placeholder?: string;
   onFocus?: () => void;
   multiline?: boolean;
+  name: string;
+  accessibilityLabel?: string;
 }) {
   const initialSecure = initialType === 'password' ? true : false;
   const [isSecure, setIsSecure] = React.useState(initialSecure);
@@ -87,6 +91,8 @@ export default function BroadyTextInput({
         onChangeText={onChangeText}
         maxLength={maxLength}
         multiline={multiline}
+        accessible
+        accessibilityLabel={accessibilityLabel ? accessibilityLabel : `${name} 입력창`}
         style={{
           width: initialSecure ? '90%' : '100%',
           fontSize: THEME.FONT.SIZE.body_md,
@@ -101,6 +107,8 @@ export default function BroadyTextInput({
             bottom: 0,
             justifyContent: 'center',
           }}
+          accessible
+          accessibilityLabel={isSecure ? '비밀번호 보기 아이콘' : '비밀번호 숨기기 아이콘'}
           onPress={() => setIsSecure(!isSecure)}
         >
           <Image source={require('@/../assets/images/auth/eyes.png')} />

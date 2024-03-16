@@ -71,7 +71,16 @@ const NavigationItem = ({
           <Typography size="body_lg" color={theme.COLOR.FONT.SUB_CONTENTDIM} weight="bold">
             {title}
           </Typography>
-          {isShowArrow && <Icons type="material" name="chevron-right" size={24} color="black" />}
+          {isShowArrow && (
+            <Icons
+              accessible={false}
+              noAccessiblityLabel
+              type="material"
+              name="chevron-right"
+              size={24}
+              color="black"
+            />
+          )}
         </FlexBox>
       </MenuBox>
     </Pressable>
@@ -170,7 +179,12 @@ export const SigonganMypageScreen = () => {
             <SectionContent>
               <MenuBox>
                 <FlexBox alignItems="center" justifyContent="space-between">
-                  <FlexBox direction="column" justifyContent="space-between" gap={theme.SPACING.MARGIN.h6}>
+                  <FlexBox
+                    direction="column"
+                    justifyContent="space-between"
+                    gap={theme.SPACING.MARGIN.h6}
+                    accessible={true}
+                  >
                     <Typography size="body_lg" weight="medium">
                       알림 설정
                     </Typography>
@@ -178,7 +192,12 @@ export const SigonganMypageScreen = () => {
                       알림을 설정하고 관리합니다.
                     </Typography>
                   </FlexBox>
-                  <Switch value={switchValue} onChange={onChangeSwitch}></Switch>
+                  <Switch
+                    value={switchValue}
+                    onChange={onChangeSwitch}
+                    accessible
+                    accessibilityLabel="알림 설정 스위치. 알림 설정을 변경하려면 더블 탭하세요."
+                  ></Switch>
                 </FlexBox>
               </MenuBox>
             </SectionContent>

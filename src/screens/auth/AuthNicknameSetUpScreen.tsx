@@ -22,8 +22,6 @@ import { useRecoilValue } from 'recoil';
 export const AuthNicknameSetUpScreen = ({ route }) => {
   const fromMyPage = route.name == SCREENS.MAINSTACK.브로디닉네임설정;
 
-  console.log('fromMyPage', fromMyPage);
-
   const navigation = useAuthNavigation();
   const { setCurrentUser, currentUser } = useUserState();
   const [nicknameInput, setNicknameInput] = useState(currentUser?.nickname ?? '');

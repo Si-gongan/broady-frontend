@@ -6,6 +6,7 @@ import Typography from '../common/Typography';
 import { THEME } from '@/constants/theme';
 import Margin from '../common/Margin';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { HelperText } from 'react-native-paper';
 
 export default function AuthInput({
   label,
@@ -15,10 +16,11 @@ export default function AuthInput({
   inputText,
   initialType,
   placeholder,
-
+  name,
   variant = 'gray',
   onChangeText,
 }: {
+  name?: string;
   label: string;
   labelColor?: string;
   margin?: number;
@@ -38,6 +40,8 @@ export default function AuthInput({
     ? THEME.COLOR.FONT.TITLE
     : THEME.COLOR.BACKGROUND;
 
+  const textName = name || label;
+
   return (
     <View>
       <FlexBox
@@ -54,6 +58,7 @@ export default function AuthInput({
       </FlexBox>
       <Margin margin={margin} />
       <BroadyTextInput
+        name={textName}
         onFocus={() => {
           setIsFocused(true);
         }}
@@ -64,6 +69,7 @@ export default function AuthInput({
         placeholder={placeholder}
         borderColor={borderColor}
       ></BroadyTextInput>
+
       {errorMessage && (
         <Animated.View
           entering={FadeIn.duration(300)}
@@ -75,6 +81,8 @@ export default function AuthInput({
             position: 'absolute',
             bottom: -25,
           }}
+          accessibilityLiveRegion={'polite'}
+          accessibilityRole={'alert'}
         >
           <Image source={require('@/../assets/images/warning.png')} style={{ width: 20, height: 20 }} />
           <Typography size="body_sm" color={THEME.COLOR.FONT.WARN}>

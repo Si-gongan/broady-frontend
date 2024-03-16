@@ -135,12 +135,14 @@ export const AuthEmailSignInScreen = () => {
               onChangeText={(value) => {
                 onChangeText('email', value);
               }}
+              name="이메일"
             ></BroadyTextInput>
             <BroadyTextInput
               text={form.password}
               variant="gray"
               initialType="password"
               placeholder="패스워드"
+              name="패스워드"
               onChangeText={(value) => {
                 onChangeText('password', value);
               }}
@@ -149,7 +151,6 @@ export const AuthEmailSignInScreen = () => {
           </FlexBox>
         </ContentsWrapper>
       </FlexBox>
-
       <ContentsWrapper>
         <CenteredContentsWrapper>
           <Typography size="body_md" weight="light" color={theme.COLOR.GRAY_700} textDecorations="underline">
@@ -159,7 +160,6 @@ export const AuthEmailSignInScreen = () => {
         <Margin margin={GET_MARGIN('h4')}></Margin>
         <BroadyButton variant="grey" text="회원가입" onPress={() => authNavigation.push('broadyEmailRegister')} />
       </ContentsWrapper>
-
       <Margin margin={GET_MARGIN('layout_xl')}></Margin>
     </View>
   );

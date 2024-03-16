@@ -83,7 +83,14 @@ const MenuItem = ({ type, onPress, isSelected }: { type: MenuItemType; isSelecte
 
   const textColor = isSelected ? theme.COLOR.MINT_2 : theme.COLOR.GRAY_500;
   return (
-    <MenuItemBox selected={isSelected} onPress={onPress}>
+    <MenuItemBox
+      selected={isSelected}
+      onPress={onPress}
+      accessible
+      accessibilityRole="button"
+      accessibilityLabel={type}
+      accessibilityState={{ selected: isSelected }}
+    >
       <Typography size="body_md" weight="bold" color={textColor}>
         {type}
       </Typography>
@@ -104,11 +111,13 @@ const FaqBox = styled.View`
 const FaqItem = ({ title, description }: { title: string; description: string }) => {
   const theme = useTheme();
   return (
-    <FaqBox>
-      <Typography size="body_xl" weight="bold">
+    <FaqBox accessible>
+      <Typography size="body_xl" weight="bold" accessiblityLabel={`제목 ${title}`}>
         {title}
       </Typography>
-      <Typography color={theme.COLOR.GRAY_500}>{description}</Typography>
+      <Typography color={theme.COLOR.GRAY_500} accessiblityLabel={`내용 ${description}`}>
+        {description}
+      </Typography>
     </FaqBox>
   );
 };

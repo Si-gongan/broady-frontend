@@ -39,11 +39,21 @@ export const AuthInitialScreen = () => {
 
   return (
     <Container>
-      <Image source={require('@/../assets/images/Logo.png')} />
+      <Image source={require('@/../assets/images/Logo.png')} accessible accessibilityLabel="브로디 로고 이미지" />
       <Margin margin={60} />
-      <BroadyButton onPress={onPressCommentReceive} variant="secondary" text="사진 해설 받기" />
+      <BroadyButton
+        onPress={onPressCommentReceive}
+        variant="secondary"
+        text="사진 해설 받기"
+        accessibilityLabel="사진 해설 받기 버튼"
+      />
       <Margin margin={THEME.SPACING.MARGIN.h3} />
-      <BroadyButton onPress={onPressCommentSend} variant="primary" text="사진 해설 하기" />
+      <BroadyButton
+        onPress={onPressCommentSend}
+        variant="primary"
+        text="사진 해설 하기"
+        accessibilityLabel="사진 해설 하기 버튼"
+      />
     </Container>
     // <View
     //   style={{

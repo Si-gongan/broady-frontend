@@ -41,6 +41,7 @@ const PageHeader = ({
       name="chevron-left"
       size={35}
       color={headerLeftColor}
+      accessibilityLabel="뒤로가기 버튼"
       onPress={() => {
         navigation.goBack();
       }}

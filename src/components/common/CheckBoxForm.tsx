@@ -8,7 +8,21 @@ import { useTheme } from 'styled-components/native';
 import Icons from './Icons';
 import Margin from './Margin';
 
-const CheckBoxForm = ({ onPress, text, checked }: { onPress?: () => void; text: string; checked: boolean }) => {
+const CheckBoxForm = ({
+  onPressContent,
+  onPressCheckBox,
+  text,
+  checked,
+  accessibilityLabelForCheckbox,
+  accessiblityLabelForContent,
+}: {
+  onPressContent?: () => void;
+  onPressCheckBox?: () => void;
+  text: string;
+  checked: boolean;
+  accessibilityLabelForCheckbox: string;
+  accessiblityLabelForContent?: string;
+}) => {
   const theme = useTheme();
   return (
     <FlexBox
@@ -17,7 +31,15 @@ const CheckBoxForm = ({ onPress, text, checked }: { onPress?: () => void; text: 
         paddingVertical: GET_PADDING('P5'),
       }}
     >
-      <Pressable onPress={onPress}>
+      <Pressable
+        onPress={onPressCheckBox}
+        accessible
+        accessibilityRole="button"
+        accessibilityState={{
+          checked: checked,
+        }}
+        accessibilityLabel={accessibilityLabelForCheckbox}
+      >
         <CheckBox checked={checked} />
       </Pressable>
       <Margin direction="horizontal" margin={GET_MARGIN('h3')} />
@@ -26,11 +48,26 @@ const CheckBoxForm = ({ onPress, text, checked }: { onPress?: () => void; text: 
           flex: 1,
         }}
       >
-        <Typography size="body_md" color={theme.COLOR.FONT.CONTENT}>
-          {text}
-        </Typography>
+        <Pressable
+          onPress={onPressContent}
+          accessible
+          accessibilityRole="button"
+          accessibilityLabel={accessiblityLabelForContent}
+        >
+          <Typography size="body_md" color={theme.COLOR.FONT.CONTENT}>
+            {text}
+          </Typography>
+        </Pressable>
       </View>
-      <Icons type="material" name="chevron-right" size={24} color="black" onPress={onPress} />
+      <Icons
+        accessible={false}
+        accessibilityLabel={accessiblityLabelForContent + '아이콘'}
+        type="material"
+        name="chevron-right"
+        size={24}
+        color="black"
+        onPress={onPressContent}
+      />
     </FlexBox>
   );
 };

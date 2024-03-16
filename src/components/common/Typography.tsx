@@ -50,6 +50,8 @@ interface TextProps {
   styles?: TextStyle;
   numberOfLines?: number;
   textDecorations?: string;
+  ariaLive?: 'off' | 'assertive' | 'polite';
+  accessiblityLabel?: string;
 }
 
 const Typography = ({
@@ -60,6 +62,8 @@ const Typography = ({
   styles,
   numberOfLines,
   textDecorations,
+  ariaLive = 'off',
+  accessiblityLabel,
 }: TextProps) => {
   return (
     <TextStyling
@@ -68,7 +72,9 @@ const Typography = ({
       weight={weight}
       color={color}
       style={styles}
+      aria-live={ariaLive}
       {...(numberOfLines ? { numberOfLines } : {})}
+      {...(accessiblityLabel ? { accessibilityLabel: accessiblityLabel } : {})}
     >
       {children}
     </TextStyling>

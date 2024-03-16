@@ -46,8 +46,10 @@ function TabBarItem({
 
   return (
     <TabItemBox onPress={onPress}>
-      <Icons name={iconName} size={24} type={iconType} color={color} />
-      <TabBarText active={isActive}>{text}</TabBarText>
+      <Icons noAccessiblityLabel name={iconName} size={24} type={iconType} color={color} />
+      <TabBarText active={isActive} accessibilityLabel={`${text} 탭 버튼. ${isActive ? '선택됨' : ''}`}>
+        {text}
+      </TabBarText>
     </TabItemBox>
   );
 }

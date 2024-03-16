@@ -153,6 +153,7 @@ export const AuthEmailSignUpScreen = () => {
         <ContentsWrapper>
           <FlexBox direction="column" gap={GET_MARGIN('h3') + 10}>
             <AuthInput
+              name="이메일"
               inputText={form.email}
               onChangeText={(text) => {
                 onChangeText('email', text);
@@ -163,6 +164,7 @@ export const AuthEmailSignUpScreen = () => {
               errorMessage={form.emailError}
             />
             <AuthInput
+              name="비밀번호"
               inputText={form.password}
               onChangeText={(text) => {
                 onChangeText('password', text);
@@ -173,6 +175,7 @@ export const AuthEmailSignUpScreen = () => {
               errorMessage={form.passwordError}
             />
             <AuthInput
+              name="비밀번호 확인"
               inputText={form.passwordConfirm}
               onChangeText={(text) => {
                 onChangeText('passwordConfirm', text);
@@ -186,17 +189,23 @@ export const AuthEmailSignUpScreen = () => {
         </ContentsWrapper>
         <ContentsWrapper>
           <CheckBoxForm
-            onPress={() => {
+            onPressCheckBox={() => {
               onCheck('isAgreeFirst');
             }}
+            onPressContent={() => {}}
             text="이용약관을 숙지하였으며 동의합니다."
             checked={form.isAgreeFirst}
+            accessibilityLabelForCheckbox="이용약관 숙지 체크박스"
+            accessiblityLabelForContent="이용약관, 이 버튼을 누르면 이용약관을 볼 수 있습니다."
           />
           <CheckBoxForm
-            onPress={() => {
+            onPressCheckBox={() => {
               onCheck('isAgreeSecond');
             }}
+            onPressContent={() => {}}
             text="개인정보 처리방침 동의"
+            accessibilityLabelForCheckbox="개인정보 처리방침 동의 체크박스"
+            accessiblityLabelForContent="개인정보 처리방침, 이 버튼을 누르면 개인정보 처리방침을 볼 수 있습니다."
             checked={form.isAgreeSecond}
           />
           <Margin margin={GET_MARGIN('h3')} />
