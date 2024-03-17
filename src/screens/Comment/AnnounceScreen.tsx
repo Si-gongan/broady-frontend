@@ -33,8 +33,13 @@ const AnnounceScreen = ({ navigation }: any) => {
   const isFocused = useIsFocused();
 
   const handleClickReportContent = (id: string) => {
+    if (id === 'notice') {
+      navigation.navigate('AnnounceContent', { announce: { announceType: 'notice' } });
+      return;
+    }
+
     const selectedContent = announceList.filter((announce) => announce._id === id);
-    navigation.navigate('AnnounceContent', { announce: selectedContent[0] });
+    navigation.navigate('AnnounceContent', { announce: { announceType: 'report', ...selectedContent[0] } });
   };
 
   useEffect(() => {
@@ -50,7 +55,12 @@ const AnnounceScreen = ({ navigation }: any) => {
       <BomHeader text="공지사항" isBottomBorder />
 
       <ScrollView style={{ flex: 1 }}>
-        {announceList.length > 0 ? (
+        <TouchableOpacity style={styles.announceContainer} onPress={() => handleClickReportContent('notice')}>
+          <Text style={styles.refundText}>공지사항 알림</Text>
+          <Text style={styles.refundDate}>2024-03-17</Text>
+        </TouchableOpacity>
+
+        {announceList.length > 0 &&
           announceList.map((announce) => (
             <TouchableOpacity
               key={announce._id}
@@ -60,12 +70,7 @@ const AnnounceScreen = ({ navigation }: any) => {
               <Text style={styles.refundText}>{announce.type}</Text>
               <Text style={styles.refundDate}>{getYYMMDD(new Date(announce.reportedAt))}</Text>
             </TouchableOpacity>
-          ))
-        ) : (
-          <View style={styles.announceTextContainer}>
-            <Text style={commentFont.BODY1}>등록된 공지사항이 없습니다.</Text>
-          </View>
-        )}
+          ))}
       </ScrollView>
     </SafeAreaView>
   );

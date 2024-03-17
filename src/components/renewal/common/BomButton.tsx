@@ -9,7 +9,7 @@ type IBomButtonProps = {
   onPress?: () => void;
   disabled?: boolean;
 
-  fixedWidth?: number;
+  fixedWidth?: number | string;
   accessibilityLabel?: string;
 };
 
