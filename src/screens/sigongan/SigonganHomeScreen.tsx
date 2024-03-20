@@ -10,12 +10,11 @@ import SearchBar from '@/components/sigongan/SearchBar';
 import { GET_MARGIN } from '@/constants/theme';
 import { useSigonganNavigation } from '@/hooks';
 import { usePostLists } from '@/hooks/usePostLists';
-import { useSearchKeyword } from '@/hooks/useSearchKeyword';
 import { logError } from '@/library/axios';
 import { authTokenState } from '@/states';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, SafeAreaView, ScrollView, View } from 'react-native';
+import { ActivityIndicator, SafeAreaView, ScrollView, View, AccessibilityInfo, findNodeHandle } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from 'styled-components/native';
@@ -24,6 +23,9 @@ export const SigonganHomeScreen = () => {
   const navigation = useSigonganNavigation();
   const theme = useTheme();
   const token = useRecoilValue(authTokenState);
+
+  const flatListRef = useRef<FlatList | null>(null);
+  const noResultRef = useRef<View | null>(null);
 
   const {
     postList,
@@ -65,6 +67,19 @@ export const SigonganHomeScreen = () => {
     await getInitialPostList();
   };
 
+  const onPressSearchKeyword = () => {
+    const currentRef = postList.length === 0 ? noResultRef : flatListRef;
+
+    if (!currentRef.current) return;
+
+    const nodeValue = findNodeHandle(currentRef.current);
+
+    if (nodeValue === null) return;
+
+    // AccessibilityInfo.setAccessibilityFocus(nodeValue);
+    // AccessibilityInfo.setAccessibilityFocus(nodeValue);
+  };
+
   useFocusEffect(
     useCallback(() => {
       resetPage();
@@ -77,6 +92,10 @@ export const SigonganHomeScreen = () => {
       resetPage();
     };
   }, []);
+
+  useEffect(() => {
+    AccessibilityInfo.announceForAccessibility(searchKeyword);
+  }, [searchKeyword]);
 
   const onReachBottom = () => {
     getMorePostList();
@@ -94,7 +113,7 @@ export const SigonganHomeScreen = () => {
               text="새로운 사진 해설 받기"
             ></BroadyButton>
             <SearchBar
-              onPressSearch={() => {}}
+              onPressSearch={onPressSearchKeyword}
               onPressDelete={onDeleteSearchKeyword}
               text={searchKeyword}
               onChangeText={(text) => {
@@ -117,11 +136,16 @@ export const SigonganHomeScreen = () => {
             {isFetching ? (
               <ActivityIndicator size="large" />
             ) : searchKeyword ? (
-              <>
+              <View
+                accessible
+                ref={(ref) => {
+                  noResultRef.current = ref;
+                }}
+              >
                 <Typography size="body_lg" weight="semibold" color={theme.COLOR.GRAY_500}>
                   검색결과에 일치하는 해설이 없어요
                 </Typography>
-              </>
+              </View>
             ) : (
               <>
                 <Typography size="body_lg" weight="semibold" color={theme.COLOR.GRAY_500}>
@@ -136,6 +160,9 @@ export const SigonganHomeScreen = () => {
         ) : (
           <>
             <FlatList
+              ref={(ref) => {
+                flatListRef.current = ref;
+              }}
               data={postList}
               renderItem={({ item }) => (
                 <PostListItem

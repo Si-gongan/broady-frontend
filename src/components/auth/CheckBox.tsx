@@ -9,10 +9,18 @@ export default function CheckBox({
   type?: 'checkBox' | 'selectedCheckBox';
 }) {
   return checked ? (
-    <Image source={require('@/../assets/images/CheckBox_Selected.png')} resizeMode="cover" />
+    <Image
+      source={require('@/../assets/images/CheckBox_Selected.png')}
+      resizeMode="cover"
+      accessibilityLabel="체크박스"
+    />
   ) : type === 'selectedCheckBox' ? (
-    <Image source={require('@/../assets/images/Checkbox_Unselected.png')} resizeMode="cover" />
+    <Image
+      source={require('@/../assets/images/Checkbox_Unselected.png')}
+      resizeMode="cover"
+      accessibilityLabel="체크박스"
+    />
   ) : (
-    <Image source={require('@/../assets/images/CheckBox.png')} resizeMode="cover" />
+    <Image source={require('@/../assets/images/CheckBox.png')} resizeMode="cover" accessibilityLabel="체크박스" />
   );
 }

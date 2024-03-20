@@ -2,7 +2,7 @@ import { toastConfig } from '@/config/toast';
 import { GET_MARGIN } from '@/constants/theme';
 import { logError } from '@/library/axios';
 import React, { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { AccessibilityInfo, Pressable, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useTheme } from 'styled-components/native';
 import CheckBox from '../auth/CheckBox';
@@ -12,17 +12,22 @@ import BroadyTextInput from '../common/BroadyTextInput';
 import ContentsWrapper, { CenteredContentsWrapper } from '../common/ContentsWrapper';
 import FlexBox from '../common/FlexBox';
 import Typography from '../common/Typography';
-import { showCheckToast } from '@/library/toast/toast';
+import { showCheckToast, showErrorToast } from '@/library/toast/toast';
 import { set } from 'react-native-reanimated';
 
 const CheckBoxForm = ({ checked, text, onPress }: { checked: boolean; text: string; onPress: () => void }) => {
   return (
-    <FlexBox alignItems="center" gap={GET_MARGIN('h4')}>
-      <Pressable onPress={onPress}>
+    <Pressable
+      onPress={onPress}
+      accessible
+      accessibilityLabel={`신고사유 체크박스: ${text}`}
+      accessibilityState={{ checked }}
+    >
+      <FlexBox alignItems="center" gap={GET_MARGIN('h4')}>
         <CheckBox checked={checked} type="selectedCheckBox" />
-      </Pressable>
-      <Typography size="body_lg">{text}</Typography>
-    </FlexBox>
+        <Typography size="body_lg">{text}</Typography>
+      </FlexBox>
+    </Pressable>
   );
 };
 
@@ -59,6 +64,22 @@ export default function PostChatReportModal({
 
   const onPressReport = async () => {
     setIsReportLoading(true);
+
+    if (checkIndex === null) {
+      showErrorToast('신고사유를 선택해주세요.');
+      setIsReportLoading(false);
+      AccessibilityInfo.announceForAccessibility('신고사유를 선택해주세요.');
+      return;
+    }
+
+    if (checkIndex === 2 && reason.length === 0) {
+      showErrorToast('신고사유를 입력해주세요.');
+      setIsReportLoading(false);
+      AccessibilityInfo.announceForAccessibility('신고사유를 입력해주세요.');
+
+      return;
+    }
+
     try {
       await reportChat(reason);
       afterReport && afterReport();
@@ -122,20 +143,27 @@ export default function PostChatReportModal({
               }}
             />
           </FlexBox>
-          <FlexBox direction="column" alignItems="flex-end" gap={GET_MARGIN('h5')}>
-            <Typography size="body_sm" color={theme.COLOR.FONT.SUB_CONTENT}>
-              {reason.length.toString()} / 100
-            </Typography>
-            <BroadyTextInput
-              initialType="text"
-              variant="Border"
-              text={reason}
-              onChangeText={onChangeReason}
-              borderColor={textInputBorder}
-              placeholder="운영진이 참고했으면 하는 내용을 적어주세요"
-              multiline
-            ></BroadyTextInput>
-          </FlexBox>
+          {checkIndex === 2 && (
+            <FlexBox direction="column" alignItems="flex-end" gap={GET_MARGIN('h5')}>
+              <Typography
+                size="body_sm"
+                color={theme.COLOR.FONT.SUB_CONTENT}
+                accessiblityLabel={`글자 수 ${reason.length} / 100`}
+              >
+                {reason.length.toString()} / 100
+              </Typography>
+              <BroadyTextInput
+                name="기타 신고사유"
+                initialType="text"
+                variant="Border"
+                text={reason}
+                onChangeText={onChangeReason}
+                borderColor={textInputBorder}
+                placeholder="운영진이 참고했으면 하는 내용을 적어주세요"
+                multiline
+              ></BroadyTextInput>
+            </FlexBox>
+          )}
 
           <FlexBox direction="row" alignItems="center" gap={GET_MARGIN('h4')}>
             <BroadyButton

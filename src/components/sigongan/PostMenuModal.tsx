@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, AccessibilityInfo } from 'react-native';
 import React, { useState } from 'react';
 import BottomModal from '../common/BottomModal';
 import ContentsWrapper, { CenteredContentsWrapper } from '../common/ContentsWrapper';
@@ -60,6 +60,7 @@ export default function PostMenuModal({
       }
     }
 
+    AccessibilityInfo.announceForAccessibility('채팅방을 삭제했습니다. 홈화면으로 돌아갑니다.');
     navigation.navigate('MainTab');
   };
 
@@ -83,7 +84,7 @@ export default function PostMenuModal({
         <FlexBox direction="column" gap={GET_MARGIN('h2')}>
           {isDeletePressed ? (
             <>
-              <CenteredContentsWrapper>
+              <CenteredContentsWrapper accessible>
                 <Typography size="body_lg" weight="semibold" color={theme.COLOR.FONT.SUB_CONTENTDIM}>
                   질문을 삭제하면
                 </Typography>
@@ -99,12 +100,22 @@ export default function PostMenuModal({
           ) : (
             <>
               <TouchableOpacity onPress={onPressSharePhoto} hitSlop={20}>
-                <Typography color={theme.COLOR.FONT.SUB_CONTENTDIM} size="body_xl" weight="medium">
+                <Typography
+                  color={theme.COLOR.FONT.SUB_CONTENTDIM}
+                  size="body_xl"
+                  weight="medium"
+                  accessiblityLabel="사진 공유하기 버튼"
+                >
                   사진 공유하기
                 </Typography>
               </TouchableOpacity>
               <TouchableOpacity onPress={onPressDeletePostFirst} hitSlop={20}>
-                <Typography color={theme.COLOR.FONT.SUB_CONTENTDIM} size="body_xl" weight="medium">
+                <Typography
+                  color={theme.COLOR.FONT.SUB_CONTENTDIM}
+                  size="body_xl"
+                  weight="medium"
+                  accessiblityLabel="질문 삭제하기 버튼"
+                >
                   질문 삭제하기
                 </Typography>
               </TouchableOpacity>

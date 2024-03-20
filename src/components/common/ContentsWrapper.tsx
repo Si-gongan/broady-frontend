@@ -15,9 +15,16 @@ export default function ContentsWrapper({ children, flex }: { children: React.Re
   );
 }
 
-export const CenteredContentsWrapper = ({ children }: { children: React.ReactNode }) => {
+export const CenteredContentsWrapper = ({
+  children,
+  accessible,
+}: {
+  children: React.ReactNode;
+  accessible?: boolean;
+}) => {
   return (
     <View
+      accessible={accessible}
       style={{
         display: 'flex',
         justifyContent: 'center',

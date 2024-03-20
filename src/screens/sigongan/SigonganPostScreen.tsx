@@ -31,13 +31,23 @@ import { authTokenState } from '@/states';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef } from 'react';
-import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
+import {
+  AccessibilityInfo,
+  ActivityIndicator,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
 import styled, { useTheme } from 'styled-components/native';
 import { Shadow } from 'react-native-shadow-2';
 import Share from 'react-native-share';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import { set } from 'react-native-reanimated';
 
 const ImageBox = styled.View`
   aspect-ratio: 1;
@@ -203,6 +213,10 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
 
   // FIXME 전송을 눌렀을때, 바로 사진이 안보이고 기다리고 있어요 라고 되어야 하는데.
 
+  useEffect(() => {
+    AccessibilityInfo.announceForAccessibility(input);
+  }, [input]);
+
   const onPressSendIcon = () => {
     if (input) {
       openSendModal();
@@ -215,6 +229,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
 
   const afterSendMessage = () => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
+    AccessibilityInfo.announceForAccessibility('질문을 성공적으로 전송했습니다.');
     setSendLoading(false);
   };
 
@@ -321,6 +336,12 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
         afterSendMessage();
       } catch (e) {
         logError(e);
+
+        setSendLoading(false);
+
+        showErrorToast('질문을 전송하는데 실패했어요. 다시 시도해주세요.');
+
+        AccessibilityInfo.announceForAccessibility('질문을 전송하는데 실패했어요. 다시 시도해주세요.');
       }
     }
     // 이 경우에는 추가질문이다.
@@ -328,7 +349,6 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
       addAdditionalRequest(target, input);
     }
   };
-
   // 이거는 신고먹었을때.
   const onPressConnectToCustomerService = () => {};
 
@@ -352,6 +372,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
       try {
         await changePinStatusApi(selectedPost?.id, true, token);
         updateSelectedPost('isPinned', true);
+        AccessibilityInfo.announceForAccessibility('찜한 해설에 저장되었어요!');
         showCheckToast(
           '찜한 해설에 저장되었어요!',
           <Pressable onPress={onPressPinCancleButton}>
@@ -364,6 +385,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
         logError(e);
       }
     } else {
+      AccessibilityInfo.announceForAccessibility('이미 찜한 해설입니다.');
       showErrorToast('이미 찜한 해설입니다.');
     }
   };
@@ -455,17 +477,26 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
           <Icons
             type="feather"
             name="chevron-left"
+            accessibilityLabel="뒤로 가기 버튼"
             size={35}
             color={theme.COLOR.GRAY_ICON}
             onPress={onPressGoBackHeader}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           />
         }
-        headerRight={<Icons type="materialIcons" name="menu" size={30} onPress={onPressMenuIcon}></Icons>}
+        headerRight={
+          <Icons
+            type="materialIcons"
+            name="menu"
+            size={30}
+            onPress={onPressMenuIcon}
+            accessibilityLabel="메뉴 버튼"
+          ></Icons>
+        }
       />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         {showSummaryButton && (
-          <SummaryBox onPress={onPressSummaryButton}>
+          <SummaryBox onPress={onPressSummaryButton} accessible accessibilityLabel="해설 전체 요약하기 버튼">
             <Shadow
               distance={10}
               style={{
@@ -512,6 +543,8 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
                     overflow: 'hidden',
                     borderRadius: 12,
                   }}
+                  accessible
+                  accessibilityLabel="사용자가 업로드한 사진"
                 />
               </ImageBox>
               {showSelectImageAgain && (
@@ -543,7 +576,12 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
               <>
                 <FlexBox>
                   <PinButton onPress={onPressPinButton}>
-                    <Typography size="body_md" weight="semibold" color={theme.COLOR.FONT.SUB_CONTENTDIM}>
+                    <Typography
+                      size="body_md"
+                      weight="semibold"
+                      color={theme.COLOR.FONT.SUB_CONTENTDIM}
+                      accessiblityLabel="해설 찜하기 버튼"
+                    >
                       해설 찜하기
                     </Typography>
                   </PinButton>
@@ -556,6 +594,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
                 <>
                   <View style={{ flex: 1 }}>
                     <BroadyTextInput
+                      name="질문 입력"
                       placeholder="내용을 입력해주세요"
                       variant="Border"
                       paddingVariant="small"
@@ -565,7 +604,14 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
                       initialType="text"
                     />
                   </View>
-                  <Pressable onPress={onPressSendIcon}>
+                  <Pressable
+                    onPress={onPressSendIcon}
+                    accessible
+                    accessibilityLabel={`질문 전송하기 버튼`}
+                    accessibilityState={{
+                      disabled: !Boolean(input),
+                    }}
+                  >
                     <Image source={sendIcon} style={{ width: 30, height: 30 }} />
                   </Pressable>
                 </>

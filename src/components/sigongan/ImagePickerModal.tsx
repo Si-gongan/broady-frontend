@@ -93,13 +93,23 @@ export default function ImagePickerModal({
       <ContentsWrapper>
         <Margin margin={GET_MARGIN('h2')} />
         <FlexBox direction="column" gap={GET_MARGIN('h2')}>
-          <TouchableOpacity onPress={onPressTakePhoto} hitSlop={20}>
-            <Typography color={theme.COLOR.FONT.SUB_CONTENTDIM} size="body_xl" weight="medium">
+          <TouchableOpacity onPress={onPressTakePhoto} hitSlop={20} accessible>
+            <Typography
+              color={theme.COLOR.FONT.SUB_CONTENTDIM}
+              size="body_xl"
+              weight="medium"
+              accessiblityLabel={`직접 촬영 버튼`}
+            >
               직접 촬영
             </Typography>
           </TouchableOpacity>
-          <TouchableOpacity onPress={onPressPickImage} hitSlop={20}>
-            <Typography color={theme.COLOR.FONT.SUB_CONTENTDIM} size="body_xl" weight="medium">
+          <TouchableOpacity onPress={onPressPickImage} hitSlop={20} accessible>
+            <Typography
+              color={theme.COLOR.FONT.SUB_CONTENTDIM}
+              size="body_xl"
+              weight="medium"
+              accessiblityLabel={`갤러리에서 선택 버튼`}
+            >
               갤러리에서 선택
             </Typography>
           </TouchableOpacity>

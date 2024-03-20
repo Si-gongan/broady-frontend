@@ -84,11 +84,23 @@ export default function ChatListItem({
       </ImageBox>
       <Contents>
         <MainContents>
-          <Typography numberOfLines={1} size="body_lg" weight="semibold" color={theme.COLOR.FONT.CONTENT}>
+          <Typography
+            numberOfLines={1}
+            size="body_lg"
+            weight="semibold"
+            color={theme.COLOR.FONT.CONTENT}
+            accessiblityLabel={`제목 : ${mainText}`}
+          >
             {mainText}
           </Typography>
           <Margin margin={3} />
-          <Typography numberOfLines={2} size="body_lg" weight="regular" color={theme.COLOR.FONT.SUB_CONTENT}>
+          <Typography
+            numberOfLines={2}
+            size="body_lg"
+            weight="regular"
+            color={theme.COLOR.FONT.SUB_CONTENT}
+            accessiblityLabel={`내용 : ${subText}`}
+          >
             {subText}
           </Typography>
         </MainContents>

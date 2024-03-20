@@ -49,13 +49,13 @@ export const MyChat = ({ text, backgroundColor, time }: { text: string; backgrou
   const theme = useTheme();
 
   return (
-    <MyChatBox>
+    <MyChatBox accessible>
       <Typography size="body_sm" color={theme.COLOR.FONT.SUB_CONTENT}>
         {time}
       </Typography>
       <Margin direction="horizontal" margin={5} />
       <ChatContent backgroundColor={backgroundColor}>
-        <Typography>{text}</Typography>
+        <Typography accessiblityLabel={`내가 보낸 메시지: ${text}`}>{text}</Typography>
       </ChatContent>
     </MyChatBox>
   );
@@ -75,13 +75,21 @@ export const CommentChat = ({
   title?: string;
   backgroundColor: string;
   time: string;
-  type: string;
+  type: 'comment' | 'ai';
   onPressChat: (id: string) => void;
 }) => {
   const theme = useTheme();
 
+  const accessibilityLabel =
+    type === 'comment'
+      ? `해설자로부터의 답변: ${text}. 
+    클릭해서 해설을 신고할 수 있어요
+  `
+      : `AI로부터의 답변: ${text}`;
+
   return (
     <CommentChatBox
+      accessible
       onPress={() => {
         if (type === 'comment') {
           onPressChat(id);
@@ -89,7 +97,7 @@ export const CommentChat = ({
       }}
     >
       <ChatContentForComment backgroundColor={backgroundColor}>
-        <Typography>{text}</Typography>
+        <Typography accessiblityLabel={accessibilityLabel}>{text}</Typography>
       </ChatContentForComment>
       <Margin direction="horizontal" margin={5} />
       {title && (
@@ -118,9 +126,9 @@ export const AdminChat = ({
   const theme = useTheme();
 
   return (
-    <AdminChatBox>
+    <AdminChatBox accessible>
       <ChatContentForComment backgroundColor={backgroundColor}>
-        <Typography>{text}</Typography>
+        <Typography accessiblityLabel={`운영진측의 메시지: ${text}`}>{text}</Typography>
       </ChatContentForComment>
       <Margin direction="horizontal" margin={5} />
       <Typography size="body_sm" color={theme.COLOR.FONT.SUB_CONTENT}>

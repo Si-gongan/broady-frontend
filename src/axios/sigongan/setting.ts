@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 
 export const SigonganServer = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_SERVER_URL,
-  timeout: 50000,
+  timeout: 100000,
   headers: {
     'Content-Type': 'application/json',
   },

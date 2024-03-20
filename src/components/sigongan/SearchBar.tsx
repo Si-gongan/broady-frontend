@@ -46,12 +46,24 @@ export default function SearchBar({
 }) {
   return (
     <Box hasText={text.length > 0}>
-      <Icons type="ionicons" name="search" size={20} color="black" onPress={onPressSearch} />
+      <Icons
+        type="ionicons"
+        name="search"
+        size={20}
+        color="black"
+        onPress={onPressSearch}
+        accessibilityLabel="검색 버튼"
+      />
 
-      <SearchInput placeholder={placeholder} onChangeText={onChangeText} value={text}></SearchInput>
+      <SearchInput
+        placeholder={placeholder}
+        onChangeText={onChangeText}
+        value={text}
+        accessibilityLabel="검색어 입력창"
+      ></SearchInput>
       {text.length > 0 && (
-        <DeleteBtn onPress={onPressDelete}>
-          <Icons type="ionicons" name="close" size={20} color="white" />
+        <DeleteBtn onPress={onPressDelete} accessible accessibilityLabel={`검색어 지우기 버튼`}>
+          <Icons type="ionicons" name="close" size={20} color="white" noAccessiblityLabel />
         </DeleteBtn>
       )}
     </Box>

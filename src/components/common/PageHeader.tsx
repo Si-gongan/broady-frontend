@@ -53,7 +53,7 @@ const PageHeader = ({
     <Container notchTop={NOTCH_TOP}>
       {headerLeftShown ? headerLeft ? headerLeft : <HeaderLeft /> : <Blank />}
       {title && (
-        <Typography size="body_xl" weight="regular">
+        <Typography size="body_xl" weight="regular" accessiblityLabel={`페이지 제목: ${title}`}>
           {title}
         </Typography>
       )}

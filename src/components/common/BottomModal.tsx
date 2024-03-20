@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import React from 'react';
 import Modal from 'react-native-modal';
 import Typography from './Typography';
@@ -10,12 +10,9 @@ const ModalContent = styled.View<{ bottom: number }>`
   position: absolute;
   bottom: 0;
   padding-bottom: ${({ bottom }) => bottom}px;
-  /* height: 300; */
   background-color: white;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  /* justify-content: center; */
-  /* align-items: center; */
 `;
 
 const Header = styled.View`
@@ -53,11 +50,23 @@ export default function BottomModal({
   return (
     <Modal
       isVisible={isModalVisible}
-      onBackdropPress={onBackdropPressHandler}
+      // onBackdropPress={onBackdropPressHandler}
       style={{
-        // justifyContent: 'flex-end',
         margin: 0,
       }}
+      customBackdrop={
+        <Pressable
+          style={{
+            flex: 1,
+            backgroundColor: 'black',
+          }}
+          onPress={onBackdropPressHandler}
+          accessible={false}
+          accessibilityLabel="
+            한번 눌러서 모달을 끌 수 있어요.
+          "
+        ></Pressable>
+      }
     >
       <ModalContent bottom={bottom}>
         {headerText && (
