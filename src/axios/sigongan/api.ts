@@ -53,6 +53,8 @@ export const registerPostApi = async (
 
   const { name, type } = getImageMetaData(url);
 
+  console.log(url, name, type);
+
   form.append('file', { uri: url, name, type });
   form.append('text', input);
   form.append('target', target);
@@ -122,11 +124,19 @@ export const changePinStatusApi = async (postId: string, isPinned: boolean, toke
   );
 };
 
-export const getPinnedPostListApi = async (limit: number, page: number, token: string) => {
-  return await SigonganServer.get(
-    `/sigongan-user/post/pin
-  ?${page && `page=${page}`}${limit && `&limit=${limit}`}
-  `,
+export const getPinnedPostListApi = async ({
+  limit,
+  page,
+  token,
+  search,
+}: {
+  search: string;
+  limit: number;
+  page: number;
+  token: string;
+}) => {
+  return await SigonganServer.get<IPostReturnType>(
+    `/sigongan-user/post/pin?${page && `page=${page}`}${limit && `&limit=${limit}`}${search && `&search=${search}`}`,
     {
       headers: {
         'Content-Type': 'application/json',

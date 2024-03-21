@@ -2,6 +2,7 @@ import {
   SendTarget,
   addAditionalRequestApi,
   changePinStatusApi,
+  getPostListApi,
   registerPostApi,
   reportCommentApi,
   summaryPostApi,
@@ -27,7 +28,7 @@ import { delay } from '@/library';
 import { logError } from '@/library/axios';
 import { showCheckToast, showErrorToast } from '@/library/toast/toast';
 import { SigonganStackParamList } from '@/navigations';
-import { authTokenState } from '@/states';
+import { authTokenState, selectedPostIdAtom, syncPostListAtom } from '@/states';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef } from 'react';
@@ -156,20 +157,26 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
 
   const theme = useTheme();
   const { bottom } = useSafeAreaInsets();
+
+  // 근데 문제는... 이렇게 하면, pinned에는 있는데 postList에는 없는걸 참조할 위험이 있따.
+  // 그러면 atom 자체를 postScreen으로 넘겨준다??
+
   const {
     selectedPost,
+    selectedPostId,
     getInitialPostList,
     setSelectedPostId,
     updateSelectedPost,
     setSyncPostList,
     currentRoomState: { isBlocked, isComplete, isPaused, isPinned },
-  } = usePostLists();
+  } = usePostLists({
+    postListFetcher: getPostListApi,
+    postListAtom: syncPostListAtom,
+    selectedPostIdAtom: selectedPostIdAtom,
+  });
 
   const token = useRecoilValue(authTokenState);
   const scrollViewRef = React.useRef<ScrollView>(null);
-
-  // console.log('selectedPost', selectedPost?.id);
-  // console.log('fromDeletedPostId', fromDeletedPostId);
 
   const { isModalVisible: isImagePickerModalVisible, openModal: openImagePickerModal, setIsModalVisible } = useModal();
   const { isModalVisible: isSendModalVisible, openModal: openSendModal, closeModal: closeSendModal } = useModal();
@@ -635,6 +642,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
       <ImagePickerModal
         deletedPostId={deletedPostId.current}
         isVisible={isImagePickerModalVisible}
+        setSelectedPostId={setSelectedPostId}
         setIsVisible={setIsModalVisible}
       />
       <ChatSendModal
@@ -649,7 +657,12 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
         input={input}
         setInput={setInput}
       />
-      <PostMenuModal isVisible={isMenuModalVisible} setIsVisible={closeMenuModal} sharePhoto={sharePicture} />
+      <PostMenuModal
+        isVisible={isMenuModalVisible}
+        selectedPostId={selectedPostId}
+        setIsVisible={closeMenuModal}
+        sharePhoto={sharePicture}
+      />
       <PostSummaryModal
         isVisible={isSummaryModalVisible}
         setIsVisible={closeSummaryModal}

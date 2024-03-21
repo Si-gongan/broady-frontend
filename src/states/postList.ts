@@ -2,17 +2,22 @@ import { IPost } from '@/@types/post';
 import { IPostReturnType, getPostListApi } from '@/axios';
 import { atom, selector } from 'recoil';
 
-export const postListAtom = selector<IPostReturnType>({
-  key: 'postListAtom',
-  get: async ({ get }) => {
-    const response = await getPostListApi(get(postListQuery));
+// export const postListAtom = selector<IPostReturnType>({
+//   key: 'postListAtom',
+//   get: async ({ get }) => {
+//     const response = await getPostListApi(get(postListQuery));
 
-    return response.data;
-  },
-});
+//     return response.data;
+//   },
+// });
 
 export const syncPostListAtom = atom<IPost[]>({
   key: 'syncPostListAtom',
+  default: [],
+});
+
+export const pinnedPostListAtom = atom<IPost[]>({
+  key: 'pinnedPostListAtom',
   default: [],
 });
 

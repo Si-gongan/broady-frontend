@@ -15,23 +15,21 @@ import { SCREENS } from '@/constants/screens';
 import { deletePostApi } from '@/axios';
 import { authTokenState } from '@/states';
 import { useRecoilValue } from 'recoil';
-import { usePostLists } from '@/hooks/usePostLists';
 import { showErrorToast } from '@/library/toast/toast';
-import { AxiosError } from 'axios';
 import { logError } from '@/library/axios';
 
 export default function PostMenuModal({
   isVisible,
   setIsVisible,
   sharePhoto,
+  selectedPostId,
 }: {
   isVisible: boolean;
   setIsVisible: (isVisible: boolean) => void;
+  selectedPostId: string | null;
   sharePhoto: () => Promise<void>;
 }) {
   const [isDeletePressed, setIsDeletePressed] = useState(false);
-
-  const { selectedPostId } = usePostLists();
 
   const navigation = useSigonganNavigation();
 

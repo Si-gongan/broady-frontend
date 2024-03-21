@@ -13,24 +13,24 @@ import { showErrorToast } from '@/library/toast/toast';
 import { useSigonganNavigation } from '@/hooks';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from '@/config/toast';
-import { usePostLists } from '@/hooks/usePostLists';
 import { CommonActions, StackActions } from '@react-navigation/native';
 import { SCREENS } from '@/constants/screens';
+import { SetterOrUpdater } from 'recoil';
 
 export default function ImagePickerModal({
   isVisible,
   setIsVisible,
+  setSelectedPostId,
   deletedPostId,
 }: {
   isVisible: boolean;
   setIsVisible: (isVisible: boolean) => void;
+  setSelectedPostId: SetterOrUpdater<string | null>;
   deletedPostId?: string;
 }) {
   const theme = useTheme();
 
   const navigation = useSigonganNavigation();
-
-  const { setSelectedPostId } = usePostLists();
 
   const onPressTakePhoto = async () => {
     try {

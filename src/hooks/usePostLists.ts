@@ -1,16 +1,36 @@
 import { IPost } from '@/@types/post';
-import { getPostListApi } from '@/axios';
+import { IPostReturnType, getPostListApi } from '@/axios';
 import { logError } from '@/library/axios';
 import { authTokenState, selectedPostIdAtom, syncPostListAtom } from '@/states';
+import { AxiosResponse } from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { RecoilState, useRecoilState, useRecoilValue } from 'recoil';
 
 const limit = 10;
 
-export const usePostLists = () => {
-  const [syncPostList, setSyncPostList] = useRecoilState(syncPostListAtom);
-  const [selectedPostId, setSelectedPostId] = useRecoilState(selectedPostIdAtom);
+export const usePostLists = ({
+  postListFetcher,
+  postListAtom,
+  selectedPostIdAtom,
+}: {
+  postListFetcher: ({
+    page,
+    limit,
+    search,
+    token,
+  }: {
+    page: number;
+    limit: number;
+    search: string;
+    token: string;
+  }) => Promise<AxiosResponse<IPostReturnType>>;
+  postListAtom: RecoilState<IPost[]>;
+  selectedPostIdAtom: RecoilState<string | null>;
+}) => {
+  const [syncPostList, setSyncPostList] = useRecoilState(postListAtom);
+  const [selectedPostId, setSelectedPostId] = useRecoilState<string | null>(selectedPostIdAtom);
   const [isFetching, setIsFetching] = useState(false);
+
   const [searchKeyword, setSearchKeyword] = useState('');
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const isHomeFocused = useRef(false);
@@ -39,7 +59,7 @@ export const usePostLists = () => {
     setIsFetching(true);
 
     try {
-      const response = await getPostListApi({ page: 1, limit: limit, search: searchKeyword, token });
+      const response = await postListFetcher({ page: 1, limit: limit, search: searchKeyword, token });
 
       setSyncPostList(response.data.result.posts);
 
@@ -107,8 +127,8 @@ export const usePostLists = () => {
     onChangeSearchKeyword('');
   };
 
+  // 검색어가 변경되면 새로운 검색어로 포스트 리스트를 가져온다.
   useEffect(() => {
-    // 처음 focused 되었을때는 실행되지 않도록 한다.
     if (isHomeFocused.current) {
       isHomeFocused.current = false;
       return;

@@ -1,4 +1,4 @@
-import { readPostApi } from '@/axios';
+import { getPostListApi, readPostApi } from '@/axios';
 import BroadyButton from '@/components/common/BroadyButton';
 import ContentsWrapper from '@/components/common/ContentsWrapper';
 import FlexBox from '@/components/common/FlexBox';
@@ -11,7 +11,7 @@ import { GET_MARGIN } from '@/constants/theme';
 import { useSigonganNavigation } from '@/hooks';
 import { usePostLists } from '@/hooks/usePostLists';
 import { logError } from '@/library/axios';
-import { authTokenState } from '@/states';
+import { authTokenState, selectedPostIdAtom, syncPostListAtom } from '@/states';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, SafeAreaView, ScrollView, View, AccessibilityInfo, findNodeHandle } from 'react-native';
@@ -29,16 +29,19 @@ export const SigonganHomeScreen = () => {
 
   const {
     postList,
+    isFetching,
+    searchKeyword,
     getInitialPostList,
     setSelectedPostId,
     getMorePostList,
     onDeleteSearchKeyword,
-    isFetching,
-    isHomeFocused,
-    searchKeyword,
     onChangeSearchKeyword,
     resetPage,
-  } = usePostLists();
+  } = usePostLists({
+    postListFetcher: getPostListApi,
+    postListAtom: syncPostListAtom,
+    selectedPostIdAtom: selectedPostIdAtom,
+  });
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -50,6 +53,7 @@ export const SigonganHomeScreen = () => {
     navigation.navigate('Post', {
       assets: undefined,
       fromDeletedPostId: undefined,
+      postListAtom: syncPostListAtom,
     });
 
     try {
@@ -187,7 +191,11 @@ export const SigonganHomeScreen = () => {
           </>
         )}
       </View>
-      <ImagePickerModal isVisible={isModalVisible} setIsVisible={setIsModalVisible} />
+      <ImagePickerModal
+        isVisible={isModalVisible}
+        setIsVisible={setIsModalVisible}
+        setSelectedPostId={setSelectedPostId}
+      />
     </SafeAreaView>
   );
 };
