@@ -89,8 +89,16 @@ function ChatListItem({
 
   const checkBoxImageSource = isChecked ? CheckBoxIcon_Checked : CheckBoxIcon;
 
+  const onPressItem = () => {
+    if (isSelectMode) {
+      onPressSelectItem();
+    } else {
+      onPress();
+    }
+  };
+
   return (
-    <Box onPress={onPress}>
+    <Box onPress={onPressItem}>
       {isSelectMode && (
         <Pressable
           style={{
@@ -98,7 +106,7 @@ function ChatListItem({
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onPress={onPressSelectItem}
+          // onPress={onPressSelectItem}
           accessible
         >
           <View style={{ width: 20, height: 20 }}>
