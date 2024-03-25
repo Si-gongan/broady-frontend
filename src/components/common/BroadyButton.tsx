@@ -10,7 +10,7 @@ const ButtonColor = {
     background: {
       def: THEME.COLOR.MINT_2,
       pressed: THEME.COLOR.MINT_2,
-      disabled: THEME.COLOR.MINT_2,
+      disabled: THEME.COLOR.GRAY_500,
     },
     border: {
       def: 'transparent',
@@ -210,7 +210,7 @@ const BroadyButton = ({
         accessible
         accessibilityLabel={accessibilityLabel ? accessibilityLabel : `${text} 버튼`}
       >
-        {disabled || isLoading ? (
+        {isLoading ? (
           <View
             style={{
               top: 1.5,

@@ -14,7 +14,7 @@ import { logError } from '@/library/axios';
 import { authTokenState, selectedPostIdAtom, syncPostListAtom } from '@/states';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, SafeAreaView, ScrollView, View, AccessibilityInfo, findNodeHandle } from 'react-native';
+import { AccessibilityInfo, ActivityIndicator, SafeAreaView, View, findNodeHandle } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from 'styled-components/native';

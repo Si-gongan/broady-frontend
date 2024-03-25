@@ -1,7 +1,7 @@
 import { IPost } from '@/@types/post';
-import { IPostReturnType, getPostListApi } from '@/axios';
+import { IPostReturnType } from '@/axios';
 import { logError } from '@/library/axios';
-import { authTokenState, selectedPostIdAtom, syncPostListAtom } from '@/states';
+import { authTokenState } from '@/states';
 import { AxiosResponse } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { RecoilState, useRecoilState, useRecoilValue } from 'recoil';
@@ -58,6 +58,8 @@ export const usePostLists = ({
   const getInitialPostList = async () => {
     setIsFetching(true);
 
+    setSyncPostList([]);
+
     try {
       const response = await postListFetcher({ page: 1, limit: limit, search: searchKeyword, token });
 
@@ -73,12 +75,15 @@ export const usePostLists = ({
 
   const getMorePostList = async () => {
     if (!hasNextPage.current) {
+      return;
     }
+
+    console.log('getMorePostList', searchKeyword);
 
     page.current += 1;
 
     try {
-      const response = await getPostListApi({
+      const response = await postListFetcher({
         page: page.current,
         limit: limit,
         search: searchKeyword,
