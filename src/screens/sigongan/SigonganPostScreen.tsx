@@ -175,7 +175,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
     selectedPostIdAtom: selectedPostIdAtom,
   });
 
-  console.log('selectedPost', selectedPost?.id);
+  // console.log('selectedPost', selectedPost?.id);
 
   const token = useRecoilValue(authTokenState);
   const scrollViewRef = React.useRef<ScrollView>(null);
