@@ -79,9 +79,6 @@ export const SigonganHomeScreen = () => {
     const nodeValue = findNodeHandle(currentRef.current);
 
     if (nodeValue === null) return;
-
-    // AccessibilityInfo.setAccessibilityFocus(nodeValue);
-    // AccessibilityInfo.setAccessibilityFocus(nodeValue);
   };
 
   useFocusEffect(
