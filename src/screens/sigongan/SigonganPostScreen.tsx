@@ -214,7 +214,7 @@ export default function SigonganPostScreen({ route, navigation }: Props) {
 
   const isWaitingForResponse = selectedPost ? !isComplete && selectedPost.chat.length > 0 : hasSendFirstRequest;
   const showSelectImageAgain = selectedPost ? false : !hasSendFirstRequest;
-  const showPinnedButton = selectedPost ? (!isPinned && isComplete ? true : false) : false;
+  const showPinnedButton = selectedPost ? (!isPinned && chatList.length >= 2 ? true : false) : false;
   const showSummaryButton = selectedPost ? selectedPost.chat.length >= 2 : false;
   const pageTitle = selectedPost ? selectedPost.title : hasSendFirstRequest ? '시공간' : '사진 선택';
 
